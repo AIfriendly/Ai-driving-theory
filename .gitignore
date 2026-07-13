@@ -1,0 +1,11 @@
+# Secrets — never commit exchange credentials
+.env
+
+# Python
+.venv/
+__pycache__/
+*.pyc
+*.egg-info/
+.pytest_cache/
+dist/
+build/
