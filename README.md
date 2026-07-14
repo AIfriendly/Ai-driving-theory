@@ -28,14 +28,21 @@ rejection, not a warning:
 
 | Rule | Prompt level (CLAUDE.md) | Code level (server) |
 |---|---|---|
-| Human confirmation before any order | ✅ propose → `CONFIRM` → execute | — (conversation-level by design) |
+| Human confirmation before any order | ✅ propose → `CONFIRM` → execute (attended mode) | — (conversation-level by design) |
 | Mandatory stop-loss on entries | ✅ | ✅ `place_order` rejects entries without `stop_loss`, and rejects SL/TP on the wrong side of entry |
 | Leverage cap (default 5x) | ✅ | ✅ `set_leverage` rejects > `BYBIT_MAX_LEVERAGE` |
 | Read-only by default | — | ✅ trading tools rejected unless `BYBIT_TRADING_ENABLED=true` |
 | Testnet by default | — | ✅ mainnet requires explicit `BYBIT_ENV=mainnet` |
-| Per-order notional cap | — | ✅ optional `BYBIT_MAX_ORDER_VALUE` |
+| Per-order notional cap | — | ✅ optional `BYBIT_MAX_ORDER_VALUE` (opening orders; exits exempt) |
+| Autonomous caps are mandatory | ✅ §6.5 | ✅ in autonomous mode, opening is refused until loss-limit/orders-per-day/whitelist/notional are set |
+| Daily-loss kill-switch | — | ✅ `BYBIT_DAILY_LOSS_LIMIT` halts new entries on drawdown; exits always allowed |
 | No lookahead bias | ✅ closed candles only | ✅ `get_klines` drops the still-forming candle by default |
 | No fabricated data | ✅ halt on error | ✅ every non-zero `retCode` raises with Bybit's own message |
+
+> **Geo note:** Bybit blocks by **source IP** (US, Mainland China, and many
+> datacenter ranges → 403). The server must run from a permitted-region host;
+> `BYBIT_BASE_URL` selects a regional endpoint for compliance but does **not**
+> bypass the block. See [`docs/DEPLOY.md`](docs/DEPLOY.md).
 
 ## Setup
 
@@ -58,11 +65,25 @@ default) until you trust the whole loop.
 | Variable | Default | Meaning |
 |---|---|---|
 | `BYBIT_ENV` | `testnet` | `testnet` or `mainnet`; anything else refuses to start |
+| `BYBIT_BASE_URL` | empty | Optional regional endpoint (e.g. `https://api.bybit.ae`); compliance routing only, not a geo-block bypass |
 | `BYBIT_API_KEY` / `BYBIT_API_SECRET` | empty | Only needed for wallet/positions/trading; market data works without |
 | `BYBIT_TRADING_ENABLED` | `false` | Master switch for `place_order` / `cancel_order` / `set_leverage` |
 | `BYBIT_MAX_LEVERAGE` | `5` | Hard server-side leverage cap |
 | `BYBIT_MAX_ORDER_VALUE` | `0` (off) | Per-order notional cap in quote currency; recommended on mainnet |
 | `BYBIT_RECV_WINDOW` | `5000` | Bybit auth receive window (ms) |
+| `BYBIT_AUTONOMOUS` | `false` | Unattended mode: place orders without a human CONFIRM, within the caps below |
+| `BYBIT_DAILY_LOSS_LIMIT` | `0` | Daily drawdown (quote ccy) after which opening new positions halts |
+| `BYBIT_MAX_ORDERS_PER_DAY` | `0` | Cap on opening orders per UTC day |
+| `BYBIT_MAX_OPEN_POSITIONS` | `0` (∞) | Max concurrent open positions |
+| `BYBIT_ORDER_COOLDOWN_SEC` | `0` | Minimum seconds between opening orders |
+| `BYBIT_SYMBOL_WHITELIST` | empty | Comma-separated symbols the agent may open (exits unrestricted) |
+| `BYBIT_STATE_PATH` | `~/.bybit/risk_state.json` | Where daily risk counters persist |
+
+In **autonomous mode** the human CONFIRM gate is replaced by the risk engine,
+and `BYBIT_MAX_ORDER_VALUE` / `BYBIT_DAILY_LOSS_LIMIT` / `BYBIT_MAX_ORDERS_PER_DAY`
+/ `BYBIT_SYMBOL_WHITELIST` become **mandatory** — the server refuses to open a
+position until all four are set. Running unattended? See
+[`docs/DEPLOY.md`](docs/DEPLOY.md).
 
 ### Using it with Claude Code
 

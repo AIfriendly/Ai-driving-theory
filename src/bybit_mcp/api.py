@@ -36,7 +36,15 @@ class BybitAPIError(RuntimeError):
 class BybitClient:
     def __init__(self, settings: Settings, http: httpx.Client | None = None):
         self.settings = settings
-        self.base_url = TESTNET_URL if settings.env == "testnet" else MAINNET_URL
+        # An explicit BYBIT_BASE_URL (e.g. a regional endpoint like
+        # https://api.bybit.ae) wins; otherwise pick by env. The regional host
+        # is a compliance/account-routing choice — it does NOT bypass the
+        # source-IP geo-block, which is why deployment egress must already be
+        # in a permitted region.
+        if settings.base_url:
+            self.base_url = settings.base_url
+        else:
+            self.base_url = TESTNET_URL if settings.env == "testnet" else MAINNET_URL
         self._http = http or httpx.Client(base_url=self.base_url, timeout=15.0)
 
     def _auth_headers(self, payload: str) -> dict[str, str]:

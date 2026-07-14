@@ -18,12 +18,14 @@ exchange's own message — the server never fabricates or repairs data.
 from __future__ import annotations
 
 import sys
+import time
 from datetime import datetime, timezone
 from typing import Any, Literal
 
 import httpx
 from mcp.server.fastmcp import FastMCP
 
+from . import risk
 from .api import BybitAPIError, BybitClient
 from .config import Settings, load_settings
 
@@ -128,6 +130,47 @@ def _require_trading_enabled(action: str) -> Settings:
     return settings
 
 
+def _fetch_equity_and_open_positions(client: BybitClient) -> tuple[float, int]:
+    """Live account snapshot the risk engine needs: total equity and the count
+    of currently open linear positions."""
+    wallet = client.get(
+        "/v5/account/wallet-balance", {"accountType": "UNIFIED"}, auth=True
+    )
+    accounts = wallet.get("list", [])
+    if not accounts:
+        raise ValueError("Cannot enforce risk limits: wallet balance unavailable")
+    equity = _f(accounts[0].get("totalEquity"))
+
+    pos = client.get(
+        "/v5/position/list", {"category": "linear", "settleCoin": "USDT"}, auth=True
+    )
+    open_positions = sum(1 for p in pos.get("list", []) if _f(p.get("size")) > 0)
+    return equity, open_positions
+
+
+def _enforce_autonomous_guards(
+    settings: Settings, client: BybitClient, symbol: str, notional: float
+) -> None:
+    """Gate a position-OPENING order through the risk engine when running
+    unattended. Raises ValueError (surfaced as a tool error) on any breach and
+    persists the day/counter state. Never called for reduce_only exits."""
+    equity, open_positions = _fetch_equity_and_open_positions(client)
+    state_path = risk.default_state_path(settings)
+    state = risk.load_state(state_path)
+    decision = risk.evaluate(
+        settings,
+        state,
+        symbol=symbol,
+        notional=notional,
+        equity=equity,
+        open_positions=open_positions,
+        now=time.time(),
+    )
+    risk.save_state(state_path, decision.state)
+    if not decision.allowed:
+        raise ValueError(f"REJECTED (autonomous risk guard): {decision.reason}")
+
+
 # --------------------------------------------------------------------------
 # Market data tools (public, always available)
 # --------------------------------------------------------------------------
@@ -136,11 +179,14 @@ def _require_trading_enabled(action: str) -> Settings:
 @mcp.tool()
 def get_trading_status() -> dict[str, Any]:
     """Report the server's risk-harness configuration: environment (testnet or
-    mainnet), whether trading tools are enabled, the leverage cap, the
-    per-order notional cap, and whether API credentials are present.
-    Call this first in a session and include the environment in any proposal."""
+    mainnet), endpoint, whether trading tools are enabled, the leverage cap, the
+    per-order notional cap, whether API credentials are present, and — when
+    autonomous mode is on — whether the mandatory unattended-trading caps are
+    fully configured. Call this first in a session and include the environment
+    in any proposal."""
     settings = _get_settings()
     client = _get_client()
+    gaps = settings.autonomous_gaps()
     return {
         "environment": settings.env,
         "endpoint": client.base_url,
@@ -149,6 +195,14 @@ def get_trading_status() -> dict[str, Any]:
         "max_order_value": settings.max_order_value or "disabled",
         "api_key_configured": bool(settings.api_key and settings.api_secret),
         "recv_window_ms": settings.recv_window,
+        "autonomous": settings.autonomous,
+        "autonomous_ready": settings.autonomous and not gaps,
+        "autonomous_missing_caps": gaps if settings.autonomous else [],
+        "daily_loss_limit": settings.daily_loss_limit or "unset",
+        "max_orders_per_day": settings.max_orders_per_day or "unset",
+        "max_open_positions": settings.max_open_positions or "unlimited",
+        "order_cooldown_sec": settings.order_cooldown_sec,
+        "symbol_whitelist": list(settings.symbol_whitelist) or "unset",
     }
 
 
@@ -422,13 +476,18 @@ def place_order(
     - Any order that can open or extend a position (reduce_only=false) MUST
       include stop_loss, which is sent to the exchange with the order.
     - stop_loss/take_profit must be on the correct side of the entry price.
-    - If BYBIT_MAX_ORDER_VALUE is set, qty * entry price may not exceed it.
+    - If BYBIT_MAX_ORDER_VALUE is set, an opening order's qty * entry price may
+      not exceed it (reduce_only exits are exempt).
 
-    Only call this after the human operator has explicitly typed CONFIRM for
-    the exact proposal being executed. qty must already be rounded to the
+    In attended mode, only call this after the human operator has explicitly
+    typed CONFIRM for the exact proposal. In autonomous mode (BYBIT_AUTONOMOUS=
+    true) the CONFIRM gate is replaced by the risk engine: opening orders must
+    additionally clear the symbol whitelist, daily-loss kill-switch, orders/day,
+    cooldown and max-open-positions caps, and the server refuses to open at all
+    until those caps are configured. qty must already be rounded to the
     instrument's qtyStep (see get_instruments_info). Assumes one-way position
-    mode. reduce_only=true is for closing an existing position and does not
-    require a stop_loss."""
+    mode. reduce_only=true closes a position: it needs no stop_loss and bypasses
+    the autonomous caps so exits are never blocked."""
     settings = _require_trading_enabled("place_order")
     client = _get_client()
 
@@ -488,13 +547,18 @@ def place_order(
                     f"for a short ({reference_source} {reference_price})"
                 )
 
-    if settings.max_order_value > 0:
-        notional = float(qty_str) * reference_price
-        if notional > settings.max_order_value:
-            raise ValueError(
-                f"REJECTED (fail-closed): order notional {notional:.2f} exceeds "
-                f"BYBIT_MAX_ORDER_VALUE {settings.max_order_value:.2f}"
-            )
+    notional = float(qty_str) * reference_price
+    if not reduce_only and settings.max_order_value > 0 and notional > settings.max_order_value:
+        raise ValueError(
+            f"REJECTED (fail-closed): order notional {notional:.2f} exceeds "
+            f"BYBIT_MAX_ORDER_VALUE {settings.max_order_value:.2f}"
+        )
+
+    # Autonomous (unattended) mode: an opening order must clear the risk engine
+    # (whitelist, daily-loss kill-switch, orders/day, cooldown, max positions).
+    # reduce_only exits are intentionally exempt so the agent can always close.
+    if settings.autonomous and not reduce_only:
+        _enforce_autonomous_guards(settings, client, symbol, notional)
 
     body: dict[str, Any] = {
         "category": category,
@@ -579,12 +643,32 @@ def set_leverage(
 def main() -> None:
     settings = load_settings()
     configure(settings)
+    mode = "AUTONOMOUS" if settings.autonomous else "attended"
     print(
-        f"bybit-mcp: env={settings.env} trading_enabled={settings.trading_enabled} "
+        f"bybit-mcp: env={settings.env} endpoint={_get_client().base_url} "
+        f"trading_enabled={settings.trading_enabled} mode={mode} "
         f"max_leverage={settings.max_leverage}x "
         f"api_key={'set' if settings.api_key else 'MISSING'}",
         file=sys.stderr,
     )
+    if settings.autonomous:
+        gaps = settings.autonomous_gaps()
+        if gaps:
+            print(
+                "bybit-mcp: WARNING autonomous mode is ON but these mandatory "
+                f"caps are unset, so opening orders will be REFUSED: {', '.join(gaps)}",
+                file=sys.stderr,
+            )
+        else:
+            print(
+                "bybit-mcp: autonomous caps OK — "
+                f"loss_limit={settings.daily_loss_limit} "
+                f"orders/day={settings.max_orders_per_day} "
+                f"cooldown={settings.order_cooldown_sec}s "
+                f"max_positions={settings.max_open_positions or 'inf'} "
+                f"whitelist={','.join(settings.symbol_whitelist)}",
+                file=sys.stderr,
+            )
     mcp.run()
 
 
