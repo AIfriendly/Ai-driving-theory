@@ -26,8 +26,16 @@ curl -s -o /dev/null -w '%{http_code}\n' https://api.bybit.com/v5/market/time
 # 403  -> "blocked from your country" / flagged IP range: pick another host/region
 ```
 
-If you use a regional endpoint, test that one too (`https://api.bybit.ae/...`).
-Only proceed from a host that returns `200`.
+Once you've cloned the repo (step 3), this project ships a one-shot checker
+that does the above plus egress-country detection, your regional endpoint, and
+a clear USABLE/BLOCKED verdict — run it on the VPS:
+
+```bash
+./scripts/check-host.sh                       # mainnet + testnet
+./scripts/check-host.sh https://api.bybit.ae  # also test your regional endpoint
+```
+
+Only proceed from a host whose primary endpoint returns `200` / `VERDICT: USABLE`.
 
 ## 2. Install prerequisites
 
