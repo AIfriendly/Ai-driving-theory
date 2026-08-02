@@ -7,15 +7,15 @@ self-contained HTML file** — no build step, no dependencies, no network calls.
 Open `index.html` in any browser, or use the published site (see
 [Deployment](#deployment)).
 
-**Current content: 264 questions · 89 hand-drawn sign icons · 14 achievements.**
+**Current content: 309 questions · 93 hand-drawn sign icons · 14 achievements.**
 
 | Category | Questions |
 |---|---:|
-| Traffic signs (`signs`) | 100 |
-| Rules & safety (`rules`) | 131 |
+| Traffic signs (`signs`) | 106 |
+| Rules & safety (`rules`) | 163 |
 | First aid (`firstaid`) | 13 |
-| Mechanics (`mech`) | 20 |
-| **Total** | **264** |
+| Mechanics (`mech`) | 27 |
+| **Total** | **309** |
 
 ---
 
@@ -175,10 +175,6 @@ publish. The checks are:
 
 ## Known gaps
 
-- **Kurdistan national speed panel (50 / 80 / 110).** Visible in a wall-chart
-  photo but too small and angled to read reliably. Deliberately left out —
-  guessing at legal speed limits is worse than omitting them. Needs a
-  straight-on photo.
 - **Arabic coverage is partial.** UI strings and older questions are
   translated; newer questions are Kurdish + English only.
 - **Not built yet:** a test-date study plan (countdown + daily target) and a
@@ -188,6 +184,37 @@ publish. The checks are:
 ---
 
 ## Changelog
+
+### 309 questions · 93 signs — full pass through the official textbook
+Worked through all 120 pages of the Kurdistan driving theory textbook. The
+scan has no text layer (121 images, 0 fonts), so each page was read as an
+image; the largest image per page was extracted and downscaled for legibility.
+
+**The long-standing speed-limit gap is now closed.** The general speed panel
+appears on page 76. Cropping that page at full resolution made the pictogram
+beside each figure readable, which is what settles the meaning:
+**60** inside a built-up area, **80** outside it (town symbol struck through),
+**110** on a motorway. Added as a drawn sign plus a question. Every previous
+attempt was refused because the only photo was too small — the rule was never
+to guess at a legal limit, and it held until the source could actually be read.
+
+Also new:
+
+* **Traffic-police hand signals** — three drawn signals (stop · one side held ·
+  front and behind held). Article 17 makes an officer's signal override every
+  sign and light, which the app had stated but never illustrated.
+* **Law and penalties** — Traffic Law No. 86 of 2004 as the governing statute,
+  sentences for causing death, and licence withdrawal including the three-year
+  bar on someone who holds no licence.
+* **Licence categories** — A / B-BE / C / D / T, the D1 limits (16 passengers,
+  8 m), category T speeds (40 and 60 km/h), and taxi conversion.
+* **Trailers, child seats, taxi conduct, pedestrians** — the 750 kg B/BE line,
+  the 80 km/h towing cap, rear-facing seats vs active airbags, walking facing
+  traffic, the white cane, and pushing a bicycle counting as being a pedestrian.
+* **Vehicle and technique** — gear-change speeds, hands at 9 and 3, 5 cm of
+  steering free play, DOT date codes and tyre speed ratings, the roadworthiness
+  checklist, signalling distances, parking (5 minutes / 30 cm), roundabout
+  direction, and controlled vs uncontrolled junctions.
 
 ### 264 questions — trailers, towing and taxi conduct
 First batch from the official Kurdistan driving theory textbook (a 120-page
