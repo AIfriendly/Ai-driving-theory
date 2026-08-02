@@ -209,7 +209,7 @@
   .newachv .nchip{background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:5px 11px;font-size:12.5px;font-weight:700}
 
   /* study guide */
-  .gnav{display:flex;flex-wrap:wrap;gap:8px;margin:2px 0 14px}
+  .gnav{display:flex;flex-wrap:wrap;gap:8px;margin:2px 0 14px}.sgtools{margin-bottom:12px}.sgchips{display:flex;flex-wrap:wrap;gap:7px;margin:8px 0 4px}.sgchip{background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:6px 12px;font-size:12.5px;font-weight:700;color:var(--ink);cursor:pointer;white-space:nowrap}.sgchip.on{background:var(--accent);border-color:var(--accent);color:#fff}.sgchip .n{opacity:.65;font-weight:600;margin-inline-start:4px}.sghead{display:flex;align-items:baseline;gap:8px;margin:18px 0 8px;font-weight:800;font-size:15px}.sghead .n{font-size:12.5px;font-weight:600;opacity:.6}.sc .mn{font-size:11.5px;line-height:1.45;opacity:.72;margin-top:5px}.sgnone{text-align:center;opacity:.7;padding:26px 8px;font-size:14px}
   .gchip{background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:7px 14px;font-size:13px;font-weight:700;color:var(--ink);cursor:pointer}
   .gsec{border:1px solid var(--line);border-radius:14px;background:var(--surface);margin-bottom:10px;overflow:hidden;box-shadow:var(--shadow)}
   .gsec>summary{list-style:none;cursor:pointer;padding:15px 16px;display:flex;align-items:center;gap:11px;font-weight:800;font-size:15.5px}
@@ -1216,7 +1216,16 @@
       "The private or special licence — the ordinary car licence — requires that you have completed 18 years. Driving before that age, or on somebody else's licence, is an offence no matter how well you drive.","","کەمترین تەمەن بۆ مۆڵەتی تایبەتی (خسووسی) ئۆتۆمبیل چەندە؟","مۆڵەتی تایبەت — واتە مۆڵەتی ئاسایی ئۆتۆمبیل — پێویستی بەوەیە ١٨ ساڵت تەواو کردبێت. لێخوڕین پێش ئەو تەمەنە، یان بە مۆڵەتی کەسێکی تر، تاوانە هەرچەندە باشیش لێبخوڕیت."),
     Q("rules",null,"You want to drive a taxi, bus or lorry for hire. Which licence class do you need, and from what age?","",
       [O("The general (public) licence, from 20 years completed","","مۆڵەتی گشتی، لە تەواوکردنی ٢٠ ساڵەوە"),O("The private licence is enough at any age","","مۆڵەتی تایبەت لە هەر تەمەنێکدا بەسە"),O("The motorcycle licence, from 16 years completed","","مۆڵەتی ماتۆڕ، لە تەواوکردنی ١٦ ساڵەوە")],0,
-      "Carrying passengers or goods for payment needs the general (public) licence, which requires 20 years completed. Beside it there are specialist classes — military, agricultural and construction — each covering only its own type of vehicle.","","دەتەوێت تاکسی، پاس یان بارهەڵگر بە کرێ لێبخوڕیت. چ جۆرە مۆڵەتێکت پێویستە و لە چ تەمەنێکەوە؟","گواستنەوەی سەرنشین یان کاڵا بە پارە پێویستی بە مۆڵەتی گشتییە، کە تەواوکردنی ٢٠ ساڵی دەوێت. لەگەڵیدا چەند جۆرێکی تایبەتیش هەیە — سەربازی، کشتوکاڵی و بیناسازی — کە هەریەکەیان تەنها ئەو جۆرە ئۆتۆمبیلە دەگرێتەوە.")
+      "Carrying passengers or goods for payment needs the general (public) licence, which requires 20 years completed. Beside it there are specialist classes — military, agricultural and construction — each covering only its own type of vehicle.","","دەتەوێت تاکسی، پاس یان بارهەڵگر بە کرێ لێبخوڕیت. چ جۆرە مۆڵەتێکت پێویستە و لە چ تەمەنێکەوە؟","گواستنەوەی سەرنشین یان کاڵا بە پارە پێویستی بە مۆڵەتی گشتییە، کە تەواوکردنی ٢٠ ساڵی دەوێت. لەگەڵیدا چەند جۆرێکی تایبەتیش هەیە — سەربازی، کشتوکاڵی و بیناسازی — کە هەریەکەیان تەنها ئەو جۆرە ئۆتۆمبیلە دەگرێتەوە."),
+    Q("signs","slippery","What does this warning triangle mean?","",
+      [O("The road ahead may be slippery","","ڕێگای پێشەوە لەوانەیە خلیسک بێت"),O("Loose chippings are being swept up","","بەردە بچووکەکان کۆدەکرێنەوە"),O("A car wash is ahead","","شۆردنەوەی ئۆتۆمبیل لە پێشەوەیە")],0,
+      "The skidding-car symbol warns of a surface that grips badly — rain after a dry spell, ice, mud or spilt diesel. Slow down before the hazard and avoid braking or steering sharply while you are on it.","","ئەم سێگۆشە ئاگادارکەرەوەیە چی دەگەیەنێت؟","هێمای ئۆتۆمبیلی خلیسکاو ئاگادارت دەکاتەوە لە ڕووەکی کە باش نانووسێت — باران دوای ماوەیەکی وشک، بەستەڵەک، قوڕ یان گازۆیلی ڕژاو. پێش مەترسییەکە خێراییەکەت کەم بکەرەوە و لەسەری بە توندی برێک مەگرە و ئاراستە مەگۆڕە."),
+    Q("signs","signals","You see this warning triangle. What should you expect?","",
+      [O("Traffic lights ahead — be ready to stop","","چرای هاتوچۆ لە پێشەوە — ئامادە بە بۆ وەستان"),O("A level crossing with barriers","","پەڕینگەیەکی شەمەندەفەر بە دەروازەوە"),O("A road closed to all vehicles","","ڕێگایەکی داخراو بۆ هەموو ئۆتۆمبیلەکان")],0,
+      "It warns of signals you cannot see far in advance — round a bend, over a crest or at a junction hidden by buildings. Ease off the accelerator so a change to amber does not force a late, hard stop.","","ئەم سێگۆشە ئاگادارکەرەوەیە دەبینیت. چاوەڕێی چی بکەیت؟","ئاگادارت دەکاتەوە لە چرایەک کە لە دوورەوە نابینرێت — لە پشت پێچ، لەسەر بەرزایی یان لە چوارڕیانێکی شاردراوە بە بینا. پێی لە پێدانەر لاببە تا گۆڕانی چرا بۆ زەرد ناچارت نەکات بە درەنگ و بە توندی بوەستیت."),
+    Q("signs","oneway","What does this blue sign with a single white arrow mean?","",
+      [O("The street is one way in the direction of the arrow","","شەقامەکە یەک ئاراستەیە بەو لایەی تیرەکە"),O("You must turn in the direction of the arrow","","دەبێت بەو ئاراستەیەدا بسووڕێیتەوە کە تیرەکە پیشانی دەدات"),O("Overtaking is allowed in that direction","","تێپەڕاندن بەو ئاراستەدا ڕێگەپێدراوە")],0,
+      "All traffic in a one-way street travels the same way, so there is no oncoming lane to leave clear — but never reverse back out of one, and remember cyclists are sometimes allowed both ways where a sign says so.","","ئەم هێما شینەی یەک تیری سپی چی دەگەیەنێت؟","لە شەقامی یەک ئاراستەدا هەموو هاتوچۆ بە هەمان لادا دەڕوات، بۆیە هیچ لەینێکی بەرامبەر نییە بەتاڵی بهێڵیتەوە — بەڵام هەرگیز بە دواوە لێی مەگەڕێوە، و لەبیرت بێت هەندێک جار پاسکیلسوار ڕێگەی پێدراوە بە هەردوو لادا بڕوات ئەگەر هێمایەک ئەوە بڵێت.")
   ];
 
   /* ===== hazard scene illustrations + auto-assignment ===== */
@@ -1338,7 +1347,7 @@ var SCENES={
   };
 
   /* ---------- i18n ---------- */
-  var UI={en:{
+  var UI={en:{sgSearch:"Search signs…",sgAll:"All",sgOther:"Other signs",sgNone:"No signs match your search.",
     brand:"Kurdistan Driving Theory", title:"Pass your theory test", sub:"Practice the real Erbil format — 20 questions, 20 minutes, 80% (16/20) to pass.",
     exam:"Mock Exam", examD:"20 questions · 20 min · 80% to pass (like the real test)", practice:"Practice by Topic", practiceD:"Learn with instant answers & explanations",
     signsB:"Road Signs", signsBD:"Browse every sign and its meaning", start:"Start", questions:"questions",
@@ -1361,7 +1370,7 @@ var SCENES={
     rdd_ready:"You're consistently passing the mock exam. Keep it up and clear anything still due for review.", rdd_almost:"You're close to the 80% pass mark. Fix your weakest topic and take a few more mock exams.", rdd_practise:"You're below the 80% pass mark. Focus on your weakest topic and use Smart Review daily.", rdd_start:"Take a mock exam to measure how ready you are to pass.",
     guideB:"Study Guide", guideD:"Read & revise every sign and rule by topic", expandAll:"Expand all", collapseAll:"Collapse all",
     achvB:"Achievements", achvD:"Badges you have earned so far", achvEarned:"earned", achvSub:"Keep practising to unlock them all.", achvNew:"New badge unlocked!", achvNewN:"New badges unlocked!"
-  },ar:{
+  },ar:{sgSearch:"ابحث عن إشارة…",sgAll:"الكل",sgOther:"إشارات أخرى",sgNone:"لا توجد إشارات مطابقة للبحث.",
     brand:"السياقة النظري - إقليم كردستان", title:"اجتَز الامتحان النظري", sub:"تدرّب بالصيغة الكردستانية الحقيقية — ١٠ أسئلة، ١٥ دقيقة، والنجاح ٦٠٪.",
     exam:"امتحان تجريبي", examD:"١٠ أسئلة · ١٥ دقيقة · مثل الامتحان الحقيقي", practice:"تدرّب حسب الموضوع", practiceD:"تعلّم مع الأجوبة والشرح الفوري",
     signsB:"إشارات الطريق", signsBD:"تصفّح كل الإشارات ومعانيها", start:"ابدأ", questions:"سؤال",
@@ -1384,7 +1393,7 @@ var SCENES={
     rdd_ready:"تنجح باستمرار في الامتحان التجريبي. واصل ذلك وراجع ما هو مستحق.", rdd_almost:"أنت قريب من حدّ النجاح ٨٠٪. عالج أضعف موضوع وأجرِ بضعة امتحانات أخرى.", rdd_practise:"أنت دون حدّ النجاح ٨٠٪. ركّز على أضعف موضوع واستخدم المراجعة الذكية يومياً.", rdd_start:"أجرِ امتحاناً تجريبياً لقياس مدى جاهزيتك للنجاح.",
     guideB:"دليل المذاكرة", guideD:"اقرأ وراجع كل إشارة وقاعدة حسب الموضوع", expandAll:"توسيع الكل", collapseAll:"طي الكل",
     achvB:"الإنجازات", achvD:"الشارات التي حصلت عليها", achvEarned:"محقّقة", achvSub:"واصل التدريب لفتحها كلها.", achvNew:"شارة جديدة!", achvNewN:"شارات جديدة!"
-  },ku:{
+  },ku:{sgSearch:"گەڕان بۆ هێما…",sgAll:"هەموو",sgOther:"هێماکانی تر",sgNone:"هیچ هێمایەک لەگەڵ گەڕانەکەت نەگونجا.",
     brand:"تیۆری لێخوڕین – کوردستان", title:"لە تاقیکردنەوەی تیۆریدا سەرکەوتووبە", sub:"ڕاهێنان بەسەر فۆرمی ڕاستەقینەی هەولێر — ٢٠ پرسیار، ٢٠ خولەک، ٨٠٪ (١٦/٢٠) بۆ سەرکەوتن.",
     exam:"تاقیکردنەوەی نمونەیی", examD:"٢٠ پرسیار · ٢٠ خولەک · ٨٠٪ بۆ سەرکەوتن", practice:"ڕاهێنان بەپێی بابەت", practiceD:"فێربە لەگەڵ وەڵام و ڕوونکردنەوەی خێرا",
     signsB:"هێماکانی ڕێگا", signsBD:"هەموو هێماکان و واتاکانیان ببینە", start:"دەستپێبکە", questions:"پرسیار",
@@ -1890,11 +1899,11 @@ var SCENES={
     var exBySign={};
     QUESTIONS.forEach(function(q){if(q.cat==="signs"&&q.sign&&!exBySign[q.sign])exBySign[q.sign]=q.ex;});
     var SGROUPS=[
-      {en:"Warning signs (triangles)",ku:"هێما ئاگادارکەرەوەکان (سێگۆشە)",keys:["children","ped","slippery","signals","bump","narrows","narrows_left","aircraft","two_way","bends","bend_left","level_crossing","level_crossing_gates","level_crossing_train","farm_animals","wild_animals"]},
+      {en:"Warning signs (triangles)",ku:"هێما ئاگادارکەرەوەکان (سێگۆشە)",keys:["children","slippery","signals","bump","narrows","narrows_left","aircraft","two_way","bends","bend_left","level_crossing","level_crossing_gates","level_crossing_train","farm_animals","wild_animals"]},
       {en:"Priority signs",ku:"هێماکانی پێشینە",keys:["stop","yield","priority","give_way_oncoming","priority_oncoming"]},
       {en:"Prohibition signs",ku:"هێماکانی قەدەغە",keys:["no_entry","no_overtake","no_parking","no_uturn","no_left","tractor","speed50","end_no_overtake_truck"]},
       {en:"Mandatory & direction signs",ku:"هێماکانی فەرز و ئاراستە",keys:["ahead_only","turn_right","roundabout"]},
-      {en:"Information & motorway signs",ku:"هێماکانی زانیاری و ڕێگای خێرا",keys:["oneway","parking","motor_road","motorway","end_motorway","speed_camera"]},
+      {en:"Information & motorway signs",ku:"هێماکانی زانیاری و ڕێگای خێرا",keys:["ped","oneway","parking","motor_road","motorway","end_motorway","speed_camera"]},
       {en:"Road markings",ku:"نیشانەکانی سەر ڕێگا",keys:["broken_line","solid_line","double_line"]}
     ];
     var TOPICS=[
@@ -1952,16 +1961,97 @@ var SCENES={
     html+='<button class="btn ghost" onclick="Go(\'home\')">'+esc(t("back"))+'</button>';
     view.innerHTML=html;
   }
-  function renderSigns(){
-    var html='<div><h1>'+esc(t("signsB"))+'</h1><p class="sub">'+esc(t("signsBD"))+'</p></div>'+
-      '<div class="sqbtns"><button class="btn" onclick="startFlash()">'+esc(t("flashB"))+'</button><button class="btn" onclick="startSignQuiz()">'+esc(t("signQuizB"))+'</button></div>'+
-      '<div class="grid">';
-    Object.keys(SIGNS).forEach(function(k){
-      html+='<div class="sc">'+SIGNS[k].svg+'<div class="nm">'+esc(signLabel(k))+'</div></div>';
-    });
-    html+='</div><button class="btn ghost" onclick="Go(\'home\')">'+esc(t("back"))+'</button>';
-    view.innerHTML=html;
+  var SGFAM=[
+    {id:"warn",en:"Warning signs",ku:"هێما ئاگادارکەرەوەکان",ar:"إشارات التحذير",keys:["children","slippery","signals","bump","narrows","narrows_left","narrows_right","aircraft","two_way","bends","bend_left","bend_right","level_crossing","level_crossing_gates","level_crossing_train","level_crossing_multi","farm_animals","wild_animals","crossroads","loose_chippings","tunnel","traffic_queue","cyclists","horse_riders","steep_descent","steep_ascent","falling_rocks","uneven_road","road_edge","roundabout_ahead","other_danger","side_wind","quayside","roadworks","side_road_left","merge","priority_crossroads"]},
+    {id:"prio",en:"Priority signs",ku:"هێماکانی پێشینە",ar:"إشارات الأولوية",keys:["stop","yield","priority","end_priority","give_way_oncoming","priority_oncoming"]},
+    {id:"proh",en:"Prohibition signs",ku:"هێماکانی قەدەغە",ar:"إشارات المنع",keys:["no_entry","no_overtake","no_overtake_truck","no_parking","no_stopping","no_uturn","no_left","no_right","no_vehicles","no_pedestrians","tractor","speed50","height_limit","weight_limit","width_limit","length_limit","stop_control"]},
+    {id:"end",en:"End of restriction",ku:"کۆتایی سنووردانان",ar:"نهاية المنع",keys:["end_no_overtake","end_no_overtake_truck","end_speed","end_all_restrictions"]},
+    {id:"mand",en:"Mandatory & direction",ku:"فەرز و ئاراستە",ar:"إشارات الإلزام والاتجاه",keys:["ahead_only","turn_right","turn_left","ahead_or_left","ahead_or_right","roundabout","keep_left","keep_right","pass_either_side","min_speed"]},
+    {id:"info",en:"Information & motorway",ku:"زانیاری و ڕێگای خێرا",ar:"إشارات الإرشاد والطريق السريع",keys:["ped","oneway","parking","motor_road","motorway","end_motorway","speed_camera","ped_route","taxi","dead_end","bus_stop","lane_route"]},
+    {id:"mark",en:"Road markings",ku:"نیشانەکانی سەر ڕێگا",ar:"علامات الطريق",keys:["broken_line","solid_line","double_line"]}
+  ];
+
+  /* Any sign not listed above still shows up, under "Other signs". */
+  function sgFamilies(){
+    var seen={}, fams=SGFAM.map(function(f){
+      var keys=f.keys.filter(function(k){if(SIGNS[k]){seen[k]=1;return true;}return false;});
+      return {id:f.id,label:L(f),keys:keys};
+    }).filter(function(f){return f.keys.length;});
+    var rest=Object.keys(SIGNS).filter(function(k){return !seen[k];});
+    if(rest.length)fams.push({id:"other",label:t("sgOther"),keys:rest});
+    return fams;
   }
+
+  /* One-line meaning per sign, taken from the question that teaches it. */
+  var _sgMeanCache=null;
+  function sgMeanings(){
+    if(_sgMeanCache)return _sgMeanCache;
+    var m={};
+    QUESTIONS.forEach(function(q){
+      if(q.cat!=="signs"||!q.sign||m[q.sign])return;
+      var ex=_firstSent(L(q.ex));
+      if(ex)m[q.sign]=ex;
+    });
+    return (_sgMeanCache=m);
+  }
+
+  var _sgQ="", _sgFam="all";
+  window.sgSetFam=function(id){_sgFam=id;renderSigns();};
+  window.sgSearch=function(v){
+    _sgQ=String(v||"").toLowerCase().trim();
+    var box=document.getElementById("sgrid");
+    if(box){box.innerHTML=sgGridHtml();localizeDigits();}
+  };
+
+  function sgMatch(k){
+    if(!_sgQ)return true;
+    var mean=sgMeanings()[k]||"";
+    var hay=[k,SIGNS[k].en,SIGNS[k].ar||"",KU_SIGNS[k]||"",mean].join(" ").toLowerCase();
+    return hay.indexOf(_sgQ)>=0;
+  }
+
+  function sgCardHtml(k){
+    var mean=sgMeanings()[k];
+    return '<div class="sc">'+SIGNS[k].svg+'<div class="nm">'+esc(signLabel(k))+'</div>'+
+      (mean?'<div class="mn">'+esc(mean)+'</div>':'')+'</div>';
+  }
+
+  function sgGridHtml(){
+    var fams=sgFamilies(), out="", total=0;
+    fams.forEach(function(f){
+      if(_sgFam!=="all"&&_sgFam!==f.id)return;
+      var keys=f.keys.filter(sgMatch);
+      if(!keys.length)return;
+      total+=keys.length;
+      out+='<div class="sghead">'+esc(f.label)+'<span class="n">'+keys.length+'</span></div><div class="grid">';
+      keys.forEach(function(k){out+=sgCardHtml(k);});
+      out+='</div>';
+    });
+    return total?out:'<div class="sgnone">'+esc(t("sgNone"))+'</div>';
+  }
+
+  function renderSigns(){
+    var fams=sgFamilies(), all=0;
+    fams.forEach(function(f){all+=f.keys.length;});
+    if(_sgFam!=="all"&&!fams.some(function(f){return f.id===_sgFam;}))_sgFam="all";
+
+    var chips='<div class="sgchips"><button class="sgchip'+(_sgFam==="all"?" on":"")+'" onclick="sgSetFam(\'all\')">'+
+      esc(t("sgAll"))+'<span class="n">'+all+'</span></button>';
+    fams.forEach(function(f){
+      chips+='<button class="sgchip'+(_sgFam===f.id?" on":"")+'" onclick="sgSetFam(\''+f.id+'\')">'+
+        esc(f.label)+'<span class="n">'+f.keys.length+'</span></button>';
+    });
+    chips+='</div>';
+
+    view.innerHTML='<div><h1>'+esc(t("signsB"))+'</h1><p class="sub">'+esc(t("signsBD"))+'</p></div>'+
+      '<div class="sqbtns"><button class="btn" onclick="startFlash()">'+esc(t("flashB"))+'</button>'+
+      '<button class="btn" onclick="startSignQuiz()">'+esc(t("signQuizB"))+'</button></div>'+
+      '<div class="sgtools"><input id="sgq" type="search" autocomplete="off" placeholder="'+esc(t("sgSearch"))+
+        '" value="'+esc(_sgQ)+'" oninput="sgSearch(this.value)" aria-label="'+esc(t("sgSearch"))+'">'+chips+'</div>'+
+      '<div id="sgrid">'+sgGridHtml()+'</div>'+
+      '<button class="btn ghost" onclick="Go(\'home\')">'+esc(t("back"))+'</button>';
+  }
+
 
   /* ---------- language ---------- */
   window.setLang=function(l){

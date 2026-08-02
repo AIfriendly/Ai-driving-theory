@@ -7,15 +7,15 @@ self-contained HTML file** — no build step, no dependencies, no network calls.
 Open `index.html` in any browser, or use the published site (see
 [Deployment](#deployment)).
 
-**Current content: 255 questions · 89 hand-drawn sign icons · 14 achievements.**
+**Current content: 258 questions · 89 hand-drawn sign icons · 14 achievements.**
 
 | Category | Questions |
 |---|---:|
-| Traffic signs (`signs`) | 97 |
+| Traffic signs (`signs`) | 100 |
 | Rules & safety (`rules`) | 125 |
 | First aid (`firstaid`) | 13 |
 | Mechanics (`mech`) | 20 |
-| **Total** | **255** |
+| **Total** | **258** |
 
 ---
 
@@ -54,6 +54,10 @@ from them:
   **unseen** and **mastered**.
 - **Mistake bank** — every wrong answer is retained for targeted redrilling.
 - **Flashcards** and a **reverse sign quiz** (given the meaning, pick the sign).
+- **Sign gallery** — all 89 icons grouped into 7 families, with live search
+  (matches the Kurdish, English and Arabic name *and* the meaning text) and
+  family filter chips. Every card carries a one-line meaning pulled from the
+  question that teaches it.
 - **Search & bookmarks** across the whole bank.
 
 ### Guidance
@@ -184,6 +188,24 @@ publish. The checks are:
 ---
 
 ## Changelog
+
+### 258 questions · 89 signs — searchable, grouped sign gallery
+The gallery was a flat, unsorted, unsearchable grid of 89 icons. It now groups
+them into 7 families (warning · priority · prohibition · end-of-restriction ·
+mandatory & direction · information & motorway · road markings), with filter
+chips, a live search box and a one-line meaning under every card.
+
+Two things surfaced while building it:
+
+* `ped` — a **blue information board** — was filed with the warning triangles.
+  Moved to Information.
+* **`slippery`, `signals` and `oneway` had no question at all.** They appeared
+  in the gallery and flashcards but were never tested. Three questions added,
+  so every sign in the app is now taught by at least one question — which the
+  gallery enforces visibly, since a card with no question has no meaning line.
+
+`sgFamilies()` keeps an **"Other signs"** bucket for any key missing from the
+family table, so a future sign can never silently vanish from the gallery.
 
 ### 255 questions · 89 signs — licence classes
 Added the Kurdistan **driving licence classes and minimum ages** from an
