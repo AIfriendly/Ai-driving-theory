@@ -7,15 +7,15 @@ self-contained HTML file** — no build step, no dependencies, no network calls.
 Open `index.html` in any browser, or use the published site (see
 [Deployment](#deployment)).
 
-**Current content: 258 questions · 89 hand-drawn sign icons · 14 achievements.**
+**Current content: 264 questions · 89 hand-drawn sign icons · 14 achievements.**
 
 | Category | Questions |
 |---|---:|
 | Traffic signs (`signs`) | 100 |
-| Rules & safety (`rules`) | 125 |
+| Rules & safety (`rules`) | 131 |
 | First aid (`firstaid`) | 13 |
 | Mechanics (`mech`) | 20 |
-| **Total** | **258** |
+| **Total** | **264** |
 
 ---
 
@@ -188,6 +188,18 @@ publish. The checks are:
 ---
 
 ## Changelog
+
+### 264 questions — trailers, towing and taxi conduct
+First batch from the official Kurdistan driving theory textbook (a 120-page
+phone-scanned PDF, so every page is an image with no text layer). Pages 22-26
+yielded six questions on topics the bank had no coverage of at all:
+
+* **Trailers and towing** — the 750 kg B/BE licence boundary, the 80 km/h
+  towing speed cap, the outright ban on carrying anyone inside a trailer, and
+  the rule that a trailer may be no longer and no wider than the car.
+* **Taxi conduct** — the driver's right to ask for the fare in advance where
+  payment is doubtful, and the limits on what a passenger may ask for (route
+  and sole occupancy yes; speeding or breaking a traffic rule no).
 
 ### 258 questions · 89 signs — searchable, grouped sign gallery
 The gallery was a flat, unsorted, unsearchable grid of 89 icons. It now groups
