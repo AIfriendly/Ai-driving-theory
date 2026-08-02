@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Projects</title>
+<style>
+  :root{ color-scheme: light dark; --bg:#f6f7f9; --fg:#15181d; --mut:#5b6472;
+         --card:#ffffff; --line:#e2e6eb; --accent:#0a5aa8; }
+  @media (prefers-color-scheme: dark){
+    :root{ --bg:#12151a; --fg:#e9edf2; --mut:#9aa5b4; --card:#1a1f27; --line:#2a313c; --accent:#5aa9f0; }
+  }
+  *{box-sizing:border-box}
+  body{margin:0;padding:2.5rem 1.25rem;background:var(--bg);color:var(--fg);
+       font:16px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;}
+  .wrap{max-width:44rem;margin:0 auto}
+  h1{font-size:1.6rem;margin:0 0 .35rem}
+  .sub{color:var(--mut);margin:0 0 2rem}
+  a.card{display:block;text-decoration:none;color:inherit;background:var(--card);
+         border:1px solid var(--line);border-radius:14px;padding:1.15rem 1.25rem;
+         margin-bottom:1rem;transition:border-color .15s,transform .15s}
+  a.card:hover{border-color:var(--accent);transform:translateY(-2px)}
+  .t{font-weight:650;font-size:1.05rem;margin-bottom:.2rem}
+  .d{color:var(--mut);font-size:.94rem}
+  .meta{margin-top:.6rem;font-size:.82rem;color:var(--mut)}
+  .pill{display:inline-block;border:1px solid var(--line);border-radius:999px;
+        padding:.1rem .55rem;margin-inline-end:.35rem}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Projects</h1>
+  <p class="sub">Static sites published from this repository.</p>
+
+  <a class="card" href="driving-theory/">
+    <div class="t">Iraq / Kurdistan Driving Theory Test</div>
+    <div class="d">Bilingual Kurdish–English theory practice: mock exams, spaced
+      repetition, flashcards, a study guide and hand-drawn sign icons. Works offline.</div>
+    <div class="meta">
+      <span class="pill">255 questions</span>
+      <span class="pill">89 signs</span>
+      <span class="pill">کوردی · English</span>
+    </div>
+  </a>
+</div>
+</body>
+</html>

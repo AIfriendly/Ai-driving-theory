@@ -1,0 +1,56 @@
+name: pages
+
+# Publishes web/ to GitHub Pages.
+#
+# One-time setup: Settings -> Pages -> Source: "GitHub Actions".
+# Until that is switched on this workflow builds but does not deploy.
+
+on:
+  push:
+    branches:
+      - main
+      - master
+      - claude/trading-agent-bybit-mcp-ao56dp
+    paths:
+      - "web/**"
+      - ".github/workflows/pages.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Let a running deploy finish rather than cancelling it mid-publish.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Verify the site is self-contained
+        # The app must have no external references: a strict CSP blocks every
+        # outside host, so a stray CDN link would silently break the page.
+        run: |
+          set -euo pipefail
+          if grep -nEi '(src|href)="https?://' web/driving-theory/index.html; then
+            echo "::error::external resource reference found in index.html"
+            exit 1
+          fi
+          echo "OK: no external resource references"
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: web
+
+      - id: deploy
+        uses: actions/deploy-pages@v4

@@ -113,6 +113,24 @@ Tests run entirely against a mocked Bybit backend; they verify that the
 HMAC signature binds the exact bytes sent, and that every guard rejects
 **before** any request reaches the exchange.
 
+## Also in this repo: `web/`
+
+Unrelated to the trading agent, `web/` holds static sites published to GitHub
+Pages by `.github/workflows/pages.yml`.
+
+* **`web/driving-theory/`** — a bilingual (Kurdish Sorani · English) driving
+  theory practice app for the Kurdistan Region of Iraq: 255 questions, 89
+  hand-drawn inline-SVG sign icons, mock exams, Leitner spaced repetition,
+  flashcards, a study guide and achievements. It is a **single self-contained
+  HTML file** with no build step, no dependencies and no network calls, so it
+  works fully offline. See
+  [`web/driving-theory/README.md`](web/driving-theory/README.md) for the
+  content structure, the editorial rules used when adding questions, and the
+  changelog.
+
+To serve the Pages site, set **Settings → Pages → Source** to **GitHub
+Actions** once; the workflow handles the rest.
+
 ## Notes & limitations
 
 * Assumes **one-way position mode** on derivatives (the Bybit default). In
