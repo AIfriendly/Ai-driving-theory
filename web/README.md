@@ -54,7 +54,14 @@ from them:
   **unseen** and **mastered**.
 - **Mistake bank** — every wrong answer is retained for targeted redrilling.
 - **Flashcards** and a **reverse sign quiz** (given the meaning, pick the sign).
-- **Sign gallery** — all 89 icons grouped into 7 families, with live search
+- **Official Textbook sets** — the 51 questions taken from the official
+  textbook, pulled out into six themed sets of their own (vehicles & trailers ·
+  licences & law · pedestrians & passengers · signs, lights & police signals ·
+  roads, junctions & manoeuvres · vehicle checks & technique), each showing a
+  mastery bar, plus an "all textbook questions" run. Membership is resolved at
+  runtime by matching a distinctive fragment of each question, so the grouping
+  survives reordering and no question can land in two sets.
+- **Sign gallery** — all 93 icons grouped into 7 families, with live search
   (matches the Kurdish, English and Arabic name *and* the meaning text) and
   family filter chips. Every card carries a one-line meaning pulled from the
   question that teaches it.
@@ -184,6 +191,18 @@ publish. The checks are:
 ---
 
 ## Changelog
+
+### Official Textbook sets
+The 51 textbook questions were spread across the general categories, so there
+was no way to study them as a body. They now have their own home section with
+six themed sets and a mastery bar each.
+
+Sets resolve at runtime from a matcher fragment rather than a stored index or a
+tag written into each question, which keeps the grouping correct if questions
+are reordered. A headless check asserts all 51 are matched, none appears in two
+sets, and no matcher is dead — it caught three matchers whose escaped quotes
+never matched anything, and one that wrongly pulled in a licence question from
+a different source.
 
 ### 309 questions · 93 signs — full pass through the official textbook
 Worked through all 120 pages of the Kurdistan driving theory textbook. The

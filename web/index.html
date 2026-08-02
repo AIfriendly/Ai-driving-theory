@@ -209,7 +209,7 @@
   .newachv .nchip{background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:5px 11px;font-size:12.5px;font-weight:700}
 
   /* study guide */
-  .gnav{display:flex;flex-wrap:wrap;gap:8px;margin:2px 0 14px}.sgtools{margin-bottom:12px}.sgchips{display:flex;flex-wrap:wrap;gap:7px;margin:8px 0 4px}.sgchip{background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:6px 12px;font-size:12.5px;font-weight:700;color:var(--ink);cursor:pointer;white-space:nowrap}.sgchip.on{background:var(--accent);border-color:var(--accent);color:#fff}.sgchip .n{opacity:.65;font-weight:600;margin-inline-start:4px}.sghead{display:flex;align-items:baseline;gap:8px;margin:18px 0 8px;font-weight:800;font-size:15px}.sghead .n{font-size:12.5px;font-weight:600;opacity:.6}.sc .mn{font-size:11.5px;line-height:1.45;opacity:.72;margin-top:5px}.sgnone{text-align:center;opacity:.7;padding:26px 8px;font-size:14px}
+  .gnav{display:flex;flex-wrap:wrap;gap:8px;margin:2px 0 14px}.sgtools{margin-bottom:12px}.bkbar{display:block;height:5px;border-radius:99px;background:var(--line);margin-top:7px;overflow:hidden;max-width:230px}.bkbar>i{display:block;height:100%;background:var(--accent);border-radius:99px}.sgchips{display:flex;flex-wrap:wrap;gap:7px;margin:8px 0 4px}.sgchip{background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:6px 12px;font-size:12.5px;font-weight:700;color:var(--ink);cursor:pointer;white-space:nowrap}.sgchip.on{background:var(--accent);border-color:var(--accent);color:#fff}.sgchip .n{opacity:.65;font-weight:600;margin-inline-start:4px}.sghead{display:flex;align-items:baseline;gap:8px;margin:18px 0 8px;font-weight:800;font-size:15px}.sghead .n{font-size:12.5px;font-weight:600;opacity:.6}.sc .mn{font-size:11.5px;line-height:1.45;opacity:.72;margin-top:5px}.sgnone{text-align:center;opacity:.7;padding:26px 8px;font-size:14px}
   .gchip{background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:7px 14px;font-size:13px;font-weight:700;color:var(--ink);cursor:pointer}
   .gsec{border:1px solid var(--line);border-radius:14px;background:var(--surface);margin-bottom:10px;overflow:hidden;box-shadow:var(--shadow)}
   .gsec>summary{list-style:none;cursor:pointer;padding:15px 16px;display:flex;align-items:center;gap:11px;font-weight:800;font-size:15.5px}
@@ -1504,7 +1504,7 @@ var SCENES={
   };
 
   /* ---------- i18n ---------- */
-  var UI={en:{sgSearch:"Search signs…",sgAll:"All",sgOther:"Other signs",sgNone:"No signs match your search.",
+  var UI={en:{bookB:"Official Textbook",bookD:"Sets built straight from the official Kurdistan theory textbook.",bookAll:"All textbook questions",mastered:"mastered",sgSearch:"Search signs…",sgAll:"All",sgOther:"Other signs",sgNone:"No signs match your search.",
     brand:"Kurdistan Driving Theory", title:"Pass your theory test", sub:"Practice the real Erbil format — 20 questions, 20 minutes, 80% (16/20) to pass.",
     exam:"Mock Exam", examD:"20 questions · 20 min · 80% to pass (like the real test)", practice:"Practice by Topic", practiceD:"Learn with instant answers & explanations",
     signsB:"Road Signs", signsBD:"Browse every sign and its meaning", start:"Start", questions:"questions",
@@ -1527,7 +1527,7 @@ var SCENES={
     rdd_ready:"You're consistently passing the mock exam. Keep it up and clear anything still due for review.", rdd_almost:"You're close to the 80% pass mark. Fix your weakest topic and take a few more mock exams.", rdd_practise:"You're below the 80% pass mark. Focus on your weakest topic and use Smart Review daily.", rdd_start:"Take a mock exam to measure how ready you are to pass.",
     guideB:"Study Guide", guideD:"Read & revise every sign and rule by topic", expandAll:"Expand all", collapseAll:"Collapse all",
     achvB:"Achievements", achvD:"Badges you have earned so far", achvEarned:"earned", achvSub:"Keep practising to unlock them all.", achvNew:"New badge unlocked!", achvNewN:"New badges unlocked!"
-  },ar:{sgSearch:"ابحث عن إشارة…",sgAll:"الكل",sgOther:"إشارات أخرى",sgNone:"لا توجد إشارات مطابقة للبحث.",
+  },ar:{bookB:"الكتاب الرسمي",bookD:"مجموعات مأخوذة مباشرة من كتاب النظري الرسمي لكردستان.",bookAll:"كل أسئلة الكتاب",mastered:"متقن",sgSearch:"ابحث عن إشارة…",sgAll:"الكل",sgOther:"إشارات أخرى",sgNone:"لا توجد إشارات مطابقة للبحث.",
     brand:"السياقة النظري - إقليم كردستان", title:"اجتَز الامتحان النظري", sub:"تدرّب بالصيغة الكردستانية الحقيقية — ١٠ أسئلة، ١٥ دقيقة، والنجاح ٦٠٪.",
     exam:"امتحان تجريبي", examD:"١٠ أسئلة · ١٥ دقيقة · مثل الامتحان الحقيقي", practice:"تدرّب حسب الموضوع", practiceD:"تعلّم مع الأجوبة والشرح الفوري",
     signsB:"إشارات الطريق", signsBD:"تصفّح كل الإشارات ومعانيها", start:"ابدأ", questions:"سؤال",
@@ -1550,7 +1550,7 @@ var SCENES={
     rdd_ready:"تنجح باستمرار في الامتحان التجريبي. واصل ذلك وراجع ما هو مستحق.", rdd_almost:"أنت قريب من حدّ النجاح ٨٠٪. عالج أضعف موضوع وأجرِ بضعة امتحانات أخرى.", rdd_practise:"أنت دون حدّ النجاح ٨٠٪. ركّز على أضعف موضوع واستخدم المراجعة الذكية يومياً.", rdd_start:"أجرِ امتحاناً تجريبياً لقياس مدى جاهزيتك للنجاح.",
     guideB:"دليل المذاكرة", guideD:"اقرأ وراجع كل إشارة وقاعدة حسب الموضوع", expandAll:"توسيع الكل", collapseAll:"طي الكل",
     achvB:"الإنجازات", achvD:"الشارات التي حصلت عليها", achvEarned:"محقّقة", achvSub:"واصل التدريب لفتحها كلها.", achvNew:"شارة جديدة!", achvNewN:"شارات جديدة!"
-  },ku:{sgSearch:"گەڕان بۆ هێما…",sgAll:"هەموو",sgOther:"هێماکانی تر",sgNone:"هیچ هێمایەک لەگەڵ گەڕانەکەت نەگونجا.",
+  },ku:{bookB:"کتێبی فەرمی",bookD:"کۆمەڵە پرسیار ڕاستەوخۆ لە کتێبی فەرمیی تیۆریی کوردستانەوە.",bookAll:"هەموو پرسیارەکانی کتێب",mastered:"شارەزا",sgSearch:"گەڕان بۆ هێما…",sgAll:"هەموو",sgOther:"هێماکانی تر",sgNone:"هیچ هێمایەک لەگەڵ گەڕانەکەت نەگونجا.",
     brand:"تیۆری لێخوڕین – کوردستان", title:"لە تاقیکردنەوەی تیۆریدا سەرکەوتووبە", sub:"ڕاهێنان بەسەر فۆرمی ڕاستەقینەی هەولێر — ٢٠ پرسیار، ٢٠ خولەک، ٨٠٪ (١٦/٢٠) بۆ سەرکەوتن.",
     exam:"تاقیکردنەوەی نمونەیی", examD:"٢٠ پرسیار · ٢٠ خولەک · ٨٠٪ بۆ سەرکەوتن", practice:"ڕاهێنان بەپێی بابەت", practiceD:"فێربە لەگەڵ وەڵام و ڕوونکردنەوەی خێرا",
     signsB:"هێماکانی ڕێگا", signsBD:"هەموو هێماکان و واتاکانیان ببینە", start:"دەستپێبکە", questions:"پرسیار",
@@ -1704,8 +1704,88 @@ var SCENES={
   function render(){
     foot.textContent=t("disclaimer");
     var s=S.screen;
-    if(s==="home")renderHome();else if(s==="quiz")renderQuiz();else if(s==="results")renderResults();else if(s==="topics")renderTopics();else if(s==="sets")renderSets();else if(s==="stats")renderStats();else if(s==="signs")renderSigns();else if(s==="flash")renderFlash();else if(s==="find")renderFind();else if(s==="guide")renderGuide();else if(s==="achv")renderAchv();
+    if(s==="home")renderHome();else if(s==="quiz")renderQuiz();else if(s==="results")renderResults();else if(s==="topics")renderTopics();else if(s==="sets")renderSets();else if(s==="stats")renderStats();else if(s==="signs")renderSigns();else if(s==="flash")renderFlash();else if(s==="find")renderFind();else if(s==="guide")renderGuide();else if(s==="achv")renderAchv();else if(s==="book")renderBook();
     localizeDigits();
+  }
+
+
+  /* ===== Official textbook sets =====
+     Questions taken from the 120-page Kurdistan driving theory textbook,
+     grouped by the book's own themes. Matched on a distinctive fragment of
+     the English question so the grouping survives reordering. */
+  var BOOKSETS=[
+    {id:"bk1",ic:"🚚",en:"Vehicles, trailers & taxis",ku:"سوارڕۆ، کەرەفانە و تاکسی",ar:"المركبات والمقطورات والتاكسي",m:[
+      "heaviest trailer you may tow","maximum speed while towing","ride inside a trailer","big may a trailer be",
+      "doubts a passenger will be able to pay","passenger in a taxi and you are running late","licence and want to drive a taxi"]},
+    {id:"bk2",ic:"⚖️",en:"Licences & the law",ku:"مۆڵەت و یاسا",ar:"الرخص والقانون",m:[
+      "law governs traffic in Iraq","penalty for causing a death","court withdraws a driver",
+      "licence category covers buses","D1 licence lets you drive","category T licence covers"]},
+    {id:"bk3",ic:"🚶",en:"Pedestrians & passengers",ku:"پیادە و سەرنشین",ar:"المشاة والركاب",m:[
+      "no pavement. On which side","blind pedestrian raises a white cane","pushing a bicycle along the road",
+      "no marked crossing. What is the correct","child under 13 travel","rear-facing child seat NEVER","just got off a bus"]},
+    {id:"bk4",ic:"🚦",en:"Signs, lights & police signals",ku:"هێما، چرا و ئاماژەی پۆلیس",ar:"اللافتات والإشارات",m:[
+      "one arm raised straight up","both arms stretched out sideways","one arm straight out to the side",
+      "pedestrian light turns to amber","lamps of a traffic light always arranged","pedestrian crossing lights make a sound",
+      "general speed limits in Kurdistan","GREEN background mean","word ZONE on a plate",
+      "red reflective triangle on the back","GIVE WAY sign and a STOP sign"]},
+    {id:"bk5",ic:"🛣️",en:"Roads, junctions & manoeuvres",ku:"ڕێگا، یەکتربڕ و جوڵانەوە",ar:"الطرق والتقاطعات",m:[
+      "what is the left lane for","difference between being","In the traffic law, who counts",
+      "cycle lane and a cycle track","engine under 125cc","far before a turn should you signal",
+      "kerb legally count as parking","parked on a slope","makes an intersection a",
+      "exactly is a U-turn","direction does traffic travel around a roundabout",
+      "turning left at a junction on a street","sit beside a lorry"]},
+    {id:"bk6",ic:"🔧",en:"Vehicle checks & technique",ku:"پشکنینی ئۆتۆمبیل و شێواز",ar:"فحص المركبة والتقنية",m:[
+      "change up to 3rd, 4th and 5th gear","automatic car, which position must the lever",
+      "hands rest on the steering wheel","DOT ... 0321","letter H mean",
+      "black or blue smoke","pass the roadworthiness check"]}
+  ];
+
+  var _bkCache=null;
+  function bookSets(){
+    if(_bkCache)return _bkCache;
+    _bkCache=BOOKSETS.map(function(g){
+      var qs=QUESTIONS.filter(function(q){
+        var en=q.q.en||"";
+        for(var i=0;i<g.m.length;i++){if(en.indexOf(g.m[i])>=0)return true;}
+        return false;
+      });
+      return {g:g,qs:qs};
+    });
+    return _bkCache;
+  }
+  function bookTotal(){var n=0;bookSets().forEach(function(x){n+=x.qs.length;});return n;}
+
+  window.startBookSet=function(i){
+    var set=bookSets()[i]; if(!set||!set.qs.length)return;
+    S.mode="practice";S.queue=shuffle(set.qs);
+    S.i=0;S.ans=[];S.picked=null;S.perm={};clearTimer();S.screen="quiz";render();
+  };
+  window.startBookAll=function(){
+    var all=[];bookSets().forEach(function(x){all=all.concat(x.qs);});
+    if(!all.length)return;
+    S.mode="practice";S.queue=shuffle(all);
+    S.i=0;S.ans=[];S.picked=null;S.perm={};clearTimer();S.screen="quiz";render();
+  };
+
+  function renderBook(){
+    var sets=bookSets(), srs=(loadStore().srs)||{};
+    var html='<div><h1>'+esc(t("bookB"))+'</h1><p class="sub">'+esc(t("bookD"))+'</p></div>'+
+      '<div class="sqbtns"><button class="btn" onclick="startBookAll()">'+esc(t("bookAll"))+' ('+bookTotal()+')</button></div>'+
+      '<div class="menu">';
+    sets.forEach(function(x,i){
+      if(!x.qs.length)return;
+      var done=0;
+      x.qs.forEach(function(q){var r=srs[q.id];if(r&&r.b>=5)done++;});
+      var pct=x.qs.length?Math.round(done*100/x.qs.length):0;
+      html+='<button class="tile" onclick="startBookSet('+i+')">'+
+        '<span class="ic">'+x.g.ic+'</span>'+
+        '<span><b>'+esc(L(x.g))+'</b><span>'+x.qs.length+' '+esc(t("questions"))+
+          ' · '+pct+'% '+esc(t("mastered"))+'</span>'+
+          '<span class="bkbar"><i style="width:'+pct+'%"></i></span></span>'+
+        '<span class="arw">'+(S.lang!=="en"?"‹":"›")+'</span></button>';
+    });
+    html+='</div><button class="btn ghost" onclick="Go(\'home\')">'+esc(t("back"))+'</button>';
+    view.innerHTML=html;
   }
 
   function renderSets(){
@@ -1741,6 +1821,7 @@ var SCENES={
         '<button class="tile" onclick="Go(\'achv\')"><span class="ic"><svg viewBox="0 0 24 24" fill="none"><path d="M7 4h10v5a5 5 0 0 1-10 0V4Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M7 6H4.5v1.5A3.5 3.5 0 0 0 8 11M17 6h2.5v1.5A3.5 3.5 0 0 1 16 11" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M12 14v3m-3.5 3h7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span><span><b>'+esc(t("achvB"))+'</b><span>'+_ac+' / '+ACHV.length+' '+esc(t("achvEarned"))+'</span></span><span class="arw">'+(S.lang!=="en"?"‹":"›")+'</span></button>'+
         tile("topics","practice","practiceD",'<svg viewBox="0 0 24 24" fill="none"><path d="M4 6h16M4 12h16M4 18h10" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>')+
         tile("signs","signsB","signsBD",'<svg viewBox="0 0 24 24" fill="none"><path d="M12 3v18" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><rect x="4" y="5" width="16" height="7" rx="2" stroke="currentColor" stroke-width="2"/></svg>')+
+        '<button class="tile" onclick="Go(\'book\')"><span class="ic"><svg viewBox="0 0 24 24" fill="none"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H19v15H6.5A2.5 2.5 0 0 0 4 20.5v-15Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M4 20.5A2.5 2.5 0 0 1 6.5 18H19v3H6.5A2.5 2.5 0 0 1 4 20.5Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M8 7.5h7M8 11h7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span><span><b>'+esc(t("bookB"))+'</b><span>'+bookTotal()+' '+esc(t("questions"))+' · '+esc(t("bookD"))+'</span></span><span class="arw">'+(S.lang!=="en"?"‹":"›")+'</span></button>'+
         '<button class="tile" onclick="Go(\'guide\')"><span class="ic"><svg viewBox="0 0 24 24" fill="none"><path d="M5 4h8.5a3 3 0 0 1 3 3v13H8a3 3 0 0 0-3 3V4Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M8.5 9h5M8.5 12.5h5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span><span><b>'+esc(t("guideB"))+'</b><span>'+esc(t("guideD"))+'</span></span><span class="arw">'+(S.lang!=="en"?"‹":"›")+'</span></button>'+
         '<button class="tile" onclick="Go(\'find\')"><span class="ic"><svg viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/><path d="M20 20l-3.5-3.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span><span><b>'+esc(t("findB"))+'</b><span>'+esc(t("findD"))+'</span></span><span class="arw">'+(S.lang!=="en"?"‹":"›")+'</span></button>'+
       '</div>';
