@@ -40,7 +40,7 @@ jobs:
         # outside host, so a stray CDN link would silently break the page.
         run: |
           set -euo pipefail
-          if grep -nEi '(src|href)="https?://' web/driving-theory/index.html; then
+          if grep -nEi '(src|href)="https?://' web/index.html; then
             echo "::error::external resource reference found in index.html"
             exit 1
           fi

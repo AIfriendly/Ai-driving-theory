@@ -118,15 +118,14 @@ HMAC signature binds the exact bytes sent, and that every guard rejects
 Unrelated to the trading agent, `web/` holds static sites published to GitHub
 Pages by `.github/workflows/pages.yml`.
 
-* **`web/driving-theory/`** — a bilingual (Kurdish Sorani · English) driving
+* **`web/index.html`** — a bilingual (Kurdish Sorani · English) driving
   theory practice app for the Kurdistan Region of Iraq: 255 questions, 89
   hand-drawn inline-SVG sign icons, mock exams, Leitner spaced repetition,
   flashcards, a study guide and achievements. It is a **single self-contained
   HTML file** with no build step, no dependencies and no network calls, so it
-  works fully offline. See
-  [`web/driving-theory/README.md`](web/driving-theory/README.md) for the
-  content structure, the editorial rules used when adding questions, and the
-  changelog.
+  works fully offline. Served at the Pages site root. See
+  [`web/README.md`](web/README.md) for the content structure, the editorial
+  rules used when adding questions, and the changelog.
 
 To serve the Pages site, set **Settings → Pages → Source** to **GitHub
 Actions** once; the workflow handles the rest.

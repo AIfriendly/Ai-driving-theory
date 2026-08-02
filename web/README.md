@@ -138,10 +138,10 @@ Learned the hard way, and worth keeping:
 
 ### GitHub Pages
 `.github/workflows/pages.yml` publishes the `web/` directory on every push to
-the development branch. The site lands at:
+the development branch. The app is served at the site root:
 
 ```
-https://<owner>.github.io/automated-trading/driving-theory/
+https://aifriendly.github.io/Ai-driving-theory/
 ```
 
 > **One-time setup:** in the repository's **Settings → Pages**, set
