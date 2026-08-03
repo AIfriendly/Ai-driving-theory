@@ -7,15 +7,15 @@ self-contained HTML file** — no build step, no dependencies, no network calls.
 Open `index.html` in any browser, or use the published site (see
 [Deployment](#deployment)).
 
-**Current content: 438 questions · 93 hand-drawn sign icons · 14 achievements.**
+**Current content: 456 questions · 93 hand-drawn sign icons · 14 achievements.**
 
 | Category | Questions |
 |---|---:|
 | Traffic signs (`signs`) | 124 |
-| Rules & safety (`rules`) | 238 |
+| Rules & safety (`rules`) | 255 |
 | First aid (`firstaid`) | 27 |
-| Mechanics (`mech`) | 49 |
-| **Total** | **438** |
+| Mechanics (`mech`) | 50 |
+| **Total** | **456** |
 
 ---
 
@@ -54,13 +54,13 @@ from them:
   **unseen** and **mastered**.
 - **Mistake bank** — every wrong answer is retained for targeted redrilling.
 - **Flashcards** and a **reverse sign quiz** (given the meaning, pick the sign).
-- **Official Textbook sets** — the 184 questions taken from the official
+- **Official Textbook sets** — the 202 questions taken from the official
   textbook, pulled out into ten themed sets of their own. Part 1 (pages 1-163)
   gives six: vehicles & trailers · licences & law · pedestrians & passengers ·
   signs, lights & police signals · roads, junctions & manoeuvres · vehicle
-  checks & technique. Part 2 (pages 164-224) gives four: weather, seasons &
+  checks & technique. Part 2 (pages 164-224) gives five: weather, seasons &
   road hazards · driver health, alcohol & drugs · environment & eco-driving ·
-  crashes, first aid & breakdowns. Each shows a mastery bar, plus an "all
+  hazard awareness, loads & animals · crashes, first aid & breakdowns. Each shows a mastery bar, plus an "all
   textbook questions" run. Membership is resolved at runtime: both boundaries
   are found by anchoring on question *text* rather than a fixed index
   (`bookStart()`, `part2Start()`), and each part is routed only against its own
@@ -222,6 +222,28 @@ publish. The checks are:
 ---
 
 ## Changelog
+
+### 456 questions — part 2 re-audited, coverage gap closed
+A re-read of part 2 found that pdf pages 7-19 (book pages 170-187) had been
+opened but never actually fed into the questions: the working notes for that
+stretch were lost mid-session and a re-read silently returned nothing, so the
+gap went unnoticed. Re-rendering those pages under fresh filenames made them
+readable again, and they held a great deal that had been missed — **18 more
+questions**: the winter kit for a mountain journey, why hot water cracks a
+frozen windscreen, ice on bridges, crosswind and high-sided vehicles, standing
+water and lost grip, hazard perception, parked cars and children, wild animals
+dazzled at night, crowds outside mosques and places of mourning, human factors
+as the leading cause of crashes, blind spots beside lorries, potholed roads,
+responsibility for a load, dangerous goods, carrying animals, the 7-9 hour
+sleep requirement and the fatigue checklist.
+
+This material needed a fifth part-2 set, **Hazard awareness, loads & animals**.
+Set order matters: it sits *before* the crashes set, because several of its
+explanations contain the word "crash" and the broader set was capturing them.
+
+Book pages 228-229 are a Kurdish-English glossary of driving terms. It is
+reference material rather than testable content, so no questions were drawn
+from it; it remains available if a glossary screen is ever wanted.
 
 ### 438 questions — official textbook, part 2 (pages 164-224)
 A second PDF (53 pages, book pages 164-224, topics 120-160) covered ground
