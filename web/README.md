@@ -7,15 +7,15 @@ self-contained HTML file** — no build step, no dependencies, no network calls.
 Open `index.html` in any browser, or use the published site (see
 [Deployment](#deployment)).
 
-**Current content: 309 questions · 93 hand-drawn sign icons · 14 achievements.**
+**Current content: 397 questions · 93 hand-drawn sign icons · 14 achievements.**
 
 | Category | Questions |
 |---|---:|
-| Traffic signs (`signs`) | 106 |
-| Rules & safety (`rules`) | 163 |
-| First aid (`firstaid`) | 13 |
-| Mechanics (`mech`) | 27 |
-| **Total** | **309** |
+| Traffic signs (`signs`) | 123 |
+| Rules & safety (`rules`) | 216 |
+| First aid (`firstaid`) | 14 |
+| Mechanics (`mech`) | 44 |
+| **Total** | **397** |
 
 ---
 
@@ -54,13 +54,15 @@ from them:
   **unseen** and **mastered**.
 - **Mistake bank** — every wrong answer is retained for targeted redrilling.
 - **Flashcards** and a **reverse sign quiz** (given the meaning, pick the sign).
-- **Official Textbook sets** — the 51 questions taken from the official
+- **Official Textbook sets** — the 139 questions taken from the official
   textbook, pulled out into six themed sets of their own (vehicles & trailers ·
   licences & law · pedestrians & passengers · signs, lights & police signals ·
   roads, junctions & manoeuvres · vehicle checks & technique), each showing a
   mastery bar, plus an "all textbook questions" run. Membership is resolved at
-  runtime by matching a distinctive fragment of each question, so the grouping
-  survives reordering and no question can land in two sets.
+  runtime: the textbook block is found by anchoring on the first textbook
+  question's text (not a fixed index), and each question is then routed to a
+  family by topic. Anything unmatched falls into "Other textbook topics", so a
+  question can never be silently dropped from the section.
 - **Sign gallery** — all 93 icons grouped into 7 families, with live search
   (matches the Kurdish, English and Arabic name *and* the meaning text) and
   family filter chips. Every card carries a one-line meaning pulled from the
@@ -191,6 +193,39 @@ publish. The checks are:
 ---
 
 ## Changelog
+
+### 397 questions — all 120 textbook pages
+The earlier pass read only 48 of the 120 pages — pages 1-18 in full, then
+samples. The remaining 72 have now been read, and they held a great deal that
+the sample had missed. Textbook-sourced questions went from 51 to **139**.
+
+Notable additions and corrections:
+
+* **The authoritative Kurdistan speed limits.** Page 156 cites Traffic
+  Directorate circular No. 2 of 10/5/2011: **100 km/h** between cities and
+  towns, **60** on main streets inside built-up areas, **20** in alleys. This
+  is more precise than the 60/80/110 border panel added earlier, which the
+  same page shows as the sign posted for arriving drivers.
+* **Emergency numbers** — 115 fire, 122 ambulance, 104 emergency police,
+  **188 traffic police**, 911 general.
+* **Kerb colour means nothing officially.** A widely believed myth: parking
+  restrictions come from signs and the law, not from the paint on the kerb.
+* **Licence weights** — B covers up to 3500 kg with a 750 kg trailer; C1 is
+  3500-7500 kg. **Penalties** for unlicensed driving, drink-driving, and
+  insulting or obstructing an officer.
+* **Signalling, marking and lighting detail** — level-crossing countdown posts
+  (300/200/100 m), yellow = temporary warning signs, arrow traffic lights,
+  alternating flashing red, yellow box junctions.
+* **Overtaking** — the 1.5 m minimum past a cyclist, no horn near horses, no
+  overtaking a car already at the limit, and passing a queue one vehicle at a
+  time.
+* **Two corrections to existing content.** The app taught "mirror - signal -
+  blind spot"; the textbook orders it **mirrors, blind spot, signal, move**,
+  and that is now what the app teaches. A slope-parking question was also
+  ambiguous — uphill the wheels turn away from the kerb, downhill into it — so
+  it is now explicitly the downhill case, with the uphill case added separately.
+* A hedged placeholder question ("verify answer on the portal") was resolved:
+  the law's order of priority is now stated outright.
 
 ### Official Textbook sets
 The 51 textbook questions were spread across the general categories, so there

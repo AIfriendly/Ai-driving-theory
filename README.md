@@ -119,7 +119,7 @@ Unrelated to the trading agent, `web/` holds static sites published to GitHub
 Pages by `.github/workflows/pages.yml`.
 
 * **`web/index.html`** — a bilingual (Kurdish Sorani · English) driving
-  theory practice app for the Kurdistan Region of Iraq: 309 questions, 93
+  theory practice app for the Kurdistan Region of Iraq: 397 questions, 93
   hand-drawn inline-SVG sign icons, mock exams, Leitner spaced repetition,
   flashcards, a study guide and achievements. It is a **single self-contained
   HTML file** with no build step, no dependencies and no network calls, so it
