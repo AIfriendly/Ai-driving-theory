@@ -7,15 +7,15 @@ self-contained HTML file** — no build step, no dependencies, no network calls.
 Open `index.html` in any browser, or use the published site (see
 [Deployment](#deployment)).
 
-**Current content: 465 questions · 93 hand-drawn sign icons · 14 achievements.**
+**Current content: 477 questions · 93 hand-drawn sign icons · 14 achievements.**
 
 | Category | Questions |
 |---|---:|
 | Traffic signs (`signs`) | 125 |
-| Rules & safety (`rules`) | 263 |
+| Rules & safety (`rules`) | 273 |
 | First aid (`firstaid`) | 27 |
-| Mechanics (`mech`) | 50 |
-| **Total** | **465** |
+| Mechanics (`mech`) | 52 |
+| **Total** | **477** |
 
 ---
 
@@ -54,7 +54,7 @@ from them:
   **unseen** and **mastered**.
 - **Mistake bank** — every wrong answer is retained for targeted redrilling.
 - **Flashcards** and a **reverse sign quiz** (given the meaning, pick the sign).
-- **Official Textbook sets** — the 211 questions taken from the official
+- **Official Textbook sets** — the 223 questions taken from the official
   textbook, pulled out into ten themed sets of their own. Part 1 (pages 1-163)
   gives six: vehicles & trailers · licences & law · pedestrians & passengers ·
   signs, lights & police signals · roads, junctions & manoeuvres · vehicle
@@ -223,26 +223,44 @@ publish. The checks are:
 
 ## Changelog
 
-### 465 questions — part 1 re-audit (in progress)
+### 477 questions — part 1 re-audit complete (all 120 pages)
 Applying the part-2 lesson to part 1. Every page is being re-rendered under a
 fresh filename and re-read, with findings written to disk after each batch
 rather than held in context — the exact failure that caused the part-2 gap.
 
-**Pages 22-87 of the book (pdf 1-56 of 120) are done.** Most of what the audit
-turned up was already covered, which is a good sign: trailer dimensions, the
-70 m lorry gap, the five-minute definition of "stopping", freeway-vs-highway,
-dead ends, white-cane priority and the direction-sign colour scheme were all
-already in the bank. **Nine real gaps** were found and closed: the 16/18/20
-licence ages, yellow box junctions, red-always-on-top, audible crossings for
-blind pedestrians, deaf pedestrians, passengers signalling on the driver's
-behalf, the A-H sign families, crossing behind a bus you have just left, and
-the long-dash warning line.
+**All 120 pages (book pages 22-163) have now been re-read.** The reassuring
+result: the great majority of the material was already covered. Trailer
+dimensions, the 70 m lorry gap, the five-minute definition of "stopping",
+freeway-vs-highway, dead ends, white-cane priority, the direction-sign colour
+scheme, the signal-distance rule, hands at 9 and 3, the 5 cm steering free
+play, ABS on loose surfaces, the seating geometry and the mirror routine were
+all already in the bank — as was the uphill/downhill wheel-turning pair, which
+book page 153 confirms outright.
 
-The nine sit after the part 2 block in the file but are part-1 topics, so
+**Twenty-one real gaps** were found and closed. From the first half: the
+16/18/20 licence ages, yellow box junctions, red-always-on-top, audible
+crossings, deaf pedestrians, passengers signalling for the driver, the A-H
+sign families, crossing behind a bus you have just left, and the long-dash
+warning line. From the second half: roundabout direction and priority, the
+left-turn lane choice, the stop-line hierarchy, the right-left-right look at a
+STOP sign, the twenty forbidden parking places, the 30 cm kerb distance, the
+illegal-overtaking list, straight-line reversing technique, reversing with a
+trailer, why speed limits differ between countries, tyre age, and loosening
+wheel nuts before jacking.
+
+These sit after the part 2 block in the file but are part-1 topics, so
 `part1ExtraStart()` routes them back into the part-1 sets rather than letting
 them land among the weather and first-aid questions.
 
-Pages 88-163 remain.
+**Method note, since this is the second audit:** every page was re-rendered
+under a fresh filename before reading, and findings were appended to a notes
+file on disk after each batch of eight. Holding them in context is what caused
+the part 2 gap.
+
+**Source inconsistencies found, recorded rather than papered over:** book page
+56 prints both 188 and 440 for the traffic police *within the same section*, so
+the number the app declines to test is unreliable in part 1 too, not merely
+between the parts.
 
 ### 456 questions — part 2 re-audited, coverage gap closed
 A re-read of part 2 found that pdf pages 7-19 (book pages 170-187) had been
