@@ -1829,7 +1829,35 @@
       "It appears in the list of what makes someone fit to drive at all, alongside seeing and hearing well, judging several hazards at once, and being in a normal state of mind.","","بەپێی کتێبەکە، شۆفێر هەموو شەوێک چەند خەوی پێویستە؟","ئەمە لە لیستی ئەو شتانەدا دێت کە کەسێک بە تەواوی شیاوی لێخوڕین دەکەن، لەگەڵ باش بینین و بیستن، هەڵسەنگاندنی چەند مەترسییەک لە یەک کاتدا، و بارودۆخێکی دەروونیی ئاسایی."),
     Q("rules",null,"Which of these reduces the risk of fatigue on a long drive?","",
       [O("Keeping the car cool and well ventilated","","ئۆتۆمبیلەکە فێنک و باش هەوادار ڕابگریت"),O("Turning the heating up","","گەرمکەرەوە بەرز بکەیتەوە"),O("Eating a large meal before setting off","","پێش بەڕێکەوتن ژەمێکی گەورە بخۆیت")],0,
-      "A warm, stuffy cabin makes you drowsy, and so does a heavy meal. The textbook's list is: rest beforehand, no drowsy medication, no alcohol or drugs, keep the car cool and aired, use sunglasses against glare, and stop for a break.","","کامیان مەترسی ماندووبوون لە گەشتێکی درێژدا کەم دەکاتەوە؟","کابینەیەکی گەرم و بێهەوا خەواڵووت دەکات، ژەمێکی قورسیش هەروەها. لیستی کتێبەکە ئەمانەیە: پێشوەخت پشوو، دەرمانی خەواڵووکەر نا، مەی و ماددەی هۆشبەر نا، ئۆتۆمبیلەکە فێنک و هەوادار ڕابگرە، چاویلکەی خۆر بەکاربهێنە دژی تیشک، و بۆ پشوو بوەستە.")
+      "A warm, stuffy cabin makes you drowsy, and so does a heavy meal. The textbook's list is: rest beforehand, no drowsy medication, no alcohol or drugs, keep the car cool and aired, use sunglasses against glare, and stop for a break.","","کامیان مەترسی ماندووبوون لە گەشتێکی درێژدا کەم دەکاتەوە؟","کابینەیەکی گەرم و بێهەوا خەواڵووت دەکات، ژەمێکی قورسیش هەروەها. لیستی کتێبەکە ئەمانەیە: پێشوەخت پشوو، دەرمانی خەواڵووکەر نا، مەی و ماددەی هۆشبەر نا، ئۆتۆمبیلەکە فێنک و هەوادار ڕابگرە، چاویلکەی خۆر بەکاربهێنە دژی تیشک، و بۆ پشوو بوەستە."),
+    // ---- Part 1 re-audit (book pages 22-79): gaps found on a second pass ----
+    Q("rules",null,"What are the minimum ages for a motorcycle, a car and a lorry licence?","",
+      [O("16 for a motorcycle, 18 for a car, 20 for a lorry","","١٦ بۆ ماتۆڕسکیل، ١٨ بۆ ئۆتۆمبیل، ٢٠ بۆ بارهەڵگر"),O("18 for all three","","١٨ بۆ هەر سێکیان"),O("16 for all three","","١٦ بۆ هەر سێکیان")],0,
+      "The textbook prints the three ages together as 16 / 18 / 20. On top of the age you must also have no court conviction for a driving offence and pass the medical examination.","","کەمترین تەمەن بۆ مۆڵەتی ماتۆڕسکیل، ئۆتۆمبیل و بارهەڵگر چەندە؟","کتێبەکە هەر سێ تەمەنەکە پێکەوە چاپ دەکات: ١٦ / ١٨ / ٢٠. جگە لە تەمەن، دەبێت هیچ حوکمێکی دادگات لەسەر نەبێت بە تاوانێکی لێخوڕین و لە پشکنینی پزیشکی دەربچیت."),
+    Q("rules",null,"What do the yellow criss-cross markings painted across a junction mean?","",
+      [O("Do not enter unless your exit is clear","","مەچۆ ناوی مەگەر دەرچوونەکەت بەتاڵ بێت"),O("You may park inside them","","دەتوانیت لە ناویاندا پارک بکەیت"),O("They mark a pedestrian crossing","","شوێنی پەڕینەوەی پیادە دەستنیشان دەکەن")],0,
+      "The box exists to stop the junction being blocked. Even on a green light you must not move into it if the traffic ahead means you would have to stop inside — the exception in most codes is when you are waiting to turn and only oncoming traffic is holding you up.","","ئەو هێڵە زەردە خاچەکێشکراوانەی بەسەر یەکتربڕدا کێشراون چی دەگەیەنن؟","سندووقەکە بۆ ئەوە هەیە کە ڕێگە لە بەستنی یەکتربڕەکە بگرێت. تەنانەت لە چرای سەوزیشدا نابێت بچیتە ناوی ئەگەر هاتوچۆی پێشەوە واتای ئەوە بێت کە دەبێت لە ناویدا بوەستیت — لە زۆربەی یاساکاندا تەنها ئەو کاتە نەبێت کە چاوەڕێی سووڕانەوەیت و تەنها هاتوچۆی بەرامبەر ڕایگرتوویت."),
+    Q("rules",null,"On a set of traffic lights, which lamp is always at the top?","",
+      [O("The red one — green is always at the bottom","","سوورەکە — سەوز هەمیشە لە خوارەوەیە"),O("The green one","","سەوزەکە"),O("It varies from junction to junction","","لە یەکتربڕێکەوە بۆ یەکێکی تر دەگۆڕێت")],0,
+      "The order is fixed so the lights can still be read by someone who cannot distinguish the colours, and so a driver knows which lamp is lit from its position alone. On pedestrian lights the red is a standing figure and the green a walking one.","","لە کۆمەڵە چرایەکی هاتوچۆدا، کام چرا هەمیشە لە سەرەوەیە؟","ڕیزبەندییەکە جێگیرە تا ئەو کەسەش بتوانێت چراکان بخوێنێتەوە کە ناتوانێت ڕەنگەکان لێک جیا بکاتەوە، و تا شۆفێر تەنها لە جێگاکەیەوە بزانێت کام چرا داگیرساوە. لە چرای پیادەدا سوورەکە کەسێکی وەستاوە و سەوزەکە کەسێکی ڕۆیشتووە."),
+    Q("rules",null,"Why do some pedestrian crossings make a sound when the light changes?","",
+      [O("So blind pedestrians know when it is safe to cross","","تا پیادەی نابینا بزانێت کەی پەڕینەوە سەلامەتە"),O("To warn drivers to stop","","تا شۆفێران ئاگادار بکاتەوە بوەستن"),O("To tell pedestrians to hurry","","تا بە پیادە بڵێت پەلە بکات")],0,
+      "The tone carries the same information as the green figure to someone who cannot see it. Never block a crossing or hurry someone who is relying on it.","","بۆچی هەندێک شوێنی پەڕینەوەی پیادە کاتێک چراکە دەگۆڕێت دەنگ دەردەکات؟","دەنگەکە هەمان زانیاری وێنەی سەوز دەگەیەنێت بەو کەسەی ناتوانێت بیبینێت. هەرگیز شوێنی پەڕینەوە مەبەستە و پەلە مەکە لەو کەسەی پشتی پێی بەستووە."),
+    Q("rules",null,"A deaf pedestrian is about to step into the road. Why is this a particular risk?","",
+      [O("They may not hear your horn or your engine","","لەوانەیە بۆری یان دەنگی بزوێنەرەکەت نەبیستن"),O("They cross faster than others","","خێراتر لە کەسانی تر دەپەڕنەوە"),O("They always have a companion","","هەمیشە هاوڕێیەکیان لەگەڵدایە")],0,
+      "Sounding the horn achieves nothing, so you must slow down and be ready to stop instead. The same section lists wheelchair users, whose lower eye level means they may not see you either.","","پیادەیەکی کەڕ خەریکە پێ بنێتە سەر ڕێگا. بۆچی ئەمە مەترسییەکی تایبەتە؟","بۆری لێدان هیچ سوودێکی نییە، بۆیە دەبێت لەبری ئەوە خێرایی کەم بکەیتەوە و ئامادە بیت بۆ وەستان. هەمان بەش باسی بەکارهێنەرانی کورسی چەرخدارە دەکات، کە بەهۆی نزمی ئاستی چاویانەوە لەوانەیە ئەوانیش نەتبینن."),
+    Q("rules",null,"May a passenger give hand signals to other traffic on the driver's behalf?","",
+      [O("No — signalling is the driver's job alone","","نەخێر — ئاماژەدان تەنها ئەرکی شۆفێرە"),O("Yes, if the driver is busy","","بەڵێ، ئەگەر شۆفێر سەرقاڵ بێت"),O("Yes, when turning right","","بەڵێ، لە کاتی سووڕانەوە بۆ لای ڕاست")],0,
+      "Two people signalling gives other road users contradictory information about what the car will do. The same list bans leaning any part of the body out, distracting the driver with conversation, and blocking the driver's view with luggage.","","ئایا بۆ سەرنشین هەیە لە جیاتی شۆفێر ئاماژە بە دەست بۆ هاتوچۆی تر بکات؟","دوو کەس کە ئاماژە بدەن زانیاری پێچەوانە دەدەنە بەکارهێنەرانی تری ڕێگا سەبارەت بەوەی ئۆتۆمبیلەکە چی دەکات. هەمان لیست قەدەغە دەکات هیچ بەشێکی جەستە بخرێتە دەرەوە، شۆفێر بە قسەکردن سەرقاڵ بکرێت، یان دیمەنی شۆفێر بە کەلوپەل داپۆشرێت."),
+    Q("signs",null,"Traffic signs are grouped into lettered families A to H. What does family A cover?","",
+      [O("Warning signs","","هێمای وریاکردنەوە"),O("Prohibition signs","","هێمای قەدەغەکردن"),O("Information and service signs","","هێمای زانیاری و خزمەتگوزاری")],0,
+      "A warning, B priority, C prohibition or restriction, D mandatory and direction, E special regulation, F information and services, G direction and place, H supplementary plates. Iraq and the Kurdistan Region follow the international convention, which is why these shapes look the same abroad.","","هێماکانی هاتوچۆ لە خێزانی پیتداری A بۆ H دابەش کراون. خێزانی A چی لەخۆدەگرێت؟","A وریاکردنەوە، B پێشڕەوی، C قەدەغەکردن یان سنووردارکردن، D ناچارکردن و ئاراستە، E ڕێکخستنی تایبەت، F زانیاری و خزمەتگوزاری، G ئاراستە و شوێن، H تابلۆی ژێر هێما. عێراق و هەرێمی کوردستان پابەندن بە ڕێککەوتننامە نێودەوڵەتییەکە، بۆیە ئەم شێوانە لە دەرەوەش وەک یەک دەبن."),
+    Q("rules",null,"You have just got off a bus and need to cross behind it. What should you do?","",
+      [O("Wait until the bus has moved away so you can see the road","","چاوەڕێ بکە تا پاسەکە دوور دەکەوێتەوە تا بتوانیت ڕێگاکە ببینیت"),O("Cross quickly behind the bus","","بە خێرایی لە پشت پاسەکەوە بپەڕەوە"),O("Cross in front of the bus","","لە بەردەم پاسەکەوە بپەڕەوە")],0,
+      "A stationary bus hides you from every driver on the road and hides the road from you. The same rule says never to board or alight until the vehicle has come to a complete stop.","","تازە لە پاسێک دابەزیویت و پێویستە لە پشتیەوە بپەڕیتەوە. چی دەکەیت؟","پاسێکی وەستاو تۆ لە هەموو شۆفێرێکی سەر ڕێگا دەشارێتەوە و ڕێگاکەش لە تۆ دەشارێتەوە. هەمان یاسا دەڵێت هەرگیز سەرمەکەوە و دامەبەزە پێش ئەوەی ئۆتۆمبیلەکە بە تەواوی بوەستێت."),
+    Q("rules",null,"The broken white line down the middle of the road suddenly has much longer dashes. What does that mean?","",
+      [O("It is a warning line — a hazard is coming up","","هێڵی ئاگادارکردنەوەیە — مەترسییەک لە پێشەوەیە"),O("Overtaking is now compulsory","","ئێستا تێپەڕاندن پێویستە"),O("The road is about to become one-way","","ڕێگاکە خەریکە یەک ئاراستە بێت")],0,
+      "Ordinary short dashes mean you may overtake and change lane. When the painted sections lengthen and the gaps shorten, the line is telling you a hazard is near — a bend, a junction or a crest — so it is the wrong place to start an overtake even though crossing it is not yet forbidden.","","هێڵە سپییە پچڕپچڕەکەی ناوەڕاستی ڕێگا لەناکاو پچڕەکانی زۆر درێژتر دەبن. ئەمە چی دەگەیەنێت؟","پچڕە کورتە ئاساییەکان واتای ئەوەیە دەتوانیت تێپەڕێنیت و لەین بگۆڕیت. کاتێک بەشە بۆیاخکراوەکان درێژتر و بۆشاییەکان کورتتر دەبن، هێڵەکە پێت دەڵێت مەترسییەک نزیکە — پێچێک، یەکتربڕێک یان بەرزاییەک — بۆیە شوێنێکی هەڵەیە بۆ دەستپێکردنی تێپەڕاندن هەرچەندە بەزاندنی هێشتا قەدەغە نەکراوە.")
   ];
 
   /* ===== hazard scene illustrations + auto-assignment ===== */
@@ -2236,12 +2264,21 @@ var SCENES={
     }
     return QUESTIONS.length;
   }
+  /* A later re-audit of part 1 found gaps and appended them after the part 2
+     block. They are part-1 topics, so they are routed with the part-1 sets. */
+  function part1ExtraStart(){
+    for(var i=0;i<QUESTIONS.length;i++){
+      if((QUESTIONS[i].q.en||"").indexOf("minimum ages for a motorcycle")>=0)return i;
+    }
+    return QUESTIONS.length;
+  }
 
   var _bkCache=null;
   function bookSets(){
     if(_bkCache)return _bkCache;
-    var from=bookStart(), p2=part2Start();
-    var pools=[{defs:BOOKSETS,qs:QUESTIONS.slice(from,p2)},{defs:BOOKSETS2,qs:QUESTIONS.slice(p2)}];
+    var from=bookStart(), p2=part2Start(), p1x=part1ExtraStart();
+    var pools=[{defs:BOOKSETS,qs:QUESTIONS.slice(from,p2).concat(QUESTIONS.slice(p1x))},
+               {defs:BOOKSETS2,qs:QUESTIONS.slice(p2,p1x)}];
     var out=[], other=[];
     pools.forEach(function(p){
       var buckets={};

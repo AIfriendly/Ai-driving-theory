@@ -7,15 +7,15 @@ self-contained HTML file** — no build step, no dependencies, no network calls.
 Open `index.html` in any browser, or use the published site (see
 [Deployment](#deployment)).
 
-**Current content: 456 questions · 93 hand-drawn sign icons · 14 achievements.**
+**Current content: 465 questions · 93 hand-drawn sign icons · 14 achievements.**
 
 | Category | Questions |
 |---|---:|
-| Traffic signs (`signs`) | 124 |
-| Rules & safety (`rules`) | 255 |
+| Traffic signs (`signs`) | 125 |
+| Rules & safety (`rules`) | 263 |
 | First aid (`firstaid`) | 27 |
 | Mechanics (`mech`) | 50 |
-| **Total** | **456** |
+| **Total** | **465** |
 
 ---
 
@@ -54,7 +54,7 @@ from them:
   **unseen** and **mastered**.
 - **Mistake bank** — every wrong answer is retained for targeted redrilling.
 - **Flashcards** and a **reverse sign quiz** (given the meaning, pick the sign).
-- **Official Textbook sets** — the 202 questions taken from the official
+- **Official Textbook sets** — the 211 questions taken from the official
   textbook, pulled out into ten themed sets of their own. Part 1 (pages 1-163)
   gives six: vehicles & trailers · licences & law · pedestrians & passengers ·
   signs, lights & police signals · roads, junctions & manoeuvres · vehicle
@@ -222,6 +222,27 @@ publish. The checks are:
 ---
 
 ## Changelog
+
+### 465 questions — part 1 re-audit (in progress)
+Applying the part-2 lesson to part 1. Every page is being re-rendered under a
+fresh filename and re-read, with findings written to disk after each batch
+rather than held in context — the exact failure that caused the part-2 gap.
+
+**Pages 22-87 of the book (pdf 1-56 of 120) are done.** Most of what the audit
+turned up was already covered, which is a good sign: trailer dimensions, the
+70 m lorry gap, the five-minute definition of "stopping", freeway-vs-highway,
+dead ends, white-cane priority and the direction-sign colour scheme were all
+already in the bank. **Nine real gaps** were found and closed: the 16/18/20
+licence ages, yellow box junctions, red-always-on-top, audible crossings for
+blind pedestrians, deaf pedestrians, passengers signalling on the driver's
+behalf, the A-H sign families, crossing behind a bus you have just left, and
+the long-dash warning line.
+
+The nine sit after the part 2 block in the file but are part-1 topics, so
+`part1ExtraStart()` routes them back into the part-1 sets rather than letting
+them land among the weather and first-aid questions.
+
+Pages 88-163 remain.
 
 ### 456 questions — part 2 re-audited, coverage gap closed
 A re-read of part 2 found that pdf pages 7-19 (book pages 170-187) had been
