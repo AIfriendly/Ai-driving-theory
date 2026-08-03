@@ -7,15 +7,15 @@ self-contained HTML file** — no build step, no dependencies, no network calls.
 Open `index.html` in any browser, or use the published site (see
 [Deployment](#deployment)).
 
-**Current content: 397 questions · 93 hand-drawn sign icons · 14 achievements.**
+**Current content: 396 questions · 93 hand-drawn sign icons · 14 achievements.**
 
 | Category | Questions |
 |---|---:|
-| Traffic signs (`signs`) | 123 |
-| Rules & safety (`rules`) | 216 |
+| Traffic signs (`signs`) | 124 |
+| Rules & safety (`rules`) | 214 |
 | First aid (`firstaid`) | 14 |
 | Mechanics (`mech`) | 44 |
-| **Total** | **397** |
+| **Total** | **396** |
 
 ---
 
@@ -115,6 +115,31 @@ in the middle does not invalidate anyone's saved spaced-repetition progress.
 
 ---
 
+## Retired questions
+
+Four questions are held in `ARCHIVED_Q` and excluded from the active bank.
+They are kept in the file rather than deleted so the decision stays reviewable;
+each carries the reason it was retired. All four came from the pre-textbook
+seed bank, and three of them stated speed limits the official textbook
+contradicts:
+
+| Retired | Why |
+|---|---|
+| Built-up limit "about 50-60 km/h" | The 2011 circular sets **60** on main streets and **20** in alleys; the alley rule was missing entirely |
+| Motorway limit "usually 120 km/h" | **Nothing** official supports 120 — the circular gives 100 between cities, the border panel 110 |
+| Town sign means "about 50 km/h" | The built-up limit is **60** |
+| "Legal blood-alcohol limit is zero" | Duplicated a better-worded question, and asserted a number the textbook never states |
+
+Notably these sat under a source comment reading *"Kurdistan Region rules
+(verified)"* — they were not verified against any Kurdish source. The
+surrounding questions in that block (open-road 100 km/h, police 104, seat
+belts, phone use, driving on the right) **are** confirmed by the textbook and
+stay.
+
+The rest of the seed bank is universal road safety — stopping distances, fog,
+first aid, tyre condition — which applies in Kurdistan as anywhere, so it was
+kept.
+
 ## Editorial rules used when adding questions
 
 Source material is screenshots of a Kurdish driving-test app (question cards
@@ -193,6 +218,14 @@ publish. The checks are:
 ---
 
 ## Changelog
+
+### Retired four wrong speed-limit questions; closed a roundabout gap
+An audit of the pre-textbook seed bank against the official textbook found
+three questions stating Kurdistan speed limits that the textbook contradicts,
+plus one duplicate. They are now archived rather than deleted — see
+[Retired questions](#retired-questions). A coverage re-check of the PDF also
+found roundabout signalling and positioning (page 163) only partly captured,
+and the minimum-versus-maximum lane-board distinction missing; both added.
 
 ### 397 questions — all 120 textbook pages
 The earlier pass read only 48 of the 120 pages — pages 1-18 in full, then
