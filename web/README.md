@@ -7,15 +7,15 @@ self-contained HTML file** — no build step, no dependencies, no network calls.
 Open `index.html` in any browser, or use the published site (see
 [Deployment](#deployment)).
 
-**Current content: 396 questions · 93 hand-drawn sign icons · 14 achievements.**
+**Current content: 438 questions · 93 hand-drawn sign icons · 14 achievements.**
 
 | Category | Questions |
 |---|---:|
 | Traffic signs (`signs`) | 124 |
-| Rules & safety (`rules`) | 214 |
-| First aid (`firstaid`) | 14 |
-| Mechanics (`mech`) | 44 |
-| **Total** | **396** |
+| Rules & safety (`rules`) | 238 |
+| First aid (`firstaid`) | 27 |
+| Mechanics (`mech`) | 49 |
+| **Total** | **438** |
 
 ---
 
@@ -54,15 +54,19 @@ from them:
   **unseen** and **mastered**.
 - **Mistake bank** — every wrong answer is retained for targeted redrilling.
 - **Flashcards** and a **reverse sign quiz** (given the meaning, pick the sign).
-- **Official Textbook sets** — the 139 questions taken from the official
-  textbook, pulled out into six themed sets of their own (vehicles & trailers ·
-  licences & law · pedestrians & passengers · signs, lights & police signals ·
-  roads, junctions & manoeuvres · vehicle checks & technique), each showing a
-  mastery bar, plus an "all textbook questions" run. Membership is resolved at
-  runtime: the textbook block is found by anchoring on the first textbook
-  question's text (not a fixed index), and each question is then routed to a
-  family by topic. Anything unmatched falls into "Other textbook topics", so a
-  question can never be silently dropped from the section.
+- **Official Textbook sets** — the 184 questions taken from the official
+  textbook, pulled out into ten themed sets of their own. Part 1 (pages 1-163)
+  gives six: vehicles & trailers · licences & law · pedestrians & passengers ·
+  signs, lights & police signals · roads, junctions & manoeuvres · vehicle
+  checks & technique. Part 2 (pages 164-224) gives four: weather, seasons &
+  road hazards · driver health, alcohol & drugs · environment & eco-driving ·
+  crashes, first aid & breakdowns. Each shows a mastery bar, plus an "all
+  textbook questions" run. Membership is resolved at runtime: both boundaries
+  are found by anchoring on question *text* rather than a fixed index
+  (`bookStart()`, `part2Start()`), and each part is routed only against its own
+  set definitions — so an over-broad keyword in a part-2 set can never capture
+  a part-1 question. Anything unmatched falls into "Other textbook topics", so
+  a question can never be silently dropped from the section.
 - **Sign gallery** — all 93 icons grouped into 7 families, with live search
   (matches the Kurdish, English and Arabic name *and* the meaning text) and
   family filter chips. Every card carries a one-line meaning pulled from the
@@ -218,6 +222,26 @@ publish. The checks are:
 ---
 
 ## Changelog
+
+### 438 questions — official textbook, part 2 (pages 164-224)
+A second PDF (53 pages, book pages 164-224, topics 120-160) covered ground
+part 1 never touched, and **42 questions** were added from it. It is the
+first source to give the app a real first-aid section: that category grew
+from 14 questions to 27.
+
+Because this material does not fit the part-1 sets, it gets its own four:
+**Weather, seasons & road hazards** (10), **Driver health, alcohol & drugs**
+(10), **Environment & eco-driving** (5), **Crashes, first aid & breakdowns**
+(17). Routing is by *position*, not keyword — `part2Start()` anchors on
+question text the same way `bookStart()` does, so a part-1 question can never
+be pulled into a part-2 set by an over-broad regex.
+
+**A source conflict worth knowing about:** page 208 and page 220 both list the
+emergency numbers and give the traffic police as **440**, while part 1 gives
+**188**. The same textbook contradicts itself. Rather than teach a number that
+may be wrong, the question that tested it was rewritten to test the ambulance
+number (122, uncontested) and the explanation states the discrepancy openly and
+points the learner at 911 or 104 when unsure.
 
 ### Retired four wrong speed-limit questions; closed a roundabout gap
 An audit of the pre-textbook seed bank against the official textbook found
