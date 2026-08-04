@@ -7,15 +7,15 @@ self-contained HTML file** — no build step, no dependencies, no network calls.
 Open `index.html` in any browser, or use the published site (see
 [Deployment](#deployment)).
 
-**Current content: 496 questions · 93 hand-drawn sign icons · 14 achievements.**
+**Current content: 607 questions · 93 hand-drawn sign icons · 14 achievements.**
 
 | Category | Questions |
 |---|---:|
-| Traffic signs (`signs`) | 125 |
-| Rules & safety (`rules`) | 282 |
-| First aid (`firstaid`) | 36 |
-| Mechanics (`mech`) | 53 |
-| **Total** | **496** |
+| Traffic signs (`signs`) | 139 |
+| Rules & safety (`rules`) | 347 |
+| First aid (`firstaid`) | 54 |
+| Mechanics (`mech`) | 67 |
+| **Total** | **607** |
 
 ---
 
@@ -54,22 +54,30 @@ from them:
   **unseen** and **mastered**.
 - **Mistake bank** — every wrong answer is retained for targeted redrilling.
 - **Flashcards** and a **reverse sign quiz** (given the meaning, pick the sign).
-- **Official Textbook sets** — the 242 questions taken from the official
-  textbook, pulled out into ten themed sets of their own. Part 1 (pages 1-163)
-  gives six: vehicles & trailers · licences & law · pedestrians & passengers ·
-  signs, lights & police signals · roads, junctions & manoeuvres · vehicle
-  checks & technique. Part 2 (pages 164-224) gives five: weather, seasons &
-  road hazards · driver health, alcohol & drugs · environment & eco-driving ·
-  hazard awareness, loads & animals · crashes, first aid & breakdowns. Each shows a mastery bar, plus an "all
-  textbook questions" run. Membership is resolved at runtime. Because later audit
-  passes appended their findings to the end of the bank rather than into the
-  middle, the textbook block is a run of *segments*, each belonging to part 1
-  or part 2; `BOOKSEG` lists them and every boundary is found by anchoring on
+- **Official Textbook sets** — the 353 questions taken from the official
+  textbook, pulled out into 22 themed sets of their own, grouped by source.
+  Part 1 (pages 1-163) gives six: vehicles & trailers · licences & law ·
+  pedestrians & passengers · signs, lights & police signals · roads, junctions
+  & manoeuvres · vehicle checks & technique. Part 2 (pages 164-224) gives five:
+  weather, seasons & road hazards · driver health, alcohol & drugs ·
+  environment & eco-driving · hazard awareness, loads & animals · crashes,
+  first aid & breakdowns. The **master copy** — the complete official handbook,
+  all 234 pages — gives eleven that follow the book's own chapters: licences,
+  law & definitions · pedestrians, passengers & children · signals, signs &
+  road markings · the car & its systems · cockpit drill & observation ·
+  junctions, overtaking & parking · speed, distance & weather · hazard
+  perception & loads · driver health, alcohol & drugs · eco-driving &
+  pollution · first aid & emergencies. Each shows a mastery bar, plus an "all
+  textbook questions" run. Membership is resolved at runtime. Because later
+  audit passes appended their findings to the end of the bank rather than into
+  the middle, the textbook block is a run of *segments*, each belonging to one
+  source; `BOOKSEG` lists them and every boundary is found by anchoring on
   question *text*, never on an index, so inserting a question anywhere cannot
-  silently move a segment. Each part is routed only against its own set
-  definitions — so an over-broad keyword in a part-2 set can never capture a
-  part-1 question. A future audit pass adds one row to `BOOKSEG`. Anything unmatched falls into "Other textbook topics", so
-  a question can never be silently dropped from the section.
+  silently move a segment. Each source is routed only against its own set
+  definitions — so an over-broad keyword in one source's sets can never capture
+  another's question. A future audit pass adds one row to `BOOKSEG`. Anything
+  unmatched falls into "Other textbook topics", so a question can never be
+  silently dropped from the section.
 - **Sign gallery** — all 93 icons grouped into 7 families, with live search
   (matches the Kurdish, English and Arabic name *and* the meaning text) and
   family filter chips. Every card carries a one-line meaning pulled from the
@@ -225,6 +233,37 @@ publish. The checks are:
 ---
 
 ## Changelog
+
+### 607 questions — the whole master copy read page by page, with its own tiles
+
+Every one of the master copy's 234 pages was opened and recorded, not just the
+pages that parts 1 and 2 had covered. The audit is in
+[`docs/textbook-audit/part3-master-copy-all-234-pages.md`](../docs/textbook-audit/part3-master-copy-all-234-pages.md).
+
+**111 new questions**, in a new group of eleven tiles (`BOOKSETS3`) that follow
+the book's own twelve chapters rather than the ad-hoc themes used for the two
+scanned halves. `bookSets()` now routes three pools instead of two; `BOOKSEG`
+gained one row.
+
+Three content pages had slipped past the earlier batch headers and were read
+separately — they turned out to carry real material: the **level-crossing
+countdown posts** (three red stripes at 300 m, two at 200 m, one at 100 m),
+**yellow-backed signs meaning *temporary***, **Zone signs applying to a whole
+area**, and the **combined continuous-plus-broken line rule** (obey the line on
+your own side).
+
+Other things the app had never covered: **Instruction No. 11 of 2024** and the
+full licence table, the **owner who lends a car to an unlicensed driver facing
+the same fine**, **helping the injured reducing your sentence while refusing
+increases it**, the **1.5 m minimum when passing a cyclist**, the **1001-1002
+counting method** for the two-second gap, **never opening a smoking bonnet**
+(the oxygen feeds the fire), the **A/B/C/D/K extinguisher classes** and the
+**PASS technique**, **staying at the scene or facing a heavy penalty**, and the
+handbook's **six human factors** behind most crashes.
+
+Four questions written during this pass duplicated ones already in the bank and
+were removed; a pre-existing question about yellow-backed signs that had always
+fallen into the generic bucket is now routed. Zero duplicates, zero unrouted.
 
 ### 496 questions — verified against the official master copy
 
