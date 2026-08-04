@@ -7,15 +7,15 @@ self-contained HTML file** — no build step, no dependencies, no network calls.
 Open `index.html` in any browser, or use the published site (see
 [Deployment](#deployment)).
 
-**Current content: 477 questions · 93 hand-drawn sign icons · 14 achievements.**
+**Current content: 496 questions · 93 hand-drawn sign icons · 14 achievements.**
 
 | Category | Questions |
 |---|---:|
 | Traffic signs (`signs`) | 125 |
-| Rules & safety (`rules`) | 273 |
-| First aid (`firstaid`) | 27 |
-| Mechanics (`mech`) | 52 |
-| **Total** | **477** |
+| Rules & safety (`rules`) | 282 |
+| First aid (`firstaid`) | 36 |
+| Mechanics (`mech`) | 53 |
+| **Total** | **496** |
 
 ---
 
@@ -54,18 +54,21 @@ from them:
   **unseen** and **mastered**.
 - **Mistake bank** — every wrong answer is retained for targeted redrilling.
 - **Flashcards** and a **reverse sign quiz** (given the meaning, pick the sign).
-- **Official Textbook sets** — the 223 questions taken from the official
+- **Official Textbook sets** — the 242 questions taken from the official
   textbook, pulled out into ten themed sets of their own. Part 1 (pages 1-163)
   gives six: vehicles & trailers · licences & law · pedestrians & passengers ·
   signs, lights & police signals · roads, junctions & manoeuvres · vehicle
   checks & technique. Part 2 (pages 164-224) gives five: weather, seasons &
   road hazards · driver health, alcohol & drugs · environment & eco-driving ·
   hazard awareness, loads & animals · crashes, first aid & breakdowns. Each shows a mastery bar, plus an "all
-  textbook questions" run. Membership is resolved at runtime: both boundaries
-  are found by anchoring on question *text* rather than a fixed index
-  (`bookStart()`, `part2Start()`), and each part is routed only against its own
-  set definitions — so an over-broad keyword in a part-2 set can never capture
-  a part-1 question. Anything unmatched falls into "Other textbook topics", so
+  textbook questions" run. Membership is resolved at runtime. Because later audit
+  passes appended their findings to the end of the bank rather than into the
+  middle, the textbook block is a run of *segments*, each belonging to part 1
+  or part 2; `BOOKSEG` lists them and every boundary is found by anchoring on
+  question *text*, never on an index, so inserting a question anywhere cannot
+  silently move a segment. Each part is routed only against its own set
+  definitions — so an over-broad keyword in a part-2 set can never capture a
+  part-1 question. A future audit pass adds one row to `BOOKSEG`. Anything unmatched falls into "Other textbook topics", so
   a question can never be silently dropped from the section.
 - **Sign gallery** — all 93 icons grouped into 7 families, with live search
   (matches the Kurdish, English and Arabic name *and* the meaning text) and
@@ -222,6 +225,37 @@ publish. The checks are:
 ---
 
 ## Changelog
+
+### 496 questions — both parts fully re-audited
+Part 2 has now had the same page-by-page treatment as part 1: all 53 pages
+re-rendered under fresh filenames, re-read, and the findings written to disk
+after each batch. **19 further gaps** were closed.
+
+The most useful of them is regional: **what to do in a dust storm** — slow,
+hazards on, stop somewhere safe, shut the doors and windows, and wait for real
+visibility rather than driving on. Late summer and autumn dust storms are a
+routine hazard in Iraq and the app had nothing on them. Also new: summer heat
+softening the asphalt, clearing the **left-hand** lane for an ambulance (not
+the right, as a UK- or US-trained driver might assume), using your own car as
+a barrier when a casualty is lying on the carriageway, what to say when you
+call the emergency services and in what order, raising a bleeding limb,
+never washing an injured eye, raising the legs for internal bleeding, bleeding
+from the ear or mouth as a sign of internal injury, marking the spread of
+swelling after a snake bite, killing the power before touching an electrical
+burn, and the textbook's own warning about **staged crash scenes used for
+theft**. First aid grew from 27 questions to 36.
+
+Both audits are recorded page by page in
+[`docs/textbook-audit/`](../docs/textbook-audit/), which is the coverage
+evidence: 120/120 pages for part 1 and 53/53 for part 2, with the candidate
+gaps and what the app already covered.
+
+**Two source problems are recorded rather than papered over.** The traffic
+police number is printed as 188 in one place and 440 in another *within part 1
+itself*, so the app tests the ambulance number instead and states the conflict.
+And the stopping-distance table on book page 167 gives 80 km/h as "38 m ≈ 13
+car lengths", which is internally inconsistent — 13 car lengths is roughly
+53 m — so that row was deliberately never turned into a question.
 
 ### 477 questions — part 1 re-audit complete (all 120 pages)
 Applying the part-2 lesson to part 1. Every page is being re-rendered under a
