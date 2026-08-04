@@ -226,6 +226,38 @@ publish. The checks are:
 
 ## Changelog
 
+### 496 questions — verified against the official master copy
+
+A third PDF turned out not to be a new book. It is the **complete, clean,
+official master copy of the same textbook** the first two were phone-scanned
+halves of: *ڕێبەری هاتووچۆ*, category B-BE, Kurdistan Regional Government,
+Ministry of Interior, General Directorate of Traffic, edition v1.0, 2025.
+234 pages; PDF page = printed page − 1.
+
+**Coverage confirmed.** Parts 1+2 spanned book pages 22–229. The pages they
+never saw — PDF 1–20 and 229–234 — are front matter (cover, credits, foreword,
+index, chapter cards, dividers) and blank `NOTES` pages. No test content in
+either. The 173/173 audit really was complete.
+
+**A safety-critical error found and fixed.** The app had been marking **911 as
+a wrong answer**, explaining that "911 is used in North America, not the
+Kurdistan Region." The handbook's emergency panel on book page 56 opens with
+*"in any sudden emergency contact the emergency units, **number 911**, or:"* —
+911 is the number the official curriculum tells drivers to call first. Fixed.
+
+**The 188-vs-440 "contradiction" was ours, not the book's.** Read at 300 dpi,
+book page 56 lists 115 fire, **440** traffic police, 104 emergency police, 122
+ambulance. There is no 188 anywhere on it — the earlier reading was `115`
+misread off the blurry scan. Both hedging explanations were removed and the app
+now teaches 440 plainly.
+
+**The page-167 stopping-distance defect is real.** Confirmed on the clean copy:
+80 km/h is printed as "38 m ≈ 13 car lengths" while the table's other three rows
+all work out at ~4 m per length. It is the book's own typo. Still not tested.
+
+Full detail, including the chapter index and the book's rights notice, in
+[`docs/textbook-audit/master-copy-verification.md`](../docs/textbook-audit/master-copy-verification.md).
+
 ### 496 questions — both parts fully re-audited
 Part 2 has now had the same page-by-page treatment as part 1: all 53 pages
 re-rendered under fresh filenames, re-read, and the findings written to disk
@@ -250,12 +282,16 @@ Both audits are recorded page by page in
 evidence: 120/120 pages for part 1 and 53/53 for part 2, with the candidate
 gaps and what the app already covered.
 
-**Two source problems are recorded rather than papered over.** The traffic
-police number is printed as 188 in one place and 440 in another *within part 1
-itself*, so the app tests the ambulance number instead and states the conflict.
-And the stopping-distance table on book page 167 gives 80 km/h as "38 m ≈ 13
-car lengths", which is internally inconsistent — 13 car lengths is roughly
-53 m — so that row was deliberately never turned into a question.
+**One source problem is recorded rather than papered over.** The
+stopping-distance table on book page 167 gives 80 km/h as "38 m ≈ 13 car
+lengths", which is internally inconsistent — the table's other three rows all
+work out at about 4 m per car length, so 13 lengths is roughly 52 m. Verified
+against the clean master copy, so it is the book's own typo. That row was
+deliberately never turned into a question.
+
+A second apparent problem — the traffic police number appearing as both 188 and
+440 — turned out to be **our** error, not the book's, and is now fixed. See
+[`master-copy-verification.md`](../docs/textbook-audit/master-copy-verification.md).
 
 ### 477 questions — part 1 re-audit complete (all 120 pages)
 Applying the part-2 lesson to part 1. Every page is being re-rendered under a
@@ -292,9 +328,9 @@ file on disk after each batch of eight. Holding them in context is what caused
 the part 2 gap.
 
 **Source inconsistencies found, recorded rather than papered over:** book page
-56 prints both 188 and 440 for the traffic police *within the same section*, so
-the number the app declines to test is unreliable in part 1 too, not merely
-between the parts.
+56 appeared to print both 188 and 440 for the traffic police *within the same
+section*. **(Later corrected — this was a misreading of `115` off the blurry
+scan. The book is consistent at 440. See the master-copy entry below.)**
 
 ### 456 questions — part 2 re-audited, coverage gap closed
 A re-read of part 2 found that pdf pages 7-19 (book pages 170-187) had been
@@ -332,11 +368,11 @@ question text the same way `bookStart()` does, so a part-1 question can never
 be pulled into a part-2 set by an over-broad regex.
 
 **A source conflict worth knowing about:** page 208 and page 220 both list the
-emergency numbers and give the traffic police as **440**, while part 1 gives
-**188**. The same textbook contradicts itself. Rather than teach a number that
-may be wrong, the question that tested it was rewritten to test the ambulance
-number (122, uncontested) and the explanation states the discrepancy openly and
-points the learner at 911 or 104 when unsure.
+emergency numbers and give the traffic police as **440**, while part 1 appeared
+to give **188**. Rather than teach a number that may be wrong, the question that
+tested it was rewritten to test the ambulance number (122, uncontested).
+**(Later corrected — part 1 says 440 too; the 188 was a misread. The app now
+teaches 440 plainly.)**
 
 ### Retired four wrong speed-limit questions; closed a roundabout gap
 An audit of the pre-textbook seed bank against the official textbook found
@@ -359,7 +395,9 @@ Notable additions and corrections:
   is more precise than the 60/80/110 border panel added earlier, which the
   same page shows as the sign posted for arriving drivers.
 * **Emergency numbers** — 115 fire, 122 ambulance, 104 emergency police,
-  **188 traffic police**, 911 general.
+  **440 traffic police** *(recorded as 188 at the time; corrected against the
+  master copy)*, and **911 for any sudden emergency**, which the handbook lists
+  first.
 * **Kerb colour means nothing officially.** A widely believed myth: parking
   restrictions come from signs and the law, not from the paint on the kerb.
 * **Licence weights** — B covers up to 3500 kg with a 750 kg trailer; C1 is
