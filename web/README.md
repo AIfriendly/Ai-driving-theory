@@ -250,6 +250,24 @@ publish. The checks are:
 
 ## Changelog
 
+### Two languages, honestly
+
+The app shipped a three-language data model but a two-language switcher. Arabic
+was unreachable — `setLang('ar')` is not wired to any control — while 89% of
+questions (556 of 624) had no Arabic anyway. The dead weight is gone: the
+`UI.ar` block and the 173 named `ar:` labels on signs and categories are
+deleted, and `Q()`/`O()` no longer carry `ar` into the runtime objects, so
+nothing can surface a language the switcher cannot select. 854 KB -> 843 KB.
+
+Two latent crashes came out with it. `t()` was `UI[S.lang][k]` with no fallback,
+and `setLang()` read `UI[l].brand` directly — either would throw outright on an
+unrecognised language. Both now fall back to Kurdish instead.
+
+The Arabic *source strings* in the positional `Q()`/`O()` arguments are left in
+place, unread. Stripping them means re-parsing 2,500-odd nested call sites for
+about 10 KB, which is a poor trade — and leaving them keeps the real translation
+work recoverable if Arabic is ever picked up properly.
+
 ### 110 sign icons — the missing vehicle-class prohibitions, drawn and animated
 
 The eight vehicle-class prohibitory signs from book pages 70-71 had no icon, so
