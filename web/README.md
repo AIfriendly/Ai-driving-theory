@@ -7,15 +7,15 @@ self-contained HTML file** — no build step, no dependencies, no network calls.
 Open `index.html` in any browser, or use the published site (see
 [Deployment](#deployment)).
 
-**Current content: 633 questions · 110 hand-drawn sign icons · 14 achievements.**
+**Current content: 662 questions · 110 hand-drawn sign icons · 14 achievements.**
 
 | Category | Questions |
 |---|---:|
-| Traffic signs (`signs`) | 153 |
-| Rules & safety (`rules`) | 359 |
+| Traffic signs (`signs`) | 154 |
+| Rules & safety (`rules`) | 383 |
 | First aid (`firstaid`) | 54 |
-| Mechanics (`mech`) | 67 |
-| **Total** | **633** |
+| Mechanics (`mech`) | 71 |
+| **Total** | **662** |
 
 ---
 
@@ -250,6 +250,39 @@ publish. The checks are:
 
 ## Changelog
 
+### A fourth source: the actual exam paper
+
+Sources 1-3 were the KRG study manual. This one is different in kind — the
+**Erbil Traffic Directorate's own exam question bank**, 281 questions with the
+answer key printed on the page (correct option ticked, wrong ones crossed). It
+is the paper the test is drawn from, so it gets its own group of tiles rather
+than being folded into the manual's.
+
+It settles two things outright:
+
+- **The pass mark is 80%** (exam Q24). The app's exam mode already used 80%; that
+  was an assumption, and it is now confirmed by the examining authority.
+- **The fire brigade number is 115** (exam Q96), with 188 printed as a distractor.
+  An earlier misreading of a blurry scan had produced a "188 vs 440" phantom
+  contradiction; this is independent confirmation that 115 is right.
+
+29 questions added so far from exam Q1-98, covering material the manual never
+tests: the night limit being half the daytime limit on two-way roads, the 110/80
+split on expressways, tyre blowouts front and rear, brake fade on mountain
+descents, the 60-day registration transfer, and a series of absolute bans
+(overtaking at level crossings and in tunnels, double parking, stopping on an
+expressway).
+
+**Exam Q94 is not being followed.** Its marked answer for a burns casualty is
+"remove the burnt clothing quickly", which contradicts both the manual (book
+p220: cool with water for 10-15 minutes) and standard first aid, where clothing
+stuck to a burn is left alone. The app follows the manual. The discrepancy is
+recorded in
+[`docs/textbook-audit/exam-bank-source4.md`](../docs/textbook-audit/exam-bank-source4.md)
+rather than silently reconciled.
+
+Exam questions 99-281 are not yet mined.
+
 ### Two languages, honestly
 
 The app shipped a three-language data model but a two-language switcher. Arabic
@@ -291,7 +324,7 @@ This resets saved progress for sign questions once — that progress was being
 written to the wrong record anyway. Progress on the other 480 questions is
 untouched.
 
-### 633 questions — second full pass over all three sources
+### 662 questions — second full pass over all three sources
 
 Every page of the master copy was read again, this time checked against a
 mechanically extracted index of all question texts, so "the topic is in there

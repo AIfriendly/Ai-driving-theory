@@ -1,0 +1,47 @@
+# NEW facts from the official exam bank (not in our 633)  [Q# = exam number]
+Q15	30 km/h is the max speed near schools and crowded markets
+Q24	THEORY EXAM PASS MARK IS 80% (signs + mechanics) - confirms our exam mode
+Q37	at 30 km/h keep 10 m from the vehicle in front
+Q40	"the speed limit" on any road = whatever the traffic signs say, not a fixed number
+Q25	overtaking at/near a railway level crossing is banned in ALL cases
+Q32	two unbroken YELLOW lines along the right edge = stopping banned in all cases
+Q34	flashing yellow light = warning, hazard ahead
+Q35	fitting warning lights/sirens like an emergency vehicle is never permitted
+Q43	go-karts / sports cars may not be driven on public roads
+Q17	overtaking inside a tunnel is banned in all cases
+Q21	you may never leave a broken-down car in the middle of the carriageway
+Q30	driving against the direction of travel -> penalty is a fine
+Q39	failing to renew the annual technical inspection -> fine
+Q41	failing to renew the annual registration -> fine
+Q18	you may overtake when there is a broken line on your left
+Q31	on a dirt/gravel road meeting a paved main road, give way to traffic on the paved road
+Q46	AT NIGHT on two-way roads the limit is HALF the posted daytime limit
+Q48	small car on a dual carriageway outside towns: 100 km/h
+Q49	Kurdistan expressways: 110 km/h cars, 80 km/h lorries
+Q50	brakes overheating on a long mountain descent -> stop and let them cool
+Q51	priority belongs to the vehicle on the main road, not the one leaving a side road
+Q55	after buying a vehicle you have 60 days from the sale contract to re-register it
+Q56	stopping in a prohibited place and causing a crash -> fine
+Q58	stopping on an expressway to pick up or set down passengers is banned in all cases
+Q59	FRONT tyre blowout -> grip the wheel, do not brake hard, slow gradually then brake
+Q62	REAR tyre blowout -> hold firm, ease off, steer gently to the right
+Q64	the oil filter is changed to suit the operating environment, not a fixed mileage
+Q65	you must carry: a licence matching the vehicle class + the annual registration
+Q66	motorcyclist must wear a helmet with visor plus knee and hand protection
+Q67	no slogans or writing on a vehicle except on lorries, per the regulations
+Q68	abnormal noise or vibration -> stop driving until it is repaired
+Q69	throwing rubbish from the window -> fine
+Q71	the responsible driver is the one who thinks about the consequences of their actions
+Q73	stopping or parking on the LEFT side of a two-way street is banned in all cases
+Q75	lights on from before dark - a period before sunset until after sunrise
+Q76	responsibility for seat belts is the driver's AND the passengers', equally
+Q80	stopping on the carriageway itself is banned in all forms
+Q82	using a private car to carry passengers for hire is forbidden
+Q84	double parking (stopping alongside an already stopped car) is banned everywhere
+Q85	only the traffic directorate may alter a licence or annual registration
+Q87	pedestrians must obey traffic signs and police signals everywhere
+Q90	a traffic officer's signals apply in all situations and all places
+Q92	after medication affecting ability or vision, driving is barred until the effect passes
+Q95	driving a vehicle with no valid inspection certificate is forbidden
+Q97	a mobile may be used only when stopped or parked in a permitted place
+Q98	disobeying a traffic sign or a police signal -> fine
