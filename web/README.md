@@ -7,15 +7,15 @@ self-contained HTML file** — no build step, no dependencies, no network calls.
 Open `index.html` in any browser, or use the published site (see
 [Deployment](#deployment)).
 
-**Current content: 619 questions · 93 hand-drawn sign icons · 14 achievements.**
+**Current content: 633 questions · 110 hand-drawn sign icons · 14 achievements.**
 
 | Category | Questions |
 |---|---:|
-| Traffic signs (`signs`) | 139 |
+| Traffic signs (`signs`) | 153 |
 | Rules & safety (`rules`) | 359 |
 | First aid (`firstaid`) | 54 |
 | Mechanics (`mech`) | 67 |
-| **Total** | **619** |
+| **Total** | **633** |
 
 ---
 
@@ -250,7 +250,30 @@ publish. The checks are:
 
 ## Changelog
 
-### 619 questions — second full pass over all three sources
+### 110 sign icons — the missing vehicle-class prohibitions, drawn and animated
+
+The eight vehicle-class prohibitory signs from book pages 70-71 had no icon, so
+they were not testable at all. They are drawn now, along with nine more the book
+carries and the app lacked: the plain red ring, no motor vehicles, the tram
+warning, the blue horse and cycle route signs, the shared and segregated
+pedestrian/cycle routes, end-of-minimum-speed, and the timed parking disc.
+Seventeen new icons, 93 -> 110, with 14 questions to go with them.
+
+They move where movement is real: wheels turn, heavy vehicles roll, the parking
+disc's hand sweeps. Two guards keep that from doing harm — motion is switched
+off inside `.signopt`, because in a "pick the sign" question a single moving
+option would point straight at the answer, and the whole set is switched off
+under `prefers-reduced-motion`.
+
+**Question ids are now unique.** The id is the spaced-repetition key and was
+hashed from the English stem alone, so the ~60 sign questions sharing the stem
+"What does this sign mean?" collapsed onto a handful of ids and shared one
+Leitner box and one bookmark between them. The sign key is now part of the hash.
+This resets saved progress for sign questions once — that progress was being
+written to the wrong record anyway. Progress on the other 480 questions is
+untouched.
+
+### 633 questions — second full pass over all three sources
 
 Every page of the master copy was read again, this time checked against a
 mechanically extracted index of all question texts, so "the topic is in there

@@ -101,3 +101,45 @@ a separate piece of work rather than bolted on here.
 Child-seat weight bands, OBD codes P0100-P0300, steering free play of 5 cm,
 chevron bend markers, the road-type taxonomy, two further police arm signals,
 and the timed parking-disc sign.
+
+## Follow-up: the missing sign icons, drawn
+
+The seventeen signs listed above as "needs an icon" now have one, so they are
+testable. Drawn from the master copy artwork:
+
+| Book page | Signs added |
+|---|---|
+| 70 | plain red ring (no vehicles either direction), no motor vehicles, no motorcycles, no bicycles, no lorries, no lorry+trailer, no car+trailer |
+| 71 | no dangerous goods, no animal-drawn cart, no handcart |
+| 68 | tram line ahead |
+| 74 | horse route, cycle route, shared ped/cycle route, segregated ped/cycle route, end of minimum speed |
+| 147 | parking with a time disc |
+
+93 icons -> 110, with 14 questions covering them. Each was rendered and looked at
+rather than assumed correct; four (the motorcycle, the car-and-motorcycle pair,
+the segregated route and the horse) were redrawn after the first render showed
+them unreadable or clipping the sign face.
+
+### Two guards on the animation
+
+Wheels turn, heavy vehicles roll, the parking disc's hand sweeps. That motion is
+switched off in two places:
+
+- `.signopt svg *` — in a "pick the sign" question, one moving option out of
+  three would point straight at the answer.
+- `prefers-reduced-motion` — the existing rule only killed transitions, so
+  `animation` was added to it.
+
+Both are asserted by a browser test, not just written down.
+
+### A pre-existing bug this uncovered
+
+Question ids are the spaced-repetition key and were hashed from the English stem
+alone. About sixty sign questions share a generic stem — "What does this sign
+mean?", "This sign means:", "What does this warning sign mean?" — so they
+collapsed onto a handful of ids and shared one Leitner box and one bookmark
+between them. Answering one moved the others.
+
+The sign key is now mixed into the hash. All 633 questions have distinct ids,
+asserted by a test. Sign-question progress resets once as a result; it was being
+written to the wrong record before, and progress on the other 480 is untouched.
