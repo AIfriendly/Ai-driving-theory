@@ -230,13 +230,20 @@
   .gbul li:last-child{border-bottom:none}
   .gbul li::before{content:"";position:absolute;inset-inline-start:2px;top:15px;width:7px;height:7px;border-radius:50%;background:var(--accent)}
   .foot{color:var(--muted);font-size:11.5px;text-align:center;padding:6px 16px 20px;line-height:1.5}
-  button:focus-visible,.tile:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  button:focus-visible,.tile:focus-visible,[role="button"]:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+  /* Visible to screen readers only — never to the eye. */
+  .sronly{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;
+    clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap;border:0}
+  @media (prefers-contrast:more){
+    .opt{border-width:2px}
+    .explain{border-width:2px}
+  }
   @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 
 <div id="app" dir="ltr">
   <header>
-    <div class="logo" onclick="Go('home')" role="button" tabindex="0">
+    <div class="logo" onclick="Go('home')" onkeydown="kbAct(event,function(){Go('home')})" role="button" tabindex="0" aria-label="Home">
       <svg viewBox="0 0 48 48" fill="none" aria-hidden="true">
         <circle cx="24" cy="24" r="21" stroke="currentColor" stroke-width="4"/>
         <circle cx="24" cy="24" r="6.5" fill="currentColor"/>
@@ -253,6 +260,10 @@
     </div>
   </header>
   <main id="view"></main>
+  <!-- Persistent polite live region. It must exist in the DOM *before* its text
+       changes, otherwise screen readers do not reliably announce it — which is
+       why it lives here in the shell rather than being rendered with the quiz. -->
+  <div id="sr" class="sronly" role="status" aria-live="polite"></div>
   <div class="foot" id="foot"></div>
 </div>
 
@@ -2452,7 +2463,7 @@ var SCENES={
     progressB:"Your progress", progressD:"Scores, weak topics & mistakes", statsTitle:"Your progress", statsSub:"Based on your saved practice on this device.",
     examsTaken:"Exams taken", avgScore:"Average", mistakesLabel:"To review", mastery:"Accuracy by topic", examTrend:"Recent exam scores", passline:"80% pass",
     noData:"Take a mock exam or practise a topic to start tracking your progress.", weakest:"weakest", reset:"Reset progress", resetConfirm:"Reset all saved progress on this device?",
-    dailyGoal:"Daily goal & streak", dayStreak:"day streak", bestStreak:"best streak", todayLabel:"Today", youPicked:"Your choice",
+    dailyGoal:"Daily goal & streak", dayStreak:"day streak", bestStreak:"best streak", todayLabel:"Today", youPicked:"Your choice", optionN:"Option",
     smart:"Smart review", due:"due for review", smartNew:"Start learning — tap to begin", smartDone:"All caught up — nice!", mastered:"Mastered",
     signQuizB:"Sign quiz", flashB:"Flashcards", whichSign:"Which sign means:", tapReveal:"Tap the card to reveal", prev:"Previous",
     findB:"Search & saved", findD:"Find any sign or question — and save your own list", searchPh:"Search signs and questions…", savedB:"Saved", practiceAll:"Practice all", searchHint:"Type to search. Or tap ☆ on a question while practising to save it here.", noResults:"No matches",
@@ -2475,7 +2486,7 @@ var SCENES={
     progressB:"تقدّمك", progressD:"النتائج والمواضيع الضعيفة والأخطاء", statsTitle:"تقدّمك", statsSub:"بناءً على تدريبك المحفوظ على هذا الجهاز.",
     examsTaken:"الاختبارات", avgScore:"المعدل", mistakesLabel:"للمراجعة", mastery:"الدقة حسب الموضوع", examTrend:"نتائج الاختبارات الأخيرة", passline:"٨٠٪ للنجاح",
     noData:"أجرِ اختباراً أو تدرّب على موضوع لبدء تتبّع تقدّمك.", weakest:"الأضعف", reset:"مسح التقدّم", resetConfirm:"مسح كل التقدّم المحفوظ على هذا الجهاز؟",
-    dailyGoal:"الهدف اليومي والتتابع", dayStreak:"يوم متتالٍ", bestStreak:"أفضل تتابع", todayLabel:"اليوم", youPicked:"اختيارك",
+    dailyGoal:"الهدف اليومي والتتابع", dayStreak:"يوم متتالٍ", bestStreak:"أفضل تتابع", todayLabel:"اليوم", youPicked:"اختيارك", optionN:"خيار",
     smart:"مراجعة ذكية", due:"مستحقة للمراجعة", smartNew:"ابدأ التعلّم — اضغط للبدء", smartDone:"أنجزت كل المطلوب!", mastered:"مُتقن",
     signQuizB:"اختبار الإشارات", flashB:"بطاقات تعليمية", whichSign:"أي إشارة تعني:", tapReveal:"انقر البطاقة للكشف", prev:"السابق",
     findB:"البحث والمحفوظات", findD:"ابحث عن أي إشارة أو سؤال — واحفظ قائمتك", searchPh:"ابحث في الإشارات والأسئلة…", savedB:"المحفوظة", practiceAll:"تدرّب على الكل", searchHint:"اكتب للبحث. أو اضغط ☆ على سؤال أثناء التدريب لحفظه هنا.", noResults:"لا نتائج",
@@ -2498,7 +2509,7 @@ var SCENES={
     progressB:"پێشکەوتنی تۆ", progressD:"نمرەکان، بابەتە لاوازەکان و هەڵەکان", statsTitle:"پێشکەوتنی تۆ", statsSub:"بەپێی ڕاهێنانە پاشەکەوتکراوەکانت لەسەر ئەم ئامێرە.",
     examsTaken:"تاقیکردنەوەکان", avgScore:"تێکڕا", mistakesLabel:"بۆ پێداچوونەوە", mastery:"وردی بەپێی بابەت", examTrend:"نمرەی تاقیکردنەوە دواییەکان", passline:"٨٠٪ دەرچوون",
     noData:"تاقیکردنەوەیەک یان ڕاهێنانێک بکە بۆ دەستپێکردنی هەڵگرتنی پێشکەوتنت.", weakest:"لاوازترین", reset:"سڕینەوەی پێشکەوتن", resetConfirm:"هەموو پێشکەوتنی پاشەکەوتکراو لەسەر ئەم ئامێرە بسڕدرێتەوە؟",
-    dailyGoal:"ئامانجی ڕۆژانە و زنجیرە", dayStreak:"ڕۆژ زنجیرە", bestStreak:"باشترین زنجیرە", todayLabel:"ئەمڕۆ", youPicked:"هەڵبژاردەی تۆ",
+    dailyGoal:"ئامانجی ڕۆژانە و زنجیرە", dayStreak:"ڕۆژ زنجیرە", bestStreak:"باشترین زنجیرە", todayLabel:"ئەمڕۆ", youPicked:"هەڵبژاردەی تۆ", optionN:"هەڵبژاردە",
     smart:"پێداچوونەوەی زیرەک", due:"پێویستە بۆ پێداچوونەوە", smartNew:"دەستبکە بە فێربوون — لێیبدە بۆ دەستپێک", smartDone:"هەموویت تەواوکرد — باش!", mastered:"شارەزا",
     signQuizB:"تاقیکردنەوەی هێماکان", flashB:"کارتی فێربوون", whichSign:"کام هێما واتای:", tapReveal:"لە کارتەکە بدە بۆ دەرخستن", prev:"پێشوو",
     findB:"گەڕان و پاشەکەوت", findD:"هەر هێما یان پرسیارێک بدۆزەرەوە — و لیستی خۆت پاشەکەوت بکە", searchPh:"گەڕان لە هێما و پرسیارەکان…", savedB:"پاشەکەوتکراو", practiceAll:"ڕاهێنان بە هەموو", searchHint:"بۆ گەڕان بنووسە. یان لە کاتی ڕاهێناندا ☆ لە پرسیارێک بدە بۆ پاشەکەوتکردنی لێرە.", noResults:"هیچ ئەنجامێک نییە",
@@ -2897,7 +2908,15 @@ var SCENES={
   window.startPracticeList=function(ids){var set={};ids.forEach(function(x){set[x]=1;});var qs=QUESTIONS.filter(function(q){return set[q.id];});if(!qs.length)return;S.mode="practice";S.queue=qs;S.i=0;S.ans=[];S.picked=null;S.perm={};clearTimer();S.screen="quiz";render();};
   window.practiceMatches=function(){window.startPracticeList(window._findMatches||[]);};
   window.practiceSaved=function(){window.startPracticeList(Object.keys(loadStore().bookmarks||{}));};
-  function findQRow(q){var bm=isBm(q.id);return '<div class="qrow"><button class="bmbtn'+(bm?' on':'')+'" onclick="toggleBmFind(\''+q.id+'\')" title="Save">'+(bm?'★':'☆')+'</button><span class="qrt" onclick="startPracticeList([\''+q.id+'\'])">'+esc(L(q.q))+'</span></div>';}
+  function findQRow(q){
+    var bm=isBm(q.id), lbl=esc(t("savedB"));
+    return '<div class="qrow">'
+      +'<button class="bmbtn'+(bm?' on':'')+'" onclick="toggleBmFind(\''+q.id+'\')" title="'+lbl+'"'
+        +' aria-label="'+lbl+'" aria-pressed="'+(bm?'true':'false')+'">'+(bm?'★':'☆')+'</button>'
+      +'<span class="qrt" onclick="startPracticeList([\''+q.id+'\'])"'
+        +' onkeydown="kbAct(event,function(){startPracticeList([\''+q.id+'\'])})"'
+        +' role="button" tabindex="0">'+esc(L(q.q))+'</span></div>';
+  }
   window.doSearch=function(){
     var el=document.getElementById("findq");if(!el)return;
     var box=document.getElementById("findres");if(!box)return;
@@ -2927,7 +2946,7 @@ var SCENES={
   function renderFlash(){
     var k=S.flashKeys[S.flashI],last=S.flashKeys.length-1;
     var html='<div><h1>'+esc(t("flashB"))+'</h1><p class="sub">'+(S.flashI+1)+' / '+S.flashKeys.length+'</p></div>';
-    html+='<div class="flashcard" onclick="flashReveal()">'+SIGNS[k].svg+
+    html+='<div class="flashcard" onclick="flashReveal()" onkeydown="kbAct(event,flashReveal)" role="button" tabindex="0" aria-label="'+esc(t("tapReveal"))+'">'+SIGNS[k].svg+
       (S.flashShown?'<div class="flashname">'+esc(signLabel(k))+'</div>':'<div class="flashhint">'+esc(t("tapReveal"))+'</div>')+'</div>';
     html+='<div class="flashnav"><button class="btn ghost" onclick="flashNav(-1)" '+(S.flashI===0?'disabled style="opacity:.5"':'')+'>'+esc(t("prev"))+'</button>'+
       '<button class="btn" onclick="flashNav(1)" '+(S.flashI===last?'disabled style="opacity:.5"':'')+'>'+esc(t("next"))+'</button></div>';
@@ -2949,15 +2968,19 @@ var SCENES={
     var html='<div class="qbar"><span class="qcount">'+esc(t("q"))+' '+(S.i+1)+' '+esc(t("of"))+' '+S.queue.length+'</span>'+
       '<div class="prog"><i style="width:'+pct+'%"></i></div>'+
       (S.mode==="exam"?'<span class="timer" id="timer">'+fmtTime(S.t)+'</span>':'')+
-      (q.id!=null?'<button class="bmbtn'+(isBm(q.id)?' on':'')+'" onclick="toggleBm(\''+q.id+'\')" title="Save">'+(isBm(q.id)?'★':'☆')+'</button>':'')+'</div>';
+      (q.id!=null?'<button class="bmbtn'+(isBm(q.id)?' on':'')+'" onclick="toggleBm(\''+q.id+'\')" title="'+esc(t("savedB"))+'" aria-label="'+esc(t("savedB"))+'" aria-pressed="'+(isBm(q.id)?'true':'false')+'">'+(isBm(q.id)?'★':'☆')+'</button>':'')+'</div>';
     if(!S.perm)S.perm={};
     if(!S.perm[S.i])S.perm[S.i]=shuffle(q.opts.map(function(_,i){return i;}));
     if(q.sq){
       html+='<p class="signmean">'+esc(t("whichSign"))+' '+esc(signLabel(q.mean))+'</p><div class="opts signopts">';
-      S.perm[S.i].forEach(function(actual){
+      S.perm[S.i].forEach(function(actual,dpos){
         var sk=q.opts[actual], cls="opt signopt";
         if(S.picked!==null){if(actual===q.a)cls+=" correct";else if(actual===S.picked)cls+=" wrong";}
-        html+='<button class="'+cls+'" '+(S.picked!==null?"disabled":"")+' onclick="pick('+actual+')">'+SIGNS[sk].svg+'</button>';
+        /* Labelled by position, not by name: naming the sign here would read the
+           answer straight out to a screen reader and destroy the exercise. The
+           correct name is announced after the answer is given. */
+        html+='<button class="'+cls+'" '+(S.picked!==null?"disabled":"")+' onclick="pick('+actual+')"'
+          +' aria-label="'+esc(t("optionN"))+' '+keys[dpos]+'">'+SIGNS[sk].svg+'</button>';
       });
       html+='</div>';
       if(S.picked!==null&&S.picked!==q.a)html+='<div class="explain ok"><b>✓ '+esc(t("right"))+':</b> '+esc(signLabel(q.opts[q.a]))+'</div>';
@@ -2994,9 +3017,34 @@ var SCENES={
     view.innerHTML=html;
   }
 
+  /* Announce something to screen-reader users without showing it on screen.
+     Cleared first so repeating the same text still gets read out. */
+  function say(msg){
+    var el=document.getElementById("sr"); if(!el)return;
+    el.textContent="";
+    setTimeout(function(){el.textContent=msg;},50);
+  }
+  /* Enter/Space activation for the few controls that cannot be a <button>
+     without breaking their layout. Everything else in the app is a real button
+     and needs none of this. */
+  window.kbAct=function(e,fn){
+    if(e.key==="Enter"||e.key===" "||e.key==="Spacebar"){e.preventDefault();fn();}
+  };
+
   window.pick=function(idx){
     if(S.picked!==null)return;
-    S.picked=idx;S.ans[S.i]=idx;markActivity();render();
+    S.picked=idx;S.ans[S.i]=idx;markActivity();
+    var q=S.queue[S.i];
+    if(q){
+      // Sign-quiz options are sign KEYS, not {en,ku,ar} objects, so they need
+      // signLabel() rather than L().
+      var right=q.sq?signLabel(q.opts[q.a]):L(q.opts[q.a]);
+      var why=q.sq?"":" "+L(q.ex);
+      say(idx===q.a
+        ? t("correct")+"."+why
+        : t("wrong")+". "+t("right")+": "+right+"."+why);
+    }
+    render();
   };
   window.nextQ=function(){
     if(S.i<S.queue.length-1){S.i++;S.picked=null;render();}

@@ -101,6 +101,22 @@ from them:
   CSS logical properties so mirroring is automatic.
 - Text-size toggle, persisted separately.
 - Kurdish-Arabic digit localisation.
+- **Keyboard-operable throughout.** 47 of the 50 interactive controls were
+  already real `<button>`s; the three that cannot be (the logo, the flashcard
+  and a search-result row) carry `role="button"`, `tabindex` and an Enter/Space
+  handler via `kbAct()`. A test asserts that no element with an `onclick` is
+  unreachable by keyboard.
+- **Answers are announced.** A visually-hidden `role="status" aria-live="polite"`
+  region lives in the shell — *not* in the rendered view, because a live region
+  has to exist before its text changes for screen readers to announce it
+  reliably. `pick()` writes the verdict, the correct answer and the explanation
+  into it.
+- **Sign-quiz options are labelled by position** (`Option A/B/C`), never by
+  sign name: naming them would read the answer straight out. The correct name
+  is announced only after the answer is given.
+- Icon-only controls (the ★ bookmark) carry `aria-label` and `aria-pressed`.
+- Focus rings are 3 px and apply to `[role="button"]` as well as real buttons;
+  `prefers-contrast: more` thickens option and explanation borders.
 
 ---
 
