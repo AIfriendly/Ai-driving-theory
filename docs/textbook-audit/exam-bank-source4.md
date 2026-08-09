@@ -57,3 +57,26 @@ Two official KRG sources disagree with each other here. The app follows the
 textbook and standard first aid. Flagged rather than silently reconciled: a
 learner could meet this question in the real exam, so the repo owner may want to
 note the discrepancy rather than have the app quietly contradict the examiner.
+
+### Progress: exam Q1-197 read (pages 1-23 of 50)
+
+95 facts recorded in `exam-bank-new-facts.txt` that the manual never tests.
+58 of them are now questions in the app.
+
+Notable material the manual does not cover at all:
+
+- **Licence ages by class** — 16 motorcycle, 18 private car, 20 public licence
+  and construction machinery. The manual gives only part of this.
+- **The night rule** — on a two-way road the limit is half the daytime figure.
+- **Assaulting a traffic officer** — up to 3 years, up to 5 if injury results.
+- **Annual inspection failures**, itemised: fuel leak, brake-fluid leak,
+  handbrake that will not hold, broken or missing mirrors, dead wipers,
+  excessively noisy exhaust.
+- **Tyre blowouts**, front and rear, treated as separate techniques.
+- **A worn spare** is illegal to fit, exactly as a worn tyre is.
+- **Eco figures** — 60-70 km/h is the efficient band; warm up for one minute,
+  not five; switch off past three minutes of waiting.
+- **Engine knock** traced to low-octane fuel; **overheating** to coolant,
+  thermostat or fan belt.
+
+Exam Q198-281 (pages 24-50) are not yet read.

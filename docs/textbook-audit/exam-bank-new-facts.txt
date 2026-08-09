@@ -45,3 +45,51 @@ Q92	after medication affecting ability or vision, driving is barred until the ef
 Q95	driving a vehicle with no valid inspection certificate is forbidden
 Q97	a mobile may be used only when stopped or parked in a permitted place
 Q98	disobeying a traffic sign or a police signal -> fine
+Q104	driving along the pavement/footway is banned in all cases
+Q105	stopping on a bridge or inside a tunnel is banned in all cases
+Q106	on out-of-town roads a tractor must keep to the shoulder
+Q107	tractors belong on agricultural and village-boundary roads, not expressways or city centres
+Q109	after parking: confirm it is stopped, lock the doors, set the handbrake
+Q111	reversing: only with the road behind clear, at low speed, and for no more than 10 m
+Q114	on a narrow or steep road the DOWNHILL driver stops for the one coming UP
+Q115	putting any part of your body outside the vehicle while moving is banned in all cases
+Q116	full beam only when there is no oncoming vehicle
+Q102	only a traffic officer may permit driving against the flow, and only in special circumstances
+Q122	meeting head-on in a very narrow place: stay calm, move right or onto the shoulder
+Q125	sedatives, painkillers, blood-pressure and anxiety medicines must all be avoided before driving
+Q129	minimum age for a GENERAL/public driving licence is 20
+Q131	minimum age for a construction-machinery licence is 20
+Q133	minimum age for a PRIVATE car licence is 18
+Q151	minimum age for a motorcycle licence is 16
+Q134	assaulting or abusing a traffic officer on duty -> up to 3 years imprisonment
+Q136	assaulting an officer and causing injury -> up to 5 years imprisonment
+Q137	the law never permits exceeding the posted limit, for any reason
+Q138	driving on a smooth/worn tyre is illegal even when it is the spare
+Q140	the most environmentally friendly cruising speed is 60-70 km/h
+Q141	let the engine warm for about 1 minute, in winter or summer
+Q142	car on fire: hazards on, pull right as soon as possible, then set out the triangle
+Q143	battery acid on the skin -> wash the area with water as soon as possible
+Q145	stopped in heavy traffic: switch the engine off if the wait will exceed 3 minutes
+Q146	engine knocking/pinking is caused by using low-octane petrol
+Q147	the biggest danger on a slippery road is simply driving too fast
+Q149	overtaking on a bridge is prohibited
+Q150	engine overheating: low coolant, or a failed thermostat or fan belt
+Q155	carrying more passengers than the vehicle is rated for obstructs the driver's view and control
+Q158	meeting another car in a blind residential alley: stop at the entrance, confirm clear, then go slowly
+Q171	a U-turn is prohibited near a pedestrian crossing
+Q172	excessive exhaust noise fails the annual inspection
+Q177	securing the battery properly prevents damage and short-circuit fires
+Q178	when someone overtakes you: keep right in your lane and ease off so they can finish
+Q179	roof racks, spoilers and decoration add air resistance and raise fuel consumption
+Q189	the leading cause of vehicle fires is smoking and careless lighters at fuel stations
+Q190	engine oil on the dipstick must sit BETWEEN the L and H marks
+Q193	the strip along both sides of the road is for pedestrians to walk on
+Q194	heavy snow with poor visibility -> stop somewhere safe
+Q195	vehicles already on the road have priority over those joining it
+Q196	overtake only where the visibility distance is good
+Q197	at a roundabout, priority belongs to traffic already circulating
+Q154	a fuel leak fails the annual inspection
+Q156	a brake-fluid leak fails the annual inspection
+Q157	a handbrake that does not work fails the annual inspection
+Q160	broken or missing side mirrors fail the annual inspection
+Q161	non-working wipers fail the annual inspection

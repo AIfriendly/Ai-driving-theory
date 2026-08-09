@@ -7,15 +7,15 @@ self-contained HTML file** — no build step, no dependencies, no network calls.
 Open `index.html` in any browser, or use the published site (see
 [Deployment](#deployment)).
 
-**Current content: 662 questions · 110 hand-drawn sign icons · 14 achievements.**
+**Current content: 691 questions · 110 hand-drawn sign icons · 14 achievements.**
 
 | Category | Questions |
 |---|---:|
 | Traffic signs (`signs`) | 154 |
-| Rules & safety (`rules`) | 383 |
-| First aid (`firstaid`) | 54 |
-| Mechanics (`mech`) | 71 |
-| **Total** | **662** |
+| Rules & safety (`rules`) | 404 |
+| First aid (`firstaid`) | 55 |
+| Mechanics (`mech`) | 78 |
+| **Total** | **691** |
 
 ---
 
@@ -266,7 +266,7 @@ It settles two things outright:
   An earlier misreading of a blurry scan had produced a "188 vs 440" phantom
   contradiction; this is independent confirmation that 115 is right.
 
-29 questions added so far from exam Q1-98, covering material the manual never
+58 questions added so far from exam Q1-197, covering material the manual never
 tests: the night limit being half the daytime limit on two-way roads, the 110/80
 split on expressways, tyre blowouts front and rear, brake fade on mountain
 descents, the 60-day registration transfer, and a series of absolute bans
@@ -281,7 +281,7 @@ recorded in
 [`docs/textbook-audit/exam-bank-source4.md`](../docs/textbook-audit/exam-bank-source4.md)
 rather than silently reconciled.
 
-Exam questions 99-281 are not yet mined.
+Exam questions 198-281 are not yet mined.
 
 ### Two languages, honestly
 
@@ -324,7 +324,7 @@ This resets saved progress for sign questions once — that progress was being
 written to the wrong record anyway. Progress on the other 480 questions is
 untouched.
 
-### 662 questions — second full pass over all three sources
+### 691 questions — second full pass over all three sources
 
 Every page of the master copy was read again, this time checked against a
 mechanically extracted index of all question texts, so "the topic is in there
