@@ -7,15 +7,15 @@ self-contained HTML file** — no build step, no dependencies, no network calls.
 Open `index.html` in any browser, or use the published site (see
 [Deployment](#deployment)).
 
-**Current content: 607 questions · 93 hand-drawn sign icons · 14 achievements.**
+**Current content: 619 questions · 93 hand-drawn sign icons · 14 achievements.**
 
 | Category | Questions |
 |---|---:|
 | Traffic signs (`signs`) | 139 |
-| Rules & safety (`rules`) | 347 |
+| Rules & safety (`rules`) | 359 |
 | First aid (`firstaid`) | 54 |
 | Mechanics (`mech`) | 67 |
-| **Total** | **607** |
+| **Total** | **619** |
 
 ---
 
@@ -249,6 +249,22 @@ publish. The checks are:
 ---
 
 ## Changelog
+
+### 619 questions — second full pass over all three sources
+
+Every page of the master copy was read again, this time checked against a
+mechanically extracted index of all question texts, so "the topic is in there
+somewhere" could not pass for coverage. Parts 1 and 2 were established first as
+*incomplete* photo scans of the same edition — 120 images spanning 142 book
+pages, 53 spanning 66 — which is why the pass runs on the master copy.
+
+Twelve gaps became questions, including three the app had no business missing:
+give way to the right at an uncontrolled crossroads, the driver's own arm
+signals, and a white cane with a red band meaning deaf-blind rather than blind.
+Details in [`docs/textbook-audit/reverify-2026-08.md`](../docs/textbook-audit/reverify-2026-08.md).
+
+Still outstanding: the eight vehicle-class prohibitory signs on book pages
+70-71 need new SVG icons, so they are not yet testable.
 
 ### 607 questions — the whole master copy read page by page, with its own tiles
 
