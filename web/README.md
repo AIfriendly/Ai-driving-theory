@@ -7,7 +7,7 @@ self-contained HTML file** — no build step, no dependencies, no network calls.
 Open `index.html` in any browser, or use the published site (see
 [Deployment](#deployment)).
 
-**Current content: 736 questions · 110 hand-drawn sign icons · 102 scene/concept illustrations · 14 achievements. Every question now carries a visual.**
+**Current content: 736 questions · 110 hand-drawn sign icons · 106 scene/concept illustrations · 14 achievements. Every question now carries a visual.**
 
 | Category | Questions |
 |---|---:|
@@ -249,6 +249,19 @@ publish. The checks are:
 ---
 
 ## Changelog
+
+### Book & exam sweep — junction and parking buckets spread out
+
+The master book and exam are junction- and parking-heavy, and those questions had
+been collapsing into one crossroads diagram (21) and one bridge scene (25). Added
+four distinctive scenes — a yellow criss-cross box junction, a convex blind-
+junction mirror, a yellow kerb line, and a P parking sign — and extended the
+keyword router so junction questions spread across the seven junction diagrams
+(turning, main-vs-minor, box, mirror, roundabout, crossroads) and parking
+questions spread across P-sign, hill, bridge and kerb scenes. Junctions 21 → 11
+on the generic diagram; parking 25 → distributed. 106 illustrations total. The
+remaining shared bucket is the generic-road icon on miscellaneous rules
+questions, which is an appropriate catch-all rather than a specific scene.
 
 ### Part 2 image sweep — the first-aid bucket, broken out
 

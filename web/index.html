@@ -3045,6 +3045,17 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
  iconEye:_ic('<ellipse cx="100" cy="60" rx="32" ry="19" fill="#fff" stroke="#3a3f47" stroke-width="2"/><circle cx="100" cy="60" r="10" fill="#5a86a8"/><circle cx="100" cy="60" r="4.5" fill="#111"/><rect x="62" y="49" width="34" height="22" rx="3" fill="#f0ead8" stroke="#c9c2a8" transform="rotate(-8 79 60)"/>'),
  iconCrowd:_ic('<g fill="#8a9098"><circle cx="66" cy="58" r="10"/><rect x="56" y="68" width="20" height="24" rx="6"/><circle cx="132" cy="58" r="10"/><rect x="122" y="68" width="20" height="24" rx="6"/></g><g fill="#5a6068"><circle cx="100" cy="52" r="12"/><rect x="87" y="64" width="26" height="28" rx="7"/></g>'),
  iconFuel:_ic('<ellipse cx="100" cy="88" rx="52" ry="9" fill="#b08a3a" opacity="0.6"/><g class="sgn-throb"><path d="M100 38 q13 15 3 28 q-2 -7 -7 -8 q5 11 -3 16 q-13 -8 -7 -23 q4 7 9 5 q-8 -10 5 -21 z" fill="#e8631a"/></g>'),
+ boxJunction:_scn('<rect width="200" height="120" fill="#8cbf4f"/><rect y="42" width="200" height="36" fill="#767c84"/><rect x="82" width="36" height="120" fill="#767c84"/>'
+   +'<rect x="82" y="42" width="36" height="36" fill="none" stroke="#f4c400" stroke-width="1.8"/>'
+   +'<g stroke="#f4c400" stroke-width="1.5"><line x1="82" y1="42" x2="118" y2="78"/><line x1="100" y1="42" x2="118" y2="60"/><line x1="82" y1="60" x2="100" y2="78"/><line x1="118" y1="42" x2="82" y2="78"/><line x1="100" y1="42" x2="82" y2="60"/><line x1="118" y1="60" x2="100" y2="78"/></g>'
+   +_pc(100,104,0)),
+ convexMirror:_scn(_base()+'<polygon points="148,96 200,90 200,104 150,108" fill="'+_road+'"/>'+_post(150,88,42)
+   +'<circle cx="150" cy="38" r="16" fill="#b9c6cc" stroke="#3a3f47" stroke-width="3"/><ellipse cx="145" cy="33" rx="6" ry="4" fill="#fff" opacity="0.6"/>'
+   +_carFront(120,98,0.7)),
+ kerbLine:_scn('<rect width="200" height="120" fill="#9aa3ab"/><rect y="78" width="200" height="42" fill="#c3c9ce"/><rect y="72" width="200" height="7" fill="#f4c400"/>'
+   +_carRear(64,56,1.1,"#2b57a8")
+   +'<g class="sgn-throb"><circle cx="152" cy="40" r="13" fill="none" stroke="#d21f28" stroke-width="4"/><line x1="143" y1="31" x2="161" y2="49" stroke="#d21f28" stroke-width="4"/></g>'),
+ parkP:_ic('<rect x="70" y="28" width="60" height="60" rx="9" fill="#2b6fb0"/><text x="100" y="76" text-anchor="middle" font-size="48" font-weight="800" fill="#fff" font-family="sans-serif">P</text>'),
 };
 
   (function assignScenes(){
@@ -3131,9 +3142,18 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
       [/speed|km\/h|kmh|fast|velocity|how quickly/i,"iconSpeed"],
       [/following distance|safe distance|gap behind|metres behind|two-second|stopping distance|braking distance/i,"followGap"],
       [/overtak|passing|pass the/i,"overtakeLeft"],
+      [/yellow criss-cross|box junction|blocked with traffic|criss-cross markings/i,"boxJunction"],
+      [/convex mirror|blind junction/i,"convexMirror"],
+      [/solid yellow line.*kerb|colour painted on a kerb|painted on a kerb|kerb tell/i,"kerbLine"],
+      [/difference between being "stopped"|difference between .?stopping|count as parking|finished parking|from the kerb|last three checks|reversing out|reverse into a parked/i,"parkP"],
+      [/turning (right|left) at a junction|correct lane to turn|which lane.*turn|turning.*three lanes|three-lane/i,"jxTurnAcross"],
+      [/main road meets a minor|minor road, who|meets a minor road/i,"jxMainSide"],
       [/roundabout/i,"jxRound"],
+      [/uphill|downhill|facing (up|down)hill/i,"hillPark"],
+      [/under a bridge|on a bridge|inside a tunnel|exposed bridge/i,"bridgePark"],
       [/junction|crossroads|cross road|intersection/i,"jxCross"],
-      [/park|stopping is|waiting is|may you stop|leave your car/i,"bridgePark"],
+      [/pedestrian crossing|zebra/i,"pedCrossing"],
+      [/park|stopping is|waiting is|may you stop|leave your car|double parking/i,"parkP"],
       [/pedestrian|on foot|zebra|crossing|school child/i,"pedCrossing"],
       [/cyclist|bicycle|cycle lane/i,"cyclist"],
       [/motorcycl|moped|helmet|rider/i,"iconMoto"],
