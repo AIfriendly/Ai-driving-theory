@@ -7,15 +7,15 @@ self-contained HTML file** — no build step, no dependencies, no network calls.
 Open `index.html` in any browser, or use the published site (see
 [Deployment](#deployment)).
 
-**Current content: 691 questions · 110 hand-drawn sign icons · 14 achievements.**
+**Current content: 716 questions · 110 hand-drawn sign icons · 14 achievements.**
 
 | Category | Questions |
 |---|---:|
-| Traffic signs (`signs`) | 154 |
-| Rules & safety (`rules`) | 404 |
-| First aid (`firstaid`) | 55 |
-| Mechanics (`mech`) | 78 |
-| **Total** | **691** |
+| Traffic signs (`signs`) | 155 |
+| Rules & safety (`rules`) | 421 |
+| First aid (`firstaid`) | 56 |
+| Mechanics (`mech`) | 84 |
+| **Total** | **716** |
 
 ---
 
@@ -266,8 +266,8 @@ It settles two things outright:
   An earlier misreading of a blurry scan had produced a "188 vs 440" phantom
   contradiction; this is independent confirmation that 115 is right.
 
-58 questions added so far from exam Q1-197, covering material the manual never
-tests: the night limit being half the daytime limit on two-way roads, the 110/80
+83 questions added from all 281 exam questions, covering material the manual
+never tests: the night limit being half the daytime limit on two-way roads, the 110/80
 split on expressways, tyre blowouts front and rear, brake fade on mountain
 descents, the 60-day registration transfer, and a series of absolute bans
 (overtaking at level crossings and in tunnels, double parking, stopping on an
@@ -281,7 +281,21 @@ recorded in
 [`docs/textbook-audit/exam-bank-source4.md`](../docs/textbook-audit/exam-bank-source4.md)
 rather than silently reconciled.
 
-Exam questions 198-281 are not yet mined.
+**All 281 text questions are now read.** 160 facts were recorded that the manual
+does not test; 83 became questions.
+
+Two further findings from the full pass:
+
+- **The PDF has two sections.** Pages 2-32 are the 281 text questions. Pages
+  33-50 are a separate picture test: sign images, and junction diagrams asking
+  which of two lettered cars goes first. The sign half is already covered by the
+  app's 110 icons and its two sign-quiz modes. The **junction-priority diagram is
+  a question type the app does not have**, and it needs new artwork rather than
+  text, so it is recorded as outstanding.
+- **The exam bank contradicts itself on reversing distance** — Q111 says no more
+  than 10 m, Q264 says no more than 5 m, both marked correct. The app's question
+  was rewritten to test the principle (short, slow, way behind checked) rather
+  than assert either figure.
 
 ### Two languages, honestly
 
@@ -324,7 +338,7 @@ This resets saved progress for sign questions once — that progress was being
 written to the wrong record anyway. Progress on the other 480 questions is
 untouched.
 
-### 691 questions — second full pass over all three sources
+### 716 questions — second full pass over all three sources
 
 Every page of the master copy was read again, this time checked against a
 mechanically extracted index of all question texts, so "the topic is in there

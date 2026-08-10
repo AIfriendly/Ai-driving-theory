@@ -58,25 +58,25 @@ textbook and standard first aid. Flagged rather than silently reconciled: a
 learner could meet this question in the real exam, so the repo owner may want to
 note the discrepancy rather than have the app quietly contradict the examiner.
 
-### Progress: exam Q1-197 read (pages 1-23 of 50)
+### The PDF has two sections, not one
 
-95 facts recorded in `exam-bank-new-facts.txt` that the manual never tests.
-58 of them are now questions in the app.
+Pages 2-32 are the 281 numbered text questions. **Pages 33-50 are a separate
+picture test**, numbered from 1 again: sign images ("what does this sign mean?")
+and junction diagrams ("who has priority here, car A or car B?").
 
-Notable material the manual does not cover at all:
+The sign half is already well covered — the app has 110 hand-drawn icons and two
+sign quiz modes. The **junction-priority diagrams are a question type the app
+does not have at all**: a small plan view of a junction with two lettered cars
+and a single question about which one goes first. That is a genuine gap, but it
+needs new diagram artwork rather than text, so it is recorded here rather than
+bolted on.
 
-- **Licence ages by class** — 16 motorcycle, 18 private car, 20 public licence
-  and construction machinery. The manual gives only part of this.
-- **The night rule** — on a two-way road the limit is half the daytime figure.
-- **Assaulting a traffic officer** — up to 3 years, up to 5 if injury results.
-- **Annual inspection failures**, itemised: fuel leak, brake-fluid leak,
-  handbrake that will not hold, broken or missing mirrors, dead wipers,
-  excessively noisy exhaust.
-- **Tyre blowouts**, front and rear, treated as separate techniques.
-- **A worn spare** is illegal to fit, exactly as a worn tyre is.
-- **Eco figures** — 60-70 km/h is the efficient band; warm up for one minute,
-  not five; switch off past three minutes of waiting.
-- **Engine knock** traced to low-octane fuel; **overheating** to coolant,
-  thermostat or fan belt.
+### The exam bank contradicts itself on reversing distance
 
-Exam Q198-281 (pages 24-50) are not yet read.
+- **Q111** — reversing must not exceed **10 m**.
+- **Q264** — reversing is permitted for not more than **5 m**.
+
+Both are marked answers in the same paper. Since the source disagrees with
+itself, the app's question was rewritten to test the *principle* — short,
+slow, only with the way behind clear — instead of asserting either number.
+Same treatment as the book's 38 m stopping row and its nosebleed timing.

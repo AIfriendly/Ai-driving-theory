@@ -93,3 +93,68 @@ Q156	a brake-fluid leak fails the annual inspection
 Q157	a handbrake that does not work fails the annual inspection
 Q160	broken or missing side mirrors fail the annual inspection
 Q161	non-working wipers fail the annual inspection
+Q162	the shoulder counts as part of the road; its width does not exceed 2.5 m
+Q166	drink/drug driving -> imprisonment, or a fine, or both
+Q169	on a two-lane road you overtake on the LEFT
+Q170	a seat that will not move or lock fails the annual inspection
+Q180	a fuel leak from ANY part of the vehicle is dangerous, not just the tank
+Q181	used engine oil must go to a designated disposal point, never the ground or a drain
+Q183	a load may overhang the SIDES of a lorry by at most 15 cm
+Q184	first aid is given AT the scene; do not move casualties where it can be avoided
+Q185	a cracked windscreen damages both the level and the distance of the driver's vision
+Q186	at night, drive within the distance your own headlights actually light up
+Q187	the battery is charged by the alternator (dynamo)
+Q188	a load overhanging front or rear: at most 50 cm, and it must carry a red flag
+Q198	carrying passengers in a car boot, or in the bed of a lorry or pickup, is banned outright
+Q200	in fog: do not overtake and do not change lane
+Q201	pedestrians on the pavement have priority over a vehicle crossing it to reach a garage
+Q203	rail vehicles have priority over every type of road vehicle
+Q204	a construction-machinery licence covers construction machinery only
+Q205	passing a stopped passenger bus: slow down and pass with care
+Q206	after driving through standing water, dab the brakes a few times to dry the discs
+Q207	oncoming driver will not dip their full beam -> look to the right edge and slow; do not retaliate
+Q208	passengers get in and out on the kerb (right) side when stopped at the right
+Q211	you may NOT change lane once inside a roundabout
+Q212	you hit a parked car: wait for the owner; if nobody comes, leave your name and phone and tell the police
+Q213	every vehicle must carry a reflective warning triangle
+Q214	the car in front brakes suddenly -> slow or stop; assume a hazard you cannot see
+Q218	a suspended licence is reinstated when a medical committee reports the driver fit
+Q220	dark or black tint film on the windows -> fine
+Q223	blocked while waiting to turn left in a crowded street -> wait for the car ahead to clear, then go
+Q225	the seat belt, worn correctly, is what stops you being thrown out in a collision
+Q227	a white BROKEN line means you may change lane and overtake
+Q229	a wide unbroken line near traffic lights is the STOP line
+Q231	the amber repeater lamp on the side of the car marks turning and lane changes
+Q232	a broken-down vehicle should be moved by a proper recovery vehicle
+Q217	carrying an uncovered load on a lorry -> fine
+Q226	parking a large vehicle in city alleys and inner streets -> fine
+Q228	an unclear or damaged number plate -> fine
+Q234	opening the driver's door into the road without checking -> 15,000 dinar fine
+Q236	a vehicle wider than 2.5 m may not use an expressway without a warning marker
+Q237	lorries must travel in the right-hand (outermost) lane
+Q238	low beam is needed BY DAY in fog or dust
+Q239	material falling off a lorry: the driver must collect it and clean the road at their own cost
+Q245	overtaking is banned whenever the road is slippery, sign or no sign
+Q246	passengers must get out through the kerb-side (right) door
+Q248	pedestrians may never cross a fast road such as a wide expressway
+Q249	a cracked windscreen or side glass that blocks vision makes the car undriveable
+Q250	on a long drive take a 5-minute break every hour
+Q252	drive in the right-hand lane whenever your speed is below the posted limit
+Q253	you must stop once a pedestrian has entered the crossing area
+Q255	a car's headlamps, high and low beam, must be WHITE
+Q256	a bend with no sign: cut speed to suit how sharp the bend is
+Q257	UNDER-inflated tyres overheat and wear at the edges
+Q259	OVER-inflated tyres wear and are far more likely to blow out
+Q258	expressways are barred to pedestrians, cyclists, and construction and agricultural vehicles
+Q262	the horn is banned near schools, hospitals and public places except in real emergency
+Q265	warning lights and sirens are restricted to emergency, police, traffic and civil-defence vehicles
+Q266	engine overheating: NEVER open the radiator cap while it is hot
+Q267	a child may not travel in the front, not even on an adult's lap
+Q268	children under 10 travel in the rear, in a proper child seat
+Q269	full beam is banned when a vehicle approaches or when you are close behind one
+Q271	a general licence covers all vehicles EXCEPT construction/agricultural machinery and motorcycles
+Q272	30 km/h near crossings, parks, schools and government offices
+Q273	letting an unlicensed person drive your vehicle -> imprisonment, fine, or both
+Q274	putting a child on the driver's lap -> 40,000 dinar fine
+Q275	engine boiling: do not switch off; let it cool, add water after 20 minutes, then open the cap
+Q278	overheating brake discs show as weaker braking and a burning smell
