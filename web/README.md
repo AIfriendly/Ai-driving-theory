@@ -7,7 +7,7 @@ self-contained HTML file** — no build step, no dependencies, no network calls.
 Open `index.html` in any browser, or use the published site (see
 [Deployment](#deployment)).
 
-**Current content: 736 questions · 110 hand-drawn sign icons · 14 achievements.**
+**Current content: 736 questions · 110 hand-drawn sign icons · 51 scene/diagram illustrations · 14 achievements.**
 
 | Category | Questions |
 |---|---:|
@@ -249,6 +249,33 @@ publish. The checks are:
 ---
 
 ## Changelog
+
+### Illustrating the text-only questions — 15 new animated scene diagrams
+
+The source PDFs carry an illustration on almost every question, but the app was
+image-light: 590 of 736 questions were text-only. This is the first pass at
+closing that gap. Fifteen new inline-SVG scene diagrams were drawn and attached
+to previously text-only questions (they illustrate the scenario the text already
+describes, so they are decorative `aria-hidden` — the answer is still in words):
+
+- **Instructional diagrams:** hands at 9-and-3 on the wheel, door-mirror
+  adjustment (a strip of your own car at the inner edge), a two-second following
+  gap, and the railway countdown posts (3-2-1 stripes).
+- **Roundabout manoeuvres:** first exit (signal right, right lane), second exit
+  (straight ahead), and using a roundabout to turn around — each with a routing
+  arrow whose dashes flow along the path.
+- **Parking / stopping:** parked before a hill crest (wheels to the kerb), under
+  a bridge (prohibited), and stopping on a bend (prohibited).
+- **Occupant safety:** children ride in the back in a child seat, a fastened seat
+  belt, don't leave a child alone in the car, and leave an injured motorcyclist's
+  helmet on.
+
+Motion was added to the scene layer to match the animated signs: routing arrows
+march (`sgn-march`), prohibition rings throb (`sgn-throb`), wheels turn
+(`sgn-rot`). All of it sits behind the existing `prefers-reduced-motion` guard,
+and scene animation never runs inside answer options. 590 → 574 text-only
+questions; more passes to follow across the exam picture section, the master
+book, and parts 1–2.
 
 ### 736 questions — the exam's picture section read in full; engine-bay and multi-car roundabout formats added
 

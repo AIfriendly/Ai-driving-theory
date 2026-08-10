@@ -250,6 +250,13 @@
      printed exam draws a red arrow onto an engine-bay photo. */
   @keyframes sgnpulse{0%,100%{opacity:.35;transform:scale(1)}50%{opacity:1;transform:scale(1.55)}}
   .sgn-pulse{transform-box:fill-box;transform-origin:center;animation:sgnpulse 1.6s ease-in-out infinite}
+  /* A routing arrow whose dashes flow along the path, so the eye follows the
+     manoeuvre. Used on the decorative scene diagrams, never on answer options. */
+  @keyframes sgnmarch{to{stroke-dashoffset:-16}}
+  .sgn-march{animation:sgnmarch .9s linear infinite}
+  /* A prohibition ring that gently throbs, and a warning that blinks. */
+  @keyframes sgnthrob{0%,100%{opacity:1}50%{opacity:.45}}
+  .sgn-throb{animation:sgnthrob 1.3s ease-in-out infinite}
   /* In "pick the sign" questions the options must stay still: if only one of the
      three moved, the movement itself would point at the answer. */
   .signopt svg *{animation:none!important}
@@ -2794,6 +2801,18 @@ var _engBody='<defs><marker id="emk" viewBox="0 0 10 10" refX="8.5" refY="5" mar
 function _eng(lbl,ax,ay,tx,ty){return '<svg viewBox="0 0 200 120" role="img" aria-label="'+lbl+'">'+_engBody
  +'<line x1="'+ax+'" y1="'+ay+'" x2="'+tx+'" y2="'+ty+'" stroke="#e11" stroke-width="2.6" marker-end="url(#emk)"/>'
  +'<circle cx="'+tx+'" cy="'+ty+'" r="5" fill="none" stroke="#e11" stroke-width="1.8" class="sgn-pulse"/></svg>';}
+/* top-down roundabout base + a blue routing arrow, for the "which exit" questions.
+   Decorative (the text names the manoeuvre), so wrapped by aria-hidden _scn. */
+var _rbBase='<rect width="200" height="120" fill="#8cbf4f"/>'
+ +'<rect y="44" width="200" height="32" fill="#767c84"/><rect x="84" width="32" height="120" fill="#767c84"/>'
+ +'<circle cx="100" cy="60" r="34" fill="#767c84"/><circle cx="100" cy="60" r="15" fill="#8cbf4f" stroke="#dfe6d9" stroke-width="1.5"/>';
+function _rb(i){return _scn('<defs><marker id="rmk" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="4" markerHeight="4" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#1c4b8a"/></marker></defs>'+_rbBase+i);}
+function _rbArrow(d){return '<path class="sgn-march" d="'+d+'" fill="none" stroke="#1c4b8a" stroke-width="2.4" stroke-dasharray="5 3" marker-end="url(#rmk)"/>';}
+/* side-profile car, for the hill-parking scene */
+function _carSide(x,y,r,c){c=c||"#2f7fd0";return '<g transform="translate('+x+' '+y+') rotate('+(r||0)+')">'
+ +'<path d="M-16 0 Q-16 -6 -9 -6 L-5 -12 Q0 -14 8 -12 L12 -6 Q16 -6 16 0 Z" fill="'+c+'"/>'
+ +'<rect x="-4" y="-11" width="10" height="6" rx="1.5" fill="#cfe8fb"/>'
+ +'<circle cx="-9" cy="1" r="4.2" fill="#22262c"/><circle cx="9" cy="1" r="4.2" fill="#22262c"/></g>';}
 var SCENES={
  openRoad:_scn(_base()+_tree(22,64,1.1)+_tree(178,62,1.2)+_house(40,58,0.75)+_carRear(101,73,0.5)),
  carAhead:_scn(_base()+_tree(20,64)+_house(176,56,0.7)+_carRear(100,95,1.5)),
@@ -2858,6 +2877,69 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
  engWasher:_eng("Engine bay from above. A red pointer marks the translucent bluish tank with a cap in the bottom-left.",70,104,35,84),
  engBrake:_eng("Engine bay from above. A red pointer marks the small translucent amber reservoir against the firewall on the right.",190,78,174,76),
  engPower:_eng("Engine bay from above. A red pointer marks the small black-capped cylinder just right of the central engine block.",120,104,139,86),
+ handWheel:_scn('<rect width="200" height="120" fill="#eef2f4"/>'
+   +'<circle cx="100" cy="60" r="40" fill="none" stroke="#2a2f36" stroke-width="9"/>'
+   +'<circle cx="100" cy="60" r="12" fill="#3a3f47"/>'
+   +'<g stroke="#3a3f47" stroke-width="7" stroke-linecap="round"><line x1="100" y1="60" x2="65" y2="60"/><line x1="100" y1="60" x2="135" y2="60"/><line x1="100" y1="60" x2="100" y2="95"/></g>'
+   +'<g fill="#e0a878" stroke="#b07a4a" stroke-width="1"><rect x="51" y="49" width="15" height="22" rx="7"/><rect x="134" y="49" width="15" height="22" rx="7"/></g>'
+   +'<text x="72" y="30" text-anchor="middle" font-size="9" font-weight="700" fill="#2a6bb0" font-family="sans-serif">9</text>'
+   +'<text x="128" y="30" text-anchor="middle" font-size="9" font-weight="700" fill="#2a6bb0" font-family="sans-serif">3</text>'),
+ mirrorAdjust:_scn('<rect width="200" height="120" fill="#dfe6ea"/>'
+   +'<rect x="34" y="30" width="132" height="60" rx="9" fill="#20242a"/>'
+   +'<rect x="40" y="36" width="120" height="48" rx="6" fill="#a9c4d6"/>'
+   +'<polygon points="40,84 160,84 118,52 82,52" fill="#767c84"/>'                            /* road receding */
+   +'<g fill="#f2f4f6"><polygon points="97,84 103,84 101.5,52 98.5,52"/></g>'                 /* lane line */
+   +'<rect x="40" y="36" width="17" height="48" rx="6" fill="#2f6ea8"/>'                       /* thin strip of own car, inner edge */
+   +'<rect x="150" y="70" width="10" height="14" rx="2" fill="#c23"/>'                         /* following car glimpse */
+   +'<text x="100" y="106" text-anchor="middle" font-size="8" fill="#5a6068" font-family="sans-serif">just a strip of your own car</text>'),
+ roundExit1:_rb(_pc(100,104,0)+_rbArrow("M100 96 C100 84 116 68 148 61")),
+ roundExit2:_rb(_pc(100,104,0)+_rbArrow("M100 96 C148 86 148 30 100 15")),
+ roundUturn:_rb(_pc(94,104,0)+_rbArrow("M94 96 C54 84 58 26 100 24 C138 22 148 56 118 68 C112 71 110 88 110 104")),
+ followGap:_scn(_base()+_carRear(100,64,0.7)+_carRear(100,104,1.25)
+   +'<g stroke="#e11" stroke-width="1.7"><line x1="126" y1="74" x2="126" y2="96"/></g>'
+   +'<g fill="#e11"><polygon points="126,72 123,77 129,77"/><polygon points="126,98 123,93 129,93"/></g>'
+   +'<text x="150" y="88" text-anchor="middle" font-size="10" font-weight="700" fill="#e11" font-family="sans-serif">2 s</text>'),
+ hillPark:_scn('<rect width="200" height="120" fill="#cbe8fa"/>'
+   +'<polygon points="0,120 200,120 200,64 0,96" fill="#8cbf4f"/>'
+   +'<polygon points="0,96 200,64 200,76 0,108" fill="#767c84"/>'
+   +'<rect x="0" y="96" width="200" height="12" fill="#c9ccd0" transform="rotate(-9 0 96)" opacity="0"/>'
+   +_carSide(96,74,-9,"#2f7fd0")
+   +'<g stroke="#dfe6d9" stroke-width="1.4" stroke-dasharray="6 5"><line x1="0" y1="102" x2="200" y2="70"/></g>'
+   +'<text x="150" y="112" text-anchor="middle" font-size="8" fill="#33383e" font-family="sans-serif">front wheels turned to kerb</text>'),
+ bridgePark:_scn('<rect width="200" height="120" fill="#cbe8fa"/>'
+   +'<rect y="88" width="200" height="32" fill="#8a8f96"/>'
+   +'<rect x="16" y="14" width="168" height="24" rx="2" fill="#b0552f"/><rect x="16" y="34" width="168" height="5" fill="#8f4526"/>'
+   +'<rect x="24" y="38" width="14" height="50" fill="#9a9ea4"/><rect x="162" y="38" width="14" height="50" fill="#9a9ea4"/>'
+   +_carRear(100,100,1.15,"#2b57a8")
+   +'<g class="sgn-throb"><circle cx="100" cy="62" r="15" fill="none" stroke="#d21f28" stroke-width="4"/><line x1="90" y1="52" x2="110" y2="72" stroke="#d21f28" stroke-width="4"/></g>'),
+ helmetDown:_scn(_base(_sky,_grass,"#767c84")
+   +'<g transform="translate(96,96)"><rect x="-20" y="-4" width="40" height="9" rx="4" fill="#2b57a8"/><circle cx="-24" cy="0" r="8" fill="#d94f2a" stroke="#a83a1c" stroke-width="1.5"/><rect x="-30" y="-2" width="7" height="4" rx="1.5" fill="#7fbfe6"/></g>'
+   +'<g transform="translate(126,84)" fill="#2a2f36"><circle cx="0" cy="-6" r="3.2"/><rect x="-2" y="-3" width="4" height="8" rx="1.5"/><path d="M-2,0 l-6,4 M2,0 l6,3" stroke="#2a2f36" stroke-width="1.6"/></g>'
+   +'<text x="100" y="30" text-anchor="middle" font-size="9" font-weight="700" fill="#b8341a" font-family="sans-serif">leave the helmet on</text>'),
+ overtakeLeft:_scn(_base()+_carRear(112,82,0.9,"#9aa0a8")+_carRear(84,106,1.2,"#3aa64a")
+   +'<path class="sgn-march" d="M90 104 C78 92 82 82 102 72" fill="none" stroke="#12331f" stroke-width="1.8" stroke-dasharray="5 3"/><polygon points="102,72 97,77 104,78" fill="#12331f"/>'
+   +'<text x="100" y="30" text-anchor="middle" font-size="9" fill="#33383e" font-family="sans-serif">pass on the left</text>'),
+ childRear:_scn('<rect width="200" height="120" fill="#eaf1f4"/>'
+   +'<path d="M28 80 Q28 50 62 46 L94 30 Q122 24 152 30 L170 48 Q178 52 178 80 Z" fill="#2f7fd0"/>'
+   +'<rect x="66" y="40" width="34" height="24" rx="3" fill="#cfe8fb"/><rect x="106" y="40" width="30" height="24" rx="3" fill="#cfe8fb"/>'
+   +'<circle class="sgn-rot sgn-slow" cx="58" cy="82" r="11" fill="#22262c"/><circle class="sgn-rot sgn-slow" cx="152" cy="82" r="11" fill="#22262c"/>'
+   +'<rect x="112" y="48" width="18" height="16" rx="2" fill="#e8a13a"/><circle cx="121" cy="47" r="5" fill="#e0a878"/>'
+   +'<text x="100" y="108" text-anchor="middle" font-size="8" fill="#33383e" font-family="sans-serif">in the back, in a child seat</text>'),
+ bendStop:_scn(_bendBase()+_carRear(92,84,0.95,"#c23")
+   +'<g class="sgn-throb"><circle cx="152" cy="32" r="13" fill="none" stroke="#d21f28" stroke-width="4"/><line x1="143" y1="23" x2="161" y2="41" stroke="#d21f28" stroke-width="4"/></g>'),
+ railPosts:_scn(_base(_sky,_grass,"#767c84")
+   +_post(72,112,88)+'<g stroke="#d21f28" stroke-width="2.4"><line x1="65" y1="98" x2="79" y2="92"/><line x1="65" y1="104" x2="79" y2="98"/><line x1="65" y1="110" x2="79" y2="104"/></g>'
+   +_post(94,106,88)+'<g stroke="#d21f28" stroke-width="2.2"><line x1="88" y1="98" x2="100" y2="93"/><line x1="88" y1="103" x2="100" y2="98"/></g>'
+   +_post(112,100,86)+'<g stroke="#d21f28" stroke-width="2"><line x1="107" y1="93" x2="117" y2="89"/></g>'
+   +'<g stroke="#3a3f47" stroke-width="2"><line x1="122" y1="72" x2="152" y2="66"/><line x1="124" y1="80" x2="158" y2="72"/></g>'
+   +'<g stroke="#8a5a3a" stroke-width="1.4"><line x1="126" y1="82" x2="128" y2="64"/><line x1="140" y1="79" x2="142" y2="61"/><line x1="154" y1="76" x2="156" y2="58"/></g>'),
+ seatbelt:_scn('<rect width="200" height="120" fill="#eaf1f4"/>'
+   +'<rect x="72" y="38" width="56" height="72" rx="7" fill="#8a9098"/><rect x="76" y="26" width="48" height="24" rx="9" fill="#8a9098"/>'
+   +'<circle cx="100" cy="42" r="10" fill="#e0a878"/><rect x="88" y="52" width="24" height="36" rx="6" fill="#3a6ea5"/>'
+   +'<line x1="90" y1="54" x2="112" y2="88" stroke="#e23b3b" stroke-width="4.5"/><rect x="108" y="83" width="7" height="9" rx="1.5" fill="#333"/>'),
+ childAlone:_scn(_base(_sky,_grass,"#767c84")+_carRear(96,96,1.6,"#2b57a8")
+   +'<circle cx="96" cy="90" r="4.5" fill="#e0a878"/>'
+   +'<g class="sgn-throb"><circle cx="152" cy="34" r="14" fill="none" stroke="#d21f28" stroke-width="4"/><line x1="142" y1="24" x2="162" y2="44" stroke="#d21f28" stroke-width="4"/></g>'),
 };
 
   (function assignScenes(){
@@ -2896,7 +2978,23 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
       [/yellow ring handle/i,"engDipstick"],
       [/translucent tank in the bottom-left/i,"engWasher"],
       [/reservoir against the firewall/i,"engBrake"],
-      [/black-capped cylinder beside the engine/i,"engPower"]
+      [/black-capped cylinder beside the engine/i,"engPower"],
+      [/hands rest on the steering wheel/i,"handWheel"],
+      [/side mirrors be adjusted/i,"mirrorAdjust"],
+      [/take the first exit at a roundabout/i,"roundExit1"],
+      [/take the second exit \(straight ahead\) at a roundabout/i,"roundExit2"],
+      [/taken the wrong road and need to turn around/i,"roundUturn"],
+      [/safe following distance can be judged/i,"followGap"],
+      [/park your car just before the crest of a hill/i,"hillPark"],
+      [/park your car under a bridge or in an underpass/i,"bridgePark"],
+      [/crash helmet should be/i,"helmetDown"],
+      [/drives on the right, you normally overtake/i,"overtakeLeft"],
+      [/Young children should travel/i,"childRear"],
+      [/stop your car on a bend/i,"bendStop"],
+      [/three red stripes, then one with two/i,"railPosts"],
+      [/Wearing a seat belt is required/i,"seatbelt"],
+      [/leave a small child alone in the car/i,"childAlone"],
+      [/^In fog you should/i,"fog"]
     ];
     QUESTIONS.forEach(function(q){var e=(q.q&&q.q.en)||"";for(var i=0;i<MAP.length;i++){if(MAP[i][0].test(e)){q.scene=MAP[i][1];break;}}});
     var WO=function(en,ku){return {en:en,ku:ku,};};
