@@ -7,7 +7,7 @@ self-contained HTML file** — no build step, no dependencies, no network calls.
 Open `index.html` in any browser, or use the published site (see
 [Deployment](#deployment)).
 
-**Current content: 736 questions · 110 hand-drawn sign icons · 83 scene/concept illustrations · 14 achievements. Every question now carries a visual.**
+**Current content: 736 questions · 110 hand-drawn sign icons · 102 scene/concept illustrations · 14 achievements. Every question now carries a visual.**
 
 | Category | Questions |
 |---|---:|
@@ -249,6 +249,18 @@ publish. The checks are:
 ---
 
 ## Changelog
+
+### Part 2 image sweep — the first-aid bucket, broken out
+
+Part 2 (the master book's rules and first-aid chapters) is first-aid-heavy, and
+all 57 first-aid questions had been sharing a single red-cross box. Split that
+bucket into 12 distinct, animated first-aid icons — direct pressure on a bleed,
+the recovery position, CPR (with a down arrow and medical cross), choking, a
+burn cooling under a tap, a snake for bites/stings, shock (legs raised),
+nosebleed, a splinted fracture, an eye injury, a gathering crowd, and a fuel-fire
+hazard — assigned by a category-gated keyword map so the medical keywords never
+leak onto a rules question. First-aid pictures now range across 15 icons instead
+of one. 102 scene/concept illustrations total.
 
 ### Part 1 image sweep — dangerous-goods placards
 
