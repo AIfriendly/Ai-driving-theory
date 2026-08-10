@@ -230,6 +230,7 @@
   .gbul li:last-child{border-bottom:none}
   .gbul li::before{content:"";position:absolute;inset-inline-start:2px;top:15px;width:7px;height:7px;border-radius:50%;background:var(--accent)}
   .foot{color:var(--muted);font-size:11.5px;text-align:center;padding:6px 16px 20px;line-height:1.5}
+  .footlink{color:var(--brand);font-weight:700;cursor:pointer;white-space:nowrap}
   button:focus-visible,.tile:focus-visible,[role="button"]:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
   /* Visible to screen readers only — never to the eye. */
   .sronly{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;
@@ -603,7 +604,7 @@
       "سنووری یاساییِ ئەلکهۆل لە خوێندا بۆ لێخوڕین لە کوردستان چەندە؟","کوردستان سیاسەتی سفری ئەلکهۆلی هەیە بۆ شۆفێران."),
     Q("rules",null,"Which number does the official handbook give for the traffic police?","ما هو الرقم الذي يعطيه الدليل الرسمي لشرطة المرور؟",
       [O("440","٤٤٠","٤٤٠"),O("104","١٠٤","١٠٤"),O("122","١٢٢","١٢٢")],0,
-      "The handbook's emergency panel tells you to call 911 for any sudden emergency, or one of the specific lines: 115 fire, 440 traffic police, 104 emergency police, 122 ambulance. 104 is the emergency police, which is a different service from the traffic police.","تطلب منك لوحة الطوارئ في الدليل الاتصال بالرقم ٩١١ في أي حالة طارئة، أو بأحد الأرقام المحددة: ١١٥ الإطفاء، ٤٤٠ شرطة المرور، ١٠٤ شرطة الطوارئ، ١٢٢ الإسعاف.",
+      "The handbook's emergency panel tells you to call 911 for any sudden emergency, or one of the specific lines: 115 civil defence/fire, 188 traffic emergency, 440 traffic police, 104 emergency police, 122 ambulance. 104 is the emergency police, which is a different service from the traffic police.","تطلب منك لوحة الطوارئ في الدليل الاتصال بالرقم ٩١١ في أي حالة طارئة، أو بأحد الأرقام المحددة: ١١٥ الإطفاء، ٤٤٠ شرطة المرور، ١٠٤ شرطة الطوارئ، ١٢٢ الإسعاف.",
       "کتێبە فەرمییەکە چ ژمارەیەک بۆ پۆلیسی هاتوچۆ دەدات؟","لە خشتەی فریاکەوتنی کتێبەکەدا داوات لێ دەکات لە هەر بارودۆخێکی کتوپڕدا پەیوەندی بە ٩١١ ەوە بکەیت، یان بە یەکێک لە هێڵە دیاریکراوەکان: ١١٥ ئاگرکوژێنەوە، ٤٤٠ پۆلیسی هاتوچۆ، ١٠٤ پۆلیسی فریاکەوتن، ١٢٢ فریاگوزاری. ١٠٤ پۆلیسی فریاکەوتنە، کە خزمەتگوزارییەکی جیاوازە لە پۆلیسی هاتوچۆ."),
     Q("rules",null,"For motorcycle riders in the Kurdistan Region, wearing a helmet is:","بالنسبة لسائقي الدراجات النارية في إقليم كردستان، ارتداء الخوذة:",
       [O("Mandatory","إلزامي","پێویستە"),O("Optional","اختياري","ئارەزوومەندانە"),O("Only at night","ليلاً فقط","تەنها بە شەو")],0,
@@ -1432,10 +1433,10 @@
       "Rail vehicles have priority over every other vehicle, for a simple reason: they cannot steer around you and need a very long distance to stop.","","تراموای یان سوارڕۆیەکی تری سەر هێڵ ڕێگاکەت دەبڕێت. کێ یەکەم دەڕوات؟","سوارڕۆی سەر هێڵ پێشڕەوی هەیە بەسەر هەموو سوارڕۆیەکی تردا، بۆ هۆکارێکی سادە: ناتوانن بەلای تۆدا لابدەن و دوورییەکی زۆر درێژیان دەوێت بۆ وەستان."),
     Q("rules",null,"Which number do you call for an ambulance in the Kurdistan Region?","",
       [O("122","","١٢٢"),O("115","","١١٥"),O("104","","١٠٤")],0,
-      "122 is the ambulance. The full official list is 115 fire, 440 traffic police, 104 emergency police and 122 ambulance — and the handbook tells you to call 911 for any sudden emergency.","","بۆ ئەمبولانس لە هەرێمی کوردستان پەیوەندی بە چ ژمارەیەکەوە دەکەیت؟","١٢٢ ئەمبولانسە. لیستە فەرمییە تەواوەکە بریتییە لە ١١٥ ئاگرکوژێنەوە، ٤٤٠ پۆلیسی هاتوچۆ، ١٠٤ پۆلیسی فریاکەوتن و ١٢٢ فریاگوزاری — و کتێبەکە داوات لێ دەکات لە هەر بارودۆخێکی کتوپڕدا پەیوەندی بە ٩١١ ەوە بکەیت."),
+      "122 is the ambulance. The full official list is 115 civil defence/fire, 188 traffic emergency, 440 traffic police, 104 emergency police and 122 ambulance — and the handbook tells you to call 911 for any sudden emergency.","","بۆ ئەمبولانس لە هەرێمی کوردستان پەیوەندی بە چ ژمارەیەکەوە دەکەیت؟","١٢٢ ئەمبولانسە. لیستە فەرمییە تەواوەکە بریتییە لە ١١٥ ئاگرکوژێنەوە، ٤٤٠ پۆلیسی هاتوچۆ، ١٠٤ پۆلیسی فریاکەوتن و ١٢٢ فریاگوزاری — و کتێبەکە داوات لێ دەکات لە هەر بارودۆخێکی کتوپڕدا پەیوەندی بە ٩١١ ەوە بکەیت."),
     Q("rules",null,"Which number do you call for the fire brigade?","",
       [O("115","","١١٥"),O("104","","١٠٤"),O("122","","١٢٢")],0,
-      "115 is the fire brigade. Learn the set as a group — 115 fire, 440 traffic police, 104 emergency police, 122 ambulance, 911 for any sudden emergency — because at a crash scene you may need more than one of them.","","بۆ ئاگرکوژێنەوە پەیوەندی بە چ ژمارەیەکەوە دەکەیت؟","١١٥ ئاگرکوژێنەوەیە. کۆمەڵەکە پێکەوە فێربە — ١١٥ ئاگرکوژێنەوە، ٤٤٠ پۆلیسی هاتوچۆ، ١٠٤ پۆلیسی فریاکەوتن، ١٢٢ فریاگوزاری، ٩١١ بۆ هەر بارودۆخێکی کتوپڕ — چونکە لە شوێنی ڕووداودا لەوانەیە پێویستت بە زیاتر لە یەکێکیان بێت."),
+      "115 is the fire brigade. Learn the set as a group — 115 civil defence/fire, 188 traffic emergency, 440 traffic police, 104 emergency police, 122 ambulance, 911 for any sudden emergency — because at a crash scene you may need more than one of them.","","بۆ ئاگرکوژێنەوە پەیوەندی بە چ ژمارەیەکەوە دەکەیت؟","١١٥ ئاگرکوژێنەوەیە. کۆمەڵەکە پێکەوە فێربە — ١١٥ ئاگرکوژێنەوە، ٤٤٠ پۆلیسی هاتوچۆ، ١٠٤ پۆلیسی فریاکەوتن، ١٢٢ فریاگوزاری، ٩١١ بۆ هەر بارودۆخێکی کتوپڕ — چونکە لە شوێنی ڕووداودا لەوانەیە پێویستت بە زیاتر لە یەکێکیان بێت."),
     Q("rules",null,"What was the first traffic law in Iraq?","",
       [O("Law No. 50 of 1935","","یاسای ژمارە ٥٠ی ساڵی ١٩٣٥"),O("Law No. 86 of 2004","","یاسای ژمارە ٨٦ی ساڵی ٢٠٠٤"),O("Law No. 48 of 1971","","یاسای ژمارە ٤٨ی ساڵی ١٩٧١")],0,
       "The line runs 50 of 1935, then 48 of 1971, then 86 of 2004 — the last of which is still the law applied in the Kurdistan Region and is made up of 38 parts.","","یەکەم یاسای هاتوچۆ لە عێراقدا چی بوو؟","زنجیرەکە بەم شێوەیەیە: ٥٠ی ١٩٣٥، پاشان ٤٨ی ١٩٧١، پاشان ٨٦ی ٢٠٠٤ — کە دواییان هێشتا ئەو یاسایەیە لە هەرێمی کوردستاندا جێبەجێ دەکرێت و لە ٣٨ بەش پێکهاتووە."),
@@ -1799,7 +1800,7 @@
       [O("No — nothing by mouth until the paramedics arrive","","نەخێر — هیچ بە دەم نەدرێت تا تیمی فریاگوزاری دەگات"),O("Yes, water helps with shock","","بەڵێ، ئاو بۆ شۆک سوودی هەیە"),O("Yes, sweet tea is best","","بەڵێ، چای شیرین باشترینە")],0,
       "They may need an anaesthetic at hospital, and anything in the stomach makes that dangerous. If they are unconscious, food or drink can also block the airway.","","دەبێت لە شوێنی ڕووداودا خواردن یان خواردنەوە بدەیت بە کەسێکی بریندار؟","لەوانەیە لە نەخۆشخانەدا پێویستیان بە بێهۆشکەر بێت، و هەر شتێک لە گەدەدا بێت ئەوە مەترسیدار دەکات. ئەگەر لە هۆش خۆی چووبێت، خواردن یان خواردنەوە دەتوانێت ڕێڕەوی هەناسەش ببەستێت."),
     Q("firstaid",null,"Which emergency numbers does the textbook give for a crash in the Kurdistan Region?","",
-      [O("911 for any emergency — or 115 fire, 440 traffic police, 104 emergency police, 122 ambulance","","٩١١ بۆ هەر فریاکەوتنێک — یان ١١٥ ئاگرکوژێنەوە، ٤٤٠ پۆلیسی هاتوچۆ، ١٠٤ پۆلیسی فریاکەوتن، ١٢٢ فریاگوزاری"),O("Only 911","","تەنها ٩١١"),O("Only 122","","تەنها ١٢٢")],0,
+      [O("911 for any emergency — or 115 civil defence/fire, 188 traffic emergency, 440 traffic police, 104 emergency police, 122 ambulance","","٩١١ بۆ هەر فریاکەوتنێک — یان ١١٥ ئاگرکوژێنەوە، ٤٤٠ پۆلیسی هاتوچۆ، ١٠٤ پۆلیسی فریاکەوتن، ١٢٢ فریاگوزاری"),O("Only 911","","تەنها ٩١١"),O("Only 122","","تەنها ١٢٢")],0,
       "The handbook puts 911 first for any sudden emergency, then lists the specific lines. At a crash you may need more than one service — fire for a fuel leak, ambulance for casualties, traffic police for the report — so learn the whole set.","","کتێبەکە کام ژمارەی فریاکەوتن بۆ ڕوودانێک لە هەرێمی کوردستان دەدات؟","کتێبەکە ٩١١ دەخاتە پێشەوە بۆ هەر بارودۆخێکی کتوپڕ، پاشان هێڵە دیاریکراوەکان ڕیز دەکات. لە ڕوودانێکدا لەوانەیە پێویستت بە زیاتر لە خزمەتگوزارییەک بێت — ئاگرکوژێنەوە بۆ دزەکردنی سووتەمەنی، فریاگوزاری بۆ برینداران، پۆلیسی هاتوچۆ بۆ ڕاپۆرتەکە — بۆیە هەموو کۆمەڵەکە فێربە."),
 
     Q("rules",null,"Your car breaks down on the road. Where do you place the warning triangle?","",
@@ -2657,7 +2658,46 @@
       "Wet discs bite far later than dry ones. A few light applications wipe the water off before you need them properly.","","تازە بەناو ئاوی وەستاودا ڕۆیشتوویت. دواتر چی بکەیت؟","دیسکی تەڕ زۆر دواتر دەگرێت لە وشک. چەند جارێک بە سووکی داگرتنیان ئاوەکە دەسڕێتەوە پێش ئەوەی بەڕاستی پێویستت بێت."),
     Q("rules",null,"A tram or train is crossing at the same time as you. Who goes first?","",
       [O("The rail vehicle, always","","سواررۆی ڕێڵدار، هەمیشە"),O("Whoever arrives first","","ئەوەی یەکەم بگات"),O("The road vehicle, because it is smaller","","سواررۆی ڕێگا، چونکە بچووکترە")],0,
-      "Rail vehicles cannot steer and take a very long distance to stop. They have priority over every kind of road vehicle.","","ترام یان شەمەندەفەرێک لە هەمان کاتدا دەپەڕێتەوە. کام یەکەم دەڕوات؟","سواررۆی ڕێڵدار ناتوانێت لابدات و ماوەیەکی زۆر درێژی دەوێت بۆ وەستان. بەسەر هەموو جۆرێکی سواررۆی ڕێگادا پێشینەی هەیە.")
+      "Rail vehicles cannot steer and take a very long distance to stop. They have priority over every kind of road vehicle.","","ترام یان شەمەندەفەرێک لە هەمان کاتدا دەپەڕێتەوە. کام یەکەم دەڕوات؟","سواررۆی ڕێڵدار ناتوانێت لابدات و ماوەیەکی زۆر درێژی دەوێت بۆ وەستان. بەسەر هەموو جۆرێکی سواررۆی ڕێگادا پێشینەی هەیە."),
+    Q("firstaid",null,"Which number do you call for a TRAFFIC emergency in the Kurdistan Region?","",
+      [O("188","","١٨٨"),O("122","","١٢٢"),O("104","","١٠٤")],0,
+      "188 is the traffic emergency line. It is not the same as 115, which is civil defence and the fire brigade — the exam tests both separately.","","لە هەرێمی کوردستان بۆ فریاکەوتنی هاتووچۆ کام ژمارە پەیوەندی دەکەیت؟","١٨٨ هێڵی فریاکەوتنی هاتووچۆیە. وەک ١١٥ نییە، کە بەرگری شارستانی و ئاگرکوژێنەوەیە — تاقیکردنەوەکە هەردووکیان بە جیا تاقی دەکاتەوە."),
+    Q("rules",null,"How far from a BUS STOP may you not stop?","",
+      [O("Within 20 m before it and 10 m after it","","لە ماوەی ٢٠ مەتر پێش ئەو و ١٠ مەتر دوای ئەو"),O("Within 5 m either side","","لە ماوەی ٥ مەتر لە هەردوو لا"),O("There is no restriction","","هیچ سنوورێک نییە")],0,
+      "Twenty metres before, ten metres after. A car parked closer hides the bus and the people stepping off it.","","لە وێستگەی پاسەوە چەند دوور نابێت بوەستیت؟","بیست مەتر پێشی، دە مەتر دوای. ئۆتۆمبیلێکی نزیکتر پارککراو پاسەکە و ئەو خەڵکە دەشارێتەوە کە لێی دادەبەزن."),
+    Q("rules",null,"How far from a PEDESTRIAN CROSSING may you not stop?","",
+      [O("Within 20 m before it and 10 m after it","","لە ماوەی ٢٠ مەتر پێش ئەو و ١٠ مەتر دوای ئەو"),O("Within 3 m either side","","لە ماوەی ٣ مەتر لە هەردوو لا"),O("Only directly on top of it","","تەنیا ڕێک لەسەری")],0,
+      "The same 20 m before, 10 m after. Parking closer hides a person stepping onto the crossing from any driver approaching it.","","لە شوێنی پەڕینەوەی پیادەوە چەند دوور نابێت بوەستیت؟","هەمان ٢٠ مەتر پێشی، ١٠ مەتر دوای. پارککردنی نزیکتر ئەو کەسە دەشارێتەوە کە پێی دەنێتە سەر پەڕینەوەکە لە هەموو شۆفێرێکی نزیکبووەوە."),
+    Q("rules",null,"What is the minimum gap to leave between your car and the ones you park between?","",
+      [O("About one metre","","نزیکەی یەک مەتر"),O("Half a metre","","نیو مەتر"),O("Two metres","","دوو مەتر")],0,
+      "About a metre. Less than that and neither driver can get out, or pull away without shunting.","","کەمترین بۆشایی نێوان ئۆتۆمبیلەکەت و ئەوانەی لە نێوانیاندا پارک دەکەیت چەندە؟","نزیکەی مەترێک. کەمتر لەوە و هیچ کام لە شۆفێرەکان ناتوانن دەربچن، یان بەبێ پاڵنان بجوڵێن."),
+    Q("rules",null,"How far behind your broken-down car should the warning triangle go?","",
+      [O("About 50 m on an inner-city road, and about 130 m on an outer road","","نزیکەی ٥٠ مەتر لە ڕێگای ناوشار، و نزیکەی ١٣٠ مەتر لە ڕێگای دەرەوە"),O("20 m on every road","","٢٠ مەتر لەسەر هەموو ڕێگایەک"),O("Right against the back bumper","","ڕێک بە پشتی ئۆتۆمبیلەکەوە")],0,
+      "The faster the road, the further back it goes: about 50 m in town, about 130 m outside, so drivers get warning in time to slow.","","سێگۆشەی ئاگادارکردنەوە چەند دوور لە دوای ئۆتۆمبیلە پەککەوتووەکەت دابنرێت؟","چەند ڕێگاکە خێراتر بێت، دوورتر دادەنرێت: نزیکەی ٥٠ مەتر لە شار، نزیکەی ١٣٠ مەتر لە دەرەوە، تاکو شۆفێرەکان بە کاتی خۆی ئاگادار بن بۆ کەمکردنەوەی خێرایی."),
+    Q("rules",null,"May you make a U-turn at a set of traffic lights?","",
+      [O("Only where a clear sign permits it","","تەنیا لەو شوێنەی تابلۆیەکی ڕوون ڕێگای پێدەدات"),O("Yes, at any lights","","بەڵێ، لە هەر گڵۆپێک"),O("Yes, whenever the road is clear","","بەڵێ، هەر کاتێک ڕێگاکە چۆڵ بێت")],0,
+      "A U-turn at lights is not permitted by default. It needs a sign that specifically allows it.","","ئایا دەتوانیت لە گڵۆپی هاتووچۆدا سووڕانەوەی U بکەیت؟","سووڕانەوەی U لە گڵۆپدا بە بنەڕەت ڕێگەپێدراو نییە. تابلۆیەکی دەوێت کە بە تایبەتی ڕێگای پێبدات."),
+    Q("rules",null,"What is the best way to keep track of your speed?","",
+      [O("Glance at the speedometer","","تێڕوانینێک لە پێوەری خێرایی"),O("Judge it from the scenery going past","","لە دیمەنی تێپەڕیوەوە هەڵیبسەنگێنە"),O("Listen to the engine note","","گوێ لە دەنگی بزوێنەر بگرە")],0,
+      "Engine noise and the passing scenery both mislead, especially after a long stretch at speed. The instrument is the only reliable check.","","باشترین ڕێگا بۆ چاودێریکردنی خێراییەکەت چییە؟","دەنگی بزوێنەر و دیمەنی تێپەڕیو هەردووکیان گومڕا دەکەن، بەتایبەتی دوای ماوەیەکی درێژ بە خێرایی. ئامێرەکە تەنیا پشکنینی متمانەپێکراوە."),
+    Q("rules",null,"In this picture, which car has priority at the crossroads?","",
+      [O("Car B, because it is approaching from your right","","ئۆتۆمبیلی B، چونکە لە لای ڕاستتەوە نزیک دەبێتەوە"),O("Car A, because it arrived first","","ئۆتۆمبیلی A، چونکە یەکەم گەیشت"),O("Neither — whoever moves first","","هیچیان — ئەوەی یەکەم دەجوڵێت")],0,
+      "Nothing controls this junction, so the give-way-to-the-right rule decides it. Car B is on car A's right.","","لەم وێنەیەدا کام ئۆتۆمبیل پێشینەی هەیە لە چوارڕیانەکەدا؟","هیچ شتێک ئەم یەکتربڕە کۆنترۆڵ ناکات، بۆیە یاسای ڕێگادان بەوەی لای ڕاست بڕیاری لەسەر دەدات. ئۆتۆمبیلی B لە لای ڕاستی ئۆتۆمبیلی Aیە."),
+    Q("rules",null,"Car A wants to turn left across the junction shown. Which car goes first?","",
+      [O("Car B, because it is going straight ahead","","ئۆتۆمبیلی B، چونکە ڕاست بەرەوپێش دەڕوات"),O("Car A, because it signalled first","","ئۆتۆمبیلی A، چونکە یەکەم ئاماژەی دا"),O("They may go at the same time","","دەتوانن لە هەمان کاتدا بڕۆن")],0,
+      "Turning across the oncoming stream gives way to it. Car A waits for car B to clear.","","ئۆتۆمبیلی A دەیەوێت بەلای چەپدا بپێچێتەوە بەناو ئەم یەکتربڕەدا. کام یەکەم دەڕوات؟","پێچانەوە بەناو لێشاوی بەرامبەردا ڕێگای پێدەدات. ئۆتۆمبیلی A چاوەڕێ دەکات تاکو ئۆتۆمبیلی B تێدەپەڕێت."),
+    Q("rules",null,"In this roundabout picture, which car has priority?","",
+      [O("Car A, because it is already on the roundabout","","ئۆتۆمبیلی A، چونکە پێشتر لەسەر بازنەکەیە"),O("Car B, because it is entering","","ئۆتۆمبیلی B، چونکە دەچێتە ژوورەوە"),O("Neither has priority","","هیچیان پێشینەیان نییە")],0,
+      "Traffic already circulating goes first. Car B waits at the give-way line until there is a gap.","","لەم وێنەی بازنەیەدا کام ئۆتۆمبیل پێشینەی هەیە؟","ئەو هاتووچۆیەی پێشتر دەسووڕێتەوە یەکەم دەڕوات. ئۆتۆمبیلی B لەسەر هێڵی ڕێگادان چاوەڕێ دەکات تاکو بۆشاییەک دەبێت."),
+    Q("rules",null,"Car B is joining the main road from a side turning. Which car has priority?","",
+      [O("Car A, because it is already on the main road","","ئۆتۆمبیلی A، چونکە پێشتر لەسەر ڕێگا سەرەکییەکەیە"),O("Car B, because it is turning","","ئۆتۆمبیلی B، چونکە دەپێچێتەوە"),O("Whichever is travelling faster","","ئەوەی خێراتر دەڕوات")],0,
+      "Traffic on the main road keeps its priority. The give-way line across the side turning belongs to car B.","","ئۆتۆمبیلی B لە لاڕێیەکەوە دێتە سەر ڕێگا سەرەکییەکە. کام ئۆتۆمبیل پێشینەی هەیە؟","هاتووچۆی سەر ڕێگا سەرەکییەکە پێشینەی خۆی دەپارێزێت. هێڵی ڕێگادان بەناو لاڕێیەکەدا هی ئۆتۆمبیلی Bیە."),
+    Q("rules",null,"A car is turning into a side road while people are crossing it. Who goes first?","",
+      [O("The people on foot, who are already crossing","","ئەو کەسانەی بە پێن، کە پێشتر دەپەڕنەوە"),O("The car, because it signalled","","ئۆتۆمبیلەکە، چونکە ئاماژەی دا"),O("Whoever gets there first","","ئەوەی یەکەم بگاتە ئەوێ")],0,
+      "A turning driver gives way to people already crossing the road being turned into. Wait until they are clear.","","ئۆتۆمبیلێک دەپێچێتەوە بۆ لاڕێیەک لە کاتێکدا خەڵک بەسەریدا دەپەڕنەوە. کێ یەکەم دەڕوات؟","شۆفێری پێچەوە ڕێگا دەدات بەو کەسانەی پێشتر بەسەر ئەو ڕێگایەدا دەپەڕنەوە کە بۆی دەپێچێتەوە. چاوەڕێ بکە تاکو تێدەپەڕن."),
+    Q("rules",null,"Two lanes merge into one in this picture. Which car has priority?","",
+      [O("Car A, because it is in the lane that continues","","ئۆتۆمبیلی A، چونکە لەو ڕێڕەوەدایە کە بەردەوام دەبێت"),O("Car B, because it must merge","","ئۆتۆمبیلی B، چونکە دەبێت تێکەڵ ببێت"),O("Neither — they should race for it","","هیچیان — دەبێت پێکەوە ڕکابەری بکەن")],0,
+      "The lane that ends gives way to the lane that carries on. Car B fits into a gap behind or ahead of car A.","","لەم وێنەیەدا دوو ڕێڕەو دەبنە یەک. کام ئۆتۆمبیل پێشینەی هەیە؟","ئەو ڕێڕەوەی کۆتایی دێت ڕێگا دەدات بەو ڕێڕەوەی بەردەوام دەبێت. ئۆتۆمبیلی B لە بۆشاییەکدا لە دواوە یان پێشەوەی ئۆتۆمبیلی A جێگیر دەبێت.")
   ];
 
   /* ===== hazard scene illustrations + auto-assignment ===== */
@@ -2685,6 +2725,24 @@ function _post(x,gy,sy){return '<line x1="'+x+'" y1="'+gy+'" x2="'+x+'" y2="'+sy
 function _tri(cx,cy,g){return '<polygon points="'+cx+','+(cy-9)+' '+(cx+8.5)+','+(cy+6)+' '+(cx-8.5)+','+(cy+6)+'" fill="#fff" stroke="#d21f28" stroke-width="2.3"/>'+(g||'');}
 function _circ(cx,cy,f,g){return '<circle cx="'+cx+'" cy="'+cy+'" r="8" fill="'+f+'" stroke="#fff" stroke-width="1.5"/>'+(g||'');}
 
+/* Plan-view junction diagrams. Unlike the illustrative scenes above, the picture
+   IS the question here — which car goes first cannot be worked out from the text
+   alone — so these carry a real aria-label instead of aria-hidden. */
+function _plan(lbl,i){return '<svg viewBox="0 0 200 120" role="img" aria-label="'+lbl+'">'
+ +'<defs><marker id="pmk" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="4.5" markerHeight="4.5" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#12331f"/></marker></defs>'
+ +'<rect width="200" height="120" fill="#cfe3c8"/>'+i+'</svg>';}
+function _pc(x,y,r,c){return '<g transform="translate('+x+' '+y+') rotate('+(r||0)+')">'
+ +'<rect x="-5.2" y="-9" width="10.4" height="18" rx="2.6" fill="'+(c||"#2f7fd0")+'"/>'
+ +'<rect x="-3.7" y="-6.2" width="7.4" height="4.4" rx="1.1" fill="#dff0ff"/>'
+ +'<rect x="-3.7" y="2.6" width="7.4" height="3.6" rx="1" fill="#0e2b47" opacity=".4"/></g>';}
+function _plab(x,y,l){return '<circle cx="'+x+'" cy="'+y+'" r="7" fill="#fff" stroke="#12331f" stroke-width="1.3"/>'
+ +'<text x="'+x+'" y="'+(y+3)+'" text-anchor="middle" font-size="9" font-weight="800" fill="#12331f" font-family="sans-serif">'+l+'</text>';}
+function _par(d){return '<path d="'+d+'" fill="none" stroke="#12331f" stroke-width="1.8" stroke-dasharray="5 3.5" marker-end="url(#pmk)"/>';}
+var _rH='<rect y="42" width="200" height="36" fill="#9aa3ab"/>';
+var _rV='<rect x="82" width="36" height="120" fill="#9aa3ab"/>';
+var _dH='<path d="M0 60 H74 M126 60 H200" stroke="#fff" stroke-width="1.6" stroke-dasharray="8 8"/>';
+var _dV='<path d="M100 0 V38 M100 82 V120" stroke="#fff" stroke-width="1.6" stroke-dasharray="8 8"/>';
+var _giveS='<path d="M84 84 H116" stroke="#fff" stroke-width="2.4" stroke-dasharray="4 4"/>';
 var SCENES={
  openRoad:_scn(_base()+_tree(22,64,1.1)+_tree(178,62,1.2)+_house(40,58,0.75)+_carRear(101,73,0.5)),
  carAhead:_scn(_base()+_tree(20,64)+_house(176,56,0.7)+_carRear(100,95,1.5)),
@@ -2708,7 +2766,35 @@ var SCENES={
  multiLane:_scn(_base(_sky,_grass,"#767c84").replace('points="52,120 148,120 108,62 92,62"','points="40,120 160,120 108,62 92,62"')+'<g fill="#eef2f4"><rect x="79" y="108" width="3" height="10" transform="skewX(-6)"/><rect x="118" y="108" width="3" height="10" transform="skewX(6)"/></g><g stroke="#2b6fb0"></g>'+_carRear(80,100,1.2,"#2b57a8")+_carRear(120,100,1.15,"#c23")),
  openAreaCar:_scn(_base(_sky,_grass,"#7e848c").replace('points="52,120 148,120 108,62 92,62"','points="20,120 180,120 120,70 80,70"')+_carFront(140,96,1.1)+_house(30,58,0.7)),
  greenLeft:_scn(_base()+'<polygon points="52,96 4,90 4,104 50,108" fill="'+_road+'"/>'+_post(150,92,58)+'<rect x="146" y="50" width="8" height="18" rx="2" fill="#2a2f36"/><circle cx="150" cy="54" r="2.2" fill="#3a3f47"/><circle cx="150" cy="60" r="2.2" fill="#3a3f47"/><circle cx="150" cy="66" r="2.6" fill="#37d05a"/>'+_carRear(100,98,1.2,"#2b57a8")),
- lengthSign:_scn(_base()+_post(150,86,64)+'<circle cx="150" cy="64" r="9" fill="#fff" stroke="#d21f28" stroke-width="2"/><g fill="#111"><rect x="143" y="62" width="12" height="4" rx="0.6"/><rect x="152" y="59" width="4" height="4"/></g><path d="M143,69 h14" stroke="#111" stroke-width="0.8"/><path d="M143,69 l2,-1.4 M143,69 l2,1.4 M157,69 l-2,-1.4 M157,69 l-2,1.4" stroke="#111" stroke-width="0.8"/>'+_carRear(100,96,1.2))
+ lengthSign:_scn(_base()+_post(150,86,64)+'<circle cx="150" cy="64" r="9" fill="#fff" stroke="#d21f28" stroke-width="2"/><g fill="#111"><rect x="143" y="62" width="12" height="4" rx="0.6"/><rect x="152" y="59" width="4" height="4"/></g><path d="M143,69 h14" stroke="#111" stroke-width="0.8"/><path d="M143,69 l2,-1.4 M143,69 l2,1.4 M157,69 l-2,-1.4 M157,69 l-2,1.4" stroke="#111" stroke-width="0.8"/>'+_carRear(100,96,1.2)),
+jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B approaches from the east, on car A's right.",
+   _rH+_rV+_dH+_dV
+   +_pc(92,100,0)+_plab(74,100,"A")+_par("M92 89 V50")
+   +_pc(152,52,-90)+_plab(152,32,"B")+_par("M141 52 H114")),
+ jxTurnAcross:_plan("Plan view of a junction. Car A is turning left. Car B is coming the other way and going straight on.",
+   _rH+_rV+_dH+_dV
+   +_pc(92,100,0)+_plab(74,100,"A")+_par("M92 89 Q92 62 64 56")
+   +_pc(108,22,180)+_plab(126,22,"B")+_par("M108 33 V96")),
+ jxRound:_plan("Plan view of a roundabout. Car A is already going round it. Car B is waiting to enter from the south.",
+   '<rect y="42" width="200" height="36" fill="#9aa3ab"/><rect x="82" width="36" height="120" fill="#9aa3ab"/>'
+   +'<circle cx="100" cy="60" r="37" fill="#9aa3ab"/><circle cx="100" cy="60" r="16" fill="#cfe3c8"/>'
+   +_pc(100,26,-90)+_plab(100,8,"A")+_par("M86 30 A34 34 0 0 1 66 72")
+   +_giveS+_pc(100,102,0)+_plab(122,102,"B")+_par("M100 93 V88")),
+ jxMainSide:_plan("Plan view. Car A is travelling along the main road. Car B is waiting to join it from a side turning.",
+   _rH+'<rect x="86" y="78" width="28" height="42" fill="#9aa3ab"/>'+_dH
+   +_giveS+_pc(38,52,90)+_plab(38,32,"A")+_par("M49 52 H92")
+   +_pc(100,104,0)+_plab(124,104,"B")+_par("M100 95 V88")),
+ jxPedTurn:_plan("Plan view. A car is turning into a side road. Two people are already walking across the mouth of that side road.",
+   _rH+'<rect x="86" y="78" width="28" height="42" fill="#9aa3ab"/>'+_dH
+   +'<g fill="#fff"><rect x="87" y="84" width="4" height="9"/><rect x="94" y="84" width="4" height="9"/><rect x="101" y="84" width="4" height="9"/><rect x="108" y="84" width="4" height="9"/></g>'
+   +_pc(52,68,90)+_plab(52,46,"A")+_par("M63 68 Q92 68 100 92")
+   +'<g fill="#12331f"><circle cx="92" cy="86" r="3"/><rect x="90.4" y="89" width="3.2" height="7" rx="1.4"/><circle cx="105" cy="90" r="3"/><rect x="103.4" y="93" width="3.2" height="7" rx="1.4"/></g>'),
+ jxMerge:_plan("Plan view. Two lanes run side by side and the right-hand one ends, so its traffic must merge into the left-hand lane.",
+   '<rect y="34" width="200" height="52" fill="#9aa3ab"/>'
+   +'<path d="M200 62 L120 62 Q92 62 76 86 L200 86 Z" fill="#cfe3c8"/>'
+   +'<path d="M0 60 H200" stroke="#fff" stroke-width="1.6" stroke-dasharray="8 8"/>'
+   +_pc(64,48,90)+_plab(64,26,"A")+_par("M75 48 H140")
+   +_pc(116,74,90)+_plab(100,74,"B")+_par("M127 74 Q150 74 156 60")),
 };
 
   (function assignScenes(){
@@ -2734,7 +2820,13 @@ var SCENES={
       [/not in a left-turn position/,"multiLane"],
       [/turning left across an open area/,"openAreaCar"],
       [/GREEN traffic light/,"greenLeft"],
-      [/sign forbids vehicles longer/,"lengthSign"]
+      [/sign forbids vehicles longer/,"lengthSign"],
+      [/which car has priority at the crossroads/i,"jxCross"],
+      [/Car A wants to turn left across/i,"jxTurnAcross"],
+      [/roundabout picture, which car/i,"jxRound"],
+      [/joining the main road from a side turning/i,"jxMainSide"],
+      [/turning into a side road while people/i,"jxPedTurn"],
+      [/Two lanes merge into one/i,"jxMerge"]
     ];
     QUESTIONS.forEach(function(q){var e=(q.q&&q.q.en)||"";for(var i=0;i<MAP.length;i++){if(MAP[i][0].test(e)){q.scene=MAP[i][1];break;}}});
     var WO=function(en,ku){return {en:en,ku:ku,};};
@@ -2820,6 +2912,17 @@ var SCENES={
     pass:"PASSED", fail:"Not passed", yourScore:"You scored", review:"Review answers", retry:"Try again", home:"Home",
     yourAns:"Your answer", right:"Correct answer", byTopic:"By topic", timeUp:"Time is up!",
     disclaimer:"Practice app for study only. Question bank models the official format; always confirm current rules with the Kurdistan Region's General Directorate of Traffic.",
+    aboutLink:"About & sources",
+    aboutB:"About & sources",
+    aboutIntro:"A free, offline study aid for the Kurdistan Region driving theory test. Kurdish and English, no account, no ads, no tracking.",
+    aboutSrcH:"What it is built from",
+    aboutSrc1:"The official study manual of the General Directorate of Traffic (ڕێبەری هاتووچۆ, category B-BE).",
+    aboutSrc2:"The Erbil Traffic Directorate's published exam question bank.",
+    aboutRightsH:"Copyright & attribution",
+    aboutRights1:"Traffic rules, road signs, speed limits and emergency numbers are public facts. Facts and the law are not copyrightable.",
+    aboutRights2:"Every question, explanation, sign icon and diagram in this app is original work written for it. No text, illustration, photograph, layout or exam question has been copied from either source; the glossary tables were not reproduced.",
+    aboutRights3:"Both official documents carry a notice reserving reprint rights. This app reproduces neither document — it teaches the same public rules in its own words. Whether to publish it publicly is the repository owner's decision.",
+    aboutRightsNote:"Not affiliated with, endorsed by, or an official product of any government body.",
     pickTopic:"Choose a topic", back:"Back",
     sets:"Practice Sets", setD:"50 questions per set", setWord:"Set", soon:"Coming soon",
     reviewB:"Review my mistakes", reviewEmpty:"No mistakes yet — take a mock exam", toReview:"to review", best:"Best",
@@ -2843,6 +2946,17 @@ var SCENES={
     pass:"سەرکەوتوو", fail:"سەرنەکەوتوو", yourScore:"نمرەکەت", review:"پێداچوونەوەی وەڵامەکان", retry:"دووبارە هەوڵبدە", home:"سەرەتا",
     yourAns:"وەڵامەکەت", right:"وەڵامی ڕاست", byTopic:"بەپێی بابەت", timeUp:"کاتەکە تەواوبوو!",
     disclaimer:"ئەپێکی ڕاهێنانە بۆ خوێندن تەنها. بانکی پرسیارەکان فۆرمی فەرمی دەگرێتەوە؛ هەمیشە یاساکان لەلای بەڕێوەبەرایەتیی گشتیی هاتووچۆی هەرێمی کوردستان بپشکنە.",
+    aboutLink:"دەربارە و سەرچاوەکان",
+    aboutB:"دەربارە و سەرچاوەکان",
+    aboutIntro:"یارمەتیدەرێکی خوێندنی بەخۆڕایی و بێ ئینتەرنێت بۆ تاقیکردنەوەی تیۆریی لێخوڕینی هەرێمی کوردستان. بە کوردی و ئینگلیزی، بەبێ هەژمار، بەبێ ڕیکلام، بەبێ بەدواداچوون.",
+    aboutSrcH:"لە چی بنیاتنراوە",
+    aboutSrc1:"ڕێبەری فەرمیی خوێندنی بەڕێوەبەرایەتیی گشتیی هاتووچۆ (ڕێبەری هاتووچۆ، پۆلی B-BE).",
+    aboutSrc2:"بانکی پرسیارەکانی تاقیکردنەوەی بڵاوکراوەی بەڕێوەبەرایەتیی هاتووچۆی هەولێر.",
+    aboutRightsH:"مافی چاپ و ئاماژەپێدان",
+    aboutRights1:"یاساکانی هاتووچۆ، هێماکانی ڕێگا، سنووری خێرایی و ژمارەکانی فریاکەوتن ڕاستیی گشتین. ڕاستی و یاسا مافی چاپیان بۆ ناپارێزرێت.",
+    aboutRights2:"هەموو پرسیار، ڕوونکردنەوە، هێمای تابلۆ و شێوەکێشێکی ئەم ئەپە کارێکی ڕەسەنە کە بۆی نووسراوە. هیچ دەق، وێنە، فۆتۆ، ڕووکار یان پرسیاری تاقیکردنەوە لە هیچ سەرچاوەیەکەوە کۆپی نەکراوە؛ خشتەکانی وشەنامە دووبارە نەکراونەتەوە.",
+    aboutRights3:"هەردوو بەڵگەنامەی فەرمی تێبینییەکیان هەیە کە مافی چاپکردنەوە دەپارێزێت. ئەم ئەپە هیچ کام لەو بەڵگەنامانە دووبارە ناکاتەوە — هەمان یاسا گشتییەکان بە وشەی خۆی فێردەکات. بڵاوکردنەوەی بە گشتی بڕیاری خاوەنی کۆگاکەیە.",
+    aboutRightsNote:"پەیوەندی بە هیچ دەزگایەکی حکومییەوە نییە، پاڵپشتی نەکراوە، و بەرهەمێکی فەرمیی هیچ لایەنێک نییە.",
     pickTopic:"بابەتێک هەڵبژێرە", back:"گەڕانەوە",
     sets:"کۆمەڵە ڕاهێنانەکان", setD:"٥٠ پرسیار بۆ هەر کۆمەڵە", setWord:"کۆمەڵە", soon:"بەم زووانە",
     reviewB:"پێداچوونەوەی هەڵەکانم", reviewEmpty:"هێشتا هەڵەت نییە — تاقیکردنەوەیەک بکە", toReview:"بۆ پێداچوونەوە", best:"باشترین",
@@ -2987,10 +3101,24 @@ var SCENES={
   window.Go=function(scr){clearTimer();S.screen=scr;render();};
 
   function render(){
-    foot.textContent=t("disclaimer");
+    // Footer carries the study disclaimer and a link to the About & sources
+    // screen (which states the app's copyright position). Rebuilt each render.
+    foot.innerHTML=esc(t("disclaimer"))+' · <span class="footlink" role="button" tabindex="0"'
+      +' onclick="Go(\'about\')" onkeydown="kbAct(event,function(){Go(\'about\')})">'+esc(t("aboutLink"))+'</span>';
     var s=S.screen;
-    if(s==="home")renderHome();else if(s==="quiz")renderQuiz();else if(s==="results")renderResults();else if(s==="topics")renderTopics();else if(s==="sets")renderSets();else if(s==="stats")renderStats();else if(s==="signs")renderSigns();else if(s==="flash")renderFlash();else if(s==="find")renderFind();else if(s==="guide")renderGuide();else if(s==="achv")renderAchv();else if(s==="book")renderBook();
+    if(s==="home")renderHome();else if(s==="quiz")renderQuiz();else if(s==="results")renderResults();else if(s==="topics")renderTopics();else if(s==="sets")renderSets();else if(s==="stats")renderStats();else if(s==="signs")renderSigns();else if(s==="flash")renderFlash();else if(s==="find")renderFind();else if(s==="guide")renderGuide();else if(s==="achv")renderAchv();else if(s==="book")renderBook();else if(s==="about")renderAbout();
     localizeDigits();
+  }
+  function renderAbout(){
+    function sec(h,body){return '<div class="card statcard" style="margin-bottom:12px"><p class="ct">'+esc(t(h))+'</p>'+body+'</div>';}
+    view.innerHTML=
+      '<div><h1>'+esc(t("aboutB"))+'</h1><p class="sub">'+esc(t("aboutIntro"))+'</p></div>'+
+      sec("aboutSrcH",'<ul class="gbul"><li>'+esc(t("aboutSrc1"))+'</li><li>'+esc(t("aboutSrc2"))+'</li></ul>')+
+      sec("aboutRightsH",'<p style="margin:0 0 8px;line-height:1.6">'+esc(t("aboutRights1"))+'</p>'
+        +'<p style="margin:0 0 8px;line-height:1.6">'+esc(t("aboutRights2"))+'</p>'
+        +'<p style="margin:0;line-height:1.6">'+esc(t("aboutRights3"))+'</p>')+
+      '<p class="sub" style="margin:0 0 14px">'+esc(t("aboutRightsNote"))+'</p>'+
+      '<button class="btn ghost" onclick="Go(\'home\')">'+esc(t("back"))+'</button>';
   }
 
 
@@ -3076,11 +3204,11 @@ var SCENES={
   // separate group because it is the paper the test is drawn from, not a manual.
   var BOOKSETS4=[
     {id:"e4a",ic:"\u23F1\uFE0F",en:"Speed, distance & priority",ku:"\u062E\u06CE\u0631\u0627\u06CC\u06CC\u060C \u0645\u0627\u0648\u06D5 \u0648 \u067E\u06CE\u0634\u06CC\u0646\u06D5",
-      re:/maximum speed past a school|At night on a two-way road|Kurdistan expressway, what are the limits|how far should you stay behind|sign gives no number|dirt or gravel road and joining|officer's hand signals apply everywhere|pedestrians bound by traffic signs|steep, narrow road with room for only one|cruising speed does a car use fuel|joining a road from a driveway|condition must be met before you overtake|Another driver is overtaking you|Heavy snow has cut visibility|lane must a lorry use|travel slower than the posted limit|NOT use an expressway|tram or train is crossing at the same time|often should you take a break/i},
+      re:/maximum speed past a school|At night on a two-way road|Kurdistan expressway, what are the limits|how far should you stay behind|sign gives no number|dirt or gravel road and joining|officer's hand signals apply everywhere|pedestrians bound by traffic signs|steep, narrow road with room for only one|cruising speed does a car use fuel|joining a road from a driveway|condition must be met before you overtake|Another driver is overtaking you|Heavy snow has cut visibility|lane must a lorry use|travel slower than the posted limit|NOT use an expressway|tram or train is crossing at the same time|often should you take a break|from a BUS STOP may you not stop|from a PEDESTRIAN CROSSING may you not stop|minimum gap to leave between your car|U-turn at a set of traffic lights|best way to keep track of your speed|which car has priority at the crossroads|Car A wants to turn left across|roundabout picture, which car|joining the main road from a side turning|turning into a side road while people|Two lanes merge into one/i},
     {id:"e4b",ic:"\u26D4",en:"Bans & penalties",ku:"\u0642\u06D5\u062F\u06D5\u063A\u06D5 \u0648 \u0633\u0632\u0627\u06A9\u0627\u0646",
       re:/overtake at or near a railway|overtake inside a tunnel|unbroken YELLOW lines|warning lights or a siren|leave it standing in the middle|stop on an expressway to pick up|use a mobile phone while out driving|alongside a car that is already parked|medicine that affects your vision|throwing rubbish from a vehicle|drive along the pavement|stop on a bridge or inside a tunnel|arm or head out of the window|use full beam at night on a road|lawful reason to exceed the posted|overtake while crossing a bridge|U-turn specifically prohibited|more passengers than the vehicle is rated|sounding the horn forbidden|child travel in the front seat|surface is slippery. What does that mean|change lane once you are inside a roundabout|oncoming driver will not dip|white BROKEN line runs down the middle/i},
     {id:"e4c",ic:"\uD83D\uDCC4",en:"Licence, papers & the exam",ku:"\u0645\u06C6\u06B5\u06D5\u062A\u060C \u0628\u06D5\u06B5\u06AF\u06D5\u0646\u0627\u0645\u06D5 \u0648 \u062A\u0627\u0642\u06CC\u06A9\u0631\u062F\u0646\u06D5\u0648\u06D5",
-      re:/pass mark for the theory test|how long do you have to transfer the registration|two documents must be in the vehicle|must a motorcyclist wear|private car be used to carry passengers|alter an entry on your licence|everyone in the car is belted|conditions for reversing along a road|roads may a tractor be driven|minimum age for a motorcycle, a private car|assaults a traffic officer who is on duty|about to walk away|fine for putting a child on the driver|fine for opening your door|reverse into a parked car|load overhang the sides|Soil or stone falls from your lorry|casualties be treated after a crash/i},
+      re:/pass mark for the theory test|how long do you have to transfer the registration|two documents must be in the vehicle|must a motorcyclist wear|private car be used to carry passengers|alter an entry on your licence|everyone in the car is belted|conditions for reversing along a road|roads may a tractor be driven|minimum age for a motorcycle, a private car|assaults a traffic officer who is on duty|about to walk away|fine for putting a child on the driver|fine for opening your door|reverse into a parked car|load overhang the sides|Soil or stone falls from your lorry|casualties be treated after a crash|TRAFFIC emergency in the Kurdistan Region|warning triangle go/i},
     {id:"e4d",ic:"\uD83D\uDD27",en:"When the car goes wrong",ku:"\u06A9\u0627\u062A\u06CE\u06A9 \u0626\u06C6\u062A\u06C6\u0645\u0628\u06CC\u0644 \u062A\u06CE\u06A9\u062F\u06D5\u0686\u06CE\u062A",
       re:/FRONT tyre blows out|REAR tyre blows out|brakes start to overheat|abnormal noise or vibration|spare tyre turns out to be worn|cold engine idle before driving|engine knocks or pinks|temperature gauge climbs into the red|Battery acid has splashed|switch the engine off|oil level sit on the dipstick|leading cause of vehicle fires|fail the annual inspection|also fails the annual inspection|engine has boiled over|use dipped headlights in daylight|colour must a car's headlamps|UNDER-inflated tyres do|OVER-inflated tyres do|charges the car's battery|driven through standing water|used engine oil go/i}
   ];

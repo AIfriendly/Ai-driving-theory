@@ -7,15 +7,15 @@ self-contained HTML file** — no build step, no dependencies, no network calls.
 Open `index.html` in any browser, or use the published site (see
 [Deployment](#deployment)).
 
-**Current content: 716 questions · 110 hand-drawn sign icons · 14 achievements.**
+**Current content: 729 questions · 110 hand-drawn sign icons · 14 achievements.**
 
 | Category | Questions |
 |---|---:|
 | Traffic signs (`signs`) | 155 |
-| Rules & safety (`rules`) | 421 |
-| First aid (`firstaid`) | 56 |
+| Rules & safety (`rules`) | 433 |
+| First aid (`firstaid`) | 57 |
 | Mechanics (`mech`) | 84 |
-| **Total** | **716** |
+| **Total** | **729** |
 
 ---
 
@@ -338,7 +338,32 @@ This resets saved progress for sign questions once — that progress was being
 written to the wrong record anyway. Progress on the other 480 questions is
 untouched.
 
-### 716 questions — second full pass over all three sources
+### The full exam read, junction diagrams, and an About screen
+
+Every page of the exam PDF — all 50, both the 281 text questions and the 150
+picture questions — has now been read end to end. This surfaced three things.
+
+**The 188 correction.** The exam authority treats 188 (traffic emergency) and
+115 (fire / civil defence) as two different lines and tests both. An earlier
+pass had concluded "there is no 188" from the study manual, which prints only
+115 — an overcorrection. The app now teaches both, and every emergency-number
+list in the bank was fixed.
+
+**Junction-priority diagrams** are now a real question type: six plan-view SVG
+diagrams (uncontrolled crossroads, turning across oncoming traffic, roundabout,
+main road vs side turning, turning across pedestrians, a lane merge). They carry
+an aria-label, unlike the decorative scenes, because here the picture is the
+question. Plus stopping-distance rules the manual omits: 20 m / 10 m clearance
+at bus stops and crossings, the 1 m gap between parked cars, the 50 m / 130 m
+warning-triangle distances.
+
+**An "About & sources" screen** (footer link, both languages) states the app's
+copyright position: facts and law are not copyrightable, every question, icon
+and diagram is original, nothing was copied from either official document, both
+documents reserve reprint rights and this app reproduces neither, and publishing
+publicly is the owner's decision.
+
+### 729 questions — second full pass over all three sources
 
 Every page of the master copy was read again, this time checked against a
 mechanically extracted index of all question texts, so "the topic is in there

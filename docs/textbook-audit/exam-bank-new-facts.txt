@@ -158,3 +158,10 @@ Q273	letting an unlicensed person drive your vehicle -> imprisonment, fine, or b
 Q274	putting a child on the driver's lap -> 40,000 dinar fine
 Q275	engine boiling: do not switch off; let it cool, add water after 20 minutes, then open the cap
 Q278	overheating brake discs show as weaker braking and a burning smell
+--- section 2 (picture test, pages 33-50) ---
+S2-Q280	THE TRAFFIC EMERGENCY NUMBER IS 188 (distinct from 115 civil defence)
+S2-28	minimum gap between two parked cars: 1 metre
+S2-35	no stopping within 20 m before and 10 m after a BUS STOP
+S2-42	no stopping within 20 m before and 10 m after a PEDESTRIAN CROSSING
+S2-19	merging lanes with a broken line: the car in the through lane has priority
+S2-24	two lanes combining: the car already in the continuing lane goes first
