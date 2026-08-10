@@ -7,15 +7,15 @@ self-contained HTML file** — no build step, no dependencies, no network calls.
 Open `index.html` in any browser, or use the published site (see
 [Deployment](#deployment)).
 
-**Current content: 729 questions · 110 hand-drawn sign icons · 14 achievements.**
+**Current content: 736 questions · 110 hand-drawn sign icons · 14 achievements.**
 
 | Category | Questions |
 |---|---:|
 | Traffic signs (`signs`) | 155 |
-| Rules & safety (`rules`) | 433 |
+| Rules & safety (`rules`) | 434 |
 | First aid (`firstaid`) | 57 |
-| Mechanics (`mech`) | 84 |
-| **Total** | **729** |
+| Mechanics (`mech`) | 90 |
+| **Total** | **736** |
 
 ---
 
@@ -249,6 +249,31 @@ publish. The checks are:
 ---
 
 ## Changelog
+
+### 736 questions — the exam's picture section read in full; engine-bay and multi-car roundabout formats added
+
+Re-reading the exam paper end to end (all 50 pages, not sampled) confirmed its
+real shape: **281 text questions** followed by a **150-question picture section**
+(the هێماکان block, its own numbering). Cross-checking that picture section
+against the bank surfaced two question *formats* the app was missing, both now
+built as animated inline SVG:
+
+- **Engine-bay "identify the part"** (exam picture Q135–141). A schematic engine
+  bay is drawn once; a pulsing red pointer marks one component — battery, air
+  filter, oil dipstick, washer reservoir, brake-fluid reservoir or
+  power-steering reservoir — and you name it. The facts already lived in `mech`
+  text questions; this adds the visual-recognition format the exam actually uses.
+  Six questions, six pointer positions on the same bay.
+- **Multi-car lettered roundabout priority** (exam picture Q118–119). The
+  existing `jxRound` was a two-car case; this adds a three-car (A/B/C) roundabout
+  where traffic already circulating holds priority over everyone waiting to enter.
+
+Both use the `_plan`/`_eng` "the picture IS the question" convention: real
+`aria-label`s describe the pointer's position and shape so a screen-reader user
+can still answer, and the red pointer pulses via `.sgn-pulse`, which the existing
+`prefers-reduced-motion` and pick-the-answer guards already silence where needed.
+The 188 = traffic-emergency / 115 = civil-defence split was re-confirmed in
+context (exam text Q280 and Q96). +7 questions (rules 433→434, mech 84→90).
 
 ### A fourth source: the actual exam paper
 

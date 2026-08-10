@@ -246,6 +246,10 @@
   .sgn-rot{transform-box:fill-box;transform-origin:center;animation:sgnrot 3.4s linear infinite}
   .sgn-slow{animation-duration:14s}
   .sgn-glide{transform-box:fill-box;transform-origin:center;animation:sgnglide 2.8s ease-in-out infinite}
+  /* A red pointer ring pulses over the part being asked about, the way the
+     printed exam draws a red arrow onto an engine-bay photo. */
+  @keyframes sgnpulse{0%,100%{opacity:.35;transform:scale(1)}50%{opacity:1;transform:scale(1.55)}}
+  .sgn-pulse{transform-box:fill-box;transform-origin:center;animation:sgnpulse 1.6s ease-in-out infinite}
   /* In "pick the sign" questions the options must stay still: if only one of the
      three moved, the movement itself would point at the answer. */
   .signopt svg *{animation:none!important}
@@ -2697,7 +2701,28 @@
       "A turning driver gives way to people already crossing the road being turned into. Wait until they are clear.","","ئۆتۆمبیلێک دەپێچێتەوە بۆ لاڕێیەک لە کاتێکدا خەڵک بەسەریدا دەپەڕنەوە. کێ یەکەم دەڕوات؟","شۆفێری پێچەوە ڕێگا دەدات بەو کەسانەی پێشتر بەسەر ئەو ڕێگایەدا دەپەڕنەوە کە بۆی دەپێچێتەوە. چاوەڕێ بکە تاکو تێدەپەڕن."),
     Q("rules",null,"Two lanes merge into one in this picture. Which car has priority?","",
       [O("Car A, because it is in the lane that continues","","ئۆتۆمبیلی A، چونکە لەو ڕێڕەوەدایە کە بەردەوام دەبێت"),O("Car B, because it must merge","","ئۆتۆمبیلی B، چونکە دەبێت تێکەڵ ببێت"),O("Neither — they should race for it","","هیچیان — دەبێت پێکەوە ڕکابەری بکەن")],0,
-      "The lane that ends gives way to the lane that carries on. Car B fits into a gap behind or ahead of car A.","","لەم وێنەیەدا دوو ڕێڕەو دەبنە یەک. کام ئۆتۆمبیل پێشینەی هەیە؟","ئەو ڕێڕەوەی کۆتایی دێت ڕێگا دەدات بەو ڕێڕەوەی بەردەوام دەبێت. ئۆتۆمبیلی B لە بۆشاییەکدا لە دواوە یان پێشەوەی ئۆتۆمبیلی A جێگیر دەبێت.")
+      "The lane that ends gives way to the lane that carries on. Car B fits into a gap behind or ahead of car A.","","لەم وێنەیەدا دوو ڕێڕەو دەبنە یەک. کام ئۆتۆمبیل پێشینەی هەیە؟","ئەو ڕێڕەوەی کۆتایی دێت ڕێگا دەدات بەو ڕێڕەوەی بەردەوام دەبێت. ئۆتۆمبیلی B لە بۆشاییەکدا لە دواوە یان پێشەوەی ئۆتۆمبیلی A جێگیر دەبێت."),
+    Q("rules",null,"On this roundabout with three lettered cars, which car goes first?","",
+      [O("Car A, because it is already circulating on the roundabout","","ئۆتۆمبیلی A، چونکە پێشتر لەسەر بازنەکە دەسووڕێتەوە"),O("Car B, because it reached the line first","","ئۆتۆمبیلی B، چونکە یەکەم گەیشتە هێڵەکە"),O("Car C, because it is on the right","","ئۆتۆمبیلی C، چونکە لە لای ڕاستەوەیە")],0,
+      "Traffic already on the roundabout has priority over everyone waiting to enter. Both B and C hold at their give-way lines until car A has passed.","","لەم بازنەیەدا کە سێ ئۆتۆمبیلی پیتدار هەیە، کام ئۆتۆمبیل یەکەم دەڕوات؟","ئەو هاتووچۆیەی پێشتر لەسەر بازنەکەیە پێشینەی هەیە بەسەر هەموو ئەوانەی چاوەڕێی چوونەژوورەوەن. هەردوو B و C لەسەر هێڵی ڕێگادانەکانیان دەوەستن تاکو ئۆتۆمبیلی A تێدەپەڕێت."),
+    Q("mech",null,"A red arrow points to a black box with two terminals in the top-left of the engine bay. What is it?","",
+      [O("The battery","","باتری"),O("The air-filter housing","","دەفری فلتەری هەوا"),O("The brake-fluid reservoir","","خەزانی شلەی بریک")],0,
+      "The battery is the black box in the top-left corner, recognised by the two metal terminals on top that the leads clamp onto.","","تیرێکی سوور ئاماژە بۆ سندوقێکی ڕەش دەکات کە دوو پۆڵی هەیە لە سەرەوەی لای چەپی بزوێنەرەکە. ئەوە چییە؟","باتری ئەو سندوقە ڕەشەیە لە گۆشەی سەرەوەی لای چەپ، بە دوو پۆڵە کانزاییەکەی سەرەوەی دەناسرێتەوە کە تەلەکان پێوەی دەبەسترێن."),
+    Q("mech",null,"A red arrow points to a large ribbed box across the top-right of the engine bay. What is it?","",
+      [O("The air-filter housing","","دەفری فلتەری هەوا"),O("The battery","","باتری"),O("The engine oil filler cap","","سەرپۆشی تێکردنی ڕۆنی بزوێنەر")],0,
+      "The air-filter housing is the big ribbed box; it holds the paper filter that cleans the air going into the engine.","","تیرێکی سوور ئاماژە بۆ سندوقێکی گەورەی پەلکەدار دەکات لە سەرەوەی لای ڕاست. ئەوە چییە؟","دەفری فلتەری هەوا ئەو سندوقە گەورە پەلکەدارەیە؛ فلتەرە کاغەزییەکەی تێدایە کە ئەو هەوایە پاک دەکاتەوە کە دەچێتە ناو بزوێنەرەوە."),
+    Q("mech",null,"A red arrow points to a small yellow ring handle sticking up from the middle of the engine. What is it?","",
+      [O("The engine-oil dipstick","","گێچی پێوەری ڕۆنی بزوێنەر"),O("The bonnet release","","کشانی سەرپۆش"),O("The coolant filler cap","","سەرپۆشی ئاوی فێنکەرەوە")],0,
+      "The yellow ring handle is the dipstick; you pull it out to read the engine-oil level.","","تیرێکی سوور ئاماژە بۆ دەستکێکی بازنەیی زەردی بچووک دەکات کە لە ناوەڕاستی بزوێنەرەوە دەرکەوتووە. ئەوە چییە؟","دەستکە بازنەییە زەردەکە گێچی پێوەرەکەیە؛ دەریدەهێنیت بۆ خوێندنەوەی ئاستی ڕۆنی بزوێنەر."),
+    Q("mech",null,"A red arrow points to a translucent tank with a cap in the bottom-left of the engine bay. What is it?","",
+      [O("The windscreen-washer fluid reservoir","","خەزانی شلەی فلچەی جامەکان"),O("The brake-fluid reservoir","","خەزانی شلەی بریک"),O("The power-steering reservoir","","خەزانی شلەی سوکانی بەهێزکراو")],0,
+      "The translucent tank low in the bay holds the washer fluid that feeds the windscreen jets.","","تیرێکی سوور ئاماژە بۆ تانکێکی ڕووناکی سەرپۆشدار دەکات لە خوارەوەی لای چەپ. ئەوە چییە؟","تانکە ڕووناکەی خوارەوەی بزوێنەرەکە شلەی فلچەکانی تێدایە کە جامەکان دەشوات."),
+    Q("mech",null,"A red arrow points to a small translucent amber reservoir against the firewall on the right. What is it?","",
+      [O("The brake-fluid reservoir","","خەزانی شلەی بریک"),O("The windscreen-washer reservoir","","خەزانی شلەی فلچەکان"),O("The battery","","باتری")],0,
+      "The small amber reservoir on the firewall holds the brake fluid; a low level here is a serious safety fault.","","تیرێکی سوور ئاماژە بۆ خەزانێکی بچووکی ڕووناکی کارەمەیی دەکات لە بەرامبەر دیوارەکە لای ڕاست. ئەوە چییە؟","خەزانە کارەمەییە بچووکەکەی سەر دیوارەکە شلەی بریکی تێدایە؛ نزمی ئاستەکەی لێرە کێشەیەکی سەلامەتی گەورەیە."),
+    Q("mech",null,"A red arrow points to a small black-capped cylinder beside the engine block. What is it?","",
+      [O("The power-steering fluid reservoir","","خەزانی شلەی سوکانی بەهێزکراو"),O("The brake-fluid reservoir","","خەزانی شلەی بریک"),O("The oil filler cap","","سەرپۆشی تێکردنی ڕۆن")],0,
+      "The small black-capped cylinder beside the block holds the power-steering fluid.","","تیرێکی سوور ئاماژە بۆ ئەستوونێکی بچووکی سەرپۆش ڕەش دەکات لەتەنیشت بلۆکی بزوێنەر. ئەوە چییە؟","ئەستوونە سەرپۆش ڕەشە بچووکەکەی تەنیشت بلۆکەکە شلەی سوکانی بەهێزکراوی تێدایە.")
   ];
 
   /* ===== hazard scene illustrations + auto-assignment ===== */
@@ -2743,6 +2768,32 @@ var _rV='<rect x="82" width="36" height="120" fill="#9aa3ab"/>';
 var _dH='<path d="M0 60 H74 M126 60 H200" stroke="#fff" stroke-width="1.6" stroke-dasharray="8 8"/>';
 var _dV='<path d="M100 0 V38 M100 82 V120" stroke="#fff" stroke-width="1.6" stroke-dasharray="8 8"/>';
 var _giveS='<path d="M84 84 H116" stroke="#fff" stroke-width="2.4" stroke-dasharray="4 4"/>';
+/* Engine-bay "which part is arrowed?" diagrams. Like the plan views, the picture
+   IS the question, so each carries a real aria-label that describes WHERE the red
+   pointer sits (its position and shape) — the equivalent information a sighted user
+   gets — without naming the part, which is the answer. Component layout is fixed
+   across every question so the same bay is being read each time. */
+var _engBody='<defs><marker id="emk" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="4" markerHeight="4" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#e11"/></marker></defs>'
+ +'<rect width="200" height="120" fill="#2a2e34"/>'
+ +'<rect x="8" y="9" width="184" height="102" rx="5" fill="#c3c8ce" stroke="#4a4e54" stroke-width="2"/>'
+ +'<rect x="8" y="9" width="184" height="15" rx="5" fill="#9aa0a8"/>'                                   /* firewall strip */
+ /* battery — black box, top-left, two terminals */
+ +'<g><rect x="20" y="30" width="34" height="24" rx="2.4" fill="#20242a" stroke="#000" stroke-width="1"/><rect x="24" y="26" width="6" height="5" rx="1" fill="#c9ccd0"/><rect x="44" y="26" width="6" height="5" rx="1" fill="#c9ccd0"/><rect x="24" y="35" width="26" height="3" fill="#3a3f47"/></g>'
+ /* air-filter housing — big grey ribbed box, top-right */
+ +'<g><rect x="120" y="28" width="60" height="30" rx="3" fill="#4c525a" stroke="#2b2f35" stroke-width="1.2"/><g stroke="#6b7178" stroke-width="1.4"><line x1="128" y1="30" x2="128" y2="56"/><line x1="138" y1="30" x2="138" y2="56"/><line x1="148" y1="30" x2="148" y2="56"/><line x1="158" y1="30" x2="158" y2="56"/><line x1="168" y1="30" x2="168" y2="56"/></g></g>'
+ /* engine block — central ribbed mass */
+ +'<g><rect x="66" y="42" width="60" height="52" rx="4" fill="#7d838b" stroke="#565b62" stroke-width="1.4"/><g stroke="#565b62" stroke-width="1.6"><line x1="66" y1="54" x2="126" y2="54"/><line x1="66" y1="66" x2="126" y2="66"/><line x1="66" y1="78" x2="126" y2="78"/></g></g>'
+ /* oil dipstick — yellow ring handle poking out of the block */
+ +'<g><path d="M100 44 q-9 -6 -3 -13" fill="none" stroke="#e8b100" stroke-width="3"/><ellipse cx="95" cy="29" rx="4.5" ry="3" fill="none" stroke="#e8b100" stroke-width="3"/></g>'
+ /* windscreen-washer reservoir — translucent blue tank, cap, bottom-left */
+ +'<g><rect x="20" y="66" width="30" height="34" rx="3" fill="#bcd6ea" fill-opacity="0.85" stroke="#5f7f96" stroke-width="1.3"/><rect x="29" y="61" width="12" height="7" rx="2" fill="#3f6f9e"/><path d="M26 92 q9 -3 18 0" fill="none" stroke="#5f7f96" stroke-width="1"/></g>'
+ /* brake-fluid reservoir — translucent amber, cap, near firewall right */
+ +'<g><rect x="150" y="64" width="24" height="26" rx="3" fill="#e7d29a" fill-opacity="0.9" stroke="#8a7a4a" stroke-width="1.2"/><rect x="156" y="60" width="12" height="6" rx="2" fill="#3a3f47"/></g>'
+ /* power-steering reservoir — small black-capped cylinder, centre-right */
+ +'<g><rect x="130" y="70" width="18" height="22" rx="4" fill="#2f343b" stroke="#14171b" stroke-width="1"/><ellipse cx="139" cy="70" rx="9" ry="3.4" fill="#4a5058"/></g>';
+function _eng(lbl,ax,ay,tx,ty){return '<svg viewBox="0 0 200 120" role="img" aria-label="'+lbl+'">'+_engBody
+ +'<line x1="'+ax+'" y1="'+ay+'" x2="'+tx+'" y2="'+ty+'" stroke="#e11" stroke-width="2.6" marker-end="url(#emk)"/>'
+ +'<circle cx="'+tx+'" cy="'+ty+'" r="5" fill="none" stroke="#e11" stroke-width="1.8" class="sgn-pulse"/></svg>';}
 var SCENES={
  openRoad:_scn(_base()+_tree(22,64,1.1)+_tree(178,62,1.2)+_house(40,58,0.75)+_carRear(101,73,0.5)),
  carAhead:_scn(_base()+_tree(20,64)+_house(176,56,0.7)+_carRear(100,95,1.5)),
@@ -2795,6 +2846,18 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
    +'<path d="M0 60 H200" stroke="#fff" stroke-width="1.6" stroke-dasharray="8 8"/>'
    +_pc(64,48,90)+_plab(64,26,"A")+_par("M75 48 H140")
    +_pc(116,74,90)+_plab(100,74,"B")+_par("M127 74 Q150 74 156 60")),
+ jxRoundMulti:_plan("Plan view of a roundabout with three cars. Car A is already on the roundabout going round. Car B waits at the give-way line to the south. Car C waits at the give-way line to the east.",
+   '<rect y="42" width="200" height="36" fill="#9aa3ab"/><rect x="82" width="36" height="120" fill="#9aa3ab"/>'
+   +'<circle cx="100" cy="60" r="37" fill="#9aa3ab"/><circle cx="100" cy="60" r="16" fill="#cfe3c8"/>'
+   +_pc(66,54,20)+_plab(46,44,"A")+_par("M70 44 A34 34 0 0 1 118 50")
+   +_giveS+_pc(100,102,0)+_plab(122,102,"B")+_par("M100 93 V88")
+   +'<path d="M120 60 H150" stroke="#fff" stroke-width="2.4" stroke-dasharray="4 4"/>'+_pc(150,60,-90)+_plab(150,40,"C")+_par("M141 60 H124")),
+ engBattery:_eng("Engine bay from above. A red pointer marks the black box in the top-left corner that has two metal terminals on top.",96,20,40,43),
+ engAirFilter:_eng("Engine bay from above. A red pointer marks the large ribbed grey box across the top-right.",150,14,150,44),
+ engDipstick:_eng("Engine bay from above. A red pointer marks a small yellow ring handle sticking up out of the central block.",120,20,96,29),
+ engWasher:_eng("Engine bay from above. A red pointer marks the translucent bluish tank with a cap in the bottom-left.",70,104,35,84),
+ engBrake:_eng("Engine bay from above. A red pointer marks the small translucent amber reservoir against the firewall on the right.",190,78,174,76),
+ engPower:_eng("Engine bay from above. A red pointer marks the small black-capped cylinder just right of the central engine block.",120,104,139,86),
 };
 
   (function assignScenes(){
@@ -2826,7 +2889,14 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
       [/roundabout picture, which car/i,"jxRound"],
       [/joining the main road from a side turning/i,"jxMainSide"],
       [/turning into a side road while people/i,"jxPedTurn"],
-      [/Two lanes merge into one/i,"jxMerge"]
+      [/Two lanes merge into one/i,"jxMerge"],
+      [/roundabout with three lettered cars/i,"jxRoundMulti"],
+      [/two terminals in the top-left/i,"engBattery"],
+      [/ribbed box across the top-right/i,"engAirFilter"],
+      [/yellow ring handle/i,"engDipstick"],
+      [/translucent tank in the bottom-left/i,"engWasher"],
+      [/reservoir against the firewall/i,"engBrake"],
+      [/black-capped cylinder beside the engine/i,"engPower"]
     ];
     QUESTIONS.forEach(function(q){var e=(q.q&&q.q.en)||"";for(var i=0;i<MAP.length;i++){if(MAP[i][0].test(e)){q.scene=MAP[i][1];break;}}});
     var WO=function(en,ku){return {en:en,ku:ku,};};
