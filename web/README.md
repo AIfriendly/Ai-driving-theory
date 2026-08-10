@@ -250,6 +250,18 @@ publish. The checks are:
 
 ## Changelog
 
+### Part 1 image sweep — dangerous-goods placards
+
+Reviewing part 1 (the vehicle-categories and rules lecture) source page by page:
+its prohibition signs (no pedestrians, no handcart, no animal-cart, no tractor,
+no turns, no U-turn) and vehicle categories were already covered by the 110-icon
+sign set, but the **dangerous-goods placards were missing** — those questions
+fell back to a generic truck/sign icon. Added the ADR-style diamond placards as
+proper labelled images: class 1 explosive (orange), 7 radioactive (yellow/white),
+2.2 non-flammable gas (green), 8 corrosive (black/white), 3 flammable (red),
+6 toxic (skull), plus a class-D fire extinguisher, and wired them to the
+hazard-goods questions. 90 scene/concept illustrations total.
+
 ### Every question now carries a visual — a concept-icon library + keyword fallback
 
 Final step of the illustration push: instead of drawing one bespoke image per

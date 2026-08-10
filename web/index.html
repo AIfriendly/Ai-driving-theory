@@ -2811,6 +2811,14 @@ function _rb(i){return _scn('<defs><marker id="rmk" viewBox="0 0 10 10" refX="8"
    question carries a visual even when it is a pure fact (a fine, a licence rule,
    a validity period). Decorative — the answer is always in the text. */
 function _ic(i,bg){return _scn('<rect width="200" height="120" fill="'+(bg||"#eef2f4")+'"/>'+i);}
+/* ADR-style dangerous-goods placards. The picture is the subject of the
+   question, so these carry a real aria-label naming the class. */
+function _haz(lbl,top,bot,sym,num,numcol){
+ var d=(top===bot)
+   ? '<polygon points="100,12 152,60 100,108 48,60" fill="'+bot+'" stroke="#111" stroke-width="2.5"/>'
+   : '<polygon points="100,12 152,60 48,60" fill="'+top+'"/><polygon points="48,60 152,60 100,108" fill="'+bot+'"/><polygon points="100,12 152,60 100,108 48,60" fill="none" stroke="#111" stroke-width="2.5"/>';
+ return '<svg viewBox="0 0 200 120" role="img" aria-label="'+lbl+'"><rect width="200" height="120" fill="#f2f4f6"/>'+d+sym
+   +(num?'<text x="100" y="100" text-anchor="middle" font-size="14" font-weight="800" fill="'+(numcol||"#111")+'" font-family="sans-serif">'+num+'</text>':'')+'</svg>';}
 function _gauge(lbl,ang,col){var a=(ang||150)*Math.PI/180;var x=100+30*Math.cos(a),y=92-30*Math.sin(a);
  return _scn('<rect width="200" height="120" fill="#20242a"/>'
  +'<path d="M56 92 A46 46 0 0 1 144 92" fill="none" stroke="#4a4e54" stroke-width="8"/>'
@@ -3012,6 +3020,19 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
  iconLoad:_ic('<rect x="44" y="52" width="52" height="34" rx="2" fill="#c98a3a"/><rect x="96" y="60" width="36" height="26" rx="2" fill="#2f7fd0"/><rect x="132" y="66" width="20" height="20" rx="2" fill="#2f6ea8"/><circle cx="70" cy="92" r="9" fill="#2a2f36"/><circle cx="120" cy="92" r="9" fill="#2a2f36"/><circle cx="146" cy="92" r="9" fill="#2a2f36"/>'),
  iconLane:_ic(_base().replace(/^<svg[^>]*>|<\/svg>$/g,'')),
  iconSignGeneric:_ic('<polygon points="100,34 138,96 62,96" fill="#fff" stroke="#d21f28" stroke-width="6"/><text x="100" y="88" text-anchor="middle" font-size="34" font-weight="800" fill="#d21f28" font-family="sans-serif">?</text>'),
+ hazExplosive:_haz("Class 1 explosives placard: an orange diamond with a black exploding-bomb symbol and the number 1.","#e8631a","#e8631a",
+   '<g fill="#111"><polygon points="100,30 105,44 119,40 109,50 121,57 106,57 109,68 100,59 91,68 94,57 79,57 91,50 81,40 95,44"/><rect x="98" y="55" width="4" height="10"/></g>',"1"),
+ hazRadioactive:_haz("Class 7 radioactive placard: a diamond that is yellow on top and white below, with a black radiation trefoil and the number 7.","#f4d21a","#fff",
+   '<g fill="#111" transform="translate(100,42)"><circle r="4"/><g><path d="M0 0 L7 -13 A15 15 0 0 1 -7 -13 Z"/><g transform="rotate(120)"><path d="M0 0 L7 -13 A15 15 0 0 1 -7 -13 Z"/></g><g transform="rotate(240)"><path d="M0 0 L7 -13 A15 15 0 0 1 -7 -13 Z"/></g></g></g>',"7"),
+ hazGreenGas:_haz("Class 2.2 non-flammable gas placard: a green diamond with a white gas cylinder and the number 2.","#1f9d55","#1f9d55",
+   '<rect x="94" y="32" width="12" height="26" rx="4" fill="#fff"/><rect x="97" y="28" width="6" height="5" fill="#fff"/>',"2","#fff"),
+ hazCorrosive:_haz("Class 8 corrosive placard: a diamond white on top and black below, with liquids dripping onto a hand and a metal bar, and the number 8.","#fff","#111",
+   '<g stroke="#111" stroke-width="2.5" fill="none"><path d="M84 30 l6 12"/><path d="M116 30 l-6 12"/></g><g fill="#111"><rect x="80" y="44" width="18" height="3"/><rect x="102" y="44" width="18" height="3"/></g><g stroke="#fff" stroke-width="2"><path d="M80 66 h16"/><path d="M104 62 l8 8"/></g>',"8","#fff"),
+ hazFlammable:_haz("Class 3 flammable liquid placard: a red diamond with a black flame and the number 3.","#d21f28","#d21f28",
+   '<path d="M100 30 q11 12 3 23 q-1 -6 -6 -7 q4 9 -3 13 q-11 -6 -6 -19 q3 6 8 4 q-6 -8 5 -17 z" fill="#111"/>',"3","#fff"),
+ hazToxic:_haz("Class 6 toxic placard: a white diamond with a black skull and crossbones and the number 6.","#fff","#fff",
+   '<g fill="#111"><circle cx="100" cy="42" r="10"/><rect x="93" y="49" width="14" height="5" rx="1"/><path d="M84 56 l32 0" stroke="#111" stroke-width="2.5"/><path d="M86 52 l28 8 M114 52 l-28 8" stroke="#111" stroke-width="2.5"/></g><g fill="#fff"><circle cx="96" cy="41" r="2.6"/><circle cx="104" cy="41" r="2.6"/></g>',"6"),
+ iconExtinguisher:_ic('<rect x="88" y="42" width="26" height="50" rx="8" fill="#c0261f"/><rect x="96" y="32" width="12" height="12" rx="2" fill="#3a3f47"/><path d="M100 32 q18 -8 26 6" fill="none" stroke="#3a3f47" stroke-width="3"/><rect x="122" y="36" width="12" height="7" rx="2" fill="#3a3f47"/><rect x="92" y="60" width="18" height="16" rx="1" fill="#fff" opacity="0.9"/><text x="101" y="72" text-anchor="middle" font-size="7" font-weight="800" fill="#c0261f" font-family="sans-serif">D</text>'),
 };
 
   (function assignScenes(){
@@ -3075,7 +3096,12 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
       [/herd of sheep or goats on a mountain road/i,"herd"],
       [/must you use dipped headlights in daylight/i,"dipLight"],
       [/oil level sit on the dipstick/i,"dipstickOil"],
-      [/charges the car's battery while you drive/i,"alternator"]
+      [/charges the car's battery while you drive/i,"alternator"],
+      [/orange diamond plate with an exploding symbol/i,"hazExplosive"],
+      [/yellow and white diamond plate with a radiation symbol/i,"hazRadioactive"],
+      [/class of dangerous goods is shown by a GREEN diamond/i,"hazGreenGas"],
+      [/carrying dangerous goods display the correct hazard/i,"hazCorrosive"],
+      [/extinguisher type suits a burning flammable metal/i,"iconExtinguisher"]
     ];
     QUESTIONS.forEach(function(q){var e=(q.q&&q.q.en)||"";for(var i=0;i<MAP.length;i++){if(MAP[i][0].test(e)){q.scene=MAP[i][1];break;}}});
     /* Fallback so EVERY question carries a visual: a keyword-matched concept icon,
