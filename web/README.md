@@ -7,7 +7,7 @@ self-contained HTML file** — no build step, no dependencies, no network calls.
 Open `index.html` in any browser, or use the published site (see
 [Deployment](#deployment)).
 
-**Current content: 736 questions · 110 hand-drawn sign icons · 106 scene/concept illustrations · 14 achievements. Every question now carries a visual.**
+**Current content: 736 questions · 110 hand-drawn sign icons · 120 scene/concept illustrations · 14 achievements. Every question now carries a visual.**
 
 | Category | Questions |
 |---|---:|
@@ -249,6 +249,19 @@ publish. The checks are:
 ---
 
 ## Changelog
+
+### Breaking up the last generic bucket — 14 rules concept icons
+
+The final shared bucket was the generic-road icon on ~142 miscellaneous rules
+questions. Read all 142 and clustered them, then added 14 bespoke animated
+concept icons and a keyword router: a three-lamp traffic light, a breakdown
+warning triangle, a green direction sign, a medicine capsule+pill, a fuel pump,
+an eco leaf, a law gavel, a road-marking arrow, a number plate, an ambulance, two
+cars meeting on a narrow road, a U-turn arrow, a dog-in-car, and skid marks.
+Generic-road icon 142 → 52 (the remainder is genuine lane-discipline and truly
+one-off facts, for which a clean road is the right visual). 120 scene/concept
+illustrations total; the largest shared bucket is now 52, down from 590 text-only
+at the start of this work.
 
 ### Book & exam sweep — junction and parking buckets spread out
 
