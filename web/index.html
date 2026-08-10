@@ -2807,6 +2807,16 @@ var _rbBase='<rect width="200" height="120" fill="#8cbf4f"/>'
  +'<rect y="44" width="200" height="32" fill="#767c84"/><rect x="84" width="32" height="120" fill="#767c84"/>'
  +'<circle cx="100" cy="60" r="34" fill="#767c84"/><circle cx="100" cy="60" r="15" fill="#8cbf4f" stroke="#dfe6d9" stroke-width="1.5"/>';
 function _rb(i){return _scn('<defs><marker id="rmk" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="4" markerHeight="4" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#1c4b8a"/></marker></defs>'+_rbBase+i);}
+/* Symbolic concept icons on a neutral card, used as a fallback so that EVERY
+   question carries a visual even when it is a pure fact (a fine, a licence rule,
+   a validity period). Decorative — the answer is always in the text. */
+function _ic(i,bg){return _scn('<rect width="200" height="120" fill="'+(bg||"#eef2f4")+'"/>'+i);}
+function _gauge(lbl,ang,col){var a=(ang||150)*Math.PI/180;var x=100+30*Math.cos(a),y=92-30*Math.sin(a);
+ return _scn('<rect width="200" height="120" fill="#20242a"/>'
+ +'<path d="M56 92 A46 46 0 0 1 144 92" fill="none" stroke="#4a4e54" stroke-width="8"/>'
+ +(col?'<path d="M100 46 A46 46 0 0 1 144 92" fill="none" stroke="'+col+'" stroke-width="8"/>':'')
+ +'<line x1="100" y1="92" x2="'+x.toFixed(1)+'" y2="'+y.toFixed(1)+'" stroke="#fff" stroke-width="3"/><circle cx="100" cy="92" r="5" fill="#fff"/>'
+ +'<text x="100" y="110" text-anchor="middle" font-size="10" fill="#aeb6bc" font-family="sans-serif">'+lbl+'</text>');}
 function _rbArrow(d){return '<path class="sgn-march" d="'+d+'" fill="none" stroke="#1c4b8a" stroke-width="2.4" stroke-dasharray="5 3" marker-end="url(#rmk)"/>';}
 /* side-profile car, for the hill-parking scene */
 function _carSide(x,y,r,c){c=c||"#2f7fd0";return '<g transform="translate('+x+' '+y+') rotate('+(r||0)+')">'
@@ -2979,6 +2989,29 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
    +'<circle class="sgn-rot sgn-slow" cx="142" cy="62" r="19" fill="#7d838b" stroke="#565b62" stroke-width="3"/><circle cx="142" cy="62" r="5" fill="#3a3f47"/>'
    +'<path d="M94 52 L124 54 M94 74 L124 70" stroke="#3a3f47" stroke-width="3" fill="none"/>'
    +'<g class="sgn-throb" fill="#e8b100"><polygon points="104,44 96,58 103,58 99,68 111,52 105,52"/></g>'),
+ iconFine:_ic('<rect x="54" y="42" width="92" height="46" rx="5" fill="#7cc47f" stroke="#4e9a52" stroke-width="2"/><circle cx="100" cy="65" r="13" fill="#e8d18a" stroke="#c9a94a" stroke-width="1.5"/><text x="100" y="69" text-anchor="middle" font-size="9" font-weight="800" fill="#8a6d1e" font-family="sans-serif">IQD</text><g stroke="#4e9a52" stroke-width="2" fill="none"><circle cx="68" cy="65" r="6"/><circle cx="132" cy="65" r="6"/></g><text x="100" y="104" text-anchor="middle" font-size="10" fill="#5a6068" font-family="sans-serif">fine</text>'),
+ iconJail:_ic('<rect x="52" y="32" width="96" height="64" rx="3" fill="#cdd3d8"/><g stroke="#3a3f47" stroke-width="5" stroke-linecap="round"><line x1="66" y1="32" x2="66" y2="96"/><line x1="84" y1="32" x2="84" y2="96"/><line x1="102" y1="32" x2="102" y2="96"/><line x1="120" y1="32" x2="120" y2="96"/><line x1="138" y1="32" x2="138" y2="96"/></g><rect x="52" y="46" width="96" height="5" fill="#3a3f47"/><text x="100" y="110" text-anchor="middle" font-size="9" fill="#5a6068" font-family="sans-serif">imprisonment</text>'),
+ iconLicence:_ic('<rect x="52" y="40" width="96" height="56" rx="6" fill="#3a7bbf"/><rect x="58" y="48" width="28" height="32" rx="2" fill="#cfe0f0"/><circle cx="72" cy="60" r="6" fill="#8fb4d6"/><rect x="62" y="70" width="20" height="7" rx="2" fill="#8fb4d6"/><g fill="#dbe8f4"><rect x="92" y="50" width="48" height="5" rx="1"/><rect x="92" y="60" width="40" height="4" rx="1"/><rect x="92" y="70" width="44" height="4" rx="1"/><rect x="92" y="79" width="30" height="4" rx="1"/></g>'),
+ iconLicenceX:_ic('<rect x="52" y="40" width="96" height="56" rx="6" fill="#3a7bbf"/><rect x="58" y="48" width="28" height="32" rx="2" fill="#cfe0f0"/><g fill="#dbe8f4"><rect x="92" y="50" width="48" height="5" rx="1"/><rect x="92" y="62" width="40" height="4" rx="1"/><rect x="92" y="72" width="44" height="4" rx="1"/></g><g class="sgn-throb" stroke="#d21f28" stroke-width="6" stroke-linecap="round"><line x1="64" y1="46" x2="136" y2="90"/><line x1="136" y1="46" x2="64" y2="90"/></g>'),
+ iconSpeed:_gauge("km/h",70,"#d21f28"),
+ iconCalendar:_ic('<rect x="58" y="36" width="84" height="64" rx="5" fill="#fff" stroke="#8a9098" stroke-width="2"/><rect x="58" y="36" width="84" height="16" rx="5" fill="#c9463a"/><rect x="70" y="30" width="6" height="12" rx="2" fill="#8a9098"/><rect x="124" y="30" width="6" height="12" rx="2" fill="#8a9098"/><g fill="#c3c9ce"><rect x="66" y="58" width="10" height="8"/><rect x="82" y="58" width="10" height="8"/><rect x="98" y="58" width="10" height="8"/><rect x="114" y="58" width="10" height="8"/><rect x="66" y="72" width="10" height="8"/><rect x="82" y="72" width="10" height="8"/></g><rect x="98" y="72" width="10" height="8" fill="#c9463a"/>'),
+ iconPhone:_ic('<g transform="translate(88,64)"><path d="M-16 -22 q-5 0 -5 5 q0 36 26 43 q5 1 7 -4 l4 -11 q1 -3 -2 -5 l-10 -4 q-3 -1 -5 2 l-2 3 q-9 -5 -13 -15 l3 -2 q3 -2 2 -5 l-4 -10 q-1 -3 -5 -2 z" fill="#2f7fd0"/></g><g fill="#3a3f47" font-family="sans-serif" font-weight="800" font-size="15"><text x="128" y="58">115</text><text x="128" y="80">104</text></g>'),
+ iconRain:_ic('<ellipse cx="96" cy="48" rx="34" ry="17" fill="#aeb6bc"/><ellipse cx="118" cy="52" rx="20" ry="12" fill="#c3c9ce"/><g class="sgn-throb" stroke="#3f86c4" stroke-width="3" stroke-linecap="round"><line x1="78" y1="70" x2="72" y2="88"/><line x1="98" y1="70" x2="92" y2="88"/><line x1="118" y1="70" x2="112" y2="88"/></g>',"#dbe2e6"),
+ iconSnow:_ic('<ellipse cx="96" cy="46" rx="34" ry="17" fill="#c3c9ce"/><g class="sgn-throb" stroke="#5a86a8" stroke-width="2.4"><g transform="translate(78,80)"><line x1="-6" y1="0" x2="6" y2="0"/><line x1="0" y1="-6" x2="0" y2="6"/><line x1="-4" y1="-4" x2="4" y2="4"/><line x1="4" y1="-4" x2="-4" y2="4"/></g><g transform="translate(114,80)"><line x1="-6" y1="0" x2="6" y2="0"/><line x1="0" y1="-6" x2="0" y2="6"/><line x1="-4" y1="-4" x2="4" y2="4"/><line x1="4" y1="-4" x2="-4" y2="4"/></g></g>',"#e2e8ec"),
+ iconTunnel:_ic(_base(_sky,_grass,"#767c84").replace(/^<svg[^>]*>|<\/svg>$/g,'')+'<path d="M62 96 v-26 a38 38 0 0 1 76 0 v26 z" fill="#20242a"/><path d="M70 96 v-24 a30 30 0 0 1 60 0 v24 z" fill="#3a3f47"/>'),
+ iconTyre:_ic('<circle cx="100" cy="64" r="38" fill="#2a2e33"/><circle cx="100" cy="64" r="18" fill="#8a9098"/><circle cx="100" cy="64" r="8" fill="#5a6068"/><g stroke="#12151a" stroke-width="3"><circle cx="100" cy="64" r="30" fill="none" stroke-dasharray="6 5"/></g>'),
+ iconBrake:_ic('<circle cx="100" cy="64" r="34" fill="#9aa0a8" stroke="#6b7178" stroke-width="3"/><circle cx="100" cy="64" r="10" fill="#5a6068"/><g fill="#7d838b"><circle cx="100" cy="64" r="24" fill="none" stroke="#c3c9ce" stroke-width="1.5"/></g><rect x="118" y="48" width="16" height="26" rx="3" fill="#c9463a"/>'),
+ iconOil:_ic('<path d="M46 78 h44 l10 -8 h30 v10 q0 8 -8 8 h-68 q-8 0 -8 -8 z" fill="#3a3f47"/><rect x="120" y="56" width="6" height="16" fill="#3a3f47"/><path d="M126 60 q10 2 14 10" fill="none" stroke="#3a3f47" stroke-width="3"/><path class="sgn-throb" d="M148 74 q-5 8 0 12 q5 -4 0 -12 z" fill="#c9a12a"/>'),
+ iconHorn:_ic('<path d="M60 56 h16 l24 -14 v44 l-24 -14 h-16 z" fill="#3a3f47"/><g class="sgn-throb" fill="none" stroke="#e8951a" stroke-width="3"><path d="M112 48 q10 16 0 32"/><path d="M122 42 q16 22 0 44"/></g>'),
+ iconIndicator:_ic('<g class="sgn-throb" fill="#37a047"><polygon points="86,44 122,64 86,84 86,72 66,72 66,56 86,56"/></g>'),
+ iconDocs:_ic('<rect x="66" y="34" width="60" height="76" rx="3" fill="#dfe4e8" stroke="#9aa0a8" stroke-width="1.5" transform="rotate(-6 96 72)"/><rect x="74" y="30" width="60" height="76" rx="3" fill="#fff" stroke="#9aa0a8" stroke-width="1.5"/><g fill="#c3c9ce"><rect x="82" y="42" width="44" height="5"/><rect x="82" y="54" width="44" height="4"/><rect x="82" y="64" width="36" height="4"/><rect x="82" y="74" width="40" height="4"/></g><g fill="#c9463a"><rect x="82" y="42" width="20" height="5"/></g>'),
+ iconPolice:_ic('<circle cx="100" cy="52" r="14" fill="#e0a878"/><rect x="86" y="40" width="28" height="9" rx="3" fill="#22335a"/><rect x="90" y="44" width="20" height="4" fill="#f2c33a"/><path d="M74 100 q0 -26 26 -26 t26 26 z" fill="#22335a"/><rect x="96" y="76" width="8" height="20" fill="#3a4a72"/>'),
+ iconInspect:_ic('<g transform="translate(92,62) rotate(40)"><path d="M-6 -22 a9 9 0 1 0 12 0 l0 6 a4 4 0 0 1 -12 0 z M-3 12 h6 v20 a3 3 0 0 1 -6 0 z" fill="#5a6068"/></g><circle cx="128" cy="80" r="16" fill="#37a047"/><path d="M120 80 l6 6 10 -12" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round"/>'),
+ iconAid:_ic('<rect x="60" y="40" width="80" height="60" rx="8" fill="#e23b3b"/><g fill="#fff"><rect x="92" y="52" width="16" height="36" rx="2"/><rect x="82" y="62" width="36" height="16" rx="2"/></g>'),
+ iconMoto:_ic('<circle cx="66" cy="82" r="15" fill="none" stroke="#2a2f36" stroke-width="4"/><circle cx="140" cy="82" r="15" fill="none" stroke="#2a2f36" stroke-width="4"/><path d="M66 82 l22 -14 h18 l8 8 h16 M104 68 l6 14 l30 0" fill="none" stroke="#2f7fd0" stroke-width="4"/><path d="M120 62 h16" stroke="#2a2f36" stroke-width="3"/>'),
+ iconLoad:_ic('<rect x="44" y="52" width="52" height="34" rx="2" fill="#c98a3a"/><rect x="96" y="60" width="36" height="26" rx="2" fill="#2f7fd0"/><rect x="132" y="66" width="20" height="20" rx="2" fill="#2f6ea8"/><circle cx="70" cy="92" r="9" fill="#2a2f36"/><circle cx="120" cy="92" r="9" fill="#2a2f36"/><circle cx="146" cy="92" r="9" fill="#2a2f36"/>'),
+ iconLane:_ic(_base().replace(/^<svg[^>]*>|<\/svg>$/g,'')),
+ iconSignGeneric:_ic('<polygon points="100,34 138,96 62,96" fill="#fff" stroke="#d21f28" stroke-width="6"/><text x="100" y="88" text-anchor="middle" font-size="34" font-weight="800" fill="#d21f28" font-family="sans-serif">?</text>'),
 };
 
   (function assignScenes(){
@@ -3045,6 +3078,58 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
       [/charges the car's battery while you drive/i,"alternator"]
     ];
     QUESTIONS.forEach(function(q){var e=(q.q&&q.q.en)||"";for(var i=0;i<MAP.length;i++){if(MAP[i][0].test(e)){q.scene=MAP[i][1];break;}}});
+    /* Fallback so EVERY question carries a visual: a keyword-matched concept icon,
+       else a per-category default. Runs only where no sign and no specific scene
+       was assigned above. Order matters — earlier, more specific keywords win. */
+    var KW=[
+      [/imprison|jail|prison|sentenced to|zindan/i,"iconJail"],
+      [/fine|dinar|penalty of|penalised|penalized/i,"iconFine"],
+      [/licence|license|permit is|driving permit|withdraw|revoke|suspend|disqualif/i,"iconLicence"],
+      [/valid|renew|expire|every year|annually|how long.*(licence|permit|valid)|years|months/i,"iconCalendar"],
+      [/emergency number|call the|telephone|phone|115|104|188|440|ambulance|fire brigade|civil defence/i,"iconPhone"],
+      [/documents|registration|insurance|log ?book|papers|must you carry/i,"iconDocs"],
+      [/inspection|roadworth|annual test|technical check|MOT|checked over/i,"iconInspect"],
+      [/first aid|bleeding|wound|burn|fracture|unconscious|CPR|breathing|resuscitat|injured|casualt|shock/i,"iconAid"],
+      [/police officer|policeman|officer'?s|hand signal|directing traffic/i,"iconPolice"],
+      [/speed|km\/h|kmh|fast|velocity|how quickly/i,"iconSpeed"],
+      [/following distance|safe distance|gap behind|metres behind|two-second|stopping distance|braking distance/i,"followGap"],
+      [/overtak|passing|pass the/i,"overtakeLeft"],
+      [/roundabout/i,"jxRound"],
+      [/junction|crossroads|cross road|intersection/i,"jxCross"],
+      [/park|stopping is|waiting is|may you stop|leave your car/i,"bridgePark"],
+      [/pedestrian|on foot|zebra|crossing|school child/i,"pedCrossing"],
+      [/cyclist|bicycle|cycle lane/i,"cyclist"],
+      [/motorcycl|moped|helmet|rider/i,"iconMoto"],
+      [/seat ?belt|restraint|air ?bag/i,"seatbelt"],
+      [/child|infant|baby|young passenger/i,"childRear"],
+      [/alcohol|drink|drunk|intoxicat|under the influence|drug/i,"drinkDrive"],
+      [/sleep|tired|drowsy|fatigue|rest break/i,"sleepy"],
+      [/fog|mist/i,"fog"],
+      [/rain|wet road|wet weather/i,"iconRain"],
+      [/snow|ice|icy|frost|winter/i,"iconSnow"],
+      [/night|dark|dusk|dawn|headlight|dipped beam|full beam|main beam/i,"night"],
+      [/tunnel/i,"iconTunnel"],
+      [/bridge|underpass/i,"bridgePark"],
+      [/tyre|tire|tread|puncture|wheel/i,"iconTyre"],
+      [/brake|braking|ABS/i,"iconBrake"],
+      [/oil|dipstick|lubricat/i,"iconOil"],
+      [/battery|alternator|charg/i,"alternator"],
+      [/engine|coolant|overheat|temperature|radiator/i,"tempHot"],
+      [/horn|sound your/i,"iconHorn"],
+      [/indicator|signal|turn signal|flashers/i,"iconIndicator"],
+      [/mirror/i,"mirrorAdjust"],
+      [/lane|carriageway|hard shoulder/i,"iconLane"],
+      [/load|cargo|trailer|weight|heavy vehicle|lorry|truck/i,"iconLoad"],
+      [/hill|slope|gradient|incline|descent/i,"hillPark"],
+      [/bend|curve|winding/i,"bend"]
+    ];
+    var DEF={rules:"iconLane",mech:"iconInspect",firstaid:"iconAid",signs:"iconSignGeneric"};
+    QUESTIONS.forEach(function(q){
+      if(q.scene||q.sign) return;
+      var e=(q.q&&q.q.en)||"";
+      for(var i=0;i<KW.length;i++){if(KW[i][0].test(e)){q.scene=KW[i][1];break;}}
+      if(!q.scene) q.scene=DEF[q.cat]||"iconLane";
+    });
     var WO=function(en,ku){return {en:en,ku:ku,};};
     var WHY=[
       ["What must you do at this sign",[null,WO("Slowing down is not enough — a STOP sign needs a full stop.","کەمکردنەوەی خێرایی بەس نییە — هێمای وەستان پێویستی بە وەستانی تەواوە."),WO("The horn does not replace stopping.","هۆڕن جێگەی وەستان ناگرێتەوە.")]],

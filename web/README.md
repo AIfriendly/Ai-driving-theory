@@ -7,7 +7,7 @@ self-contained HTML file** — no build step, no dependencies, no network calls.
 Open `index.html` in any browser, or use the published site (see
 [Deployment](#deployment)).
 
-**Current content: 736 questions · 110 hand-drawn sign icons · 60 scene/diagram illustrations · 14 achievements.**
+**Current content: 736 questions · 110 hand-drawn sign icons · 83 scene/concept illustrations · 14 achievements. Every question now carries a visual.**
 
 | Category | Questions |
 |---|---:|
@@ -249,6 +249,23 @@ publish. The checks are:
 ---
 
 ## Changelog
+
+### Every question now carries a visual — a concept-icon library + keyword fallback
+
+Final step of the illustration push: instead of drawing one bespoke image per
+remaining question (hundreds), a library of ~23 reusable **symbolic concept
+icons** was added — fine (banknote), imprisonment (bars), licence card, speed
+gauge, calendar (validity), emergency phone (115/104), documents, inspection,
+first-aid box, police officer, rain, snow, tunnel, tyre, brake disc, oil can,
+horn, indicator, motorcycle, load, a generic road, and a generic "?" sign.
+
+`assignScenes` now runs a keyword→icon fallback after the specific scene map,
+then a per-category default, so **every one of the 736 questions resolves to a
+sign or an animated visual** — 0 text-only. The icons are decorative
+(`aria-hidden`); the answer always stays in the text. Distribution is
+keyword-driven (speed questions → gauge, licence → card, tyre → tyre, …) with
+generic road / inspection / first-aid / sign defaults catching the remainder.
+83 scene/concept illustrations in total.
 
 ### Illustrating the concept questions — 9 more animated diagrams
 
