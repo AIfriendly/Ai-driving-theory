@@ -7,7 +7,7 @@ self-contained HTML file** — no build step, no dependencies, no network calls.
 Open `index.html` in any browser, or use the published site (see
 [Deployment](#deployment)).
 
-**Current content: 736 questions · 110 hand-drawn sign icons · 51 scene/diagram illustrations · 14 achievements.**
+**Current content: 736 questions · 110 hand-drawn sign icons · 60 scene/diagram illustrations · 14 achievements.**
 
 | Category | Questions |
 |---|---:|
@@ -249,6 +249,17 @@ publish. The checks are:
 ---
 
 ## Changelog
+
+### Illustrating the concept questions — 9 more animated diagrams
+
+Second illustration pass, this time for the purely conceptual questions the
+source leaves as text — the point being to give the learner a mental picture
+even where no photo existed: drink-driving (wheel + bottle), the drowsy-driver
+face, an overheating temperature gauge with the needle swung into the red and
+steam rising, a front-tyre blow-out, aquaplaning through standing water, a herd
+of sheep on a mountain road, dipped headlights on an overcast day, the oil
+dipstick with its MIN/MAX band, and the alternator belt that charges the
+battery. 574 → 564 text-only. 60 scene illustrations total.
 
 ### Illustrating the text-only questions — 15 new animated scene diagrams
 
