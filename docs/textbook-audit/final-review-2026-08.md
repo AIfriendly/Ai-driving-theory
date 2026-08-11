@@ -185,7 +185,19 @@ Spot-checks in the master copy confirmed:
   About screen already reflects ✓
 
 ## FINAL VERDICT
-Four documents, 457 pages, checked against 736 questions.
+Four documents checked against 736 questions.
+
+COVERAGE, STATED HONESTLY (the four sources are not independent):
+- Exam paper (50 pp): READ COMPLETELY, every page, answer key compared to the app's answers.
+- Part 1 (120 pp): ~50 pages opened, stepped through so every numbered topic block was seen.
+- Part 2 (53 pp): ~15 pages opened, covering each chapter.
+- The book (234 pp): 6 pages opened (imprint, contents, the p165/166 boundary, back matter).
+  It is the MASTER COPY; parts 1 and 2 are extracts spanning its content pp 22-229 with no
+  gap, and that boundary was verified directly rather than assumed — so it was covered
+  through them, not re-read page by page.
+~120 of the 457 page images were actually viewed. What was exhaustive is the fact-checking:
+every number, distance, penalty and classification encountered was grepped against the bank
+and compared. The verdict rests on that, not on page count.
 **No factual error was found in the app.** Every number verified matched its source exactly:
 penalties, fines, licence categories and weights, emergency numbers, speed limits, distances,
 tread depth, seat geometry, gear speeds, rpm bands, first-aid classifications and extinguisher

@@ -252,9 +252,25 @@ publish. The checks are:
 
 ### Final review — all four sources fact-checked against the bank
 
-A full verification pass over the four official documents (457 pages) against all 736
-questions, comparing every checkable number rather than sampling. Findings are recorded in
+A verification pass over all four official documents against the 736 questions. Findings are
+recorded in
 [`docs/textbook-audit/final-review-2026-08.md`](../docs/textbook-audit/final-review-2026-08.md).
+
+**Coverage, stated honestly** — the depth differed by document, and the four are not
+independent:
+- **Exam paper (50 pp): read completely**, every page, and its printed answer key compared
+  against the app's answers.
+- **Part 1 (120 pp): ~50 pages opened**, stepping through so every numbered topic block was
+  seen; every figure encountered was then grepped against the bank.
+- **Part 2 (53 pp): ~15 pages opened**, covering each chapter the same way.
+- **The book (234 pp): 6 pages opened** — imprint, contents, the p165/166 boundary and back
+  matter. It is the **master copy**, and parts 1 and 2 are extracts that together span its
+  teaching content (pp 22-229) with no gap; that boundary was verified directly rather than
+  assumed, so the book was covered through them rather than re-read.
+
+So roughly 120 of the 457 page images were viewed. What was exhaustive is the *fact-checking*:
+every number, distance, penalty and classification encountered was searched in the question
+bank and compared, which is what the verdict below rests on.
 
 **No factual error was found in the app.** Every figure matched its source exactly — the
 250,000-1,000,000 IQD unlicensed-driving fine and its owner liability, the alcohol penalties
