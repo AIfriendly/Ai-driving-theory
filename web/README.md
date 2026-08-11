@@ -7,7 +7,7 @@ self-contained HTML file** — no build step, no dependencies, no network calls.
 Open `index.html` in any browser, or use the published site (see
 [Deployment](#deployment)).
 
-**Current content: 736 questions · 110 hand-drawn sign icons · 120 scene/concept illustrations · 14 achievements. Every question now carries a visual.**
+**Current content: 736 questions · 110 hand-drawn sign icons · 129 scene/concept illustrations · 14 achievements. Every question now carries a visual.**
 
 | Category | Questions |
 |---|---:|

@@ -3070,6 +3070,41 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
  iconUturn:_ic('<path d="M76 90 V56 a24 24 0 0 1 48 0 V78" fill="none" stroke="#2b6fb0" stroke-width="9"/><polygon points="124,92 114,76 134,76" fill="#2b6fb0"/>'),
  iconPet:_ic('<rect x="42" y="52" width="116" height="34" rx="7" fill="#2f7fd0"/><rect x="58" y="40" width="58" height="18" rx="4" fill="#cfe8fb"/><circle cx="68" cy="90" r="10" fill="#22262c"/><circle cx="140" cy="90" r="10" fill="#22262c"/><g fill="#6b4a2a"><circle cx="92" cy="50" r="8"/><polygon points="85,44 82,34 90,40"/><polygon points="99,44 102,34 94,40"/></g><circle cx="89" cy="49" r="1.4" fill="#111"/>'),
  iconSkid:_scn(_base(_sky,_grass,"#767c84")+'<g stroke="#20242a" stroke-width="2.6" fill="none" opacity="0.55"><path d="M78 118 q6 -22 24 -34"/><path d="M92 118 q6 -22 24 -34"/></g>'+_carFront(112,78,0.95,"#c23")),
+ /* --- part 1 sweep: pictures the source carries that the app lacked --- */
+ childSeats:_ic('<g transform="translate(38,44)"><path d="M2 34 q-4 -26 14 -30 q12 -3 16 6 l4 24 z" fill="#9aa3ab" stroke="#6b7178"/><path d="M6 12 q10 -6 20 -2" stroke="#c0392b" stroke-width="2.4" fill="none"/><text x="18" y="52" text-anchor="middle" font-size="8" fill="#5a6068" font-family="sans-serif">3-13</text></g>'
+   +'<g transform="translate(86,40)"><path d="M4 38 h28 v-8 h-20 v-24 q0 -6 6 -6 h10 q6 0 6 6 v10" fill="none" stroke="#c0392b" stroke-width="7" stroke-linejoin="round"/><path d="M12 14 l16 14" stroke="#e8b100" stroke-width="3"/><text x="18" y="56" text-anchor="middle" font-size="8" fill="#5a6068" font-family="sans-serif">9-25</text></g>'
+   +'<g transform="translate(136,58)"><rect x="0" y="8" width="34" height="14" rx="4" fill="#9aa3ab" stroke="#6b7178"/><rect x="24" y="-4" width="10" height="14" rx="3" fill="#9aa3ab" stroke="#6b7178"/><text x="17" y="38" text-anchor="middle" font-size="8" fill="#5a6068" font-family="sans-serif">22-36</text></g>'
+   +'<text x="100" y="20" text-anchor="middle" font-size="9" fill="#33383e" font-family="sans-serif">by weight (kg)</text>'),
+ childLock:_ic('<rect x="52" y="30" width="96" height="62" rx="7" fill="#cfd6db" stroke="#8a9098" stroke-width="2"/><rect x="62" y="40" width="42" height="26" rx="3" fill="#a9c4d6"/>'
+   +'<g transform="translate(124,60)"><rect x="-9" y="-4" width="18" height="16" rx="2.5" fill="#3a3f47"/><path d="M-5 -4 v-5 a5 5 0 0 1 10 0 v5" fill="none" stroke="#3a3f47" stroke-width="2.6"/></g>'
+   +'<g class="sgn-throb" stroke="#c0392b" stroke-width="2.4"><path d="M124 34 v8 M120 38 l4 -4 4 4"/></g>'),
+ blindCane:_ic('<circle cx="86" cy="34" r="10" fill="#e6b88c"/><rect x="76" y="30" width="20" height="5" rx="2" fill="#2a2f36"/><rect x="78" y="46" width="18" height="30" rx="5" fill="#e8e8ea"/><path d="M78 76 l-3 24 M94 76 l3 24" stroke="#4a5058" stroke-width="5" stroke-linecap="round"/>'
+   +'<line x1="98" y1="52" x2="140" y2="98" stroke="#f2f4f6" stroke-width="4"/><line x1="130" y1="86" x2="140" y2="98" stroke="#c0392b" stroke-width="4"/>'),
+ wheelchairPed:_ic('<circle class="sgn-rot sgn-slow" cx="92" cy="76" r="22" fill="none" stroke="#3a3f47" stroke-width="4"/><circle cx="92" cy="76" r="5" fill="#3a3f47"/><circle cx="124" cy="90" r="8" fill="none" stroke="#3a3f47" stroke-width="3"/>'
+   +'<circle cx="98" cy="34" r="9" fill="#e6b88c"/><path d="M92 44 h16 q6 0 6 6 v14 h-24 z" fill="#2b6fb0"/><path d="M114 52 h14" stroke="#2b6fb0" stroke-width="6" stroke-linecap="round"/><rect x="106" y="64" width="24" height="7" rx="3" fill="#2b6fb0"/>'),
+ elderlyPed:_ic('<circle cx="94" cy="30" r="10" fill="#e6b88c"/><path d="M86 42 q16 -5 22 2 l-4 30 h-16 z" fill="#6b5b7a"/><path d="M88 74 l-4 26 M104 74 l5 26" stroke="#4a5058" stroke-width="5" stroke-linecap="round"/>'
+   +'<line x1="116" y1="52" x2="124" y2="100" stroke="#8a5a2a" stroke-width="3.5"/><path d="M112 52 q6 -6 10 0" fill="none" stroke="#8a5a2a" stroke-width="3.5"/>'),
+ pedBridge:_ic(
+   /* left: UP steps = footbridge. Staircase rises to the right, figure climbing it. */
+   '<g transform="translate(56,60)"><rect x="-26" y="-30" width="52" height="60" rx="5" fill="#2b6fb0"/>'
+   +'<path d="M-20 24 h8 v-9 h8 v-9 h8 v-9 h8 v27 z" fill="#fff"/>'
+   +'<g fill="#fff" transform="translate(-2,-18)"><circle cx="0" cy="-8" r="4"/><path d="M-3 -3 h7 l4 8 -4 2 -3 -5 v6 l4 8 -4 2 -5 -9 -5 6 -3 -3 5 -8 z"/></g></g>'
+   /* right: DOWN steps = underpass. Staircase descends to the right, figure stepping down. */
+   +'<g transform="translate(144,60)"><rect x="-26" y="-30" width="52" height="60" rx="5" fill="#2b6fb0"/>'
+   +'<path d="M-20 -3 h8 v9 h8 v9 h8 v9 h-24 z" fill="#fff"/>'
+   +'<g fill="#fff" transform="translate(4,-14)"><circle cx="0" cy="-8" r="4"/><path d="M-3 -3 h7 l4 8 -4 2 -3 -5 v6 l4 8 -4 2 -5 -9 -5 6 -3 -3 5 -8 z"/></g></g>'),
+ plantMachine:_ic('<rect x="40" y="66" width="60" height="22" rx="5" fill="#3a3f47"/><g class="sgn-rot sgn-slow"><circle cx="54" cy="77" r="8" fill="#5a6068"/></g><g class="sgn-rot sgn-slow"><circle cx="86" cy="77" r="8" fill="#5a6068"/></g>'
+   +'<rect x="52" y="40" width="34" height="26" rx="4" fill="#e8b100"/><rect x="58" y="46" width="22" height="14" rx="2" fill="#bcd6ea"/>'
+   +'<path d="M86 48 L128 34 L146 52" fill="none" stroke="#e8b100" stroke-width="8" stroke-linecap="round"/>'
+   +'<path d="M140 52 q14 4 12 18 q-14 4 -20 -6 z" fill="#8a9098" stroke="#5a6068"/>'),
+ tankerTruck:_ic('<ellipse cx="104" cy="60" rx="52" ry="21" fill="#cfd6db" stroke="#8a9098" stroke-width="2"/><rect x="52" y="60" width="104" height="14" fill="#cfd6db"/><rect x="30" y="46" width="30" height="28" rx="4" fill="#2b6fb0"/><rect x="34" y="50" width="18" height="12" rx="2" fill="#bcd6ea"/>'
+   +'<g class="sgn-rot sgn-slow"><circle cx="46" cy="84" r="9" fill="#2a2f36"/></g><g class="sgn-rot sgn-slow"><circle cx="120" cy="84" r="9" fill="#2a2f36"/></g><g class="sgn-rot sgn-slow"><circle cx="144" cy="84" r="9" fill="#2a2f36"/></g>'
+   +'<g transform="translate(104,58) rotate(45)"><rect x="-9" y="-9" width="18" height="18" fill="#e8631a" stroke="#111" stroke-width="1.4"/></g>'),
+ caravanTow:_ic('<rect x="96" y="36" width="76" height="42" rx="7" fill="#f2f4f6" stroke="#9aa0a8" stroke-width="2"/><rect x="106" y="46" width="20" height="14" rx="2" fill="#5a6068"/><rect x="142" y="46" width="20" height="14" rx="2" fill="#5a6068"/>'
+   +'<g class="sgn-rot sgn-slow"><circle cx="134" cy="82" r="10" fill="#2a2f36"/></g>'
+   +'<path d="M96 70 l-14 6" stroke="#5a6068" stroke-width="4"/>'
+   +'<g transform="translate(52,62)"><path d="M-24 8 q0 -12 8 -13 l6 -9 q10 -3 18 0 l5 9 q7 1 7 13 z" fill="#c0392b"/><rect x="-10" y="-12" width="14" height="8" rx="2" fill="#cfe8fb"/></g>'
+   +'<g class="sgn-rot sgn-slow"><circle cx="38" cy="76" r="8" fill="#2a2f36"/></g><g class="sgn-rot sgn-slow"><circle cx="66" cy="76" r="8" fill="#2a2f36"/></g>'),
 };
 
   (function assignScenes(){
@@ -3134,6 +3169,15 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
       [/must you use dipped headlights in daylight/i,"dipLight"],
       [/oil level sit on the dipstick/i,"dipstickOil"],
       [/charges the car's battery while you drive/i,"alternator"],
+      [/child under 13 (travel|sit)/i,"childSeats"],
+      [/rear-door child lock/i,"childLock"],
+      [/wheelchair user especially at risk/i,"wheelchairPed"],
+      [/elderly person is slowly crossing/i,"elderlyPed"],
+      [/person walking UP steps/i,"pedBridge"],
+      [/category T licence|agricultural machinery under a category/i,"plantMachine"],
+      [/raises a white cane|blind pedestrian|white cane/i,"blindCane"],
+      [/tanker lorry inside a red ring/i,"tankerTruck"],
+      [/towing a caravan|heaviest trailer you may tow|towing a trailer or caravan/i,"caravanTow"],
       [/orange diamond plate with an exploding symbol/i,"hazExplosive"],
       [/yellow and white diamond plate with a radiation symbol/i,"hazRadioactive"],
       [/class of dangerous goods is shown by a GREEN diamond/i,"hazGreenGas"],
