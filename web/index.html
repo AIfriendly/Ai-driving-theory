@@ -2950,7 +2950,8 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
    +_post(94,106,88)+'<g stroke="#d21f28" stroke-width="2.2"><line x1="88" y1="98" x2="100" y2="93"/><line x1="88" y1="103" x2="100" y2="98"/></g>'
    +_post(112,100,86)+'<g stroke="#d21f28" stroke-width="2"><line x1="107" y1="93" x2="117" y2="89"/></g>'
    +'<g stroke="#3a3f47" stroke-width="2"><line x1="122" y1="72" x2="152" y2="66"/><line x1="124" y1="80" x2="158" y2="72"/></g>'
-   +'<g stroke="#8a5a3a" stroke-width="1.4"><line x1="126" y1="82" x2="128" y2="64"/><line x1="140" y1="79" x2="142" y2="61"/><line x1="154" y1="76" x2="156" y2="58"/></g>'),
+   +'<g stroke="#8a5a3a" stroke-width="1.4"><line x1="126" y1="82" x2="128" y2="64"/><line x1="140" y1="79" x2="142" y2="61"/><line x1="154" y1="76" x2="156" y2="58"/></g>'
+   +'<g font-family="sans-serif" font-size="7" fill="#22303a" text-anchor="middle"><text x="72" y="118">300</text><text x="94" y="114">200</text><text x="112" y="110">100</text></g>'),
  seatbelt:_scn('<rect width="200" height="120" fill="#eaf1f4"/>'
    +'<rect x="72" y="38" width="56" height="72" rx="7" fill="#8a9098"/><rect x="76" y="26" width="48" height="24" rx="9" fill="#8a9098"/>'
    +'<circle cx="100" cy="42" r="10" fill="#e0a878"/><rect x="88" y="52" width="24" height="36" rx="6" fill="#3a6ea5"/>'
@@ -3071,6 +3072,17 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
  iconPet:_ic('<rect x="42" y="52" width="116" height="34" rx="7" fill="#2f7fd0"/><rect x="58" y="40" width="58" height="18" rx="4" fill="#cfe8fb"/><circle cx="68" cy="90" r="10" fill="#22262c"/><circle cx="140" cy="90" r="10" fill="#22262c"/><g fill="#6b4a2a"><circle cx="92" cy="50" r="8"/><polygon points="85,44 82,34 90,40"/><polygon points="99,44 102,34 94,40"/></g><circle cx="89" cy="49" r="1.4" fill="#111"/>'),
  iconSkid:_scn(_base(_sky,_grass,"#767c84")+'<g stroke="#20242a" stroke-width="2.6" fill="none" opacity="0.55"><path d="M78 118 q6 -22 24 -34"/><path d="M92 118 q6 -22 24 -34"/></g>'+_carFront(112,78,0.95,"#c23")),
  /* --- part 1 sweep: pictures the source carries that the app lacked --- */
+ arrowLight:_ic('<rect x="46" y="34" width="108" height="52" rx="7" fill="#2a2f36"/>'
+   +'<circle cx="74" cy="60" r="17" fill="#3a3f47"/><path d="M74 70 v-14 M67 62 l7 -7 7 7" stroke="#5a6068" stroke-width="3.4" fill="none" stroke-linecap="round"/>'
+   +'<circle class="sgn-throb" cx="126" cy="60" r="17" fill="#37c04a"/><path d="M126 70 v-14 M119 62 l7 -7 7 7" stroke="#0d3b17" stroke-width="3.4" fill="none" stroke-linecap="round"/>'
+   +'<text x="100" y="104" text-anchor="middle" font-size="8" fill="#5a6068" font-family="sans-serif">arrow applies to that direction only</text>'),
+ flashRed:_ic('<rect x="52" y="42" width="96" height="34" rx="6" fill="#f2f4f6" stroke="#3a3f47" stroke-width="2"/>'
+   +'<circle class="sgn-throb" cx="78" cy="59" r="12" fill="#e23b3b"/><circle cx="122" cy="59" r="12" fill="#6b2020"/>'
+   +'<rect x="96" y="76" width="8" height="24" fill="#8a9098"/>'
+   +'<text x="100" y="30" text-anchor="middle" font-size="9" font-weight="700" fill="#b8341a" font-family="sans-serif">alternating = STOP</text>'),
+ countdownTimer:_ic('<rect x="60" y="34" width="80" height="52" rx="6" fill="#20242a"/>'
+   +'<text class="sgn-throb" x="100" y="74" text-anchor="middle" font-size="36" font-weight="800" fill="#e23b3b" font-family="monospace">10</text>'
+   +'<text x="100" y="100" text-anchor="middle" font-size="8" fill="#5a6068" font-family="sans-serif">seconds until the light changes</text>'),
  childSeats:_ic('<g transform="translate(38,44)"><path d="M2 34 q-4 -26 14 -30 q12 -3 16 6 l4 24 z" fill="#9aa3ab" stroke="#6b7178"/><path d="M6 12 q10 -6 20 -2" stroke="#c0392b" stroke-width="2.4" fill="none"/><text x="18" y="52" text-anchor="middle" font-size="8" fill="#5a6068" font-family="sans-serif">3-13</text></g>'
    +'<g transform="translate(86,40)"><path d="M4 38 h28 v-8 h-20 v-24 q0 -6 6 -6 h10 q6 0 6 6 v10" fill="none" stroke="#c0392b" stroke-width="7" stroke-linejoin="round"/><path d="M12 14 l16 14" stroke="#e8b100" stroke-width="3"/><text x="18" y="56" text-anchor="middle" font-size="8" fill="#5a6068" font-family="sans-serif">9-25</text></g>'
    +'<g transform="translate(136,58)"><rect x="0" y="8" width="34" height="14" rx="4" fill="#9aa3ab" stroke="#6b7178"/><rect x="24" y="-4" width="10" height="14" rx="3" fill="#9aa3ab" stroke="#6b7178"/><text x="17" y="38" text-anchor="middle" font-size="8" fill="#5a6068" font-family="sans-serif">22-36</text></g>'
@@ -3169,6 +3181,9 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
       [/must you use dipped headlights in daylight/i,"dipLight"],
       [/oil level sit on the dipstick/i,"dipstickOil"],
       [/charges the car's battery while you drive/i,"alternator"],
+      [/green ARROW rather than a round green/i,"arrowLight"],
+      [/Two red lamps flash alternately/i,"flashRed"],
+      [/digital counter beside the traffic light/i,"countdownTimer"],
       [/child under 13 (travel|sit)/i,"childSeats"],
       [/rear-door child lock/i,"childLock"],
       [/wheelchair user especially at risk/i,"wheelchairPed"],
