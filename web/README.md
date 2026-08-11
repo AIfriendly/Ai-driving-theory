@@ -250,6 +250,39 @@ publish. The checks are:
 
 ## Changelog
 
+### Final review — all four sources fact-checked against the bank
+
+A full verification pass over the four official documents (457 pages) against all 736
+questions, comparing every checkable number rather than sampling. Findings are recorded in
+[`docs/textbook-audit/final-review-2026-08.md`](../docs/textbook-audit/final-review-2026-08.md).
+
+**No factual error was found in the app.** Every figure matched its source exactly — the
+250,000-1,000,000 IQD unlicensed-driving fine and its owner liability, the alcohol penalties
+and licence-withdrawal periods, the 2-year/3-year/5-year officer-assault scale, licence
+categories under Instruction 11 of 2024 with the 750 kg and 3500 kg lines, the emergency panel
+(115 / 188 / 104 / 122 / 440 / 911), the Kurdistan speed panel 60-80-110, level-crossing posts
+at 300/200/100 m, 1.6 mm tread, 9-and-3 steering with a 5 cm free-play limit, seat geometry
+(90-110 degrees, 10-30 cm), gear changes at 30/40/50 km/h within 1200-2500 rpm, the 30 cm kerb
+rule, anti-clockwise roundabouts, the 2/3/4-second following rule, 7-9 hours sleep, 12 glasses
+of water, the five pollution types, arterial vs venous bleeding, and the A/B/C/D/K extinguisher
+classes. The steep-road rule was checked with particular care because it is the reverse of some
+countries' — the descending vehicle gives way to the climbing one, and the app has it right.
+
+Two items were addressed:
+- **Fixed:** the freeway/highway question named green for freeway and blue for highway, the
+  opposite mapping to the two direction-panel questions. They are different sign families (the
+  road-type pictogram versus the guide panels), so the functional distinction was kept and an
+  explicit note added in both languages.
+- **Confirmed correct:** the exam paper itself gives two different maximum reversing distances
+  (10 m in Q111, 5 m in Q264). The app already teaches the principle and says so outright.
+
+The review also found 16 pictures the sources carry that the app had no icon for, now drawn:
+child-seat progression with weight bands, the rear-door child lock, a blind pedestrian's white
+cane with its red band, a wheelchair user, an elderly pedestrian, footbridge vs underpass signs,
+construction plant, a tanker lorry, a car towing a caravan, arrow traffic lights, twin flashing
+red lamps, a countdown timer, and the A-B-C-D-K extinguisher chart; the rail-posts scene gained
+its 300/200/100 m distances.
+
 ### Breaking up the last generic bucket — 14 rules concept icons
 
 The final shared bucket was the generic-road icon on ~142 miscellaneous rules
