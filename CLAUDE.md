@@ -1,5 +1,9 @@
 # Trading Agent — Project Constraints
 
+**Read `docs/PROGRESS.md` at session start** — persistent state, what is done,
+what is next, and gotchas that have already cost time once. Update it before
+every push.
+
 Bybit V5 via MCP server in `src/bybit_mcp/` (configured in `.mcp.json`).
 Call `get_trading_status` once at session start to read the active harness config.
 
