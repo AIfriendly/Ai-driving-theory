@@ -285,10 +285,14 @@ classes. The steep-road rule was checked with particular care because it is the 
 countries' — the descending vehicle gives way to the climbing one, and the app has it right.
 
 Two items were addressed:
-- **Fixed:** the freeway/highway question named green for freeway and blue for highway, the
-  opposite mapping to the two direction-panel questions. They are different sign families (the
-  road-type pictogram versus the guide panels), so the functional distinction was kept and an
-  explicit note added in both languages.
+- **Fixed:** the freeway/highway question had the two colours backwards. Book p75 lists the
+  road-type pictograms (item 5 Freeway = **blue**, item 6 Highway = **green**) and p83 captions
+  the guide panels the same way, so the colour logic is consistent across both sign families —
+  blue is the expressway, green the main road outside the built-up area. The question now reads
+  "Freeway (blue) / Highway (green)" in both languages, keeping the functional distinction (no
+  stops or direct crossroads versus junctions and lights) that p75 states verbatim. An earlier
+  attempt at this fix wrongly claimed the two families used opposite colour schemes; that note
+  has been removed. This is the one genuine factual error the review found.
 - **Confirmed correct:** the exam paper itself gives two different maximum reversing distances
   (10 m in Q111, 5 m in Q264). The app already teaches the principle and says so outright.
 

@@ -210,3 +210,25 @@ Two things were corrected/handled:
    the principle and documenting the conflict.
 
 16 new illustrations added for pictures the sources carry that the app lacked.
+
+## CORRECTION (added after re-reading book pp 75 and 83 individually)
+
+The earlier entry above about the freeway/highway sign colours was WRONG, and has now been
+fixed properly in the app.
+
+Book **p75** lists the road-type pictograms: item 5 **ڕێگای خێرا Freeway = the BLUE pictogram**,
+item 6 **ڕێگای سەرەکی Higway = the GREEN pictogram**. Book **p83** then captions the guide
+panels the same way: the blue panels are labelled "ناونیشانێک لە ڕێگای خێرا Freeway" and the
+green ones "ڕێگای سەرەکی Higway لە دەرەوەی ناوچەی نیشتەجێبوون".
+
+So the colour logic is CONSISTENT across both sign families — blue = freeway/expressway,
+green = highway/main road outside the built-up area. There is no second system.
+
+The app's Q327 had the two colours **backwards**. My first attempt at a fix wrongly claimed
+they were "two different sign families" and added an explanatory note to that effect; that
+note was based on a false premise and has been removed. Q327 now reads
+"Freeway sign (blue) / Highway sign (green)" in both languages, keeping the functional
+distinction (a freeway has no stops or direct crossroads; a highway has junctions and traffic
+lights), which p75 states verbatim.
+
+This is the one genuine factual error found in the app across the whole review.
