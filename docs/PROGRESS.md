@@ -17,7 +17,7 @@ single self-contained file, no build step, no network calls.
 
 | | |
 |---|---|
-| Active questions | 736 (740 defined, 4 filtered out via `ARCHIVED_Q`) |
+| Active questions | 739 (743 defined, 4 filtered out via `ARCHIVED_Q`) |
 | Sign icons | 110 inline SVG |
 | Scene / concept illustrations | 133 |
 | Questions with no visual | 0 |
@@ -57,25 +57,31 @@ Branch: `claude/trading-agent-bybit-mcp-ao56dp`
 - [x] Reworded `#57` so it no longer collides with `#289` — it now asks
       "between cities and towns" (the circular's own words) instead of
       "outside built-up areas", which is the border panel's 80 (book p156)
+- [x] Three gap questions written, all with inline Kurdish so `KU_FILL` is
+      untouched: `#741` coolant expansion tank (completes the #735–740
+      engine-bay series), `#742` night = half the legal speed, `#743` the
+      instructor is liable during a lesson
+- [x] `#296` now says outright that the two official sources disagree on the
+      steering grip — book teaches 3-and-9, the exam paper marks 10-and-2
+- [x] Book chapters swept with **zero discrepancies**: 1 definitions,
+      3 traffic law, 6 preparing to drive, 7 parking, 9 hazards,
+      10 driver's health, 12 first-aid core, plus parts of 4, 5 and 8
 
 ## Next
 
 **Unblocked — the PDFs were re-supplied and all four verified intact**
 (120 / 53 / 50 / 234 pages = 457, matching the counts below).
 
-- [ ] Book: printed pp 33–155 and 160–230 still unswept
+- [ ] Book, still unswept (PDF page numbers): 32–46 (ch.2 general rules),
+      56–72 and 81–92 (rest of ch.4 signs), 93–106 (rest of ch.5 car parts),
+      127–144 (rest of ch.7 manoeuvres), 159–172 (rest of ch.8), 195–205
+      (ch.11 eco), 215–223 (rest of ch.12), 224–234 (glossary)
 - [ ] Part 1 (120 pp): sweep, and confirm the book-is-master-copy claim
 - [ ] Part 2 (53 pp): sweep *(lowest priority — the book duplicates it)*
 
-**Gaps found in the exam sweep, not yet written as questions**
-
-- [ ] Night speed = **half** the posted limit (exam S1 Q46). The bank has 45
-      km/h questions and none teaches this. Biggest single hole found.
-- [ ] The **instructor**, not the learner, carries liability for a violation
-      during a lesson (exam S2 Q93)
-- [ ] **Coolant reservoir** identification — completes the #735–740 engine-bay
-      series, which covers the other six parts the exam points at (S2 Q141)
-- [ ] Steering-wheel **hand position** (10:10, both hands) (exam S2 Q113)
+The high-figure-density chapters were deliberately swept first, on the theory
+that errors hide in numbers rather than prose. That theory held — the one
+factual error found sat in a list of document fields.
 
 **Carried candidates — verify against the book's sign chapter first**
 
@@ -99,17 +105,25 @@ contains Part 1 + Part 2 verbatim.
 | Exam | 50 | **50 — complete**, all 431 questions + full answer key |
 | Part 1 | 120 | ~50 |
 | Part 2 | 53 | ~15 |
-| Book | 234 | ~26 (front matter, ch.1, ch.8 pp154–159) |
+| Book | 234 | ~98 (front matter + ch.1, 3, 6, 7-parking, 9, 10, 12-core, parts of 4, 5, 8) |
 
-The exam is now genuinely exhaustive — every question and every marked answer
-was extracted and checked. The other three are not; roughly 145 of 457 page
+The exam is genuinely exhaustive — every question and every marked answer was
+extracted and checked. The other three are not; roughly **213 of 457** page
 images have been viewed. Do not restate this as a full page-by-page pass.
 
-**Two factual errors have now been found in total:** the freeway/highway
-colours (fixed earlier) and the `#510` blood-group error (fixed this session).
-Against that, **ten** apparent gaps were investigated during the exam sweep and
-**eight were already correctly covered** — grep the whole bank before believing
-in a gap.
+**Three source problems have been found in total, all fixed:** the
+freeway/highway colours, the `#510` blood-group error, and the `#57` stem that
+collided with `#289`. Set against that, **13** apparent gaps were investigated
+and **10 turned out to be already covered correctly** — including one I had
+already written into this file as a confirmed gap (steering hand position,
+`#296`) before finding it. **Grep the whole bank before believing in a gap, and
+grep for the wording rather than the concept** — `#296` was missed because it
+writes "9 and 3 clock positions" with no apostrophe in "o'clock".
+
+Where the sweep has reached, the bank is markedly more accurate than the old
+coverage table implied: chapters 3, 9, 10 and 12 came back with **zero**
+discrepancies across every penalty band, licence weight, age, CPR figure and
+tyre spec.
 
 ---
 
