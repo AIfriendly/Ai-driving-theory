@@ -93,8 +93,8 @@ Branch: `claude/trading-agent-bybit-mcp-ao56dp`
 **Unblocked — the PDFs were re-supplied and all four verified intact**
 (120 / 53 / 50 / 234 pages = 457, matching the counts below).
 
-- [ ] Book: only the **glossary (PDF 224–234)** is left. Every numbered
-      chapter, 1 through 12, has now been swept end to end.
+- [x] **Book swept 234/234 — complete.** Every chapter 1–12, plus the glossary
+      (a bilingual term table, nothing examinable) and the end matter.
 - [ ] Part 1 (120 pp): sweep, and confirm the book-is-master-copy claim
 - [ ] Part 2 (53 pp): sweep *(lowest priority — the book duplicates it)*
 
@@ -116,8 +116,10 @@ factual error found sat in a list of document fields.
       standing rule, nothing was written from the pictogram alone.
 - [ ] Double-cab pickup on a private B licence: allowed **provided it is not
       used commercially** — a *use* restriction; the bank only covers B by
-      weight (S2 Q52). Not a sign — look for it in ch.2/ch.3 licence text or
-      in Part 1.
+      weight (S2 Q52). It did not appear anywhere in the book's twelve
+      chapters, and this volume *is* the B–BE one, so **Part 1 is the only
+      place left to look.** Do not go hunting in a sister volume — we do not
+      have them and they cover other licence classes.
 
 ---
 
@@ -131,13 +133,20 @@ contains Part 1 + Part 2 verbatim.
 | Exam | 50 | **50 — complete**, all 431 questions + full answer key |
 | Part 1 | 120 | ~50 |
 | Part 2 | 53 | ~15 |
-| Book | 234 | **223 — every chapter 1–12 complete**; only the glossary (224–234) unread |
+| Book | 234 | **234 — complete**, every chapter plus glossary and end matter |
 
 The exam and the book are now both exhaustive — every exam question and marked
-answer was extracted and checked, and every numbered book chapter has been read
-page by page. Roughly **338 of 457** page images have been viewed. Part 1 and
-Part 2 remain, but they are copies of the book, so the *content* is fully swept
-even though those page images are not.
+answer was extracted and checked, and the book has been read page by page,
+234/234. Roughly **349 of 457** page images have been viewed. Part 1 and Part 2
+remain, but the book is their master copy (verified at the `c-164`/`c-165`
+boundary), so the *content* is fully swept even though those page images are not.
+
+**The book identifies itself on the back cover:** *Traffic Manual — For All Road
+Users, B–BE, v1.0, 2025*, by Najat Najm, KRG Ministry of Interior, Directorate
+General of Traffic Police. It is one of a **seven-volume series**, one per
+licence class (A motorcycle, B–BE, C cargo, D passenger, agricultural,
+construction plant, plus instructor editions). B–BE is the right volume for this
+app. Lorry and bus material inside it is background, not those classes' syllabus.
 
 **Nine problems have been found in total, all fixed:**
 
