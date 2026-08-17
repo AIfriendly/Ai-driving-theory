@@ -17,7 +17,7 @@ single self-contained file, no build step, no network calls.
 
 | | |
 |---|---|
-| Active questions | 740 (744 defined, 4 filtered out via `ARCHIVED_Q`) |
+| Active questions | 742 (746 defined, 4 filtered out via `ARCHIVED_Q`) |
 | Sign icons | 110 inline SVG |
 | Scene / concept illustrations | 133 |
 | Questions with no visual | 0 |
@@ -76,15 +76,25 @@ Branch: `claude/trading-agent-bybit-mcp-ao56dp`
         kept distinct from the two brake *systems* (service and parking)
 - [x] `#296`'s steering-grip wording independently confirmed correct by book
       p104 — 9-and-3 taught, 10-and-2 for older/large wheels, 5 cm free play
+- [x] **Chapters 4 (signs) and 7 (manoeuvres) swept complete.** One more
+      self-contradiction fixed and two gaps closed:
+      - `#116` had its correct answer worded "Signal, check your mirrors and
+        blind spot…" — signal first. Book §88/§90 number it mirrors → blind
+        spot → signal, and `#555` already printed "Signal, then mirrors" as a
+        **wrong** option. `#116` reordered.
+      - `#745` added: the third lane-board — vehicle pictograms with per-lane
+        speeds (car 100 / car 80 / lorry 50), book p137 §93
+      - `#746` added: merge priority goes to the vehicle **further ahead**;
+        the zip rule applies only where both sides narrow (book §92)
+- [x] **Both carried sign candidates resolved** — see below
 
 ## Next
 
 **Unblocked — the PDFs were re-supplied and all four verified intact**
 (120 / 53 / 50 / 234 pages = 457, matching the counts below).
 
-- [ ] Book, still unswept (PDF page numbers): 56–72 and 81–92 (rest of ch.4
-      signs), 127–144 (rest of ch.7 manoeuvres), 224–234 (glossary).
-      Chapters 5, 8, 11 and 12 are now complete; ch.2 was done earlier.
+- [ ] Book: only the **glossary (PDF 224–234)** is left. Every numbered
+      chapter, 1 through 12, has now been swept end to end.
 - [ ] Part 1 (120 pp): sweep, and confirm the book-is-master-copy claim
 - [ ] Part 2 (53 pp): sweep *(lowest priority — the book duplicates it)*
 
@@ -92,15 +102,22 @@ The high-figure-density chapters were deliberately swept first, on the theory
 that errors hide in numbers rather than prose. That theory held — the one
 factual error found sat in a list of document fields.
 
-**Carried candidates — verify against the book's sign chapter first**
+**Carried candidates — resolved**
 
-- [ ] Escape-lane / arrester-bed sign (S2 Q53) — confirm the sign's meaning in
-      ch.4 before writing anything; do not guess from the pictogram
+- [x] Posted two-figure sign 100 (car) / 80 (lorry) (S2 Q51) — **real**, and now
+      `#745`. Book p137 §93 prints the lane-board family and it has **three**
+      members: plain blue circles = per-lane *minimum*; red-ringed circles =
+      per-lane *maximum*; vehicle pictograms + figures = **each lane assigned to
+      a vehicle type**. The bank had the first two only. Tell them apart by the
+      pictogram, not the number.
+- [x] Escape-lane / arrester-bed sign (S2 Q53) — **closed as unverifiable.**
+      The sign chapter has now been swept end to end (PDF 56–92, every table)
+      and there is no escape lane or arrester bed anywhere in it. Per the
+      standing rule, nothing was written from the pictogram alone.
 - [ ] Double-cab pickup on a private B licence: allowed **provided it is not
       used commercially** — a *use* restriction; the bank only covers B by
-      weight (S2 Q52)
-- [ ] Posted two-figure sign 100 (car) / 80 (lorry) (S2 Q51) — distinct from
-      the 110/80 expressway default already at #641
+      weight (S2 Q52). Not a sign — look for it in ch.2/ch.3 licence text or
+      in Part 1.
 
 ---
 
@@ -114,27 +131,42 @@ contains Part 1 + Part 2 verbatim.
 | Exam | 50 | **50 — complete**, all 431 questions + full answer key |
 | Part 1 | 120 | ~50 |
 | Part 2 | 53 | ~15 |
-| Book | 234 | ~131 (ch.1, 2, 3, 5, 6, 7-parking, 8, 9, 10, 11, 12 complete; parts of 4) |
+| Book | 234 | **223 — every chapter 1–12 complete**; only the glossary (224–234) unread |
 
-The exam is genuinely exhaustive — every question and every marked answer was
-extracted and checked. The other three are not; roughly **246 of 457** page
-images have been viewed. Do not restate this as a full page-by-page pass.
+The exam and the book are now both exhaustive — every exam question and marked
+answer was extracted and checked, and every numbered book chapter has been read
+page by page. Roughly **338 of 457** page images have been viewed. Part 1 and
+Part 2 remain, but they are copies of the book, so the *content* is fully swept
+even though those page images are not.
 
-**Six problems have been found in total, all fixed:** the freeway/highway
-colours, the `#510` blood-group error, the `#57` stem that collided with `#289`,
-the `#684` three-minute idling figure, the `#121` burn-cooling time, and the
-missing disc/drum brake question (`#744`). The last three came out of chapters
-5, 8, 11 and 12. Note the shift in kind: the first three were errors against the
-source, the next two were the **bank contradicting itself** — two questions
-teaching different numbers for the same fact. Grepping for a figure across the
-whole bank, not just checking it against the book, is what surfaced those.
+**Nine problems have been found in total, all fixed:**
 
-Set against that, **25+** apparent gaps were investigated and the large majority
+| # | Problem | Kind |
+|---|---|---|
+| 1 | Freeway/highway sign colours | vs source |
+| 2 | `#510` blood group on the registration | vs source |
+| 3 | `#57` stem collided with `#289` | ambiguous stem |
+| 4 | `#684` idling threshold: three minutes → **one** | self-contradiction |
+| 5 | `#121` burn cooling: "a few minutes" → **10–15** | self-contradiction |
+| 6 | `#744` disc vs drum brakes | gap |
+| 7 | `#116` signal-before-mirrors → **mirrors first** | self-contradiction |
+| 8 | `#745` per-lane vehicle-type lane board | gap |
+| 9 | `#746` merge priority to the vehicle ahead | gap |
+
+Note the pattern. The first three were errors against the source; three of the
+remaining six were the **bank contradicting itself** — two questions teaching
+different answers to the same fact, which no amount of source-checking alone
+would surface. What found them was grepping a figure across the whole bank and
+comparing the hits to each other. Do that routinely.
+
+Set against that, **35+** apparent gaps were investigated and the large majority
 turned out to be already covered correctly — including one written into this
 file as a confirmed gap (steering hand position, `#296`) before it was found.
 **Grep the whole bank before believing in a gap, and grep for the wording rather
-than the concept** — `#296` was missed because it writes "9 and 3 clock
-positions" with no apostrophe in "o'clock".
+than the concept.** Two misses this sweep: `#296` writes "9 and 3 clock
+positions" with no apostrophe in "o'clock", and the yellow box junction is
+written "yellow criss-cross" (`#320`, `#462`), so a grep for "yellow box"
+returned nothing.
 
 Where the sweep has reached, the bank is markedly more accurate than the old
 coverage table implied: chapters 3, 9, 10 and 12 came back with **zero**
