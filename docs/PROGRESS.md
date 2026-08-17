@@ -17,7 +17,7 @@ single self-contained file, no build step, no network calls.
 
 | | |
 |---|---|
-| Active questions | 742 (746 defined, 4 filtered out via `ARCHIVED_Q`) |
+| Active questions | 745 (749 defined, 4 filtered out via `ARCHIVED_Q`) |
 | Sign icons | 110 inline SVG |
 | Scene / concept illustrations | 133 |
 | Questions with no visual | 0 |
@@ -86,40 +86,49 @@ Branch: `claude/trading-agent-bybit-mcp-ao56dp`
         speeds (car 100 / car 80 / lorry 50), book p137 §93
       - `#746` added: merge priority goes to the vehicle **further ahead**;
         the zip rule applies only where both sides narrow (book §92)
-- [x] **Both carried sign candidates resolved** — see below
+- [x] **All three carried sign candidates resolved and written** — see below
+- [x] **Part 1 and Part 2 proven to be a subset of the book**, so the
+      four-document sweep is finished — see the coverage section
 
 ## Next
 
-**Unblocked — the PDFs were re-supplied and all four verified intact**
-(120 / 53 / 50 / 234 pages = 457, matching the counts below).
+**The source sweep is DONE.** All four PDFs are accounted for: the exam read
+completely (50/50, all 431 questions machine-verified against the printed key),
+the book read completely (234/234), and Part 1 + Part 2 proven page-for-page to
+be book pp 22–229 and therefore already covered.
 
-- [x] **Book swept 234/234 — complete.** Every chapter 1–12, plus the glossary
-      (a bilingual term table, nothing examinable) and the end matter.
-- [ ] Part 1 (120 pp): sweep, and confirm the book-is-master-copy claim
-- [ ] Part 2 (53 pp): sweep *(lowest priority — the book duplicates it)*
+Nothing in the question bank is currently known to be wrong or missing.
+
+- [ ] Nothing outstanding on sources. If new work is wanted, the honest options
+      are: a rendering/QA pass over the app itself, or a second opinion on the
+      two source defects the book carries (p167 stopping-distance table, p217
+      nosebleed threshold) if a non-KRG reference ever becomes available.
 
 The high-figure-density chapters were deliberately swept first, on the theory
-that errors hide in numbers rather than prose. That theory held — the one
-factual error found sat in a list of document fields.
+that errors hide in numbers rather than prose. That held for errors *against*
+the source. It missed the other kind entirely: the three self-contradictions
+were only found by comparing questions to each other, which is a different
+search and worth doing first next time.
 
-**Carried candidates — resolved**
+**Carried candidates — all three resolved and written**
 
-- [x] Posted two-figure sign 100 (car) / 80 (lorry) (S2 Q51) — **real**, and now
-      `#745`. Book p137 §93 prints the lane-board family and it has **three**
-      members: plain blue circles = per-lane *minimum*; red-ringed circles =
-      per-lane *maximum*; vehicle pictograms + figures = **each lane assigned to
-      a vehicle type**. The bank had the first two only. Tell them apart by the
-      pictogram, not the number.
-- [x] Escape-lane / arrester-bed sign (S2 Q53) — **closed as unverifiable.**
-      The sign chapter has now been swept end to end (PDF 56–92, every table)
-      and there is no escape lane or arrester bed anywhere in it. Per the
-      standing rule, nothing was written from the pictogram alone.
-- [ ] Double-cab pickup on a private B licence: allowed **provided it is not
-      used commercially** — a *use* restriction; the bank only covers B by
-      weight (S2 Q52). It did not appear anywhere in the book's twelve
-      chapters, and this volume *is* the B–BE one, so **Part 1 is the only
-      place left to look.** Do not go hunting in a sister volume — we do not
-      have them and they cover other licence classes.
+All three turned out to be **exam-only** content, absent from the book. They
+were settled by reading exam PDF **page 39**, which carries S2 Q51, Q52 and Q53
+together.
+
+- [x] Red circle, car **100** / lorry **80** (S2 Q51) → `#748`. **Do not confuse
+      this with `#745`.** They are different signs: S2 Q51 is a single
+      *red-ringed circle* keyed to **vehicle type**; book p137 §93 sign ③ is a
+      *blue lane board* keyed to **lane**. An earlier note in this file claimed
+      `#745` closed S2 Q51 — it does not.
+- [x] Double-cab pickup on a private B licence (S2 Q52) → `#747`. Permitted
+      **provided it is not used commercially** — a restriction on the *use*.
+      Nowhere in the book, so `#747` names the exam as its source.
+- [x] Escape lane / arrester bed (S2 Q53) → `#749`. Blue sign, lorry climbing a
+      loose-surfaced ramp; the paper's own marked answer is
+      *شوێنی قەڵایانی ئۆتۆمبێلی گەورە*. This **reverses** an earlier decision in
+      this file to close it as unverifiable: that was right on the evidence then
+      (the book alone), and reading the exam page supplied what was missing.
 
 ---
 
@@ -131,15 +140,32 @@ contains Part 1 + Part 2 verbatim.
 | Source | Pages | Opened |
 |---|---|---|
 | Exam | 50 | **50 — complete**, all 431 questions + full answer key |
-| Part 1 | 120 | ~50 |
-| Part 2 | 53 | ~15 |
 | Book | 234 | **234 — complete**, every chapter plus glossary and end matter |
+| Part 1 | 120 | contained in the book — see below |
+| Part 2 | 53 | contained in the book — see below |
 
-The exam and the book are now both exhaustive — every exam question and marked
-answer was extracted and checked, and the book has been read page by page,
-234/234. Roughly **349 of 457** page images have been viewed. Part 1 and Part 2
-remain, but the book is their master copy (verified at the `c-164`/`c-165`
-boundary), so the *content* is fully swept even though those page images are not.
+**Part 1 + Part 2 are a strict subset of the book, now verified rather than
+assumed.** Four anchor points were read directly:
+
+| Anchor | Book printed page |
+|---|---|
+| Part 1 p1 | 22 (§1 Vehicle) |
+| Part 1 p120 (last) | 163 (§119 Roundabouts) |
+| Part 2 p1 | 164 (§120 Roundabout dangers) |
+| Part 2 p53 (last) | 229 (glossary, 2nd page) |
+
+The seam is exact — §119 closes Part 1, §120 opens Part 2, no gap, no overlap.
+So Part 1 + Part 2 = book printed pp 22–229, and since the book is swept
+234/234 there is **no page in either Part that has not been read**. Sweeping
+them page by page would be re-reading the book. Part 1 fits 142 printed pages
+into 120 PDF pages because the Part scans drop the chapter dividers and photo
+plates.
+
+**The sweep is complete.** Every exam question and marked answer was extracted
+and checked, and the book was read page by page, 234/234. Because Part 1 and
+Part 2 are contained in the book (proven above), reading the exam's 50 pages and
+the book's 234 covers **every distinct page of content across all four
+documents**. The raw arithmetic of 457 counts the same pages three times.
 
 **The book identifies itself on the back cover:** *Traffic Manual — For All Road
 Users, B–BE, v1.0, 2025*, by Najat Najm, KRG Ministry of Interior, Directorate
@@ -148,7 +174,7 @@ licence class (A motorcycle, B–BE, C cargo, D passenger, agricultural,
 construction plant, plus instructor editions). B–BE is the right volume for this
 app. Lorry and bus material inside it is background, not those classes' syllabus.
 
-**Nine problems have been found in total, all fixed:**
+**Twelve problems have been found in total, all fixed:**
 
 | # | Problem | Kind |
 |---|---|---|
@@ -157,10 +183,13 @@ app. Lorry and bus material inside it is background, not those classes' syllabus
 | 3 | `#57` stem collided with `#289` | ambiguous stem |
 | 4 | `#684` idling threshold: three minutes → **one** | self-contradiction |
 | 5 | `#121` burn cooling: "a few minutes" → **10–15** | self-contradiction |
-| 6 | `#744` disc vs drum brakes | gap |
-| 7 | `#116` signal-before-mirrors → **mirrors first** | self-contradiction |
-| 8 | `#745` per-lane vehicle-type lane board | gap |
+| 6 | `#116` signal-before-mirrors → **mirrors first** | self-contradiction |
+| 7 | `#744` disc vs drum brakes | gap |
+| 8 | `#745` blue lane board, pictogram per lane (book p137) | gap |
 | 9 | `#746` merge priority to the vehicle ahead | gap |
+| 10 | `#747` double-cab pickup on a B licence (exam S2 Q52) | gap |
+| 11 | `#748` red circle, car 100 / lorry 80 (exam S2 Q51) | gap |
+| 12 | `#749` escape lane for large vehicles (exam S2 Q53) | gap |
 
 Note the pattern. The first three were errors against the source; three of the
 remaining six were the **bank contradicting itself** — two questions teaching
@@ -205,6 +234,13 @@ Each of these cost real time to re-derive or was gotten wrong once.
 - **Grep the exam extract for NUMBERS, not Kurdish words.** Digits survive
   `pdftotext` intact; Kurdish words do not, because Arabic-script shaping drops
   letters. A zero-hit word search on `exam_parsed.json` proves nothing.
+- **`p1.pdf` is 116 MB and the Read tool refuses anything over 100 MB.** Render
+  the pages you need instead: `pdftoppm -png -r 100 -f N -l M pdfs/p1.pdf out/`
+  then Read the PNGs. 100 dpi on A4 is plenty to read the text.
+- **When a lossy extract is not enough, go and look at the exam page.** Three
+  candidates sat unresolved for two sessions because the text layer mangled
+  them. Locating the page and reading the image settled all three in one go —
+  and one of them (the escape-lane sign) reversed a decision made without it.
 - **The book has two internal typos of its own. Do not import either.**
   (1) p167's stopping-distance table reads 48→23 m (6 car lengths), 64→36 m (9),
   80→**38** m (13), 96→73 m (18). Every row is ~4 m per car length except the
@@ -298,6 +334,23 @@ number ≥100. Expect 431 questions, every one with exactly 3 options and exactl
 1 correct. Correct-answer positions are front-loaded (214 / 118 / 99), so the
 paper is not shuffled — do not use position as a sanity check on content.
 
+**The section-2 reset needs its own branch, before the `prev+1` test.** Written
+naively the `n == prev+1` check fails at the reset (1 is not 282) and the parse
+silently stops at 281 — which is exactly how the "281 questions" error was born.
+Handle it as: `if n==1 and prev>=100 and sec==1: sec=2; prev=1; continue`.
+
+**To find which PDF page a question is on**, split the text on `\f` and track
+the page index while parsing; `len(pages)` is 51 for a 50-page PDF (trailing
+chunk). S2 Q51–Q53 are all on exam PDF page 39.
+
 Write the private-use characters as `` / `` escapes. Pasting the raw
 glyphs through a shell heredoc silently strips them, and `'' in line` then
 matches every line — which looks like "every option is correct".
+
+**The same stripping hits the bidi marks** (U+202A, U+200E, U+200F) in the
+question-number regex, so the pattern matches nothing and the parse returns
+zero rows. Either escape those too, or write the script with a **quoted**
+heredoc (`<< 'PYEOF'`), which passes the bytes through untouched. This has now
+cost time twice — and note it bit this very file: an Edit whose `old_string`
+was copied from a rendered view of the line above silently lost the glyphs and
+failed to match.
