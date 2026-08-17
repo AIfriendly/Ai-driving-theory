@@ -225,12 +225,19 @@
   .gscard svg{width:60px;height:60px}
   .gscard .gsn{font-weight:800;font-size:13px;margin-top:7px}
   .gscard .gsm{color:var(--muted);font-size:11.7px;line-height:1.42;margin-top:4px}
-  .gspics{margin:2px 0 14px}
-  .gspics+.gbul{border-top:1px solid var(--line);padding-top:12px}
   .gbul{list-style:none;padding:0;margin:0}
-  .gbul li{position:relative;padding:9px 0;padding-inline-start:20px;border-bottom:1px solid var(--line);font-size:13.8px;line-height:1.5}
+  .gbul li{display:flex;align-items:flex-start;gap:11px;padding:11px 0;border-bottom:1px solid var(--line);font-size:13.8px;line-height:1.5}
   .gbul li:last-child{border-bottom:none}
-  .gbul li::before{content:"";position:absolute;inset-inline-start:2px;top:15px;width:7px;height:7px;border-radius:50%;background:var(--accent)}
+  /* Every tip carries the picture from the question that teaches it. Scenes are
+     landscape (200x120), signs are square, so the box is fixed and the artwork
+     is centred inside it — the text column stays aligned down the whole list. */
+  .gbi{flex:none;width:92px;height:58px;border-radius:9px;overflow:hidden;background:var(--surface2);
+    border:1px solid var(--line);display:grid;place-items:center}
+  .gbi svg{display:block;width:100%;height:100%}
+  .gbi.sign{padding:4px}
+  .gbi.sign svg{width:46px;height:46px}
+  @media (max-width:360px){.gbi{width:76px;height:48px}.gbi.sign svg{width:38px;height:38px}}
+  .gbt{flex:1;min-width:0}
   .foot{color:var(--muted);font-size:11.5px;text-align:center;padding:6px 16px 20px;line-height:1.5}
   .footlink{color:var(--brand);font-weight:700;cursor:pointer;white-space:nowrap}
   button:focus-visible,.tile:focus-visible,[role="button"]:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
@@ -3033,7 +3040,7 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
  iconLicenceX:_ic('<rect x="52" y="40" width="96" height="56" rx="6" fill="#3a7bbf"/><rect x="58" y="48" width="28" height="32" rx="2" fill="#cfe0f0"/><g fill="#dbe8f4"><rect x="92" y="50" width="48" height="5" rx="1"/><rect x="92" y="62" width="40" height="4" rx="1"/><rect x="92" y="72" width="44" height="4" rx="1"/></g><g class="sgn-throb" stroke="#d21f28" stroke-width="6" stroke-linecap="round"><line x1="64" y1="46" x2="136" y2="90"/><line x1="136" y1="46" x2="64" y2="90"/></g>'),
  iconSpeed:_gauge("km/h",70,"#d21f28"),
  iconCalendar:_ic('<rect x="58" y="36" width="84" height="64" rx="5" fill="#fff" stroke="#8a9098" stroke-width="2"/><rect x="58" y="36" width="84" height="16" rx="5" fill="#c9463a"/><rect x="70" y="30" width="6" height="12" rx="2" fill="#8a9098"/><rect x="124" y="30" width="6" height="12" rx="2" fill="#8a9098"/><g fill="#c3c9ce"><rect x="66" y="58" width="10" height="8"/><rect x="82" y="58" width="10" height="8"/><rect x="98" y="58" width="10" height="8"/><rect x="114" y="58" width="10" height="8"/><rect x="66" y="72" width="10" height="8"/><rect x="82" y="72" width="10" height="8"/></g><rect x="98" y="72" width="10" height="8" fill="#c9463a"/>'),
- iconPhone:_ic('<g transform="translate(88,64)"><path d="M-16 -22 q-5 0 -5 5 q0 36 26 43 q5 1 7 -4 l4 -11 q1 -3 -2 -5 l-10 -4 q-3 -1 -5 2 l-2 3 q-9 -5 -13 -15 l3 -2 q3 -2 2 -5 l-4 -10 q-1 -3 -5 -2 z" fill="#2f7fd0"/></g><g fill="#3a3f47" font-family="sans-serif" font-weight="800" font-size="15"><text x="128" y="58">115</text><text x="128" y="80">104</text></g>'),
+ iconPhone:_ic('<g transform="translate(88,64)"><path d="M-16 -22 q-5 0 -5 5 q0 36 26 43 q5 1 7 -4 l4 -11 q1 -3 -2 -5 l-10 -4 q-3 -1 -5 2 l-2 3 q-9 -5 -13 -15 l3 -2 q3 -2 2 -5 l-4 -10 q-1 -3 -5 -2 z" fill="#2f7fd0"/></g><g class="sgn-throb" fill="none" stroke="#2f7fd0" stroke-width="3" stroke-linecap="round"><path d="M120 50 q10 14 0 28"/><path d="M132 42 q16 22 0 44"/></g>'),
  iconRain:_ic('<ellipse cx="96" cy="48" rx="34" ry="17" fill="#aeb6bc"/><ellipse cx="118" cy="52" rx="20" ry="12" fill="#c3c9ce"/><g class="sgn-throb" stroke="#3f86c4" stroke-width="3" stroke-linecap="round"><line x1="78" y1="70" x2="72" y2="88"/><line x1="98" y1="70" x2="92" y2="88"/><line x1="118" y1="70" x2="112" y2="88"/></g>',"#dbe2e6"),
  iconSnow:_ic('<ellipse cx="96" cy="46" rx="34" ry="17" fill="#c3c9ce"/><g class="sgn-throb" stroke="#5a86a8" stroke-width="2.4"><g transform="translate(78,80)"><line x1="-6" y1="0" x2="6" y2="0"/><line x1="0" y1="-6" x2="0" y2="6"/><line x1="-4" y1="-4" x2="4" y2="4"/><line x1="4" y1="-4" x2="-4" y2="4"/></g><g transform="translate(114,80)"><line x1="-6" y1="0" x2="6" y2="0"/><line x1="0" y1="-6" x2="0" y2="6"/><line x1="-4" y1="-4" x2="4" y2="4"/><line x1="4" y1="-4" x2="-4" y2="4"/></g></g>',"#e2e8ec"),
  iconTunnel:_ic(_base(_sky,_grass,"#767c84").replace(/^<svg[^>]*>|<\/svg>$/g,'')+'<path d="M62 96 v-26 a38 38 0 0 1 76 0 v26 z" fill="#20242a"/><path d="M70 96 v-24 a30 30 0 0 1 60 0 v24 z" fill="#3a3f47"/>'),
@@ -3049,6 +3056,9 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
  iconMoto:_ic('<circle cx="66" cy="82" r="15" fill="none" stroke="#2a2f36" stroke-width="4"/><circle cx="140" cy="82" r="15" fill="none" stroke="#2a2f36" stroke-width="4"/><path d="M66 82 l22 -14 h18 l8 8 h16 M104 68 l6 14 l30 0" fill="none" stroke="#2f7fd0" stroke-width="4"/><path d="M120 62 h16" stroke="#2a2f36" stroke-width="3"/>'),
  iconLoad:_ic('<rect x="44" y="52" width="52" height="34" rx="2" fill="#c98a3a"/><rect x="96" y="60" width="36" height="26" rx="2" fill="#2f7fd0"/><rect x="132" y="66" width="20" height="20" rx="2" fill="#2f6ea8"/><circle cx="70" cy="92" r="9" fill="#2a2f36"/><circle cx="120" cy="92" r="9" fill="#2a2f36"/><circle cx="146" cy="92" r="9" fill="#2a2f36"/>'),
  iconLane:_ic(_base().replace(/^<svg[^>]*>|<\/svg>$/g,'')),
+ /* Buses carry a lot of the handbook's rules — bus lanes, bus stops, the
+    blind spots of a large vehicle — and there was no picture for them. */
+ iconBus:_ic('<rect x="40" y="34" width="112" height="52" rx="7" fill="#c9463a"/><g fill="#dbe8f4"><rect x="48" y="42" width="22" height="18" rx="2"/><rect x="76" y="42" width="22" height="18" rx="2"/><rect x="104" y="42" width="22" height="18" rx="2"/><rect x="132" y="42" width="14" height="18" rx="2"/></g><rect x="48" y="66" width="96" height="6" rx="2" fill="#a8352b"/><circle cx="66" cy="90" r="10" fill="#2a2f36"/><circle cx="130" cy="90" r="10" fill="#2a2f36"/><circle cx="66" cy="90" r="4" fill="#8a9098"/><circle cx="130" cy="90" r="4" fill="#8a9098"/>'),
  iconSignGeneric:_ic('<polygon points="100,34 138,96 62,96" fill="#fff" stroke="#d21f28" stroke-width="6"/><text x="100" y="88" text-anchor="middle" font-size="34" font-weight="800" fill="#d21f28" font-family="sans-serif">?</text>'),
  hazExplosive:_haz("Class 1 explosives placard: an orange diamond with a black exploding-bomb symbol and the number 1.","#e8631a","#e8631a",
    '<g fill="#111"><polygon points="100,30 105,44 119,40 109,50 121,57 106,57 109,68 100,59 91,68 94,57 79,57 91,50 81,40 95,44"/><rect x="98" y="55" width="4" height="10"/></g>',"1"),
@@ -3155,6 +3165,9 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
    +'<g class="sgn-rot sgn-slow"><circle cx="38" cy="76" r="8" fill="#2a2f36"/></g><g class="sgn-rot sgn-slow"><circle cx="66" cy="76" r="8" fill="#2a2f36"/></g>'),
 };
 
+  /* Per-category fallback picture. Shared, because the study guide leans on
+     the same last-resort choice assignScenes() makes. */
+  var DEF_SCENE={rules:"iconLane",mech:"iconInspect",firstaid:"iconAid",signs:"iconSignGeneric"};
   (function assignScenes(){
     var MAP=[
       [/open, clear road/,"openRoad"],
@@ -3323,7 +3336,7 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
       [/helmet/i,"helmetDown"],
       [/crowd/i,"iconCrowd"]
     ];
-    var DEF={rules:"iconLane",mech:"iconInspect",firstaid:"iconAid",signs:"iconSignGeneric"};
+    var DEF=DEF_SCENE;
     QUESTIONS.forEach(function(q){
       if(q.scene||q.sign) return;
       var e=(q.q&&q.q.en)||"";
@@ -4163,45 +4176,125 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
     view.innerHTML=html;
   }
 
-  /* ---------- study-guide illustrations ----------
-     Topics after "Road signs" have no sign artwork of their own, so these
-     hand-drawn diagrams give first aid, mechanics and the general rules a
-     picture each. Same 0 0 100 100 box as SIGNS so they drop into .gscard. */
-  var GY='#5a6472', LG='#b8c0cc', BG='#eef1f5';
-  function ill(inner){return '<svg viewBox="0 0 100 100" role="img"><rect x="2" y="2" width="96" height="96" rx="14" fill="'+BG+'"/>'+inner+'</svg>';}
-  var road='<rect x="12" y="80" width="76" height="5" rx="2.5" fill="'+LG+'"/>';
-  var slash='<circle cx="50" cy="50" r="34" fill="none" stroke="'+R+'" stroke-width="8"/><line x1="27" y1="27" x2="73" y2="73" stroke="'+R+'" stroke-width="8" stroke-linecap="round"/>';
-  function car(x,y,w,col){var h=w*0.42;return '<g><rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" rx="'+(h*0.34)+'" fill="'+col+'"/><rect x="'+(x+w*0.22)+'" y="'+(y-h*0.46)+'" width="'+(w*0.56)+'" height="'+(h*0.56)+'" rx="'+(h*0.24)+'" fill="'+col+'"/></g>';}
-
-  var GPIC={
-    /* first aid */
-    fa_triangle:{en:"Warning triangle",ku:"سێگۆشەی ئاگادارکردنەوە",svg:ill('<path d="M50 20 L84 76 H16 Z" fill="none" stroke="'+R+'" stroke-width="9" stroke-linejoin="round"/>'+road)},
-    fa_call:{en:"Call 122 / 104",ku:"پەیوەندی بە ١٢٢ / ١٠٤",svg:ill('<rect x="30" y="14" width="40" height="72" rx="8" fill="'+GY+'"/><rect x="35" y="24" width="30" height="48" rx="3" fill="'+W+'"/><text x="50" y="55" text-anchor="middle" font-size="17" font-weight="800" fill="'+R+'" font-family="sans-serif">122</text>')},
-    fa_recovery:{en:"Recovery position",ku:"دۆخی هێورکردنەوە",svg:ill('<circle cx="27" cy="48" r="10" fill="'+GY+'"/><path d="M37 54 H60 L72 68" fill="none" stroke="'+GY+'" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"/><path d="M60 54 L58 38" fill="none" stroke="'+GY+'" stroke-width="8" stroke-linecap="round"/>'+road)},
-    fa_cpr:{en:"CPR chest compressions",ku:"پەستانی سنگ (CPR)",svg:ill('<ellipse cx="50" cy="62" rx="31" ry="17" fill="'+LG+'"/><circle cx="50" cy="34" r="9" fill="'+GY+'"/><rect x="41" y="52" width="18" height="13" rx="4" fill="'+R+'"/><path d="M50 20 v9 M38 26 v7 M62 26 v7" stroke="'+R+'" stroke-width="5" stroke-linecap="round"/>')},
-    fa_bleed:{en:"Press on the wound",ku:"پەستان لەسەر برین",svg:ill('<rect x="10" y="58" width="80" height="17" rx="8" fill="'+LG+'"/><rect x="33" y="47" width="34" height="14" rx="4" fill="'+W+'" stroke="'+GY+'" stroke-width="3"/><rect x="38" y="27" width="24" height="21" rx="9" fill="'+GY+'"/><path d="M50 6 v14 M43 14 L50 22 L57 14" fill="none" stroke="'+R+'" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>')},
-    fa_burn:{en:"Cool a burn under water",ku:"سووتان بە ئاو سارد بکەرەوە",svg:ill('<rect x="18" y="16" width="10" height="26" rx="3" fill="'+GY+'"/><rect x="18" y="16" width="42" height="9" rx="4" fill="'+GY+'"/><path d="M55 25 v34 M49 30 v26 M61 30 v26" stroke="'+B+'" stroke-width="5" stroke-linecap="round"/><rect x="34" y="62" width="48" height="15" rx="7" fill="'+LG+'"/>')},
-    fa_helmet:{en:"Leave the helmet on",ku:"قەلغی سەر لامەبە",svg:ill('<path d="M20 54 A24 24 0 0 1 68 54 Z" fill="'+GY+'"/><rect x="18" y="54" width="52" height="10" rx="5" fill="'+LG+'"/><path d="M56 74 L66 85 L88 56" fill="none" stroke="#1f9d55" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>')},
-    fa_choke:{en:"Choking: back blows",ku:"خنکان: لێدان لە پشت",svg:ill('<circle cx="66" cy="26" r="10" fill="'+GY+'"/><path d="M62 36 L48 60" fill="none" stroke="'+GY+'" stroke-width="12" stroke-linecap="round"/><path d="M48 60 L44 80 M48 60 L58 80" fill="none" stroke="'+GY+'" stroke-width="8" stroke-linecap="round"/><rect x="14" y="38" width="20" height="12" rx="6" fill="'+GY+'"/><path d="M37 40 h8 M37 50 h11" stroke="'+R+'" stroke-width="5" stroke-linecap="round"/>'+road)},
-    /* mechanics */
-    me_tyre:{en:"Tyre tread depth",ku:"قووڵی نەخشی تایە",svg:ill('<circle cx="50" cy="50" r="34" fill="'+D+'"/><circle cx="50" cy="50" r="16" fill="'+LG+'"/><g stroke="'+BG+'" stroke-width="4"><line x1="50" y1="16" x2="50" y2="26"/><line x1="50" y1="74" x2="50" y2="84"/><line x1="16" y1="50" x2="26" y2="50"/><line x1="74" y1="50" x2="84" y2="50"/><line x1="26" y1="26" x2="33" y2="33"/><line x1="67" y1="67" x2="74" y2="74"/><line x1="74" y1="26" x2="67" y2="33"/><line x1="33" y1="67" x2="26" y2="74"/></g>')},
-    me_brakes:{en:"Disc and drum brakes",ku:"بریکی دیسک و تاس",svg:ill('<circle cx="38" cy="50" r="26" fill="'+LG+'" stroke="'+GY+'" stroke-width="4"/><circle cx="38" cy="50" r="9" fill="'+GY+'"/><path d="M56 34 h10 a10 10 0 0 1 0 32 h-10 z" fill="'+R+'"/><circle cx="76" cy="66" r="12" fill="none" stroke="'+GY+'" stroke-width="5"/>')},
-    me_oil:{en:"Engine oil level",ku:"ئاستی ڕۆنی بزوێنەر",svg:ill('<path d="M20 54 h34 v20 a6 6 0 0 1 -6 6 h-22 a6 6 0 0 1 -6 -6 z" fill="'+GY+'"/><path d="M54 60 L78 44" stroke="'+GY+'" stroke-width="6" stroke-linecap="round"/><rect x="30" y="44" width="14" height="10" rx="3" fill="'+GY+'"/><path d="M74 20 C82 32 86 38 86 43 a6 6 0 0 1 -12 0 c0 -5 4 -11 12 -23" fill="'+Y+'"/>')},
-    me_battery:{en:"Battery and charging",ku:"باتری و بارکردن",svg:ill('<rect x="18" y="34" width="64" height="40" rx="6" fill="'+GY+'"/><rect x="28" y="26" width="12" height="8" rx="2" fill="'+R+'"/><rect x="60" y="26" width="12" height="8" rx="2" fill="'+D+'"/><path d="M30 54 h14 M37 47 v14" stroke="'+W+'" stroke-width="5" stroke-linecap="round"/><path d="M58 54 h14" stroke="'+W+'" stroke-width="5" stroke-linecap="round"/>')},
-    me_coolant:{en:"Coolant and overheating",ku:"ئاوی ساردکەرەوە و گەرمبوون",svg:ill('<rect x="40" y="14" width="14" height="48" rx="7" fill="'+LG+'" stroke="'+GY+'" stroke-width="3"/><circle cx="47" cy="70" r="14" fill="'+R+'"/><rect x="43" y="34" width="8" height="34" fill="'+R+'"/><path d="M70 30 c6 6 6 12 0 18 s-6 12 0 18" fill="none" stroke="'+B+'" stroke-width="5" stroke-linecap="round"/>')},
-    me_lights:{en:"Headlights and beams",ku:"لایتەکان و تیشک",svg:ill('<path d="M18 30 a22 22 0 0 1 0 40 z" fill="'+Y+'"/><path d="M40 34 h44 M40 50 h40 M40 66 h44" stroke="'+Y+'" stroke-width="6" stroke-linecap="round"/>')},
-    me_belt:{en:"Seat belt and buckle",ku:"پشتێنی سەلامەتی",svg:ill('<rect x="20" y="18" width="60" height="64" rx="10" fill="'+LG+'"/><path d="M30 26 L64 74" stroke="'+R+'" stroke-width="10" stroke-linecap="round"/><rect x="56" y="60" width="22" height="16" rx="4" fill="'+GY+'"/>')},
-    me_dash:{en:"Dashboard warning lights",ku:"لایتە ئاگادارکەرەوەکانی داشبۆرد",svg:ill('<rect x="14" y="26" width="72" height="48" rx="10" fill="'+GY+'"/><circle cx="34" cy="44" r="8" fill="'+R+'"/><circle cx="56" cy="44" r="8" fill="'+Y+'"/><circle cx="34" cy="62" r="6" fill="'+B+'"/><circle cx="56" cy="62" r="6" fill="'+W+'"/><rect x="68" y="38" width="10" height="28" rx="4" fill="'+LG+'"/>')},
-    /* general rules */
-    gp_alcohol:{en:"No alcohol at the wheel",ku:"کحول لە کاتی لێخوڕین نا",svg:ill('<path d="M34 22 h32 l-12 22 v22 h10 v6 H36 v-6 h10 V44 z" fill="'+GY+'"/>'+slash)},
-    gp_phone:{en:"No phone at the wheel",ku:"مۆبایل لە کاتی لێخوڕین نا",svg:ill('<rect x="36" y="16" width="28" height="68" rx="7" fill="'+GY+'"/><rect x="40" y="25" width="20" height="46" rx="3" fill="'+W+'"/>'+slash)},
-    gp_tired:{en:"Tiredness and rest",ku:"ماندووبوون و پشوو",svg:ill('<path d="M20 52 q22 -22 44 0 q-22 22 -44 0" fill="'+W+'" stroke="'+GY+'" stroke-width="4"/><path d="M28 52 h28" stroke="'+GY+'" stroke-width="6" stroke-linecap="round"/><text x="76" y="34" text-anchor="middle" font-size="20" font-weight="800" fill="'+B+'" font-family="sans-serif">Z</text><text x="66" y="54" text-anchor="middle" font-size="13" font-weight="800" fill="'+B+'" font-family="sans-serif">z</text>')},
-    gp_gap:{en:"Keep a safe gap",ku:"مەودای سەلامەت بپارێزە",svg:ill(car(8,44,34,B)+car(60,44,34,R)+'<path d="M46 60 h10 M46 60 l5 -5 M46 60 l5 5 M56 60 l-5 -5 M56 60 l-5 5" stroke="'+D+'" stroke-width="3" stroke-linecap="round" fill="none"/>'+road)},
-    gp_night:{en:"Night driving and dazzle",ku:"لێخوڕینی شەو و بریسکە",svg:ill('<rect x="2" y="2" width="96" height="96" rx="14" fill="'+D+'"/>'+car(10,46,36,B)+'<path d="M48 52 L92 40 L92 64 Z" fill="'+Y+'" opacity="0.85"/><circle cx="76" cy="20" r="8" fill="'+W+'"/>')},
-    gp_zip:{en:"Merging in turn (zip)",ku:"تێکەڵبوون بە نۆرە",svg:ill('<path d="M14 30 L52 50 L86 50" fill="none" stroke="'+B+'" stroke-width="8" stroke-linecap="round"/><path d="M14 70 L52 50" fill="none" stroke="'+R+'" stroke-width="8" stroke-linecap="round"/><path d="M86 50 l-10 -7 M86 50 l-10 7" stroke="'+B+'" stroke-width="6" stroke-linecap="round" fill="none"/>')},
-    gp_mirror:{en:"Mirrors and blind spot",ku:"نەیامەکان و خاڵی کوێر",svg:ill(car(30,42,40,B)+'<path d="M70 46 L94 26 M70 62 L94 82" stroke="'+GY+'" stroke-width="3" stroke-dasharray="5 4"/><path d="M18 34 a14 14 0 0 1 0 40" fill="none" stroke="'+R+'" stroke-width="5"/><rect x="22" y="20" width="16" height="10" rx="3" fill="'+GY+'"/>')},
-    gp_officer:{en:"Follow the officer first",ku:"سەرەتا گوێڕایەڵی پۆلیس بە",svg:ill('<circle cx="50" cy="26" r="11" fill="'+GY+'"/><rect x="34" y="18" width="32" height="7" rx="3" fill="'+B+'"/><path d="M50 38 v26" stroke="'+GY+'" stroke-width="12" stroke-linecap="round"/><path d="M50 44 L82 30" stroke="'+GY+'" stroke-width="9" stroke-linecap="round"/><path d="M42 64 L34 84 M58 64 L66 84" stroke="'+GY+'" stroke-width="9" stroke-linecap="round"/>')}
-  };
+  /* ---------- study-guide picture matching ----------
+     assignScenes() reads the QUESTION text, but a guide bullet shows the
+     EXPLANATION. Matching the explanation as well pulls the right picture for
+     tips whose question was worded vaguely, and stops a whole cluster of
+     bullets sharing one broad scene. Ordered specific-first; the first hit
+     wins. Medical and mechanical maps are gated to their category so "shock"
+     or "battery" cannot grab an unrelated rules tip. */
+  var EX_FA=[
+    [/helmet/i,"helmetDown"],
+    [/recovery position/i,"iconRecovery"],
+    [/\bCPR\b|compression|rescue breath|not breathing/i,"iconCPR"],
+    [/chok|swallow|airway is blocked|back blow/i,"iconChoke"],
+    [/burn|scald|boiling|running water/i,"iconBurn"],
+    [/nosebleed|nostril|pinch the/i,"iconNose"],
+    [/snake|scorpion|bite|sting|venom/i,"iconBite"],
+    [/fractur|spinal|spine|neck injury|broken bone|splint|do not move/i,"iconFracture"],
+    [/tourniquet|bleed|wound|dressing|blood loss/i,"iconBleed"],
+    [/shock|pale|clammy|lie them|raise the legs/i,"iconShock"],
+    [/\beye\b|eyes\b/i,"iconEye"],
+    [/extinguish|\bfire\b|flame|smoke/i,"iconExtinguisher"],
+    [/ambulance|122|104|emergency (number|services)|call for help/i,"iconPhone"],
+    [/warning triangle|hazard warning/i,"iconTriangle"],
+    [/crowd|bystander|onlooker/i,"iconCrowd"],
+    [/medicine|medication|painkiller|tablet/i,"iconMeds"],
+    [/first-aid kit|first aid kit/i,"iconAid"]
+  ];
+  var EX_ME=[
+    [/tyre|tread|puncture|pressure|wheel nut/i,"iconTyre"],
+    [/brake fluid|brake pad|braking system|handbrake|parking brake|service brake|disc|drum/i,"iconBrake"],
+    [/dipstick|oil level|engine oil|lubricat/i,"engDipstick"],
+    [/battery|alternator|charging|terminal/i,"engBattery"],
+    [/coolant|radiator|overheat|temperature gauge|thermostat/i,"tempHot"],
+    [/air filter/i,"engAirFilter"],
+    [/washer|wiper|windscreen|windshield/i,"engWasher"],
+    [/power steering/i,"engPower"],
+    [/steering wheel|free play|nine and three|ten and two/i,"handWheel"],
+    [/mirror/i,"mirrorAdjust"],
+    [/fuel|petrol|diesel|refuel|tank/i,"iconRefuel"],
+    [/seat ?belt/i,"seatbelt"],
+    [/indicator|hazard light/i,"iconIndicator"],
+    [/\bhorn\b/i,"iconHorn"],
+    [/headlight|dipped|full beam|dazzl|beam/i,"dipLight"],
+    [/number plate|plate colour|plate is/i,"iconPlate"],
+    [/registration|log ?book|insurance|document/i,"iconDocs"],
+    [/emission|pollut|idling|fuel consumption/i,"iconEco"],
+    [/inspection|roadworth|test/i,"iconInspect"]
+  ];
+  var EX_RU=[
+    [/blood alcohol|alcohol|drunk|drink/i,"drinkDrive"],
+    [/tired|sleep|fatigue|drowsy|rest break|short.*break/i,"sleepy"],
+    [/child(ren)? (must )?(sit|travel).*rear|child seat|child restraint|booster/i,"childSeats"],
+    [/child lock/i,"childLock"],
+    [/blind spot|blind area/i,"mirrorAdjust"],
+    [/white cane|blind (person|pedestrian|people)|visually impaired/i,"blindCane"],
+    [/wheelchair/i,"wheelchairPed"],
+    [/elderly|older (people|pedestrian)/i,"elderlyPed"],
+    [/footbridge|pedestrian bridge|subway/i,"pedBridge"],
+    [/warning triangle|broken[- ]down|breakdown/i,"iconTriangle"],
+    [/emergency vehicle|ambulance|fire engine|siren/i,"iconEmergVeh"],
+    [/level crossing|railway|\btrain\b|barrier/i,"railPosts"],
+    [/countdown/i,"countdownTimer"],
+    [/flashing red|red light flash/i,"flashRed"],
+    [/filter arrow|green arrow|arrow light/i,"arrowLight"],
+    [/traffic light|green light|red light|\bamber\b|traffic signal|light turns/i,"iconTrafficLight"],
+    [/officer|police|traffic warden/i,"iconPolice"],
+    [/roundabout/i,"roundabout"],
+    [/merge|merging|zip/i,"jxMerge"],
+    [/junction|crossroad|intersection/i,"junction"],
+    [/pedestrian crossing|zebra|crossing/i,"pedCrossing"],
+    [/pedestrian|on foot|procession|column/i,"playZone"],
+    [/cyclist|bicycle|\bcycle/i,"cyclist"],
+    [/motorcycl|moped|\brider\b/i,"iconMoto"],
+    [/\bbus\b|buses|bus stop|bus lane/i,"iconBus"],
+    [/seat ?belt|\bbelt\b|restraint/i,"seatbelt"],
+    [/hold a phone|mobile phone|\bphone\b|handheld|hands-free|texting/i,"iconPhone"],
+    [/pavement|footpath|walking|on foot|facing the traffic/i,"pedBridge"],
+    [/minimum age|driving ban|completed \d\d years|aged \d\d|eyesight test|medical/i,"iconLicence"],
+    [/hand signal|arm straight out|arm bent/i,"iconIndicator"],
+    [/blind spot|blind area/i,"mirrorAdjust"],
+    [/tanker|dangerous goods|flammable load/i,"tankerTruck"],
+    [/\btow\b|towing|trailer|caravan/i,"caravanTow"],
+    [/lorry|truck|heavy vehicle|articulated/i,"carTruck"],
+    [/animal|herd|livestock|cattle|sheep/i,"herd"],
+    [/\bpet\b|\bdog\b/i,"iconPet"],
+    [/overtak|pass(ing)? the vehicle/i,"overtakeLeft"],
+    [/two-second|following distance|safe gap|safe distance|tailgat/i,"followGap"],
+    [/stopping distance|braking distance|thinking distance/i,"iconSpeed"],
+    [/skid|aquaplan|lose grip/i,"iconSkid"],
+    [/standing water|flood|puddle/i,"standWater"],
+    [/\bfog\b|mist/i,"fog"],
+    [/snow|\bice\b|\bicy\b|frost/i,"iconSnow"],
+    [/rain|\bwet\b/i,"iconRain"],
+    [/tunnel/i,"iconTunnel"],
+    [/\bnight\b|darkness|after dark/i,"night"],
+    [/hill|gradient|slope|uphill|downhill/i,"hillPark"],
+    [/bridge/i,"bridgePark"],
+    [/kerb|yellow line/i,"kerbLine"],
+    [/criss-cross|box junction|yellow box/i,"boxJunction"],
+    [/u-turn|turn around/i,"iconUturn"],
+    [/revers|backing/i,"convexMirror"],
+    [/\bpark/i,"parkP"],
+    [/motorway|expressway|hard shoulder/i,"multiLane"],
+    [/narrow/i,"iconNarrowMeet"],
+    [/bend|curve|winding/i,"bend"],
+    [/school|playground|play (area|street)/i,"playZone"],
+    [/speed limit|km\/h/i,"iconSpeed"],
+    [/road marking|centre line|solid line|broken line|lane line/i,"iconRoadMark"],
+    [/imprison|\bjail\b|custody/i,"iconJail"],
+    [/fine|penalty|IQD/i,"iconFine"],
+    [/licen[cs]e/i,"iconLicence"],
+    [/law|article|regulation|circular|handbook|the code/i,"iconLaw"],
+    [/\blane\b/i,"multiLane"]
+  ];
+  var EX_MAPS={firstaid:EX_FA,mech:EX_ME,rules:EX_RU};
+  function exScene(q,txt){
+    var m=EX_MAPS[q.cat];if(!m||!txt)return null;
+    for(var i=0;i<m.length;i++){if(m[i][0].test(txt)&&SCENES[m[i][1]])return m[i][1];}
+    return null;
+  }
 
   /* ---------- study guide ---------- */
   window.guideAll=function(open){var d=document.querySelectorAll("#view .gsec");for(var i=0;i<d.length;i++){if(open)d[i].setAttribute("open","");else d[i].removeAttribute("open");}};
@@ -4225,46 +4318,37 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
       {en:"Road markings",ku:"نیشانەکانی سەر ڕێگا",keys:["broken_line","solid_line","double_line"]}
     ];
     var TOPICS=[
-      {en:"Alcohol, phone & fitness to drive",ku:"کحول، مۆبایل و توانای لێخوڕین",ic:"🚫",re:/alcohol|drink|phone|mobile|tired|sleep|fatigue|seat ?belt|helmet|licen[cs]e|unlicen/,
-       pics:["gp_alcohol","gp_phone","gp_tired","me_belt"]},
-      {en:"Pedestrians, cyclists & other road users",ku:"پیادە، پاسکیلسوار و بەکارهێنەرانی تر",ic:"🚸",re:/pedestrian|cyclist|bicycle|\bchild|school|motorcycl|moped|elderly|\bbus\b|horse|pram|wheelchair/,
-       pics:["ped","children","cyclists","horse_riders","bus_stop","ped_cycle_shared","no_pedestrians","cycle_route"]},
-      {en:"Lights, night & weather",ku:"لایت، شەو و کەشوهەوا",ic:"💡",re:/headlight|full beam|low beam|dipped|dazzl|\bfog\b|rain|snow|\bice\b|icy|night|\bwet\b|visib|indicator|hazard light/,
-       pics:["gp_night","me_lights","slippery","side_wind","tunnel","loose_chippings"]},
-      {en:"Emergencies & railway crossings",ku:"فریاگوزاری و پەڕینگەی شەمەندەفەر",ic:"🚑",re:/emergency|ambulance|siren|breakdown|warning triangle|level crossing|railway|\btram\b|police|fire engine/,
-       pics:["fa_triangle","fa_call","level_crossing","level_crossing_gates","level_crossing_train","level_crossing_multi","tram","officer_stop"]},
-      {en:"Overtaking, speed & distance",ku:"تێپەڕاندن، خێرایی و مەودا",ic:"⏱️",re:/overtak|\bspeed|km\/h|following|distance|two-second|two second|brake|braking|stopping|tailgat/,
-       pics:["gp_gap","no_overtake","end_no_overtake","no_overtake_truck","speed50","end_speed","speed_kurdistan","min_speed"]},
-      {en:"Parking, turning & motorways",ku:"پارککردن، گەڕانەوە و ڕێگا خێراکان",ic:"🅿️",re:/\bpark|u-turn|turn around|one-way|one way|revers|hatched|motorway|expressway|deceleration|merg|lane/,
-       pics:["gp_zip","parking","no_parking","no_stopping","no_uturn","oneway","motorway","end_motorway","merge","lane_route"]},
-      {en:"Right of way, junctions & roundabouts",ku:"پێشینە، چوارڕیان و بازنە",ic:"🔀",re:/priority|give way|give-way|yield|junction|roundabout|crossroad|unmarked|right of way|turn left|turning left|turn right|traffic light|red light|green light/,
-       pics:["gp_officer","stop","yield","priority","end_priority","roundabout","roundabout_ahead","crossroads","priority_crossroads","give_way_oncoming","priority_oncoming"]}
+      {en:"Alcohol, phone & fitness to drive",ku:"کحول، مۆبایل و توانای لێخوڕین",ic:"🚫",re:/alcohol|drink|phone|mobile|tired|sleep|fatigue|seat ?belt|helmet|licen[cs]e|unlicen/},
+      {en:"Pedestrians, cyclists & other road users",ku:"پیادە، پاسکیلسوار و بەکارهێنەرانی تر",ic:"🚸",re:/pedestrian|cyclist|bicycle|\bchild|school|motorcycl|moped|elderly|\bbus\b|horse|pram|wheelchair/},
+      {en:"Lights, night & weather",ku:"لایت، شەو و کەشوهەوا",ic:"💡",re:/headlight|full beam|low beam|dipped|dazzl|\bfog\b|rain|snow|\bice\b|icy|night|\bwet\b|visib|indicator|hazard light/},
+      {en:"Emergencies & railway crossings",ku:"فریاگوزاری و پەڕینگەی شەمەندەفەر",ic:"🚑",re:/emergency|ambulance|siren|breakdown|warning triangle|level crossing|railway|\btram\b|police|fire engine/},
+      {en:"Overtaking, speed & distance",ku:"تێپەڕاندن، خێرایی و مەودا",ic:"⏱️",re:/overtak|\bspeed|km\/h|following|distance|two-second|two second|brake|braking|stopping|tailgat/},
+      {en:"Parking, turning & motorways",ku:"پارککردن، گەڕانەوە و ڕێگا خێراکان",ic:"🅿️",re:/\bpark|u-turn|turn around|one-way|one way|revers|hatched|motorway|expressway|deceleration|merg|lane/},
+      {en:"Right of way, junctions & roundabouts",ku:"پێشینە، چوارڕیان و بازنە",ic:"🔀",re:/priority|give way|give-way|yield|junction|roundabout|crossroad|unmarked|right of way|turn left|turning left|turn right|traffic light|red light|green light/}
     ];
-    var OTHER={en:"Other rules",ku:"یاساکانی تر",ic:"🚗",pics:["gp_mirror","no_entry","no_vehicles","stop_control","other_danger","roadworks","dead_end"]};
-    var FA_PICS=["fa_triangle","fa_call","fa_recovery","fa_cpr","fa_bleed","fa_burn","fa_helmet","fa_choke"];
-    var ME_PICS=["me_tyre","me_brakes","me_oil","me_battery","me_coolant","me_lights","me_belt","me_dash"];
+    var OTHER={en:"Other rules",ku:"یاساکانی تر",ic:"🚗"};
     function section(ic,title,count,inner,open){
       return '<details class="gsec"'+(open?" open":"")+'><summary><span class="gic">'+ic+'</span><span>'+esc(title)+'</span><span class="gct">'+count+'</span><span class="gcar">▸</span></summary><div class="gbody">'+inner+'</div></details>';
     }
+    /* Every tip carries the picture from the question that teaches it. Each
+       question already has one: a road sign if it is about a sign, otherwise
+       the scene assignScenes() picked for it — and that function always
+       assigns something, so no bullet is left without an image. */
+    function bulletPic(q){
+      if(q.sign&&SIGNS[q.sign])return '<div class="gbi sign">'+SIGNS[q.sign].svg+'</div>';
+      var k=exScene(q,(q.ex&&q.ex.en)||"")||q.scene;
+      if(!k||!SCENES[k])k=DEF_SCENE[q.cat]||"iconLane";
+      return '<div class="gbi">'+SCENES[k]+'</div>';
+    }
     function bullets(arr){
       var seen={},out='<ul class="gbul">';
-      arr.forEach(function(q){var txt=GL(q.ex);if(!txt||seen[txt])return;seen[txt]=1;out+='<li>'+esc(txt)+'</li>';});
+      arr.forEach(function(q){
+        var txt=GL(q.ex);if(!txt||seen[txt])return;seen[txt]=1;
+        out+='<li>'+bulletPic(q)+'<div class="gbt">'+esc(txt)+'</div></li>';
+      });
       return out+'</ul>';
     }
     function signCard(k){var mean=_firstSent(GL(exBySign[k]));return '<div class="gscard">'+SIGNS[k].svg+'<div class="gsn">'+esc(signLabel(k))+'</div>'+(mean?'<div class="gsm">'+esc(mean)+'</div>':'')+'</div>';}
-    /* A picture card drawn from either library: a real road sign, or one of
-       the GPIC diagrams for topics that have no sign of their own. */
-    function picCard(k){
-      if(SIGNS[k])return signCard(k);
-      var g=GPIC[k];if(!g)return "";
-      return '<div class="gscard">'+g.svg+'<div class="gsn">'+esc(GL(g))+'</div></div>';
-    }
-    function picGrid(keys){
-      if(!keys||!keys.length)return "";
-      var cards=keys.map(picCard).filter(Boolean);
-      if(!cards.length)return "";
-      return '<div class="gsgrid gspics">'+cards.join("")+'</div>';
-    }
 
     var html='<div><h1>'+esc(t("guideB"))+'</h1><p class="sub">'+esc(t("guideD"))+'</p></div>';
     html+='<div class="gnav"><button class="gchip" onclick="guideAll(1)">'+esc(t("expandAll"))+'</button><button class="gchip" onclick="guideAll(0)">'+esc(t("collapseAll"))+'</button></div>';
@@ -4289,14 +4373,14 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
       for(var i=0;i<TOPICS.length;i++){if(TOPICS[i].re.test(hay)){buckets[i].push(q);placed=true;break;}}
       if(!placed)other.push(q);
     });
-    TOPICS.forEach(function(tp,i){if(buckets[i].length)html+=section(tp.ic,GL(tp),buckets[i].length,picGrid(tp.pics)+bullets(buckets[i]),false);});
-    if(other.length)html+=section(OTHER.ic,GL(OTHER),other.length,picGrid(OTHER.pics)+bullets(other),false);
+    TOPICS.forEach(function(tp,i){if(buckets[i].length)html+=section(tp.ic,GL(tp),buckets[i].length,bullets(buckets[i]),false);});
+    if(other.length)html+=section(OTHER.ic,GL(OTHER),other.length,bullets(other),false);
 
     // first aid + mechanics
     var fa=QUESTIONS.filter(function(q){return q.cat==="firstaid";});
-    if(fa.length)html+=section(CATS.firstaid.ic,L(CATS.firstaid),fa.length,picGrid(FA_PICS)+bullets(fa),false);
+    if(fa.length)html+=section(CATS.firstaid.ic,L(CATS.firstaid),fa.length,bullets(fa),false);
     var me=QUESTIONS.filter(function(q){return q.cat==="mech";});
-    if(me.length)html+=section(CATS.mech.ic,L(CATS.mech),me.length,picGrid(ME_PICS)+bullets(me),false);
+    if(me.length)html+=section(CATS.mech.ic,L(CATS.mech),me.length,bullets(me),false);
 
     html+='<button class="btn ghost" onclick="Go(\'home\')">'+esc(t("back"))+'</button>';
     view.innerHTML=html;
