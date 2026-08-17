@@ -17,7 +17,7 @@ single self-contained file, no build step, no network calls.
 
 | | |
 |---|---|
-| Active questions | 739 (743 defined, 4 filtered out via `ARCHIVED_Q`) |
+| Active questions | 740 (744 defined, 4 filtered out via `ARCHIVED_Q`) |
 | Sign icons | 110 inline SVG |
 | Scene / concept illustrations | 133 |
 | Questions with no visual | 0 |
@@ -66,16 +66,25 @@ Branch: `claude/trading-agent-bybit-mcp-ao56dp`
 - [x] Book chapters swept with **zero discrepancies**: 1 definitions,
       3 traffic law, 6 preparing to drive, 7 parking, 9 hazards,
       10 driver's health, 12 first-aid core, plus parts of 4, 5 and 8
+- [x] **Chapters 5, 8, 11 and the rest of 12 swept complete.** Two internal
+      contradictions found and fixed, one gap closed:
+      - `#684` said switch the engine off after **three** minutes of idling;
+        book p204 §146 says **one**, and `#423` already said one. Fixed to one.
+      - `#121` said cool a burn for "a few minutes"; book p220 and the bank's
+        own `#434`/`#494` say **10–15 minutes**. Aligned.
+      - `#744` added: the two kinds of brake are **disc and drum** (book §67),
+        kept distinct from the two brake *systems* (service and parking)
+- [x] `#296`'s steering-grip wording independently confirmed correct by book
+      p104 — 9-and-3 taught, 10-and-2 for older/large wheels, 5 cm free play
 
 ## Next
 
 **Unblocked — the PDFs were re-supplied and all four verified intact**
 (120 / 53 / 50 / 234 pages = 457, matching the counts below).
 
-- [ ] Book, still unswept (PDF page numbers): 32–46 (ch.2 general rules),
-      56–72 and 81–92 (rest of ch.4 signs), 93–106 (rest of ch.5 car parts),
-      127–144 (rest of ch.7 manoeuvres), 159–172 (rest of ch.8), 195–205
-      (ch.11 eco), 215–223 (rest of ch.12), 224–234 (glossary)
+- [ ] Book, still unswept (PDF page numbers): 56–72 and 81–92 (rest of ch.4
+      signs), 127–144 (rest of ch.7 manoeuvres), 224–234 (glossary).
+      Chapters 5, 8, 11 and 12 are now complete; ch.2 was done earlier.
 - [ ] Part 1 (120 pp): sweep, and confirm the book-is-master-copy claim
 - [ ] Part 2 (53 pp): sweep *(lowest priority — the book duplicates it)*
 
@@ -105,20 +114,27 @@ contains Part 1 + Part 2 verbatim.
 | Exam | 50 | **50 — complete**, all 431 questions + full answer key |
 | Part 1 | 120 | ~50 |
 | Part 2 | 53 | ~15 |
-| Book | 234 | ~98 (front matter + ch.1, 3, 6, 7-parking, 9, 10, 12-core, parts of 4, 5, 8) |
+| Book | 234 | ~131 (ch.1, 2, 3, 5, 6, 7-parking, 8, 9, 10, 11, 12 complete; parts of 4) |
 
 The exam is genuinely exhaustive — every question and every marked answer was
-extracted and checked. The other three are not; roughly **213 of 457** page
+extracted and checked. The other three are not; roughly **246 of 457** page
 images have been viewed. Do not restate this as a full page-by-page pass.
 
-**Three source problems have been found in total, all fixed:** the
-freeway/highway colours, the `#510` blood-group error, and the `#57` stem that
-collided with `#289`. Set against that, **13** apparent gaps were investigated
-and **10 turned out to be already covered correctly** — including one I had
-already written into this file as a confirmed gap (steering hand position,
-`#296`) before finding it. **Grep the whole bank before believing in a gap, and
-grep for the wording rather than the concept** — `#296` was missed because it
-writes "9 and 3 clock positions" with no apostrophe in "o'clock".
+**Six problems have been found in total, all fixed:** the freeway/highway
+colours, the `#510` blood-group error, the `#57` stem that collided with `#289`,
+the `#684` three-minute idling figure, the `#121` burn-cooling time, and the
+missing disc/drum brake question (`#744`). The last three came out of chapters
+5, 8, 11 and 12. Note the shift in kind: the first three were errors against the
+source, the next two were the **bank contradicting itself** — two questions
+teaching different numbers for the same fact. Grepping for a figure across the
+whole bank, not just checking it against the book, is what surfaced those.
+
+Set against that, **25+** apparent gaps were investigated and the large majority
+turned out to be already covered correctly — including one written into this
+file as a confirmed gap (steering hand position, `#296`) before it was found.
+**Grep the whole bank before believing in a gap, and grep for the wording rather
+than the concept** — `#296` was missed because it writes "9 and 3 clock
+positions" with no apostrophe in "o'clock".
 
 Where the sweep has reached, the bank is markedly more accurate than the old
 coverage table implied: chapters 3, 9, 10 and 12 came back with **zero**
@@ -145,6 +161,17 @@ Each of these cost real time to re-derive or was gotten wrong once.
   Deriving this cost time; do not re-derive it.
 - `poppler-utils` is **not** installed in a fresh container and the Read tool
   needs it for PDFs — `apt-get install -y poppler-utils` first.
+- **Grep the exam extract for NUMBERS, not Kurdish words.** Digits survive
+  `pdftotext` intact; Kurdish words do not, because Arabic-script shaping drops
+  letters. A zero-hit word search on `exam_parsed.json` proves nothing.
+- **The book has two internal typos of its own. Do not import either.**
+  (1) p167's stopping-distance table reads 48→23 m (6 car lengths), 64→36 m (9),
+  80→**38** m (13), 96→73 m (18). Every row is ~4 m per car length except the
+  80 km/h one, where 13 lengths should be ~52 m. (2) p217 says to pinch a
+  nosebleed "for at least 10–15 minutes" and then to get help "if bleeding
+  continues more than **2 minutes**" — you are still pinching at minute 2;
+  almost certainly a dropped zero. Neither figure is in the bank, which is the
+  right outcome. Teaching a typo is worse than leaving the gap.
 - **The exam contradicts itself a second time.** S2 Q145 and S2 Q150 are the
   same question with the same three options and **opposite** marked answers
   (poor visibility in heavy rain/fog: "stop completely" vs "keep driving").
