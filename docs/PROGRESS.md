@@ -156,21 +156,32 @@ The plan is ordered deliberately: **ship free, prove people want it, then
 charge.** Building payments before step 2 is the expensive way to find out
 nobody came. Do not reorder without a reason.
 
-### Phase 0 — get it on the internet at all (blocked on the owner)
+### Phase 0 — get it on the internet at all
 
-- [ ] **Turn on GitHub Pages. Needs a human with repo admin; cannot be done
-      from a session.** Settings → Pages → Source: "GitHub Actions", at
-      https://github.com/AIfriendly/Ai-driving-theory/settings/pages
-      **Re-checked 2026-08-18 after the disclaimer change: all 11 `pages` runs
-      are still `failure`, the most recent at 11:57Z. Not yet clicked.**
-      Nothing in this repo has ever reached a public URL: the workflow fails
-      at `configure-pages` on every run, and the Actions token is not allowed
-      to enable Pages itself (`enablement: true` was tried and refused). One
-      click, then re-run the workflow.
+- [x] **GitHub Pages is on and the site is LIVE.** Enabled by hand by the
+      owner 2026-08-18; first green run `32174909525`.
+      **https://aifriendly.github.io/Ai-driving-theory/** (`/ad.html` too)
+      Verified after deploy: HTTP 200, and the deployed bytes execute —
+      10 home tiles, 587/587 guide tips illustrated, mock exam launches,
+      zero page errors.
+      Two traps recorded in gotchas: enabling Pages does **not** deploy
+      anything by itself (the switch was flipped ~12 min after the last run,
+      so the site still showed nothing and looked broken — the workflow has to
+      run again), and the page shipped with no viewport meta, so phones laid
+      out at ~980px and scaled the app to half-width until `d659882`.
 - [ ] Buy a domain and point it at Pages (Settings → Pages → Custom domain).
-      `aifriendly.github.io/Ai-driving-theory/` converts badly from social and
-      cannot be moved later without losing every link. Do this **before** any
-      TikTok post, not after.
+      `aifriendly.github.io/Ai-driving-theory/` converts badly from social,
+      depends on the repo name (**this repo was already renamed once**), and
+      cannot be moved when Phase 3 needs a host that runs code. ~$12/yr for a
+      .com; `.krd` is $21-40 and open to anyone, but reads more official than
+      an app deliberately labelled unofficial should.
+      Free alternatives were researched and none solve portability — they are
+      all someone else's namespace. Freenom, the old free-domain default,
+      shut down in 2024 and 12.6M domains stopped resolving. Best *free*
+      choice is simply staying on github.io; `is-a.dev` / `pages.dev` are
+      lateral moves.
+      **Do this before the link is in a TikTok bio and on eight videos** —
+      that is when changing it starts costing real money.
 
 ### Phase 1 — make it fit to launch — DONE
 
