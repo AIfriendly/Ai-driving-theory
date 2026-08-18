@@ -1,0 +1,18 @@
+{
+  "name": "tareeq-video",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Remotion compositions that render the Tareeq TikTok quiz clips to MP4.",
+  "scripts": {
+    "studio": "remotion studio",
+    "render": "remotion render",
+    "render:all": "node render-all.mjs"
+  },
+  "dependencies": {
+    "@fontsource/noto-kufi-arabic": "^5.1.0",
+    "@remotion/cli": "4.0.513",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "remotion": "4.0.513"
+  }
+}

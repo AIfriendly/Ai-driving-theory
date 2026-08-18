@@ -1,0 +1,116 @@
+import React from "react";
+import {AbsoluteFill, interpolate, spring, useCurrentFrame, useVideoConfig} from "remotion";
+import {ADS, CTA, SIGNS, type Lang} from "./data";
+
+/* Beats in seconds. The answer is deliberately late: a viewer has to reach
+   the end of the clip to learn whether they were right, and completion is
+   what the algorithm actually pays out for. */
+export const BEATS = {
+  hook: 0.4,
+  opts: 1.5,      // options stagger in from here, 0.38s apart
+  count: 3.4,     // 3 - 2 - 1, one per second
+  beat: 6.4,      // countdown clears; a second of silence
+  reveal: 7.6,
+  why: 9.0,
+  cta: 12.4,
+  end: 15,
+};
+
+const C = {
+  bg: "#0b1018", panel: "#121a26", ink: "#fff", dim: "#93a3b8",
+  line: "#ffffff1f", accent: "#f4c400", good: "#22c55e", bad: "#ef4444",
+};
+
+const FONT = '"Noto Kufi Arabic", -apple-system, "Segoe UI", Roboto, sans-serif';
+
+/* Fade-and-rise, driven by a spring so it does not look linear. */
+const rise = (frame: number, fps: number, atSec: number) => {
+  const s = spring({frame: frame - atSec * fps, fps, config: {damping: 200}});
+  return {opacity: s, transform: `translateY(${interpolate(s, [0, 1], [22, 0])}px)`};
+};
+
+export const Ad: React.FC<{index: number; lang: Lang}> = ({index, lang}) => {
+  const frame = useCurrentFrame();
+  const {fps} = useVideoConfig();
+  const d = ADS[index];
+  const rtl = lang === "ku";
+  const sec = frame / fps;
+
+  const revealed = sec >= BEATS.reveal;
+  const counting = sec >= BEATS.count && sec < BEATS.beat;
+  const countN = Math.min(3, Math.max(1, 3 - Math.floor(sec - BEATS.count)));
+  const kuDigit = ["١", "٢", "٣"][countN - 1];
+
+  const optStyle = (i: number): React.CSSProperties => {
+    let bg = C.panel, border = C.line, keyBg = "#ffffff1a", keyInk = C.dim, op = 1;
+    if (revealed && i === d.a) { bg = "#14361f"; border = C.good; keyBg = C.good; keyInk = "#04120a"; }
+    else if (revealed && i === d.bait) { bg = "#3a1414"; border = C.bad; keyBg = C.bad; keyInk = "#fff"; op = 0.8; }
+    return {
+      display: "flex", alignItems: "center", gap: 30, background: bg,
+      border: `6px solid ${border}`, borderRadius: 34, padding: "34px 38px",
+      fontSize: 50, fontWeight: 700, lineHeight: 1.3, opacity: op,
+      ...rise(frame, fps, BEATS.opts + i * 0.38),
+      // The spring above sets opacity; the reveal dim must survive it.
+      ...(revealed ? {opacity: op} : null),
+      "--kb": keyBg, "--ki": keyInk,
+    } as React.CSSProperties;
+  };
+
+  return (
+    <AbsoluteFill style={{background: C.bg, fontFamily: FONT, color: C.ink,
+      direction: rtl ? "rtl" : "ltr", padding: "150px 65px 260px",
+      display: "flex", flexDirection: "column", justifyContent: "center", gap: 22}}>
+
+      <div style={{position: "absolute", top: 70, [rtl ? "right" : "left"]: 65,
+        fontSize: 42, fontWeight: 800, letterSpacing: 6, color: C.dim}}>TAREEQ</div>
+
+      <div style={{fontSize: 56, fontWeight: 800, color: C.accent, ...rise(frame, fps, BEATS.hook)}}>
+        {d.hook[lang]}
+      </div>
+
+      <div style={{fontSize: 74, fontWeight: 800, lineHeight: 1.24, margin: 0}}>
+        {d.q[lang]}
+      </div>
+
+      {d.sign ? (
+        <div style={{alignSelf: "center", width: 380, height: 380, background: "#fff",
+          borderRadius: 52, padding: 30, ...rise(frame, fps, BEATS.opts - 0.3)}}>
+          <svg viewBox="0 0 100 100" width="100%" height="100%"
+            dangerouslySetInnerHTML={{__html: SIGNS[d.sign]}} />
+        </div>
+      ) : null}
+
+      <div style={{display: "flex", flexDirection: "column", gap: 24, marginTop: 10}}>
+        {d.o.map((o, i) => (
+          <div key={i} style={optStyle(i)}>
+            <span style={{flex: "none", width: 84, height: 84, borderRadius: "50%",
+              display: "grid", placeItems: "center", fontSize: 44, fontWeight: 800,
+              background: "var(--kb)" as string, color: "var(--ki)" as string}}>
+              {"ABC"[i]}
+            </span>
+            <span>{o[lang]}</span>
+          </div>
+        ))}
+      </div>
+
+      <div style={{fontSize: 44, lineHeight: 1.4, color: C.dim, marginTop: 10,
+        ...rise(frame, fps, BEATS.why)}}>
+        {d.why[lang]}
+      </div>
+
+      {counting ? (
+        <AbsoluteFill style={{display: "grid", placeItems: "center", pointerEvents: "none"}}>
+          <div style={{fontSize: 620, fontWeight: 800, color: "#ffffff14", lineHeight: 1}}>
+            {rtl ? kuDigit : countN}
+          </div>
+        </AbsoluteFill>
+      ) : null}
+
+      <div style={{position: "absolute", bottom: 90, left: 65, right: 65, textAlign: "center",
+        ...rise(frame, fps, BEATS.cta)}}>
+        <div style={{fontSize: 66, fontWeight: 800, color: C.accent}}>{CTA[lang].a}</div>
+        <div style={{fontSize: 42, color: C.dim, marginTop: 12}}>{CTA[lang].b}</div>
+      </div>
+    </AbsoluteFill>
+  );
+};

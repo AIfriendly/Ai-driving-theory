@@ -10,3 +10,7 @@ __pycache__/
 dist/
 build/
 .claude/settings.local.json
+
+# Remotion render output and deps
+video/node_modules/
+video/out/
