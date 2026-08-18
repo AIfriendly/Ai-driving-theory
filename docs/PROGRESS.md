@@ -129,34 +129,63 @@ be book pp 22–229 and therefore already covered.
 
 Nothing in the question bank is currently known to be wrong or missing.
 
-- [ ] **BLOCKED, needs a human with repo admin:** turn on GitHub Pages —
-      Settings → Pages → Source: "GitHub Actions", at
+The plan is ordered deliberately: **ship free, prove people want it, then
+charge.** Building payments before step 2 is the expensive way to find out
+nobody came. Do not reorder without a reason.
+
+### Phase 0 — get it on the internet at all (blocked on the owner)
+
+- [ ] **Turn on GitHub Pages. Needs a human with repo admin; cannot be done
+      from a session.** Settings → Pages → Source: "GitHub Actions", at
       https://github.com/AIfriendly/Ai-driving-theory/settings/pages
-      Nothing in this repo has ever reached the public site; the workflow
-      fails at `configure-pages` on every run and the Actions token is not
-      allowed to enable Pages itself. One click, then re-run the workflow.
+      Nothing in this repo has ever reached a public URL: the workflow fails
+      at `configure-pages` on every run, and the Actions token is not allowed
+      to enable Pages itself (`enablement: true` was tried and refused). One
+      click, then re-run the workflow.
 - [ ] Buy a domain and point it at Pages (Settings → Pages → Custom domain).
-      The `aifriendly.github.io/Ai-driving-theory/` URL converts badly from
-      social and cannot be moved later without losing every link.
-- [ ] Nothing outstanding on sources. If new work is wanted, the honest options
-      are: a rendering/QA pass over the app itself, or a second opinion on the
-      two source defects the book carries (p167 stopping-distance table, p217
-      nosebleed threshold) if a non-KRG reference ever becomes available.
+      `aifriendly.github.io/Ai-driving-theory/` converts badly from social and
+      cannot be moved later without losing every link. Do this **before** any
+      TikTok post, not after.
+
+### Phase 1 — make it fit to launch
+
+- [ ] Strengthen the disclaimer to say plainly "not official, not endorsed".
+      The app already carries one and the About screen names both sources; the
+      wording is just soft. Cheap, do it with anything else.
+- [ ] Re-share the artifact from its share menu — viewers on the existing link
+      still see a pinned older version.
+- [ ] A real QA pass on a phone: both languages, RTL, the mock exam end to end,
+      offline. It has only ever been checked in a headless browser.
+
+### Phase 2 — find out whether anyone wants it
+
+- [ ] Post to TikTok and watch what happens. This is the cheap experiment and
+      the whole reason the free tier exists.
+- [ ] Use the comments to settle the KRG fee question (see *open questions*) —
+      asking what people actually paid gets a real figure and engagement in the
+      same move.
+
+### Phase 3 — monetize (only after Phase 2 says yes)
 
 - [ ] **Build the mock-exam paywall.** Decided 2026-08-18, started, then
       reverted at the owner's request — the tree is clean and nothing landed.
       Shape is in *Product plan* P6: gate `startExam()` only, 2 free attempts,
       5,000 IQD one-time, manual FIB transfer with hand-issued phone-keyed
       unlock codes, no backend. Strings need English **and** Kurdish.
-- [ ] Ask the owner what the cut-off "I won't" sentence meant.
-- [ ] Strengthen the disclaimer to say plainly "not official, not endorsed"
-      (the app already carries one; the wording is just soft).
+- [ ] Only if manual selling proves demand: FIB merchant onboarding and a real
+      server-side entitlement check. Not before — see P1.
 
-**Product direction (discussed 2026-08-18, nothing built yet).** The owner
-plans to publish the app free, drive traffic from TikTok, and monetize. See
-*Product plan* below before writing any payment or account code — the current
-architecture cannot support a content paywall, and that is the first thing to
-settle.
+### Parked
+
+- [ ] Ask the owner what the cut-off "I won't" sentence meant.
+- [ ] Nothing outstanding on sources. If new work is wanted, the honest options
+      are a second opinion on the two source defects the book carries (p167
+      stopping-distance table, p217 nosebleed threshold), if a non-KRG
+      reference ever becomes available.
+
+---
+
+### Notes from the sweep, kept for method
 
 The high-figure-density chapters were deliberately swept first, on the theory
 that errors hide in numbers rather than prose. That held for errors *against*
