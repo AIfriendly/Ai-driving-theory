@@ -143,6 +143,15 @@ Nothing in the question bank is currently known to be wrong or missing.
       two source defects the book carries (p167 stopping-distance table, p217
       nosebleed threshold) if a non-KRG reference ever becomes available.
 
+- [ ] **Build the mock-exam paywall.** Decided 2026-08-18, started, then
+      reverted at the owner's request — the tree is clean and nothing landed.
+      Shape is in *Product plan* P6: gate `startExam()` only, 2 free attempts,
+      5,000 IQD one-time, manual FIB transfer with hand-issued phone-keyed
+      unlock codes, no backend. Strings need English **and** Kurdish.
+- [ ] Ask the owner what the cut-off "I won't" sentence meant.
+- [ ] Strengthen the disclaimer to say plainly "not official, not endorsed"
+      (the app already carries one; the wording is just soft).
+
 **Product direction (discussed 2026-08-18, nothing built yet).** The owner
 plans to publish the app free, drive traffic from TikTok, and monetize. See
 *Product plan* below before writing any payment or account code — the current
@@ -260,11 +269,27 @@ tyre spec.
 
 ## Product plan
 
-Discussed 2026-08-18. **Nothing here is built.** Recorded so the reasoning is
-not re-derived from scratch, and so the architectural blocker is hit before
-code is written rather than after.
+Discussed 2026-08-18. **Nothing here is built** — implementation was started
+and then reverted at the owner's request; the working tree is clean. Recorded
+so the reasoning is not re-derived from scratch, and so the architectural
+blocker is hit before code is written rather than after.
 
 Goal: publish free, distribute on TikTok, monetize. App name is **Tareeq**.
+
+**Owner decisions, 2026-08-18** — these settle P2, P3 and P5 below:
+
+- **Paywall the mock exams, nothing else.** Everything else stays free. This
+  is P2 adopted and P3 rejected, which is the right way round.
+- **FIB, not ZainCash.** The audience is the Kurdistan Region specifically and
+  the owner's read is that FIB is the more popular there. No comparative
+  user data was found either way — searching produced FIB's own coverage
+  claims for Erbil and Sulaymaniyah and ZainCash's national transaction
+  volume, nothing that compares them by region. Deferred to local knowledge.
+  **P5 below is reversed: FIB first.**
+- **Copyright handled by labelling the app unofficial.** See the R block at
+  the end of this section for what that does and does not cover.
+- One sentence in the owner's message — "I won't" — was cut off and its
+  subject is unknown. **Do not guess at it; ask.**
 
 **P1 — the app cannot paywall content as it stands.** `web/index.html` ships
 every question, answer and explanation to the browser. Ctrl+U reveals the lot.
@@ -297,13 +322,37 @@ ZainCash cash-in runs through ~10k human agents. Next tier up, if ever, is
 10,000 (also one note). Recurring billing through Iraqi wallets is painful and
 distrusted.
 
-**P5 — ZainCash first, FIB second.** The TikTok audience is 18–25 taking a
-first licence; that group has a phone wallet far more often than a bank
-account, and ZainCash's agent network handles the cash-to-digital step. FIB is
-a bank and can come second. Note Stripe, PayPal and Shopify Payments **do not
+**P5 — FIB first (owner's call, reversing the original advice).** The original
+reasoning was ZainCash first: the 18–25 first-licence audience holds phone
+wallets more often than bank accounts, and ZainCash's ~10k agents handle the
+cash-to-digital step. The owner's counter is that this app targets the
+Kurdistan Region and FIB leads there. That is plausible and unfalsified — FIB
+is a fully digital mobile bank with a payment gateway and stated Erbil and
+Sulaymaniyah coverage — so build FIB first and treat ZainCash as the fallback
+if conversion is poor. Note Stripe, PayPal and Shopify Payments **do not
 support Iraq at all**. Other live options: FastPay, Qi, AsiaPay, PayTabs Iraq.
 Any of them needs server-side keys, which is another reason P1 must be settled
 first.
+
+**P6 — the launch shape that avoids a backend entirely.** Sketched and then
+reverted, but worth keeping, because it lets the owner take money before
+building anything:
+
+- Gate only `startExam()`. Free attempts (2) consumed at start, not finish, so
+  abandoning a paper does not hand out an extra one.
+- Sell manually: buyer sends a FIB transfer, sends the screenshot plus their
+  phone number, gets an unlock code back by hand.
+- Codes are a hash of the **normalised phone number** plus a salt, so a code
+  posted publicly does not unlock anyone else's install. `normId()` must fold
+  `07XX`, `+9647XX` and `9647XX` together.
+- Store the id and code, and re-derive the code on every check rather than
+  trusting a `paid` flag, so hand-editing localStorage is not enough on its own.
+
+This is **honour-system and must be labelled as such in the code**: one static
+file means anyone reading the source can bypass it, and the salt is in the
+client so a determined user can mint codes. It is survivable only because the
+gate protects a *feature* while the question text stays free — a bypass costs
+one sale, not the bank. Replace with a server check when revenue justifies it.
 
 **Open questions, none resolved**
 
@@ -317,12 +366,31 @@ first.
 - Whether FIB and ZainCash onboard individuals or require commercial
   registration, and their settlement terms.
 
-**R — commercial redistribution of the source material is unresolved.** The
-bank derives from the KRG Ministry of Interior / Directorate General of Traffic
-Police handbook, and 431 questions come from the official exam paper. The
-explanations are original; the source material is not. Charging for it is a
-live risk, not a theoretical one. Check redistribution rights before monetizing,
-and label the site clearly as unofficial and not endorsed.
+**R — commercial redistribution of the source material is still unresolved.**
+The bank derives from the KRG Ministry of Interior / Directorate General of
+Traffic Police handbook, and 431 questions come from the official exam paper.
+The explanations are original; the source material is not.
+
+The owner's decision is to label the app unofficial and note the material is
+from 2026. **That was accepted and the app already carries a disclaimer** —
+see `disclaimer` and the About & sources screen, which name both sources.
+Strengthening the wording to say plainly "not official, not endorsed" is
+cheap and worth doing.
+
+Two things it does *not* do, recorded so nobody assumes otherwise later:
+
+- An unofficial label answers **endorsement** confusion — that readers might
+  think the KRG published this. It does not answer **copyright**, which is
+  about who may reproduce the questions. They are separate problems and the
+  label only addresses the first.
+- Stating the material is from 2026 makes the copyright position *weaker*, not
+  stronger. Recent work is more clearly within its protection term; age is
+  what eventually helps, not currency.
+
+The risk is not that the label is wrong, it is that the label is not a defence.
+It remains worth confirming redistribution rights before taking money — this
+was raised, the owner has decided, and the decision stands. Recorded, not
+re-litigated.
 
 ---
 
