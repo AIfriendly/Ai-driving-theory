@@ -60,11 +60,47 @@ The answer is late on purpose. A viewer has to reach the end of the clip to
 find out whether they were right, and completion rate is what the algorithm
 pays out for. Moving `reveal` earlier will cost you reach.
 
+## TikTok safe zones — checked, not assumed
+
+TikTok draws its own UI over the video and anything beneath it is not read.
+On a 1080x1920 canvas: ~130px of status bar at the top, ~320px at the bottom
+for caption, username and the sound row, ~120px down the right edge for the
+like / comment / share column, ~60px on the left for the progress bar.
+
+The right edge is the one that bites here. Kurdish sets right-to-left, so
+Kurdish text *starts* exactly where those buttons sit — a layout that looks
+fine in English quietly puts the Kurdish clips under the share button.
+
+`SAFE` in `src/Ad.tsx` is the budget. `npm run check` renders the busiest
+frame of each composition and asserts no non-background pixel lands in any of
+the four margins:
+
+```bash
+node scripts/check-safe-zones.mjs mirrors-ku sign-narrow-ku      # a few
+npm run check                                                    # or all 16
+```
+
+Padding alone is not proof — an absolutely positioned element ignores it,
+which is exactly how the call to action first ended up under the caption.
+**Re-run the check after any copy or type change**, because the constraint is
+content height: a longer question pushes the column past the safe box and the
+overflow lands in both the top and bottom zones at once.
+
 ## Posting
 
 The clips are silent by design — add a trending sound in TikTok itself. Never
 put the answer in the caption, and never trim the opening: the question has to
 be on screen in the first frame or people scroll past.
+
+## Bitrate
+
+`Config.setVideoBitrate("3M")`, deliberately not CRF. CRF targets quality, and
+this content — flat dark background, large static text — is so cheap to encode
+that CRF 18 produced ~810 kbps. That clears TikTok's 516 kbps in-feed minimum
+but sits far below the 2,000-2,500 they recommend for 1080p. TikTok re-encodes
+on upload, and a thin source gives their encoder little to work with: it shows
+as banding across the dark background and mush on text edges. 3 Mbps is about
+5.6 MB per clip against a 500 MB cap.
 
 ## Licence
 

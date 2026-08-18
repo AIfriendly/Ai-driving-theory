@@ -24,6 +24,15 @@ const C = {
 
 const FONT = '"Noto Kufi Arabic", -apple-system, "Segoe UI", Roboto, sans-serif';
 
+/* TikTok overlays its own UI on top of the video, and anything under it is
+   simply not read. On a 1080x1920 canvas: ~130px of status bar at the top,
+   ~320px at the bottom for caption, username and the sound row, and ~120px
+   down the right edge for the like / comment / share column.
+   The right edge matters most here: Kurdish sets right-to-left, so Kurdish
+   text starts exactly where those buttons sit. Horizontal padding is
+   symmetric at 130 so both directions clear it. */
+const SAFE = {top: 150, side: 130, bottom: 350};
+
 /* Fade-and-rise, driven by a spring so it does not look linear. */
 const rise = (frame: number, fps: number, atSec: number) => {
   const s = spring({frame: frame - atSec * fps, fps, config: {damping: 200}});
@@ -56,9 +65,9 @@ export const Ad: React.FC<{index: number; lang: Lang}> = ({index, lang}) => {
     if (revealed && i === d.a) { bg = "#14361f"; border = C.good; keyBg = C.good; keyInk = "#04120a"; }
     else if (revealed && i === d.bait) { bg = "#3a1414"; border = C.bad; keyBg = C.bad; keyInk = "#fff"; op = 0.8; }
     return {
-      display: "flex", alignItems: "center", gap: 30, background: bg,
-      border: `6px solid ${border}`, borderRadius: 34, padding: "34px 38px",
-      fontSize: 50, fontWeight: 700, lineHeight: 1.3, opacity: op,
+      display: "flex", alignItems: "center", gap: 26, background: bg,
+      border: `5px solid ${border}`, borderRadius: 30, padding: "26px 32px",
+      fontSize: 44, fontWeight: 700, lineHeight: 1.3, opacity: op,
       ...rise(frame, fps, BEATS.opts + i * 0.38),
       // The spring above sets opacity; the reveal dim must survive it.
       ...(revealed ? {opacity: op} : null),
@@ -68,38 +77,42 @@ export const Ad: React.FC<{index: number; lang: Lang}> = ({index, lang}) => {
 
   return (
     <AbsoluteFill style={{background: C.bg, fontFamily: FONT, color: C.ink,
-      direction: rtl ? "rtl" : "ltr", padding: "150px 65px 260px",
-      display: "flex", flexDirection: "column", justifyContent: "center", gap: 22}}>
+      direction: rtl ? "rtl" : "ltr",
+      padding: `${SAFE.top}px ${SAFE.side}px ${SAFE.bottom}px`,
+      display: "flex", flexDirection: "column", justifyContent: "center", gap: 16}}>
 
       {voiceFile ? <Audio src={staticFile(`audio/${voiceFile}`)} /> : null}
       {manifest.music ? (
         <Audio src={staticFile(`audio/${manifest.music}`)} volume={MUSIC_VOLUME} loop />
       ) : null}
 
-      <div style={{position: "absolute", top: 70, [rtl ? "right" : "left"]: 65,
-        fontSize: 42, fontWeight: 800, letterSpacing: 6, color: C.dim}}>TAREEQ</div>
+      <div style={{position: "absolute", top: 142, [rtl ? "right" : "left"]: SAFE.side,
+        fontSize: 36, fontWeight: 800, letterSpacing: 5, color: C.dim}}>TAREEQ</div>
 
-      <div style={{fontSize: 56, fontWeight: 800, color: C.accent, ...rise(frame, fps, BEATS.hook)}}>
+      <div style={{fontSize: 50, fontWeight: 800, color: C.accent, ...rise(frame, fps, BEATS.hook)}}>
         {d.hook[lang]}
       </div>
 
-      <div style={{fontSize: 74, fontWeight: 800, lineHeight: 1.24, margin: 0}}>
+      {/* Sign clips carry a picture as well as the text, so their question
+          runs a size down. Shrinking every clip to fit the tightest one would
+          cost legibility on the five that have room to spare. */}
+      <div style={{fontSize: d.sign ? 58 : 66, fontWeight: 800, lineHeight: 1.22, margin: 0}}>
         {d.q[lang]}
       </div>
 
       {d.sign ? (
-        <div style={{alignSelf: "center", width: 380, height: 380, background: "#fff",
-          borderRadius: 52, padding: 30, ...rise(frame, fps, BEATS.opts - 0.3)}}>
+        <div style={{alignSelf: "center", width: 250, height: 250, background: "#fff",
+          borderRadius: 38, padding: 22, ...rise(frame, fps, BEATS.opts - 0.3)}}>
           <svg viewBox="0 0 100 100" width="100%" height="100%"
             dangerouslySetInnerHTML={{__html: SIGNS[d.sign]}} />
         </div>
       ) : null}
 
-      <div style={{display: "flex", flexDirection: "column", gap: 24, marginTop: 10}}>
+      <div style={{display: "flex", flexDirection: "column", gap: 20, marginTop: 8}}>
         {d.o.map((o, i) => (
           <div key={i} style={optStyle(i)}>
-            <span style={{flex: "none", width: 84, height: 84, borderRadius: "50%",
-              display: "grid", placeItems: "center", fontSize: 44, fontWeight: 800,
+            <span style={{flex: "none", width: 74, height: 74, borderRadius: "50%",
+              display: "grid", placeItems: "center", fontSize: 38, fontWeight: 800,
               background: "var(--kb)" as string, color: "var(--ki)" as string}}>
               {"ABC"[i]}
             </span>
@@ -108,7 +121,7 @@ export const Ad: React.FC<{index: number; lang: Lang}> = ({index, lang}) => {
         ))}
       </div>
 
-      <div style={{fontSize: 44, lineHeight: 1.4, color: C.dim, marginTop: 10,
+      <div style={{fontSize: 36, lineHeight: 1.35, color: C.dim, marginTop: 6,
         ...rise(frame, fps, BEATS.why)}}>
         {d.why[lang]}
       </div>
@@ -121,10 +134,9 @@ export const Ad: React.FC<{index: number; lang: Lang}> = ({index, lang}) => {
         </AbsoluteFill>
       ) : null}
 
-      <div style={{position: "absolute", bottom: 90, left: 65, right: 65, textAlign: "center",
-        ...rise(frame, fps, BEATS.cta)}}>
-        <div style={{fontSize: 66, fontWeight: 800, color: C.accent}}>{CTA[lang].a}</div>
-        <div style={{fontSize: 42, color: C.dim, marginTop: 12}}>{CTA[lang].b}</div>
+      <div style={{textAlign: "center", marginTop: 24, ...rise(frame, fps, BEATS.cta)}}>
+        <div style={{fontSize: 58, fontWeight: 800, color: C.accent}}>{CTA[lang].a}</div>
+        <div style={{fontSize: 36, color: C.dim, marginTop: 10}}>{CTA[lang].b}</div>
       </div>
     </AbsoluteFill>
   );

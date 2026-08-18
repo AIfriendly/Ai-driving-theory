@@ -6,7 +6,8 @@
   "scripts": {
     "studio": "remotion studio",
     "render": "remotion render",
-    "render:all": "node render-all.mjs"
+    "render:all": "node render-all.mjs",
+    "check": "node scripts/check-safe-zones.mjs mirrors-ku alley-ku helmet-ku burn-ku green-ku sign-priority-ku sign-crossing-ku sign-narrow-ku mirrors-en alley-en helmet-en burn-en green-en sign-priority-en sign-crossing-en sign-narrow-en"
   },
   "dependencies": {
     "@fontsource/noto-kufi-arabic": "^5.1.0",

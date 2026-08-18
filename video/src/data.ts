@@ -116,12 +116,12 @@ export const ADS: Ad[] = [
   {
     id: "sign_narrow", label: "Sign: two arrows", a: 0, bait: 1, sign: "give_way_oncoming",
     hook: { en: "Most people read this backwards", ku: "زۆربەی خەڵک بە پێچەوانە دەیخوێننەوە" },
-    q: { en: "You meet this sign at a narrow section. What does it mean?", ku: "لە بەشێکی تەسکدا ئەم هێمایەت بەرچاو دەکەوێت. واتای چییە؟" },
+    q: { en: "You meet this sign at a narrow section. What does it mean?", ku: "ئەم هێمایە لە ڕێگای تەسکدا چی دەڵێت؟" },
     o: [
       { en: "Give way to oncoming traffic", ku: "ڕێگا بدە بە هاتوچۆی بەرامبەر" },
       { en: "You have priority, carry on", ku: "پێشینەت هەیە، بەردەوام بە" },
       { en: "Two-way traffic ahead", ku: "هاتوچۆی دوولا لە پێشەوە" },
     ],
-    why: { en: "The red arrow is the one with priority, and it is pointing at you. Wait for the oncoming traffic to clear before entering.", ku: "تیرە سوورەکە ئەوەیە پێشینەی هەیە، و ڕووی لە تۆیە. چاوەڕێ بکە هاتوچۆی بەرامبەر تێپەڕێت پێش ئەوەی بچیتە ژوورەوە." },
+    why: { en: "The red arrow is the one with priority, and it is pointing at you. Wait for the oncoming traffic to clear before entering.", ku: "تیرە سوورەکە پێشینەی هەیە و ڕووی لە تۆیە. چاوەڕێی هاتوچۆی بەرامبەر بکە." },
   },
 ];
