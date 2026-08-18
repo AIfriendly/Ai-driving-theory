@@ -33,18 +33,17 @@ local `origin` still points at the old name and works through the redirect).
 
 | Target | State |
 |---|---|
+| **GitHub Pages** | **LIVE** — https://aifriendly.github.io/Ai-driving-theory/ · ad recorder at `/ad.html` · first successful deploy 2026-08-18, run `32174909525` |
 | Claude artifact | current — https://claude.ai/code/artifact/c5c01665-6f71-4311-8309-246932861af4 · viewers on the share link see a *pinned earlier version*, so re-share from the page's share menu after publishing |
-| GitHub Pages | **never deployed** — blocked, see *Next* |
 
 **Repo layout:** `web/index.html` is the app, `web/ad.html` a screen-record
 preview of the ad clips, `video/` the Remotion project that renders them
 (node_modules and out/ gitignored — re-run `npm install` after a fresh clone).
 
-**Picking this up cold:** the question bank is finished and verified; do not
-re-sweep the PDFs, and the ad creative is done. The live threads are the Pages
-block in *Next* — one click, and it gates everything including posting, since
-every clip ends on "link in bio" — and the unbuilt monetization plan in
-*Product plan*.
+**Picking this up cold:** the question bank is finished and verified (do not
+re-sweep the PDFs), the ad creative is done, and the site is live. The live
+threads are a custom domain, actually posting to TikTok, and the unbuilt
+monetization plan in *Product plan*.
 
 ---
 
@@ -123,9 +122,15 @@ every clip ends on "link in bio" — and the unbuilt monetization plan in
         largest cluster is now 23 and 95 distinct images are in use.
       - `iconBus` added — bus lanes, bus stops and large-vehicle blind spots
         are all over the handbook and had no picture.
-- [x] **GitHub Pages deploy diagnosed** — every pages run has failed, so the
-      public site has never served any of this work. **Still blocked on one
-      manual click**, see *Next* and gotchas.
+- [x] **GitHub Pages: diagnosed, unblocked, LIVE** — `b10f197`, first green
+      run `32174909525`, 2026-08-18.
+      https://aifriendly.github.io/Ai-driving-theory/
+      Every run before this failed at `configure-pages`, so nothing this repo
+      had ever built reached a public URL. The owner enabled Pages by hand
+      (`GITHUB_TOKEN` cannot — creating a Pages site needs repo-admin, and
+      `enablement: true` was refused). Verified after deploy: HTTP 200,
+      1.05 MB, deployed bytes execute — 10 home tiles, 587/587 guide tips
+      illustrated, mock exam launches, zero page errors.
 - [x] **Ad creative built and verified** — `web/ad.html` (screen-record
       preview) `ca006c9`, `video/` Remotion project `292a68e`, audio slot and
       voiceover scripts `38face1`, safe-zone and bitrate fixes `6b84a35`,
@@ -554,8 +559,8 @@ changes nothing, because the encoder has no more detail to spend bits on.
 re-encode without banding, and banding needs gradients this background does
 not have.
 
-**The pages workflow has been failing since long before the sweep, and still
-is.** Every run errors at `actions/configure-pages` with *"Get Pages site
+**The pages workflow failed silently for months. Fixed 2026-08-18 — the site
+is live now — but the failure mode is worth keeping.** Every run errors at `actions/configure-pages` with *"Get Pages site
 failed … verify that the repository has Pages enabled"*. `has_pages` is
 `false` on the repo: Pages was never switched on, exactly as the workflow's
 own header comment warned. The checkout and the self-contained check both
@@ -565,9 +570,17 @@ a deployed site; check the pages run, not just the push.**
 Adding `enablement: true` to `configure-pages` was tried and is **not enough**:
 `GITHUB_TOKEN` cannot create the site (*"Create Pages site failed. Resource not
 accessible by integration"*), because creating one needs repo-admin rights.
-The flag is kept — it is a no-op once the site exists — but the block is a
-human one: **Settings → Pages → Source: "GitHub Actions"**, once, at
-https://github.com/AIfriendly/Ai-driving-theory/settings/pages
+The flag is kept — it is a no-op now the site exists — but the block was a
+human one: **Settings → Pages → Source: "GitHub Actions"**, done once by the
+owner on 2026-08-18.
+
+**Enabling Pages does not deploy anything by itself.** The switch was flipped
+about twelve minutes *after* the last workflow run, so that run had already
+failed against the old setting and the site still showed nothing — which looks
+exactly like the switch not working. The workflow has to run *again*
+afterwards. A push touching `.github/workflows/pages.yml` (it is in its own
+paths filter) is the easiest retrigger; the Actions token cannot dispatch a
+workflow run, so `workflow_dispatch` from a session returns 403.
 
 Two things that will *not* be the problem afterwards: the repo is public, and
 `claude/trading-agent-bybit-mcp-ao56dp` is the repo's **default branch**, so
