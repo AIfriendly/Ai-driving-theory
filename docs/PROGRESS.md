@@ -22,6 +22,7 @@ single self-contained file, no build step, no network calls.
 | Scene / concept illustrations | 134 |
 | Questions with no visual | 0 |
 | Study-guide tips with no picture | 0 (587 of 587) |
+| Ad clips rendered | 16 (8 hooks × 2 languages), ready to post |
 
 Branch: `claude/trading-agent-bybit-mcp-ao56dp` — this is also the repo's
 **default branch**. There is no `main`/`master`.
@@ -35,9 +36,15 @@ local `origin` still points at the old name and works through the redirect).
 | Claude artifact | current — https://claude.ai/code/artifact/c5c01665-6f71-4311-8309-246932861af4 · viewers on the share link see a *pinned earlier version*, so re-share from the page's share menu after publishing |
 | GitHub Pages | **never deployed** — blocked, see *Next* |
 
+**Repo layout:** `web/index.html` is the app, `web/ad.html` a screen-record
+preview of the ad clips, `video/` the Remotion project that renders them
+(node_modules and out/ gitignored — re-run `npm install` after a fresh clone).
+
 **Picking this up cold:** the question bank is finished and verified; do not
-re-sweep the PDFs. The two live threads are the Pages block in *Next* and the
-unbuilt monetization plan in *Product plan*.
+re-sweep the PDFs, and the ad creative is done. The live threads are the Pages
+block in *Next* — one click, and it gates everything including posting, since
+every clip ends on "link in bio" — and the unbuilt monetization plan in
+*Product plan*.
 
 ---
 
@@ -119,6 +126,17 @@ unbuilt monetization plan in *Product plan*.
 - [x] **GitHub Pages deploy diagnosed** — every pages run has failed, so the
       public site has never served any of this work. **Still blocked on one
       manual click**, see *Next* and gotchas.
+- [x] **Ad creative built and verified** — `web/ad.html` (screen-record
+      preview) `ca006c9`, `video/` Remotion project `292a68e`, audio slot and
+      voiceover scripts `38face1`, safe-zone and bitrate fixes `6b84a35`,
+      bitrate actually applied `8779eae`. See *Ad creative*.
+      - 16 clips: 8 hooks × Kurdish/English, 1080×1920, 30fps, 15s.
+      - Shipped once at 812 kbps with the CTA under TikTok's caption and
+        Kurdish text under the share buttons, then fixed. **The first version
+        looked fine and was unpostable** — the defects were only found by
+        checking against published specs, not by looking at frames.
+      - Final: mean 1,769 kbps (min 1,404, max 2,061), 16/16 clear of all
+        four safe zones, all containers valid.
 
 ## Next
 
@@ -159,11 +177,22 @@ nobody came. Do not reorder without a reason.
 
 ### Phase 2 — find out whether anyone wants it
 
+**The creative is built and verified — 16 clips are ready to post.** See
+*Ad creative* below. What is left here is the posting itself.
+
 - [ ] Post to TikTok and watch what happens. This is the cheap experiment and
-      the whole reason the free tier exists.
+      the whole reason the free tier exists. Suggested order, strongest hook
+      first: mirrors, alley, helmet, burn, green, then the three sign rounds.
+- [ ] Add a trending sound in-app to each one. The clips ship silent on
+      purpose — see the music note below.
 - [ ] Use the comments to settle the KRG fee question (see *open questions*) —
       asking what people actually paid gets a real figure and engagement in the
       same move.
+- [ ] Optional: record the voiceovers. Scripts are written and timed in
+      `video/VOICEOVER.md`; drop the mp3s in and re-render.
+
+**Do not post before Phase 0 is done.** Every clip ends on "link in bio" and
+there is currently no link — Pages has never deployed.
 
 ### Phase 3 — monetize (only after Phase 2 says yes)
 
@@ -423,7 +452,99 @@ re-litigated.
 
 ---
 
+## Ad creative
+
+Built 2026-08-18. Two paths to the same eight hooks.
+
+`web/ad.html` — standalone page that plays a clip; screen-record it. Useful
+for a phone-only workflow or a quick preview. Shares no code with
+`index.html`, deliberately, so editing one cannot break the other.
+
+`video/` — Remotion project, renders real MP4s. **This is the one to upload.**
+1080×1920, 30fps, 15s, 16 clips (8 hooks × 2 languages). `npm run render:all`.
+
+**The hooks are the eight questions where the answer most people give is the
+wrong one** — that is what drives the comments that carry reach. Source of
+truth is `video/src/data.ts`, copied verbatim from the bank. `bait` marks the
+wrong option to light up red on the reveal.
+
+**The timeline is the product.** `BEATS` in `video/src/Ad.tsx`: hook 0.4s,
+options stagger from 1.5s, 3-2-1 from 3.4s, silence at 6.4s, **answer at
+7.6s**, CTA at 12.4s. The answer is late so a viewer has to reach the end to
+learn whether they were right, and completion is what the algorithm pays for.
+Moving the reveal earlier costs reach.
+
+**Audio is file-driven and opt-in.** Drop `video/public/audio/<id>-<lang>.mp3`
+and the next render bakes it in; `music.mp3` becomes a bed at 14%. A manifest
+is generated from what is on disk because Remotion errors on a missing
+`<Audio>` source. Scripts for all eight, both languages, timed to the beats,
+are in `video/VOICEOVER.md`.
+
+**Do not bake music in for TikTok.** Add it in-app. A trending sound is the
+cheapest distribution lever there is, a baked track forfeits it, can get the
+video muted, and needs a re-render to change. The music slot is for YouTube
+Shorts and Instagram, where the in-app libraries are weaker.
+
+**Record the voiceover in a real voice.** ElevenLabs supports Central Kurdish
+for speech-to-*text* but not text-to-speech; the dedicated Kurdish TTS tools
+that exist are of unknown quality. A synthetic Kurdish voice landing slightly
+wrong costs credibility with exactly the native speakers this is aimed at, and
+they will say so in the comments.
+
+---
+
 ## Decisions & gotchas
+
+**Four things broke the video render, and three were silent.** Recorded
+because none of them announce themselves.
+
+*Remotion needs the OLD headless mode.* Pointing it at
+`/opt/pw-browsers/chromium` dies with "Old Headless mode has been removed from
+the Chrome binary". Use the `chrome-headless-shell` Playwright installs beside
+it — the path is in `video/render-all.mjs`. This one at least fails loudly.
+
+*There is no Arabic-script font on this machine.* `fc-list | grep -c arab`
+returns **0**, and DejaVu covers none of it. Without bundling one, every
+Kurdish glyph renders as a tofu box — which reviews perfectly clean in the
+source and is worthless on screen. `Root.tsx` imports Noto Kufi Arabic from
+`node_modules` so the render depends on neither network nor system fonts.
+**Do not remove those imports.** Verify by rendering a still and looking at it,
+never by reading the code.
+
+*`remotion.config.mjs` is never read.* Remotion looks for
+`remotion.config.ts`. A `.mjs` config sits there looking authoritative and does
+nothing: `Config.setVideoBitrate("3M")` was declared, appeared correct in
+review, and the sixteen clips still shipped at 812 kbps. Encoding settings now
+live as CLI flags in `render-all.mjs`. **Measure the output; do not trust the
+setting.**
+
+*Composition ids allow `a-z A-Z 0-9 -` only.* `sign_priority` is rejected, so
+`Root.tsx` slugifies underscores out.
+
+**TikTok covers the edges of the video, and RTL makes it worse.** ~130px top,
+~320px bottom (caption, username, sound row), ~120px right (like / comment /
+share), ~60px left. The right edge is the trap: **Kurdish sets right-to-left,
+so Kurdish text starts exactly where those buttons are** — a layout that looks
+correct in English silently buries the Kurdish clips under the share column.
+The first render also put the call to action at `bottom: 90`, i.e. underneath
+the caption: the single most important element of an ad, invisible.
+
+`npm run check` in `video/` renders the busiest frame of every composition and
+asserts no non-background pixel lands in any of the four margins. **Padding is
+not proof** — an absolutely positioned element ignores it, which is how the CTA
+got buried. Re-run it after any copy or type change: the binding constraint is
+content height, and a longer question pushes the column past the safe box,
+overflowing into the top and bottom zones at once. That is what forced the
+type down ~12% and forced `sign-narrow-ku`'s Kurdish question to be shortened.
+
+**CRF is the wrong control for flat content.** These clips are one flat colour
+and large static text, so they encode very cheaply: CRF 18 produced 812 kbps
+and even `--crf=10` bottoms out near 1,090. TikTok recommends 2,000-2,500 for
+1080p. A `--video-bitrate=6M` target lands at ~1,870 and raising it further
+changes nothing, because the encoder has no more detail to spend bits on.
+~1,870 is fine here: the recommendation exists so the source survives TikTok's
+re-encode without banding, and banding needs gradients this background does
+not have.
 
 **The pages workflow has been failing since long before the sweep, and still
 is.** Every run errors at `actions/configure-pages` with *"Get Pages site
