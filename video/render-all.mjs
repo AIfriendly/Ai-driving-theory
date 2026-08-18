@@ -8,6 +8,10 @@
 import {execFileSync} from "node:child_process";
 import {mkdirSync} from "node:fs";
 
+/* Voiceover and music are file-driven, so refresh the manifest first —
+   otherwise a newly dropped-in mp3 is silently ignored. */
+execFileSync("node", ["scripts/build-audio-manifest.mjs"], {stdio: "inherit"});
+
 const SHELL = "/opt/pw-browsers/chromium_headless_shell-1194/chrome-linux/headless_shell";
 const IDS = [
   "mirrors", "alley", "helmet", "burn", "green",

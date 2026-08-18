@@ -1,6 +1,7 @@
 import React from "react";
-import {AbsoluteFill, interpolate, spring, useCurrentFrame, useVideoConfig} from "remotion";
+import {AbsoluteFill, Audio, interpolate, spring, staticFile, useCurrentFrame, useVideoConfig} from "remotion";
 import {ADS, CTA, SIGNS, type Lang} from "./data";
+import manifest from "./audio-manifest.json";
 
 /* Beats in seconds. The answer is deliberately late: a viewer has to reach
    the end of the clip to learn whether they were right, and completion is
@@ -29,10 +30,19 @@ const rise = (frame: number, fps: number, atSec: number) => {
   return {opacity: s, transform: `translateY(${interpolate(s, [0, 1], [22, 0])}px)`};
 };
 
+/* Audio is opt-in and file-driven: drop public/audio/<id>-<lang>.mp3 in and it
+   is picked up on the next render. See public/audio/README.md.
+
+   The music bed sits low on purpose — under a voiceover it must not compete,
+   and TikTok's own trending sound will usually be layered on top of the whole
+   clip anyway. */
+const MUSIC_VOLUME = 0.14;
+
 export const Ad: React.FC<{index: number; lang: Lang}> = ({index, lang}) => {
   const frame = useCurrentFrame();
   const {fps} = useVideoConfig();
   const d = ADS[index];
+  const voiceFile = (manifest.voice as Record<string, string>)[`${d.id.replace(/_/g, "-")}-${lang}`];
   const rtl = lang === "ku";
   const sec = frame / fps;
 
@@ -60,6 +70,11 @@ export const Ad: React.FC<{index: number; lang: Lang}> = ({index, lang}) => {
     <AbsoluteFill style={{background: C.bg, fontFamily: FONT, color: C.ink,
       direction: rtl ? "rtl" : "ltr", padding: "150px 65px 260px",
       display: "flex", flexDirection: "column", justifyContent: "center", gap: 22}}>
+
+      {voiceFile ? <Audio src={staticFile(`audio/${voiceFile}`)} /> : null}
+      {manifest.music ? (
+        <Audio src={staticFile(`audio/${manifest.music}`)} volume={MUSIC_VOLUME} loop />
+      ) : null}
 
       <div style={{position: "absolute", top: 70, [rtl ? "right" : "left"]: 65,
         fontSize: 42, fontWeight: 800, letterSpacing: 6, color: C.dim}}>TAREEQ</div>
