@@ -53,6 +53,23 @@ jobs:
           fi
           echo "OK: no external resource references"
 
+      - name: Verify each page carries a document shell
+        # index.html doubles as a Claude Artifact body, and the Artifact
+        # publisher supplies its own <head>. Served raw from Pages nothing
+        # does, so a missing viewport tag makes mobile browsers lay out at
+        # ~980px and scale the whole app down to about half the screen.
+        # That shipped once. It is invisible to a headless check that sets the
+        # viewport directly, so assert the tag is present in the file instead.
+        run: |
+          set -euo pipefail
+          for f in web/index.html web/ad.html; do
+            head -c 2000 "$f" | grep -qi '<!doctype html>' \
+              || { echo "::error::$f has no doctype — renders in quirks mode"; exit 1; }
+            head -c 2000 "$f" | grep -qi '<meta name="viewport"' \
+              || { echo "::error::$f has no viewport meta — will render zoomed out on phones"; exit 1; }
+          done
+          echo "OK: doctype and viewport present on every page"
+
       # enablement: true lets the action turn Pages on via the API the first
       # time it runs, instead of failing with "Get Pages site failed" until
       # somebody flips Settings -> Pages -> Source by hand.

@@ -1,3 +1,16 @@
+<!doctype html>
+<meta charset="utf-8">
+<!-- Without this, mobile browsers assume a ~980px desktop viewport and scale the
+     whole page down: #app's max-width:560px then fills barely half the screen.
+     This file doubles as a Claude Artifact body, where the publisher supplies
+     its own <head> — a duplicate viewport tag with identical values is
+     harmless there, and the stray doctype is ignored in body position.
+     viewport-fit=cover is what makes the header's env(safe-area-inset-top)
+     padding do anything on a notched phone. -->
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0f5f86">
+<meta name="description" content="Free bilingual Kurdish Sorani and English practice app for the Kurdistan Region driving theory test. 745 questions, illustrated study guide, mock exams. Unofficial.">
+<title>Tareeq — Kurdistan Driving Theory</title>
 <style>
   :root{
     --bg:#f1efe8; --surface:#ffffff; --surface2:#f6f3ec; --ink:#161b26; --muted:#5c6675;
