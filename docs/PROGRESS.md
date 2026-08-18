@@ -36,14 +36,24 @@ local `origin` still points at the old name and works through the redirect).
 | **GitHub Pages** | **LIVE** — https://aifriendly.github.io/Ai-driving-theory/ · ad recorder at `/ad.html` · first successful deploy 2026-08-18, run `32174909525` |
 | Claude artifact | current — https://claude.ai/code/artifact/c5c01665-6f71-4311-8309-246932861af4 · viewers on the share link see a *pinned earlier version*, so re-share from the page's share menu after publishing |
 
+**Hard constraint on the owner's side: no TikTok app on the phone.** The owner
+has ADHD and is deliberately avoiding the app for addiction reasons. This is
+not a preference to optimise around — it rules out whole approaches. Anything
+that ends "…then finish it in the app" is disqualified, including TikTok's
+own draft/inbox upload flow. Web browser or API only. Asked about late in the
+planning after two rounds of advice that assumed a phone app; ask about
+constraints like this earlier.
+
 **Repo layout:** `web/index.html` is the app, `web/ad.html` a screen-record
 preview of the ad clips, `video/` the Remotion project that renders them
 (node_modules and out/ gitignored — re-run `npm install` after a fresh clone).
 
 **Picking this up cold:** the question bank is finished and verified (do not
-re-sweep the PDFs), the ad creative is done, and the site is live. The live
-threads are a custom domain, actually posting to TikTok, and the unbuilt
-monetization plan in *Product plan*.
+re-sweep the PDFs), the ad creative is done, and the site is live. **Start at
+*Next* → NEXT SESSION — the batch of 10**, which is blocked on the owner
+handing over a kurdishtts.com API key. Read *Distribution* before giving any
+advice about posting, ads or automation — that ground was covered in detail
+and several intuitive answers are wrong for this owner.
 
 ---
 
@@ -224,6 +234,29 @@ nobody came. Do not reorder without a reason.
         visible by looking at screens. Rebuild it rather than eyeballing.
 
 ### Phase 2 — find out whether anyone wants it
+
+**NEXT SESSION — the batch of 10.** Agreed 2026-08-18, planned not executed.
+Nothing below has been started.
+
+1. **Owner supplies the kurdishtts.com API key** (free tier is enough — see
+   *Ad creative*). Nothing can start without it.
+2. **Build the TTS pipeline.** Read the scripts, call the API, write
+   `video/public/audio/<id>-<lang>.mp3`. The audio slot and manifest are
+   already wired for exactly this — see P6 and `public/audio/README.md`.
+   **Generate one sample first and have the owner listen before batching.**
+   Whether a Sorani synthetic voice sounds right is a native-speaker call and
+   not one a session can make.
+3. **Create 10 unique videos** with the voiceover baked in. Eight hooks exist
+   in `video/src/data.ts`; **two more need writing** — pick from the bank on
+   the same rule, the questions where the answer most people give is wrong.
+   Re-run `npm run check` after: new copy changes content height and that is
+   what pushes the column into the safe zones.
+4. **Write the posting metadata for each:** title, tags, and description
+   carrying the site URL. Kurdish caption and Kurdish hashtags — that is a
+   distribution signal, not decoration.
+5. **Upload everything to gofile.io** so the owner can copy it in one place.
+   API reachable from this environment, verified 2026-08-18
+   (`https://api.gofile.io/servers` returns ok).
 
 **The creative is built and verified — 16 clips are ready to post.** See
 *Ad creative* below. What is left here is the posting itself.
@@ -533,11 +566,104 @@ cheapest distribution lever there is, a baked track forfeits it, can get the
 video muted, and needs a re-render to change. The music slot is for YouTube
 Shorts and Instagram, where the in-app libraries are weaker.
 
-**Record the voiceover in a real voice.** ElevenLabs supports Central Kurdish
-for speech-to-*text* but not text-to-speech; the dedicated Kurdish TTS tools
-that exist are of unknown quality. A synthetic Kurdish voice landing slightly
-wrong costs credibility with exactly the native speakers this is aimed at, and
-they will say so in the comments.
+**Sorani TTS exists — earlier note here was wrong.** This file previously said
+to record in a real voice because no usable Sorani TTS existed. ElevenLabs
+genuinely does not do Sorani text-to-speech (it does speech-to-*text*), but
+**kurdishtts.com does, and has a REST API.** Corrected by the owner after the
+site was surfaced in a search and dismissed without checking the API.
+
+- Free tier: **20,000 characters/month via API**, 4 voices, Sorani and
+  Kurmanji, no card. `x-api-key` header auth. Paid tiers start $9.58/mo.
+- All eight Kurdish voiceovers total **2,158 characters** — 9x inside the free
+  tier. Both languages ~4,300, still 4x under. **The free tier covers the
+  whole use case**; do not pay for this.
+- Still unresolved and **not a call a session can make**: whether the voice
+  sounds right to a native ear. Generate one sample — `alley-ku` is shortest
+  at 249 chars — and have the owner listen before batching.
+- The own-voice argument that survives: TTS cannot say "my cousin failed three
+  times because of this sign" and have it land. Likely split — TTS for the
+  baseline clips, owner's voice for content that carries the account.
+
+---
+
+## Distribution: organic vs ads, and how posting actually works
+
+Researched 2026-08-18. Nothing executed.
+
+**Organic first, ads later — and the reason is specific, not ideological.**
+Ads amplify a funnel; they do not create one. The conversion rate is unknown
+and the payment flow is manual (FIB transfer, screenshot, hand-issued code),
+so ad spend would push cold traffic into a bottleneck. At 5,000 IQD (~$3.80) a
+sale, CPA has to stay under about $2 for a margin to exist, and a manual
+payment flow will not convert well enough to guarantee that. Organic has no
+CAC, 745 questions is effectively infinite content that ads cannot use, and an
+account keeps working after you stop paying. **Use organic to find which hook
+converts, then put ad money behind the proven winner.**
+
+**Iraq IS supported for TikTok self-serve ad accounts** — checked, against
+expectation. TikTok lists Iraq for ad account creation in Business Center
+alongside Kuwait, Oman, Qatar, Saudi and the UAE. The visible market of
+agencies selling "TikTok ad accounts for Iraq" is opportunistic, not evidence
+of a block. Payment methods vary by billing country and are not enumerated;
+confirm inside the account.
+
+**If the clips are ever run as paid ads, two things must change first:**
+they end on "لینک لە بایۆ" (link in bio), which is an organic CTA and useless
+in an ad that carries its own button; and "٩٠٪ ی شۆفێرەکان هەڵە دەکەن" is an
+unsubstantiated statistic, which TikTok ad policy prohibits — soften to
+"زۆربەی" (most) to keep the hook without the number.
+
+**Automation and trending sounds are mutually exclusive.** Third-party
+schedulers *and* TikTok's own Content Posting API can only carry audio already
+embedded in the file; the trending sound library is reachable only from the
+in-app editor, for licensing reasons. This resolves cleanly once voiceovers
+are baked in — there is then no trending sound to lose.
+
+**TikTok's native scheduler is desktop web only.** No schedule button in the
+iOS app as of 2026. TikTok Studio on the web, Creator or Business accounts,
+15 minutes to 10 days ahead, one at a time, free.
+
+**The draft/inbox API flow is disqualified here.** `video.upload` has a lower
+approval bar than `video.publish` and does preserve the in-app editor (so you
+*could* add a trending sound) — but the draft lands in the app's inbox and the
+creator must open the app to finish. That is precisely the constraint the
+owner has. If full automation is ever wanted it has to be `video.publish`
+(direct post): weeks of content audit, a server for OAuth with a stable HTTPS
+redirect URI, and no trending sounds at all. Build it alongside the Phase 3
+payment backend, not as a separate detour — same server.
+
+**Web upload requires no phone app**, which is the practical answer for now:
+tiktok.com in a desktop browser uploads, captions, schedules and shows
+analytics. Smaller sound library than the app; irrelevant once voice is baked
+in.
+
+**Distribution is set by IP, account region and content language — not by
+upload method.** TikTok tests a new video on roughly 100-500 people in the
+geography it associates with the account, then expands on response. Posting
+from a Kurdistan IP is already the right setup. **What the owner is *shown* in
+their feed is a consumption signal and says nothing about where their uploads
+land** — an English For You page does not mean English distribution. Worth
+confirming account region reads Iraq in settings; changing it is deliberately
+hard (roughly 90 days, a few attempts a year). **Do not use a VPN** — most
+sources recommending it are VPN vendors, it is a ban risk, and the account
+already sits in the target market.
+
+**Expect small numbers and do not read them as failure.** The content is
+inherently local, so the addressable audience is small. 500 views from Kurdish
+learner drivers is worth more than 50,000 global ones. Judge by comments and
+link taps, not view count.
+
+**Domain: free alternatives were researched and none solve the actual
+problem.** Freenom, the old free-domain default, shut down in 2024 and 12.6M
+domains stopped resolving — which is itself the argument. Every remaining free
+option (`is-a.dev`, `js.org`, `eu.org`, `*.pages.dev`) is someone else's
+namespace, so none gives portability, and Phase 3 forces a host change because
+Pages cannot run code. `js.org` would reject this project outright (no
+JavaScript connection). Best *free* choice is simply staying on github.io.
+Registrars: Cloudflare Registrar sells at cost, Porkbun and Namecheap are
+cheap, avoid GoDaddy. **Buying needs an international card** — try the FIB card
+first, and note that if it is declined the same wall applies to TikTok ads, so
+a $12 domain is a cheap way to find out.
 
 ---
 
