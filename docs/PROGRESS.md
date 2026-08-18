@@ -156,6 +156,8 @@ nobody came. Do not reorder without a reason.
 - [ ] **Turn on GitHub Pages. Needs a human with repo admin; cannot be done
       from a session.** Settings → Pages → Source: "GitHub Actions", at
       https://github.com/AIfriendly/Ai-driving-theory/settings/pages
+      **Re-checked 2026-08-18 after the disclaimer change: all 11 `pages` runs
+      are still `failure`, the most recent at 11:57Z. Not yet clicked.**
       Nothing in this repo has ever reached a public URL: the workflow fails
       at `configure-pages` on every run, and the Actions token is not allowed
       to enable Pages itself (`enablement: true` was tried and refused). One
@@ -167,9 +169,15 @@ nobody came. Do not reorder without a reason.
 
 ### Phase 1 — make it fit to launch
 
-- [ ] Strengthen the disclaimer to say plainly "not official, not endorsed".
-      The app already carries one and the About screen names both sources; the
-      wording is just soft. Cheap, do it with anything else.
+- [x] Strengthen the disclaimer to say plainly "not official, not endorsed" —
+      the footer `disclaimer` string now opens with *Unofficial. Not endorsed
+      by, affiliated with, or an official product of any government body.* and
+      states the material is from 2026, in both languages. This is the string
+      every screen shows; the About screen's `aboutRightsNote` already said it
+      but is one tap away.
+      - Left alone deliberately: `aboutRights3` ends "Whether to publish it
+        publicly is the repository owner's decision" — an internal note that
+        reads oddly to a user. Reword it if the About page is touched again.
 - [ ] Re-share the artifact from its share menu — viewers on the existing link
       still see a pinned older version.
 - [ ] A real QA pass on a phone: both languages, RTL, the mock exam end to end,
@@ -666,6 +674,18 @@ Each of these cost real time to re-derive or was gotten wrong once.
   vestigial Arabic strings are left alone; **do not "clean them up".**
 - Rendering/verification: `playwright-core` with
   `executablePath:'/opt/pw-browsers/chromium'`. Never run `playwright install`.
+  A fresh container has **no `node_modules` anywhere** — `npm install
+  playwright-core` in the scratchpad first (the browser binary is already on
+  the image, only the driver package is missing).
+- **The default language is Kurdish**, so a `document.body.innerText` grep for
+  English strings returns nothing on a fresh load and looks like the change did
+  not land. Read the element, not the page text.
+- **The GitHub MCP tools are scoped to the OLD repo name, `automated-trading`.**
+  Passing `Ai-driving-theory` is refused outright ("not configured for this
+  session") even though that is the repo's real name today; the old name works
+  through the redirect and the responses come back with the new name in them.
+- `actions_list` on this repo returns ~430k characters and blows the tool
+  output cap. Fetch it, then parse the saved file with `json.loads` in python.
 - Regression scripts (`verify16.js`, `chk.js`, `cnt.js`, `dist.js`, `dump.js`)
   live in the scratchpad and are **never committed**.
 
