@@ -172,7 +172,7 @@ nobody came. Do not reorder without a reason.
       cannot be moved later without losing every link. Do this **before** any
       TikTok post, not after.
 
-### Phase 1 — make it fit to launch
+### Phase 1 — make it fit to launch — DONE
 
 - [x] Strengthen the disclaimer to say plainly "not official, not endorsed" —
       the footer `disclaimer` string now opens with *Unofficial. Not endorsed
@@ -183,10 +183,34 @@ nobody came. Do not reorder without a reason.
       - Left alone deliberately: `aboutRights3` ends "Whether to publish it
         publicly is the repository owner's decision" — an internal note that
         reads oddly to a user. Reword it if the About page is touched again.
-- [ ] Re-share the artifact from its share menu — viewers on the existing link
-      still see a pinned older version.
-- [ ] A real QA pass on a phone: both languages, RTL, the mock exam end to end,
-      offline. It has only ever been checked in a headless browser.
+- [x] Artifact republished at the current build — `phase-1-qa`.
+      **Still needs a human:** re-share it from the page's share menu, or
+      viewers on the existing link keep seeing a pinned older version. That is
+      a UI action, not something a session can do.
+- [x] **QA pass done, three defects found and fixed** — `41450e0`. Swept
+      3 phone viewports × 2 languages × 11 screens (66 combinations), ran a
+      mock exam end to end, and checked offline and reload persistence. The
+      sweep now reports **zero findings**.
+      - `renderFlash` **threw on entry.** Only `startFlash()` ever filled
+        `S.flashKeys`, so reaching the flashcards screen any other way died on
+        `SIGNS[undefined].svg`. It now deals its own deck and clamps the
+        index. Not reachable by tapping today — but it took the whole screen
+        with it, and any navigation change would have exposed it.
+      - **Language was never remembered.** Text size persisted, language did
+        not: `setLang("ku")` ran unconditionally at boot, resetting every
+        English speaker on reload. The comment above `setLang` already
+        anticipated "an old saved preference" and nothing had ever saved one.
+        Kurdish stays the default; a saved choice wins.
+      - **Header controls were 23px tall**, the language switch among them —
+        the first thing an English speaker has to find. Those and the guide
+        chips now clear 40px via `min-height`, so the pills stay visually
+        compact while the hit area grows.
+      - Verified clean: no horizontal overflow on any of the 66 combinations,
+        exam reaches results with 20 review rows, guide renders with all
+        network blocked, language survives reload.
+      - The harness lived in the scratchpad and is gone with the container.
+        It was worth having — it found all three defects, none of which were
+        visible by looking at screens. Rebuild it rather than eyeballing.
 
 ### Phase 2 — find out whether anyone wants it
 
