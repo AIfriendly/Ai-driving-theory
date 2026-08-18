@@ -2,8 +2,10 @@ name: pages
 
 # Publishes web/ to GitHub Pages.
 #
-# One-time setup: Settings -> Pages -> Source: "GitHub Actions".
-# Until that is switched on this workflow builds but does not deploy.
+# configure-pages runs with enablement: true, so it switches Pages on itself
+# on the first run. If that step still 404s, the repository's Actions token
+# has no Pages scope and Settings -> Pages -> Source must be set to
+# "GitHub Actions" by hand once.
 
 on:
   push:
@@ -46,7 +48,12 @@ jobs:
           fi
           echo "OK: no external resource references"
 
+      # enablement: true lets the action turn Pages on via the API the first
+      # time it runs, instead of failing with "Get Pages site failed" until
+      # somebody flips Settings -> Pages -> Source by hand.
       - uses: actions/configure-pages@v5
+        with:
+          enablement: true
 
       - uses: actions/upload-pages-artifact@v3
         with:

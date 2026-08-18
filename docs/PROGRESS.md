@@ -19,8 +19,9 @@ single self-contained file, no build step, no network calls.
 |---|---|
 | Active questions | 745 (749 defined, 4 filtered out via `ARCHIVED_Q`) |
 | Sign icons | 110 inline SVG |
-| Scene / concept illustrations | 133 |
+| Scene / concept illustrations | 134 |
 | Questions with no visual | 0 |
+| Study-guide tips with no picture | 0 (587 of 587) |
 
 Branch: `claude/trading-agent-bybit-mcp-ao56dp`
 
@@ -89,6 +90,21 @@ Branch: `claude/trading-agent-bybit-mcp-ao56dp`
 - [x] **All three carried sign candidates resolved and written** — see below
 - [x] **Part 1 and Part 2 proven to be a subset of the book**, so the
       four-document sweep is finished — see the coverage section
+- [x] **Study guide: every tip carries a picture**, 587 of 587 in both
+      languages — `7707297`, scoped back to the guide in `4d158b1`
+      - The guide's sections after Road signs were walls of text. Each bullet
+        now shows the artwork of the question that teaches it: `q.sign` if it
+        has one, otherwise `q.scene`. No new artwork was needed, because
+        `assignScenes()` always assigns something.
+      - `assignScenes()` matches the QUESTION text, but a guide bullet prints
+        the EXPLANATION. `EX_FA` / `EX_ME` / `EX_RU` re-match the explanation
+        and win over `q.scene`. Without them one picture served 51 tips; the
+        largest cluster is now 23 and 95 distinct images are in use.
+      - `iconBus` added — bus lanes, bus stops and large-vehicle blind spots
+        are all over the handbook and had no picture.
+- [x] **GitHub Pages deploy fixed** — `configure-pages` now runs with
+      `enablement: true`. Every pages run since the sweep had failed, so the
+      public site was serving pre-sweep content. See gotchas.
 
 ## Next
 
@@ -214,6 +230,27 @@ tyre spec.
 ---
 
 ## Decisions & gotchas
+
+**The pages workflow had been failing silently since long before the sweep.**
+Every run errored at `actions/configure-pages` with *"Get Pages site failed …
+verify that the repository has Pages enabled"* — Pages had never been switched
+on in repo settings, exactly as the workflow's own header comment warned. The
+build steps all passed, so nothing looked broken from the commit side, but the
+public site was serving pre-sweep content the whole time. Fixed by giving
+`configure-pages` `enablement: true` so it turns Pages on itself. **A green
+commit is not a deployed site — check the pages run, not just the push.**
+
+**`.gbul` is not the study guide's alone.** The About page uses it for its
+source list. Restyling `.gbul li` into a flex row for the guide's picture
+bullets silently stripped the dots off the About page. The picture layout now
+hangs off `li.pic`, which only `bullets()` emits. Same class of mistake as
+`SCENES` sharing: **grep a class or an asset before restyling it.**
+
+**`SCENES` entries are shared with the quiz.** Editing `iconPhone` to suit one
+study-guide tip changed the artwork on the first-aid *questions* too. Reverted.
+The guide may add to `SCENES` (`iconBus`) and re-map which entry it picks, but
+it must not edit an entry the questions already use.
+
 
 Each of these cost real time to re-derive or was gotten wrong once.
 
