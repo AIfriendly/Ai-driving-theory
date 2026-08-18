@@ -23,7 +23,21 @@ single self-contained file, no build step, no network calls.
 | Questions with no visual | 0 |
 | Study-guide tips with no picture | 0 (587 of 587) |
 
-Branch: `claude/trading-agent-bybit-mcp-ao56dp`
+Branch: `claude/trading-agent-bybit-mcp-ao56dp` — this is also the repo's
+**default branch**. There is no `main`/`master`.
+Repo: `AIfriendly/Ai-driving-theory` (renamed from `automated-trading`; the
+local `origin` still points at the old name and works through the redirect).
+
+**Published where:**
+
+| Target | State |
+|---|---|
+| Claude artifact | current — https://claude.ai/code/artifact/c5c01665-6f71-4311-8309-246932861af4 · viewers on the share link see a *pinned earlier version*, so re-share from the page's share menu after publishing |
+| GitHub Pages | **never deployed** — blocked, see *Next* |
+
+**Picking this up cold:** the question bank is finished and verified; do not
+re-sweep the PDFs. The two live threads are the Pages block in *Next* and the
+unbuilt monetization plan in *Product plan*.
 
 ---
 
@@ -121,10 +135,19 @@ Nothing in the question bank is currently known to be wrong or missing.
       Nothing in this repo has ever reached the public site; the workflow
       fails at `configure-pages` on every run and the Actions token is not
       allowed to enable Pages itself. One click, then re-run the workflow.
+- [ ] Buy a domain and point it at Pages (Settings → Pages → Custom domain).
+      The `aifriendly.github.io/Ai-driving-theory/` URL converts badly from
+      social and cannot be moved later without losing every link.
 - [ ] Nothing outstanding on sources. If new work is wanted, the honest options
       are: a rendering/QA pass over the app itself, or a second opinion on the
       two source defects the book carries (p167 stopping-distance table, p217
       nosebleed threshold) if a non-KRG reference ever becomes available.
+
+**Product direction (discussed 2026-08-18, nothing built yet).** The owner
+plans to publish the app free, drive traffic from TikTok, and monetize. See
+*Product plan* below before writing any payment or account code — the current
+architecture cannot support a content paywall, and that is the first thing to
+settle.
 
 The high-figure-density chapters were deliberately swept first, on the theory
 that errors hide in numbers rather than prose. That held for errors *against*
@@ -232,6 +255,74 @@ Where the sweep has reached, the bank is markedly more accurate than the old
 coverage table implied: chapters 3, 9, 10 and 12 came back with **zero**
 discrepancies across every penalty band, licence weight, age, CPR figure and
 tyre spec.
+
+---
+
+## Product plan
+
+Discussed 2026-08-18. **Nothing here is built.** Recorded so the reasoning is
+not re-derived from scratch, and so the architectural blocker is hit before
+code is written rather than after.
+
+Goal: publish free, distribute on TikTok, monetize. App name is **Tareeq**.
+
+**P1 — the app cannot paywall content as it stands.** `web/index.html` ships
+every question, answer and explanation to the browser. Ctrl+U reveals the lot.
+A client-side lock is decoration. Paywalling content requires a server holding
+the paid material, accounts, an entitlement check per request, and a payment
+webhook — which also ends the no-build / no-network / offline property that
+makes the app good today. Decide deliberately, do not drift into it.
+
+**P2 — gate features, not questions.** The app already has SRS, mistake
+tracking, streaks, achievements, readiness score and mock exams. That state is
+account-bound and cannot be copied; the question text can. Proposed split:
+free = study guide, all questions, 1–2 mock exams; paid = unlimited mocks,
+mistake drilling, spaced repetition, readiness report, cross-device progress.
+
+**P3 — do not gate the whole app behind the door.** Two reasons. It kills the
+TikTok funnel, which depends on a free layer being worth sharing. And it
+*maximises* piracy exposure rather than reducing it: the artifact behind the
+gate is one self-contained 1.1MB file that works offline, so the first buyer
+can save a complete working copy and redistribute it. The owner floated this
+option; the counter-argument above is the response. If it is chosen anyway,
+give a real trial (3 days, not 3 questions) and price for volume.
+
+**P4 — 5,000 IQD, one time, lifetime. No subscription.** Three independent
+anchors converge: ~10–25% of the 30,000 IQD KRG test fee; ~0.2–0.5% of an
+average monthly salary (~700k–1.05M IQD), matching what the UK comparable
+costs its market; and purchasing-power adjustment of the UK one-off (£4.99,
+Apple's #1 paid iPhone app eight years running — paid-upfront wins in this
+category). 5,000 IQD is also a **single banknote**, which matters because
+ZainCash cash-in runs through ~10k human agents. Next tier up, if ever, is
+10,000 (also one note). Recurring billing through Iraqi wallets is painful and
+distrusted.
+
+**P5 — ZainCash first, FIB second.** The TikTok audience is 18–25 taking a
+first licence; that group has a phone wallet far more often than a bank
+account, and ZainCash's agent network handles the cash-to-digital step. FIB is
+a bank and can come second. Note Stripe, PayPal and Shopify Payments **do not
+support Iraq at all**. Other live options: FastPay, Qi, AsiaPay, PayTabs Iraq.
+Any of them needs server-side keys, which is another reason P1 must be settled
+first.
+
+**Open questions, none resolved**
+
+- Real current KRG fees. The [KRG portal](https://services.gov.krd/en/service/moi-03-en)
+  says 42,000 IQD to issue; a third-party guide breaks the process into
+  20k form + 25k eye + 30k tests + 80k printing. The 42k-issue vs 80k-print
+  pair looks like a genuine contradiction — one is stale, or one is federal
+  Iraq rather than KRG. **Verify before putting a figure in marketing**, and
+  separately check whether a *retest* costs the same as a first attempt, since
+  that is the number the pitch actually leans on.
+- Whether FIB and ZainCash onboard individuals or require commercial
+  registration, and their settlement terms.
+
+**R — commercial redistribution of the source material is unresolved.** The
+bank derives from the KRG Ministry of Interior / Directorate General of Traffic
+Police handbook, and 431 questions come from the official exam paper. The
+explanations are original; the source material is not. Charging for it is a
+live risk, not a theoretical one. Check redistribution rights before monetizing,
+and label the site clearly as unofficial and not endorsed.
 
 ---
 
