@@ -102,9 +102,9 @@ Branch: `claude/trading-agent-bybit-mcp-ao56dp`
         largest cluster is now 23 and 95 distinct images are in use.
       - `iconBus` added — bus lanes, bus stops and large-vehicle blind spots
         are all over the handbook and had no picture.
-- [x] **GitHub Pages deploy fixed** — `configure-pages` now runs with
-      `enablement: true`. Every pages run since the sweep had failed, so the
-      public site was serving pre-sweep content. See gotchas.
+- [x] **GitHub Pages deploy diagnosed** — every pages run has failed, so the
+      public site has never served any of this work. **Still blocked on one
+      manual click**, see *Next* and gotchas.
 
 ## Next
 
@@ -115,6 +115,12 @@ be book pp 22–229 and therefore already covered.
 
 Nothing in the question bank is currently known to be wrong or missing.
 
+- [ ] **BLOCKED, needs a human with repo admin:** turn on GitHub Pages —
+      Settings → Pages → Source: "GitHub Actions", at
+      https://github.com/AIfriendly/Ai-driving-theory/settings/pages
+      Nothing in this repo has ever reached the public site; the workflow
+      fails at `configure-pages` on every run and the Actions token is not
+      allowed to enable Pages itself. One click, then re-run the workflow.
 - [ ] Nothing outstanding on sources. If new work is wanted, the honest options
       are: a rendering/QA pass over the app itself, or a second opinion on the
       two source defects the book carries (p167 stopping-distance table, p217
@@ -231,14 +237,25 @@ tyre spec.
 
 ## Decisions & gotchas
 
-**The pages workflow had been failing silently since long before the sweep.**
-Every run errored at `actions/configure-pages` with *"Get Pages site failed …
-verify that the repository has Pages enabled"* — Pages had never been switched
-on in repo settings, exactly as the workflow's own header comment warned. The
-build steps all passed, so nothing looked broken from the commit side, but the
-public site was serving pre-sweep content the whole time. Fixed by giving
-`configure-pages` `enablement: true` so it turns Pages on itself. **A green
-commit is not a deployed site — check the pages run, not just the push.**
+**The pages workflow has been failing since long before the sweep, and still
+is.** Every run errors at `actions/configure-pages` with *"Get Pages site
+failed … verify that the repository has Pages enabled"*. `has_pages` is
+`false` on the repo: Pages was never switched on, exactly as the workflow's
+own header comment warned. The checkout and the self-contained check both
+pass, so nothing looks broken from the commit side — **a green commit is not
+a deployed site; check the pages run, not just the push.**
+
+Adding `enablement: true` to `configure-pages` was tried and is **not enough**:
+`GITHUB_TOKEN` cannot create the site (*"Create Pages site failed. Resource not
+accessible by integration"*), because creating one needs repo-admin rights.
+The flag is kept — it is a no-op once the site exists — but the block is a
+human one: **Settings → Pages → Source: "GitHub Actions"**, once, at
+https://github.com/AIfriendly/Ai-driving-theory/settings/pages
+
+Two things that will *not* be the problem afterwards: the repo is public, and
+`claude/trading-agent-bybit-mcp-ao56dp` is the repo's **default branch**, so
+the `github-pages` environment's default "deploy from the default branch only"
+rule does not block it. There is no `main`/`master` in this repo at all.
 
 **`.gbul` is not the study guide's alone.** The About page uses it for its
 source list. Restyling `.gbul li` into a flex row for the guide's picture

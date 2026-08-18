@@ -2,10 +2,17 @@ name: pages
 
 # Publishes web/ to GitHub Pages.
 #
-# configure-pages runs with enablement: true, so it switches Pages on itself
-# on the first run. If that step still 404s, the repository's Actions token
-# has no Pages scope and Settings -> Pages -> Source must be set to
-# "GitHub Actions" by hand once.
+# REQUIRES ONE MANUAL STEP, NOT YET DONE:
+#   Settings -> Pages -> Source: "GitHub Actions"
+#   https://github.com/AIfriendly/Ai-driving-theory/settings/pages
+#
+# Until that is set, every run fails at configure-pages and nothing deploys —
+# the build steps still pass, so the commit looks fine while the live site
+# stays on old content. Tested 2026-08-18: enablement: true is not enough on
+# its own, because GITHUB_TOKEN cannot create the site
+# ("Create Pages site failed. Resource not accessible by integration") —
+# creating it needs repo-admin rights. enablement: true is kept because it is
+# a no-op once the site exists, and self-heals if the token ever gains scope.
 
 on:
   push:
