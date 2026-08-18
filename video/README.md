@@ -94,13 +94,23 @@ be on screen in the first frame or people scroll past.
 
 ## Bitrate
 
-`Config.setVideoBitrate("3M")`, deliberately not CRF. CRF targets quality, and
-this content — flat dark background, large static text — is so cheap to encode
-that CRF 18 produced ~810 kbps. That clears TikTok's 516 kbps in-feed minimum
-but sits far below the 2,000-2,500 they recommend for 1080p. TikTok re-encodes
-on upload, and a thin source gives their encoder little to work with: it shows
-as banding across the dark background and mush on text edges. 3 Mbps is about
-5.6 MB per clip against a 500 MB cap.
+Set with `--video-bitrate=6M` in `render-all.mjs`, which lands at ~1,870 kbps.
+
+**Do not move this into a `remotion.config.mjs`.** Remotion looks for
+`remotion.config.ts`, so a `.mjs` config is never discovered — one sat here
+appearing to set the bitrate while doing nothing, and the first sixteen clips
+shipped at 812 kbps.
+
+Why a bitrate target rather than CRF: this content is flat colour and large
+static text, so it encodes very cheaply. CRF targets quality and bottoms out
+near 1,090 kbps even at `--crf=10`, while a 6M target spends more and reaches
+~1,870. Raising the target past 6M changes nothing — the encoder has no more
+detail to spend bits on.
+
+That sits just under TikTok's recommended 2,000-2,500 for 1080p, and it is
+fine here. The recommendation exists so the source survives TikTok's re-encode
+without banding, and banding needs gradients. This background is a single flat
+colour, so there is no gradient to band.
 
 ## Licence
 

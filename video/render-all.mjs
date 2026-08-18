@@ -13,6 +13,21 @@ import {mkdirSync} from "node:fs";
 execFileSync("node", ["scripts/build-audio-manifest.mjs"], {stdio: "inherit"});
 
 const SHELL = "/opt/pw-browsers/chromium_headless_shell-1194/chrome-linux/headless_shell";
+
+/* Encoding settings live here as CLI flags, not in a config file. A
+   remotion.config.mjs is NOT auto-discovered — Remotion looks for
+   remotion.config.ts — so one silently did nothing while appearing to set the
+   bitrate, and the clips shipped at 812 kbps.
+
+   Why a bitrate target rather than CRF: this content is flat colour and static
+   text, so it encodes very cheaply. CRF targets quality and bottoms out around
+   1,090 kbps even at --crf=10; a 6M target spends more and lands at ~1,870.
+   That is just under TikTok's recommended 2,000-2,500 for 1080p and the
+   encoder will not go higher — there is no more detail to spend bits on.
+   Acceptable here because the guidance exists to survive TikTok's re-encode
+   without banding, and banding needs gradients. This background is one flat
+   colour. */
+const BITRATE = "6M";
 const IDS = [
   "mirrors", "alley", "helmet", "burn", "green",
   "sign-priority", "sign-crossing", "sign-narrow",
@@ -26,7 +41,8 @@ for (const lang of LANGS) {
     const name = `${id}-${lang}`;
     process.stdout.write(`[${++n}] ${name} ... `);
     execFileSync("npx", ["remotion", "render", "src/index.ts", name,
-      `out/${name}.mp4`, `--browser-executable=${SHELL}`, "--log=error"],
+      `out/${name}.mp4`, `--browser-executable=${SHELL}`,
+      `--video-bitrate=${BITRATE}`, "--codec=h264", "--log=error"],
       {stdio: ["ignore", "ignore", "inherit"]});
     console.log("done");
   }
