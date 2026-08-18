@@ -532,6 +532,28 @@ they will say so in the comments.
 
 ## Decisions & gotchas
 
+**`web/index.html` is an Artifact body AND a raw-served page, and those want
+different things.** It was written for the Artifact publisher, which wraps the
+file in `<!doctype html><html><head>…</head><body>`. GitHub Pages serves it
+raw and supplies nothing, so for the first day it was live the page had no
+doctype, no charset, no title and **no viewport meta** — a mobile browser
+therefore assumed a ~980px desktop layout and scaled everything down, so the
+`max-width:560px` column rendered at about half the screen with dead margins.
+Fixed in `d659882`: both pages carry their own minimal shell, which stays
+artifact-safe because a duplicate viewport tag with identical values is
+harmless and a stray doctype is ignored in body position. The pages workflow
+now fails the build if either file lacks a doctype or viewport tag.
+`viewport-fit=cover` is also what makes the header's `env(safe-area-inset-top)`
+padding do anything on a notched phone — it never could before.
+
+**An emulated viewport cannot detect a missing viewport tag.** The Phase 1 QA
+sweep passed 66 emulated combinations while the real page was half-width on a
+real phone, because Playwright lays out at whatever viewport the test passes
+and bypasses meta-viewport handling entirely. The owner's screenshot found it
+in seconds. **Assert the tag exists; do not try to observe its effect in a
+headless browser.** More generally: device emulation proves layout given a
+viewport, never the viewport negotiation itself.
+
 **Four things broke the video render, and three were silent.** Recorded
 because none of them announce themselves.
 
