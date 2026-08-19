@@ -282,6 +282,37 @@ nobody came. Do not reorder without a reason.
       `tareeqapp`; **build command empty**; **build output directory `web`**;
       production branch `claude/trading-agent-bybit-mcp-ao56dp`.
 
+      **No bill-shock risk, checked 2026-08-19 — and this is the deciding
+      reason to prefer Cloudflare over Netlify or Vercel, not convenience.**
+      The traffic plan is TikTok, which is inherently spiky, and a viral clip
+      is exactly the event that triggers a surprise invoice or a paused site
+      on the other two.
+      - Cloudflare's pricing page states **"Unlimited bandwidth"** and
+        **"Unlimited static requests"**. This app is one static file, so
+        essentially all traffic sits in the free-forever bucket. Other Pages
+        free limits are irrelevant here: 20,000 files (this repo ships 2),
+        25 MiB per file (index.html is 1.1 MB), 500 builds/month.
+      - Functions are 100,000 requests/day and on exceeding return
+        **Error 1027 with no overage billing** (Cloudflare's own wording),
+        fail-open or fail-closed by configuration. A purely static site never
+        increments this counter.
+      - **No payment method on the free plan means no charge is possible.**
+      - **Netlify billed a free-tier user $104,500** — a 3 MB file, 60.7 TB
+        over four days, on a site that had never passed 10 GB/month. Their
+        policy is to bill overages and forgive after the fact, so the invoice
+        arrives and then you argue. It was waived. It was **not** a DDoS but
+        sustained downloading of one file, which is precisely the shape of
+        risk a 1.1 MB `index.html` carries.
+      - **Vercel Hobby pauses the project** instead of billing — no invoice,
+        but the site goes dark exactly when a clip takes off.
+      - At 1.1 MB per load, a 100 GB/month cap (Netlify free, Vercel Hobby) is
+        about **90,000 page loads**. Cloudflare has no such wall.
+      - GitHub Pages is also bill-safe: 100 GB/month soft limit enforced by
+        email and throttling, never a charge. Fine to keep as the fallback.
+      - **Later, deliberately:** if the Phase 3 FIB backend passes 100k
+        requests/day, Workers Paid is $5/mo including 10M requests then
+        $0.30/million. That tier is usage-based, but it is opt-in.
+
       **Cloudflare-specific traps, none of which announce themselves:**
       - **Buying needs an international card.** Try the FIB card; a declined
         card here predicts the same wall on TikTok ads, so this is a cheap test.
