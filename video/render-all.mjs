@@ -6,11 +6,16 @@
    without pointing at it the render dies with "Old Headless mode has been
    removed from the Chrome binary". */
 import {execFileSync} from "node:child_process";
-import {mkdirSync} from "node:fs";
+import {mkdirSync, existsSync} from "node:fs";
 
 /* Voiceover and music are file-driven, so refresh the manifest first —
    otherwise a newly dropped-in mp3 is silently ignored. */
-execFileSync("node", ["scripts/build-audio-manifest.mjs"], {stdio: "inherit"});
+/* The manifest is written by gen-voice.mjs now — it carries measured
+   durations, which a directory scan cannot produce. Just check it is there. */
+if (!existsSync("src/audio-manifest.json")) {
+  console.error("src/audio-manifest.json missing — run: npm run voice");
+  process.exit(2);
+}
 
 const SHELL = "/opt/pw-browsers/chromium_headless_shell-1194/chrome-linux/headless_shell";
 
@@ -28,11 +33,12 @@ const SHELL = "/opt/pw-browsers/chromium_headless_shell-1194/chrome-linux/headle
    without banding, and banding needs gradients. This background is one flat
    colour. */
 const BITRATE = "6M";
+/* Kept in sync with src/data.ts by hand — ten hooks, Kurdish only. */
 const IDS = [
-  "mirrors", "alley", "helmet", "burn", "green",
-  "sign-priority", "sign-crossing", "sign-narrow",
+  "night", "instructor", "ambulance", "towing", "pregnant",
+  "arrow", "priority", "gap", "kerb", "unlicensed",
 ];
-const LANGS = process.argv.slice(2).length ? process.argv.slice(2) : ["ku", "en"];
+const LANGS = process.argv.slice(2).length ? process.argv.slice(2) : ["ku"];
 
 mkdirSync("out", {recursive: true});
 let n = 0;

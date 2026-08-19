@@ -1,21 +1,11 @@
 import React from "react";
-import {AbsoluteFill, Audio, interpolate, spring, staticFile, useCurrentFrame, useVideoConfig} from "remotion";
-import {ADS, CTA, SIGNS, type Lang} from "./data";
-import manifest from "./audio-manifest.json";
+import {AbsoluteFill, Audio, Sequence, interpolate, spring, staticFile, useCurrentFrame, useVideoConfig} from "remotion";
+import {ADS, CTA, type Lang} from "./data";
+import {beatsFor, voiceFile} from "./timing";
+import manifest from "./audio-manifest.json" with {type: "json"};
 
-/* Beats in seconds. The answer is deliberately late: a viewer has to reach
-   the end of the clip to learn whether they were right, and completion is
-   what the algorithm actually pays out for. */
-export const BEATS = {
-  hook: 0.4,
-  opts: 1.5,      // options stagger in from here, 0.38s apart
-  count: 3.4,     // 3 - 2 - 1, one per second
-  beat: 6.4,      // countdown clears; a second of silence
-  reveal: 7.6,
-  why: 9.0,
-  cta: 12.4,
-  end: 15,
-};
+/* Beat timings now live in timing.ts and are derived per clip from the real
+   measured length of the voice — see the comment there for why. */
 
 const C = {
   bg: "#0b1018", panel: "#121a26", ink: "#fff", dim: "#93a3b8",
@@ -51,13 +41,23 @@ export const Ad: React.FC<{index: number; lang: Lang}> = ({index, lang}) => {
   const frame = useCurrentFrame();
   const {fps} = useVideoConfig();
   const d = ADS[index];
-  const voiceFile = (manifest.voice as Record<string, string>)[`${d.id.replace(/_/g, "-")}-${lang}`];
+  const B = beatsFor(d, lang);
+
+  /* Type scales to how much text this clip actually carries. The binding
+     constraint is column height against the safe zones, and hand-tuning each
+     new hook was already needed twice. Weight is the characters that have to
+     fit: question + options + reason. */
+  const weight = d.q[lang].length + d.o.reduce((n, o) => n + o[lang].length, 0) + d.why[lang].length;
+  const k = weight < 260 ? 1 : weight < 330 ? 0.93 : weight < 400 ? 0.86 : 0.80;
+  const px = (n: number) => Math.round(n * k);
+  const sayA = voiceFile(d.id, lang, "a");
+  const sayB = voiceFile(d.id, lang, "b");
   const rtl = lang === "ku";
   const sec = frame / fps;
 
-  const revealed = sec >= BEATS.reveal;
-  const counting = sec >= BEATS.count && sec < BEATS.beat;
-  const countN = Math.min(3, Math.max(1, 3 - Math.floor(sec - BEATS.count)));
+  const revealed = sec >= B.reveal;
+  const counting = sec >= B.countStart && sec < B.countStart + 3;
+  const countN = Math.min(3, Math.max(1, 3 - Math.floor(sec - B.countStart)));
   const kuDigit = ["١", "٢", "٣"][countN - 1];
 
   const optStyle = (i: number): React.CSSProperties => {
@@ -66,9 +66,9 @@ export const Ad: React.FC<{index: number; lang: Lang}> = ({index, lang}) => {
     else if (revealed && i === d.bait) { bg = "#3a1414"; border = C.bad; keyBg = C.bad; keyInk = "#fff"; op = 0.8; }
     return {
       display: "flex", alignItems: "center", gap: 26, background: bg,
-      border: `5px solid ${border}`, borderRadius: 30, padding: "26px 32px",
-      fontSize: 44, fontWeight: 700, lineHeight: 1.3, opacity: op,
-      ...rise(frame, fps, BEATS.opts + i * 0.38),
+      border: `5px solid ${border}`, borderRadius: 30, padding: `${px(26)}px ${px(32)}px`,
+      fontSize: px(44), fontWeight: 700, lineHeight: 1.3, opacity: op,
+      ...rise(frame, fps, B.opts + i * 0.38),
       // The spring above sets opacity; the reveal dim must survive it.
       ...(revealed ? {opacity: op} : null),
       "--kb": keyBg, "--ki": keyInk,
@@ -81,7 +81,19 @@ export const Ad: React.FC<{index: number; lang: Lang}> = ({index, lang}) => {
       padding: `${SAFE.top}px ${SAFE.side}px ${SAFE.bottom}px`,
       display: "flex", flexDirection: "column", justifyContent: "center", gap: 16}}>
 
-      {voiceFile ? <Audio src={staticFile(`audio/${voiceFile}`)} /> : null}
+      {/* sayB is wrapped in a Sequence so it cannot start before the answer is
+          on screen. Playing both from zero would have the voice give away the
+          reveal the timeline is built to delay. */}
+      {sayA ? (
+        <Sequence from={Math.round(B.sayA * fps)}>
+          <Audio src={staticFile(`audio/${sayA}`)} />
+        </Sequence>
+      ) : null}
+      {sayB ? (
+        <Sequence from={Math.round(B.sayB * fps)}>
+          <Audio src={staticFile(`audio/${sayB}`)} />
+        </Sequence>
+      ) : null}
       {manifest.music ? (
         <Audio src={staticFile(`audio/${manifest.music}`)} volume={MUSIC_VOLUME} loop />
       ) : null}
@@ -89,20 +101,20 @@ export const Ad: React.FC<{index: number; lang: Lang}> = ({index, lang}) => {
       <div style={{position: "absolute", top: 142, [rtl ? "right" : "left"]: SAFE.side,
         fontSize: 36, fontWeight: 800, letterSpacing: 5, color: C.dim}}>TAREEQ</div>
 
-      <div style={{fontSize: 50, fontWeight: 800, color: C.accent, ...rise(frame, fps, BEATS.hook)}}>
+      <div style={{fontSize: px(50), fontWeight: 800, color: C.accent, ...rise(frame, fps, B.hook)}}>
         {d.hook[lang]}
       </div>
 
       {/* Sign clips carry a picture as well as the text, so their question
           runs a size down. Shrinking every clip to fit the tightest one would
           cost legibility on the five that have room to spare. */}
-      <div style={{fontSize: d.sign ? 58 : 66, fontWeight: 800, lineHeight: 1.22, margin: 0}}>
+      <div style={{fontSize: px(66), fontWeight: 800, lineHeight: 1.22, margin: 0}}>
         {d.q[lang]}
       </div>
 
       {d.sign ? (
         <div style={{alignSelf: "center", width: 250, height: 250, background: "#fff",
-          borderRadius: 38, padding: 22, ...rise(frame, fps, BEATS.opts - 0.3)}}>
+          borderRadius: 38, padding: 22, ...rise(frame, fps, B.opts - 0.3)}}>
           <svg viewBox="0 0 100 100" width="100%" height="100%"
             dangerouslySetInnerHTML={{__html: SIGNS[d.sign]}} />
         </div>
@@ -111,8 +123,8 @@ export const Ad: React.FC<{index: number; lang: Lang}> = ({index, lang}) => {
       <div style={{display: "flex", flexDirection: "column", gap: 20, marginTop: 8}}>
         {d.o.map((o, i) => (
           <div key={i} style={optStyle(i)}>
-            <span style={{flex: "none", width: 74, height: 74, borderRadius: "50%",
-              display: "grid", placeItems: "center", fontSize: 38, fontWeight: 800,
+            <span style={{flex: "none", width: px(74), height: px(74), borderRadius: "50%",
+              display: "grid", placeItems: "center", fontSize: px(38), fontWeight: 800,
               background: "var(--kb)" as string, color: "var(--ki)" as string}}>
               {"ABC"[i]}
             </span>
@@ -121,8 +133,8 @@ export const Ad: React.FC<{index: number; lang: Lang}> = ({index, lang}) => {
         ))}
       </div>
 
-      <div style={{fontSize: 36, lineHeight: 1.35, color: C.dim, marginTop: 6,
-        ...rise(frame, fps, BEATS.why)}}>
+      <div style={{fontSize: px(36), lineHeight: 1.35, color: C.dim, marginTop: 6,
+        ...rise(frame, fps, B.why)}}>
         {d.why[lang]}
       </div>
 
@@ -134,9 +146,9 @@ export const Ad: React.FC<{index: number; lang: Lang}> = ({index, lang}) => {
         </AbsoluteFill>
       ) : null}
 
-      <div style={{textAlign: "center", marginTop: 24, ...rise(frame, fps, BEATS.cta)}}>
-        <div style={{fontSize: 58, fontWeight: 800, color: C.accent}}>{CTA[lang].a}</div>
-        <div style={{fontSize: 36, color: C.dim, marginTop: 10}}>{CTA[lang].b}</div>
+      <div style={{textAlign: "center", marginTop: 24, ...rise(frame, fps, B.cta)}}>
+        <div style={{fontSize: px(58), fontWeight: 800, color: C.accent}}>{CTA[lang].a}</div>
+        <div style={{fontSize: px(36), color: C.dim, marginTop: 10}}>{CTA[lang].b}</div>
       </div>
     </AbsoluteFill>
   );

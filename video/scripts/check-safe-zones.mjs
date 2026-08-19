@@ -11,6 +11,19 @@ const SAFE = {top: 130, bottom: 320, right: 120, left: 60};
 const BG = [11, 16, 24];          // C.bg #0b1018
 const TOL = 10;                    // jpeg/ffmpeg noise around the flat fill
 
+/* Aim at the busiest frame of each clip: just after the reason appears, when
+   the answer, the reason and the CTA can all be on screen at once. Durations
+   differ per clip now, so a fixed frame number would miss or overshoot. */
+import {beatsFor, FPS} from "../src/timing.ts";
+import {ADS} from "../src/data.ts";
+const frameFor = (compId) => {
+  const ad = ADS.find((a) => compId.startsWith(a.id.replace(/_/g, "-")));
+  if (!ad) return 390;
+  const lang = compId.endsWith("-en") ? "en" : "ku";
+  const b = beatsFor(ad, lang);
+  return Math.round(Math.min(b.cta + 0.6, b.end - 0.4) * FPS);
+};
+
 const ids = process.argv.slice(2);
 if (!ids.length) { console.error("usage: node scripts/check-safe-zones.mjs <id>..."); process.exit(2); }
 mkdirSync("out/zones", {recursive: true});
@@ -61,7 +74,7 @@ let bad = 0;
 for (const id of ids) {
   const png = `out/zones/${id}.png`;
   execFileSync("npx", ["remotion", "still", "src/index.ts", id, png,
-    "--frame=390", `--browser-executable=${SHELL}`, "--log=error"], {stdio: ["ignore", "ignore", "inherit"]});
+    `--frame=${frameFor(id)}`, `--browser-executable=${SHELL}`, "--log=error"], {stdio: ["ignore", "ignore", "inherit"]});
   const {w, h, bpp, data} = readPng(png);
   const hits = {top: 0, bottom: 0, right: 0, left: 0};
   for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) {

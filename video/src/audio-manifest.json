@@ -1,4 +1,105 @@
 {
-  "voice": {},
+  "voice": {
+    "night-ku": {
+      "a": {
+        "file": "night-ku-a.wav",
+        "seconds": 4.96
+      },
+      "b": {
+        "file": "night-ku-b.wav",
+        "seconds": 12.85
+      }
+    },
+    "instructor-ku": {
+      "a": {
+        "file": "instructor-ku-a.wav",
+        "seconds": 6.14
+      },
+      "b": {
+        "file": "instructor-ku-b.wav",
+        "seconds": 9.65
+      }
+    },
+    "ambulance-ku": {
+      "a": {
+        "file": "ambulance-ku-a.wav",
+        "seconds": 5.92
+      },
+      "b": {
+        "file": "ambulance-ku-b.wav",
+        "seconds": 7.07
+      }
+    },
+    "towing-ku": {
+      "a": {
+        "file": "towing-ku-a.wav",
+        "seconds": 5.86
+      },
+      "b": {
+        "file": "towing-ku-b.wav",
+        "seconds": 10.01
+      }
+    },
+    "pregnant-ku": {
+      "a": {
+        "file": "pregnant-ku-a.wav",
+        "seconds": 4.64
+      },
+      "b": {
+        "file": "pregnant-ku-b.wav",
+        "seconds": 8.53
+      }
+    },
+    "arrow-ku": {
+      "a": {
+        "file": "arrow-ku-a.wav",
+        "seconds": 8.33
+      },
+      "b": {
+        "file": "arrow-ku-b.wav",
+        "seconds": 13.32
+      }
+    },
+    "priority-ku": {
+      "a": {
+        "file": "priority-ku-a.wav",
+        "seconds": 3.68
+      },
+      "b": {
+        "file": "priority-ku-b.wav",
+        "seconds": 12.23
+      }
+    },
+    "gap-ku": {
+      "a": {
+        "file": "gap-ku-a.wav",
+        "seconds": 6.32
+      },
+      "b": {
+        "file": "gap-ku-b.wav",
+        "seconds": 6.02
+      }
+    },
+    "kerb-ku": {
+      "a": {
+        "file": "kerb-ku-a.wav",
+        "seconds": 9.68
+      },
+      "b": {
+        "file": "kerb-ku-b.wav",
+        "seconds": 8.6
+      }
+    },
+    "unlicensed-ku": {
+      "a": {
+        "file": "unlicensed-ku-a.wav",
+        "seconds": 5.26
+      },
+      "b": {
+        "file": "unlicensed-ku-b.wav",
+        "seconds": 10.31
+      }
+    }
+  },
   "music": null
 }
