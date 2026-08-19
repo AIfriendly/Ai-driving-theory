@@ -220,9 +220,25 @@ nobody came. Do not reorder without a reason.
       an app deliberately labelled unofficial should.
       Free alternatives were researched and none solve portability — they are
       all someone else's namespace. Freenom, the old free-domain default,
-      shut down in 2024 and 12.6M domains stopped resolving. Best *free*
-      choice is simply staying on github.io; `is-a.dev` / `pages.dev` are
-      lateral moves.
+      shut down in 2024 and 12.6M domains stopped resolving.
+
+      **CORRECTION 2026-08-19: calling `pages.dev` a lateral move was wrong,
+      and "stay on github.io" is no longer the best free option.** That verdict
+      compared URL *strings*. It ignored the Phase 3 requirement this same file
+      states two lines later — Pages cannot run code. **Cloudflare Pages
+      Functions are on the free tier** (100,000 requests/day combined with
+      Workers; static assets unlimited and free; account needs an email, no
+      card). So moving is not lateral:
+      - it **deletes** the forced Phase 3 host migration, because the FIB
+        callback and entitlement check can live on the same host;
+      - it drops both the `/Ai-driving-theory/` path **and** the dependency on
+        the repo name, which has already changed once;
+      - it is where a bought domain would attach anyway, in one click, with
+        the `.pages.dev` URL still working afterwards. Doing it now is step one
+        of the paid plan brought forward, not a stopgap to throw away.
+
+      **Owner cannot pay for a domain right now (2026-08-19), so this is the
+      live plan.** Keep GitHub Pages running in parallel as a fallback.
       **Do this before the link is in a TikTok bio and on eight videos** —
       that is when changing it starts costing real money.
 
@@ -243,6 +259,28 @@ nobody came. Do not reorder without a reason.
       `hatuchô` (هاتوچۆ) is the real Kurdish word for traffic and the strongest
       local signal on the list, but its Latin spelling is ambiguous
       (hatucho/hatuchoo/hatuchu) and it abandons the name already on the clips.
+
+      **Free-host names, checked 2026-08-19.** `tareeq` is gone on *all* of
+      pages.dev, netlify.app, vercel.app and as a GitHub username, so
+      `tareeq.github.io` is not available either. **`tareeqapp` is free on all
+      four** — that is the name to claim. `hatucho`, `tareeqiq`, `tareeqku`,
+      `tareeqdriving` and `drivekurdistan` are also free on the three hosts.
+      Only `tareeq-app.netlify.app` was taken among the variants.
+
+      **Do the availability check by HTTP status, and use a control.** A bare
+      `curl` of `<name>.pages.dev` returns **000 when free** (no DNS) and 200
+      when taken; netlify and vercel return **404 when free**. Unauthenticated
+      `api.github.com` and `github.com` both return **403 through this
+      environment's proxy for every name**, existing or not, so curl cannot
+      test GitHub names — use `mcp__github__search_users` with `user:<name>`
+      instead, where a 422 "users do not exist" means the name is free.
+      Always run a known-nonexistent control first; without one the proxy's
+      blanket 403s read as "everything is taken".
+
+      **Cloudflare Pages setup** (~5 min, no card): Workers &amp; Pages → Create →
+      Pages → Connect to Git → `AIfriendly/Ai-driving-theory`; project name
+      `tareeqapp`; **build command empty**; **build output directory `web`**;
+      production branch `claude/trading-agent-bybit-mcp-ao56dp`.
 
       **Cloudflare-specific traps, none of which announce themselves:**
       - **Buying needs an international card.** Try the FIB card; a declined
