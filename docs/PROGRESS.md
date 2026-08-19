@@ -226,6 +226,39 @@ nobody came. Do not reorder without a reason.
       **Do this before the link is in a TikTok bio and on eight videos** —
       that is when changing it starts costing real money.
 
+      **Shortlist, checked against live RDAP 2026-08-19** (404 = free,
+      200 = registered; `https://rdap.org/domain/<name>` follows redirects, so
+      use `curl -sL`). **Recommended: `tareeqapp.com`** — keeps the decided app
+      name, `.com` is the cheapest TLD Cloudflare sells and the one people type
+      by reflex. Runner-up `tareeq.co` (~3x the price, exact name).
+      `tareeq.com` is **registered but dead** — HTTP 445, parked — so there is
+      no brand conflict, but it is not cheaply buyable either.
+
+      | Free | Taken |
+      |---|---|
+      | tareeqapp · tareeqiq · gettareeq · mytareeq · tareeqku · tareeqdriving · hatucho · hatuchoo · drivekurdistan · kurdistandriving (all `.com`) | tareeq `.com .net .org .dev .app .site` |
+      | tareeq `.co .me .xyz .info .online` | molet.com · seyare.com · teoriq.com |
+      | molet `.app .co` · rega.co · shofer.co · hatucho.app | rega.app · shofer.app · wane.app · taqi.app · teori.app |
+
+      `hatuchô` (هاتوچۆ) is the real Kurdish word for traffic and the strongest
+      local signal on the list, but its Latin spelling is ambiguous
+      (hatucho/hatuchoo/hatuchu) and it abandons the name already on the clips.
+
+      **Cloudflare-specific traps, none of which announce themselves:**
+      - **Buying needs an international card.** Try the FIB card; a declined
+        card here predicts the same wall on TikTok ads, so this is a cheap test.
+      - **Cloudflare does not sell premium-tiered domains.** An unregistered
+        name showing "unavailable" in the dashboard means premium, not a bug.
+        Take the next name on the list.
+      - **Keep the DNS records grey-clouded (DNS-only) until GitHub has issued
+        the certificate.** Proxying first blocks Let's Encrypt validation and
+        Pages sits on "certificate provisioning" forever. If the proxy is
+        switched on afterwards, SSL/TLS mode must be **Full** — Flexible puts
+        Pages into an infinite redirect loop.
+      - Cloudflare Registrar **requires its own nameservers**; DNS moves with
+        the purchase. It also charges at cost with no first-year discount and
+        no renewal spike, unlike Namecheap's $1-then-$15.
+
 ### Phase 1 — make it fit to launch — DONE
 
 - [x] Strengthen the disclaimer to say plainly "not official, not endorsed" —
