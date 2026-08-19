@@ -3,10 +3,14 @@
    The first upload creates a folder; every later file is posted into the same
    folderId, so the result is a single page rather than ten separate links.
 
-   Anonymous upload — no account, no token. Gofile expires unclaimed anonymous
-   content after a period of inactivity, so treat the link as a handoff rather
-   than storage. The MP4s live in video/out/ and are reproducible with
-   `npm run voice && npm run render:all`.
+   A guest account is created first. Fully anonymous uploads cannot be grouped:
+   the second file into a folder returns "error-notOwner", because nobody owns
+   the folder the first upload made. With a guest token every file goes into
+   one folder and the owner gets a single link.
+
+   Gofile expires unclaimed guest content after a period of inactivity, so
+   treat the link as a handoff rather than storage. The MP4s live in video/out/
+   and are reproducible with `npm run voice && npm run render:all`.
 */
 import {readdirSync, statSync} from "node:fs";
 import {readFile} from "node:fs/promises";
@@ -19,11 +23,21 @@ const server = await (async () => {
   return s;
 })();
 
+const token = await (async () => {
+  const r = await fetch("https://api.gofile.io/accounts", {method: "POST"});
+  const j = await r.json();
+  const t = j?.data?.token;
+  if (!t) throw new Error(`could not create guest account: ${JSON.stringify(j).slice(0, 200)}`);
+  return t;
+})();
+
 const upload = async (path, folderId) => {
   const form = new FormData();
   form.append("file", new Blob([await readFile(path)]), basename(path));
   if (folderId) form.append("folderId", folderId);
-  const r = await fetch(`https://${server}.gofile.io/contents/uploadfile`, {method: "POST", body: form});
+  const r = await fetch(`https://${server}.gofile.io/contents/uploadfile`, {
+    method: "POST", headers: {Authorization: `Bearer ${token}`}, body: form,
+  });
   const j = await r.json();
   if (j.status !== "ok") throw new Error(`${basename(path)}: ${JSON.stringify(j).slice(0, 200)}`);
   return j.data;
