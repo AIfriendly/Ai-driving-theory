@@ -48,12 +48,20 @@ constraints like this earlier.
 preview of the ad clips, `video/` the Remotion project that renders them
 (node_modules and out/ gitignored — re-run `npm install` after a fresh clone).
 
-**Picking this up cold:** the question bank is finished and verified (do not
-re-sweep the PDFs), the ad creative is done, and the site is live. **The voiced batch of 10 is
-built and delivered** (gofile link in *Ad creative*); what is left is the owner
-posting them. Read *Distribution* before giving any
-advice about posting, ads or automation — that ground was covered in detail
-and several intuitive answers are wrong for this owner.
+**Picking this up cold.** Three things are finished and should not be redone:
+the question bank (do not re-sweep the PDFs), the site (live), and the ad
+creative (10 voiced clips delivered, gofile link in *Ad creative*).
+
+What is actually left, in order:
+1. The owner posts the 10 clips. Nothing else moves until traffic exists.
+2. Buy a domain — the last Phase 0 item, and the only one with a deadline,
+   since the github.io URL cannot be migrated once it is in a TikTok bio.
+3. Phase 3, the paywall, **only if step 1 shows demand**. The split is decided
+   and exact — see P2.
+
+**Read *Distribution* before advising on posting, ads or automation.** That
+ground was covered in detail and several intuitive answers are wrong for this
+owner — most of all anything that assumes the TikTok app is on their phone.
 
 ---
 
@@ -141,6 +149,27 @@ and several intuitive answers are wrong for this owner.
       `enablement: true` was refused). Verified after deploy: HTTP 200,
       1.05 MB, deployed bytes execute — 10 home tiles, 587/587 guide tips
       illustrated, mock exam launches, zero page errors.
+- [x] **Voiced batch of 10 built and delivered** — `d88b314`, gofile fix
+      `183c3e0`. **https://gofile.io/d/6C6fLr7d** (10 MP4s + POSTING.md).
+      Ten fresh hooks, none reused: night speed, lesson liability, ambulance
+      number, towing speed, seat belt in pregnancy, green arrow, priority
+      order, following distance, yellow kerb line, unlicensed-driver penalty.
+      - Kurdish voice from kurdishtts.com. 2,106 characters for all twenty
+        files against a 20,000/month free tier.
+      - **Clip length now follows the voice** (15-24s). The first sample
+        exposed it: the voice reads ~10 chars/sec and a full script ran 24.6s
+        against a hard-coded 15s clip. `timing.ts` derives every beat from the
+        measured WAV durations.
+      - **Two audio files per clip, not one.** `sayA` (hook + question) plays
+        from the start; `sayB` (answer + reason + CTA) is in a `<Sequence>`
+        starting at the reveal. One track would have the voice give the answer
+        away seconds before the screen — breaking the design while everything
+        still "worked".
+      - Type scales to content weight, so a wordy hook drops a size instead of
+        overflowing the safe zones. All 10 pass the check.
+      - Verified per clip: video and audio track durations match and run ~1.4s
+        past where the voice stops, so nothing is clipped. All valid MP4s,
+        1,353-1,658 kbps.
 - [x] **Ad creative built and verified** — `web/ad.html` (screen-record
       preview) `ca006c9`, `video/` Remotion project `292a68e`, audio slot and
       voiceover scripts `38face1`, safe-zone and bitrate fixes `6b84a35`,
@@ -567,18 +596,22 @@ for a phone-only workflow or a quick preview. Shares no code with
 `index.html`, deliberately, so editing one cannot break the other.
 
 `video/` — Remotion project, renders real MP4s. **This is the one to upload.**
-1080×1920, 30fps, 15s, 16 clips (8 hooks × 2 languages). `npm run render:all`.
+1080×1920, 30fps, **10 voiced Kurdish clips, 15-24s**. Order is
+`npm run voice` → `npm run check` → `npm run render:all` → `npm run upload`.
+The earlier silent 8-hooks-×-2-languages batch is at `292a68e` if wanted.
+`video/README.md` carries the full mechanics; read it before editing timing.
 
 **The hooks are the eight questions where the answer most people give is the
 wrong one** — that is what drives the comments that carry reach. Source of
 truth is `video/src/data.ts`, copied verbatim from the bank. `bait` marks the
 wrong option to light up red on the reveal.
 
-**The timeline is the product.** `BEATS` in `video/src/Ad.tsx`: hook 0.4s,
-options stagger from 1.5s, 3-2-1 from 3.4s, silence at 6.4s, **answer at
-7.6s**, CTA at 12.4s. The answer is late so a viewer has to reach the end to
-learn whether they were right, and completion is what the algorithm pays for.
-Moving the reveal earlier costs reach.
+**The timeline is the product, and it is now derived** — see
+`video/src/timing.ts`. The reveal waits for the spoken question
+(`max(7.6, 0.4 + sayA + 1.0)`) and the clip ends `sayB + 1.4s` after it. Two
+points stay fixed because they are the design: question in frame one, answer
+only after a countdown and a beat of silence. **Moving the reveal earlier costs
+reach.**
 
 **Audio is file-driven and opt-in.** Drop `video/public/audio/<id>-<lang>.mp3`
 and the next render bakes it in; `music.mp3` becomes a bed at 14%. A manifest

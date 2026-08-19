@@ -1,7 +1,8 @@
 # Tareeq video — Remotion
 
-Renders the TikTok quiz clips to real MP4 files. 1080×1920, 30fps, 15 seconds,
-eight hooks × two languages = 16 clips.
+Renders the TikTok quiz clips to real MP4 files. 1080×1920, 30fps, **10 hooks,
+Kurdish, with a spoken voiceover**. Clip length is not fixed — it follows the
+voice, and currently runs 15–24s.
 
 This is the render path. `../web/ad.html` is the same eight clips as a page you
 screen-record — useful for a quick preview or a phone-only workflow, but the
@@ -11,10 +12,15 @@ MP4s from here are what you upload.
 
 ```bash
 npm install
-npm run render:all          # all 16
-node render-all.mjs ku      # Kurdish only
-npx remotion studio         # preview and scrub in the browser
+KURDISH_TTS_KEY=... npm run voice   # generate the voiceover (do this first)
+npm run check                       # safe zones, all 10
+npm run render:all                  # render
+npm run upload                      # push everything to gofile, one link
+npx remotion studio                 # preview and scrub in the browser
 ```
+
+**`npm run voice` must run before rendering.** It writes the audio *and* the
+measured durations that every later timing depends on.
 
 Output lands in `out/`, which is gitignored — these are build artifacts, not
 source.
@@ -44,21 +50,35 @@ question bank in `../web/index.html`. They are the items where the answer most
 people give is the wrong one — that is what drives the comments that carry
 reach. `bait` marks the wrong option to show in red on the reveal.
 
-`src/Ad.tsx` holds the timeline. `BEATS` is the whole design:
+`src/timing.ts` holds the timeline, and it is **derived, not fixed**.
 
-| Beat | Second | Why |
-|---|---|---|
-| hook | 0.4 | stakes line, the reason to keep watching |
-| opts | 1.5 | options stagger in, 0.38s apart |
-| count | 3.4 | 3-2-1, one per second |
-| beat | 6.4 | countdown clears, one second of silence |
-| reveal | 7.6 | the answer |
-| why | 9.0 | one-line reason |
-| cta | 12.4 | call to action |
+The first batch hard-coded 15 seconds. The voice came back at 24.6s for one
+clip, so the video now fits the audio rather than the other way round:
 
-The answer is late on purpose. A viewer has to reach the end of the clip to
-find out whether they were right, and completion rate is what the algorithm
-pays out for. Moving `reveal` earlier will cost you reach.
+| Beat | When |
+|---|---|
+| hook | 0.4s |
+| options | stagger from 1.5s, 0.38s apart |
+| countdown | 3-2-1, ending 1.2s before the reveal |
+| **reveal** | `max(7.6s, 0.4 + sayA + 1.0)` — waits for the spoken question |
+| reason | reveal + 1.4s |
+| CTA | 2.4s before the end |
+| end | reveal + sayB + 1.4s tail |
+
+Two things stay fixed because they *are* the design: the question is on screen
+in frame one, and the answer never arrives before a countdown and a beat of
+silence. A viewer has to reach the end to find out whether they were right, and
+completion is what the algorithm pays for. **Revealing earlier costs reach.**
+
+## The audio is two files per clip, and that is not incidental
+
+`sayA` is the hook and question. `sayB` is the answer, the reason and the call
+to action, and it is wrapped in a `<Sequence>` that starts at the reveal.
+
+One continuous track would have the voice say the answer several seconds before
+the screen shows it — quietly destroying the entire delayed-reveal design while
+everything still appears to work. If you ever merge them, you have broken the
+product without breaking the build.
 
 ## TikTok safe zones — checked, not assumed
 
@@ -76,9 +96,13 @@ frame of each composition and asserts no non-background pixel lands in any of
 the four margins:
 
 ```bash
-node scripts/check-safe-zones.mjs mirrors-ku sign-narrow-ku      # a few
-npm run check                                                    # or all 16
+node scripts/check-safe-zones.mjs arrow-ku kerb-ku    # a few
+npm run check                                        # or all 10
 ```
+
+Type also **scales to content weight** now (`k` in `Ad.tsx`), because the
+binding constraint is column height and hand-tuning each new hook had already
+been needed twice. A wordy clip drops a size automatically.
 
 Padding alone is not proof — an absolutely positioned element ignores it,
 which is exactly how the call to action first ended up under the caption.
@@ -88,9 +112,14 @@ overflow lands in both the top and bottom zones at once.
 
 ## Posting
 
-The clips are silent by design — add a trending sound in TikTok itself. Never
-put the answer in the caption, and never trim the opening: the question has to
-be on screen in the first frame or people scroll past.
+The clips carry a Kurdish voiceover, so they are **not** silent and do not need
+a trending sound. Note the trade-off that follows from that: any scheduled or
+API upload can only carry embedded audio, so baking the voice in is what makes
+automated posting viable at all.
+
+Never put the answer in the caption, and never trim the opening — the question
+has to be on screen in the first frame or people scroll past.
+`POSTING.md` has the caption, tags and description for each clip.
 
 ## Bitrate
 
@@ -111,6 +140,17 @@ That sits just under TikTok's recommended 2,000-2,500 for 1080p, and it is
 fine here. The recommendation exists so the source survives TikTok's re-encode
 without banding, and banding needs gradients. This background is a single flat
 colour, so there is no gradient to band.
+
+## Voice
+
+kurdishtts.com. `POST /api/tts-proxy`, header `x-api-key`, body
+`{speaker_id: "sorani_1", model_version: "v4", text}`, returns WAV.
+
+The key is read from `KURDISH_TTS_KEY` and **must never be committed**.
+Free tier is 20,000 characters/month via the API; a full batch of ten clips,
+both parts each, costs about 2,100. There is no reason to pay for this.
+
+The generated `.wav` files are gitignored — they are reproducible and large.
 
 ## Licence
 
