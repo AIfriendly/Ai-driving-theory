@@ -154,7 +154,14 @@ owner — most of all anything that assumes the TikTok app is on their phone.
       1.05 MB, deployed bytes execute — 10 home tiles, 587/587 guide tips
       illustrated, mock exam launches, zero page errors.
 - [x] **Voiced batch of 10 built and delivered** — `d88b314`, gofile fix
-      `183c3e0`. **https://gofile.io/d/6C6fLr7d** (10 MP4s + POSTING.md).
+      `183c3e0`. **https://gofile.io/d/4pkWXKOg** (10 MP4s + POSTING.md),
+      re-uploaded 2026-08-19 and verified; the original `6C6fLr7d` was left
+      unverified because **gofile expires inactive guest content** and its API
+      now gates folder listing behind premium, so a 200 on the page proves
+      nothing (the SPA returns 200 for deleted folders too). Treat any gofile
+      link as a handoff, not storage — `npm run upload` in `video/` mints a
+      fresh one in about a minute. The clips were also delivered to the owner
+      directly as files, which is the durable copy.
       Ten fresh hooks, none reused: night speed, lesson liability, ambulance
       number, towing speed, seat belt in pregnancy, green arrow, priority
       order, following distance, yellow kerb line, unlicensed-driver penalty.
@@ -831,6 +838,36 @@ owner has. If full automation is ever wanted it has to be `video.publish`
 (direct post): weeks of content audit, a server for OAuth with a stable HTTPS
 redirect URI, and no trending sounds at all. Build it alongside the Phase 3
 payment backend, not as a separate detour — same server.
+
+**"Post via API as private, flip to public by hand" — asked 2026-08-19,
+checked, and it does not pay off at this volume.** The idea is sound and it
+does dodge the inbox problem above (`SELF_ONLY` is a real `privacy_level` on
+Direct Post, and privacy is editable from the web). What kills it is a
+different restriction:
+
+- **An unaudited client cannot post to a public account at all.** The whole
+  **account** must be private at the time of posting, not merely the video —
+  the API's own error is `unaudited_client_can_only_post_to_private_accounts`.
+  To publish afterwards TikTok requires flipping the *account* public first,
+  then each *video* to "Everyone". So the manual step does not disappear, it
+  relocates, and a growth account goes dark while posting.
+- Unaudited clients are also capped at **5 users per 24h**, with a per-client
+  active-creator cap set from the audit application.
+
+Three tiers, and the middle one is the worst:
+
+| | Build cost | Manual step | Notes |
+|---|---|---|---|
+| **T1 web upload + native scheduler** | none | ~4 min/video | ~40 min for all 10, once |
+| T2 unaudited API | hours + OAuth server | still per-video | account must be private; 5 users/24h |
+| T3 audited API | audit 5–10 business days, rejectable, + OAuth server | none | true automation |
+
+**T1 is the answer for a batch of ten**, and it solves the spacing problem
+too — ten clips should not go out at once, and the scheduler spreads them
+15 min to 10 days ahead in one sitting. **T3 only becomes worth building at a
+standing cadence**, and it gets cheaper then because Cloudflare Pages
+Functions will already be serving as the stable HTTPS redirect URI the OAuth
+flow needs — the same host as the FIB callback.
 
 **Web upload requires no phone app**, which is the practical answer for now:
 tiktok.com in a desktop browser uploads, captions, schedules and shows
