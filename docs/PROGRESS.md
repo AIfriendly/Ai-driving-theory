@@ -22,7 +22,7 @@ single self-contained file, no build step, no network calls.
 | Scene / concept illustrations | 134 |
 | Questions with no visual | 0 |
 | Study-guide tips with no picture | 0 (587 of 587) |
-| Ad clips rendered | 16 (8 hooks × 2 languages), ready to post |
+| Ad clips rendered | 10 voiced Kurdish (15-24s), delivered · earlier silent 8x2 batch at `292a68e` |
 
 Branch: `claude/trading-agent-bybit-mcp-ao56dp` — this is also the repo's
 **default branch**. There is no `main`/`master`.
@@ -49,9 +49,9 @@ preview of the ad clips, `video/` the Remotion project that renders them
 (node_modules and out/ gitignored — re-run `npm install` after a fresh clone).
 
 **Picking this up cold:** the question bank is finished and verified (do not
-re-sweep the PDFs), the ad creative is done, and the site is live. **Start at
-*Next* → NEXT SESSION — the batch of 10**, which is blocked on the owner
-handing over a kurdishtts.com API key. Read *Distribution* before giving any
+re-sweep the PDFs), the ad creative is done, and the site is live. **The voiced batch of 10 is
+built and delivered** (gofile link in *Ad creative*); what is left is the owner
+posting them. Read *Distribution* before giving any
 advice about posting, ads or automation — that ground was covered in detail
 and several intuitive answers are wrong for this owner.
 
@@ -437,11 +437,36 @@ the paid material, accounts, an entitlement check per request, and a payment
 webhook — which also ends the no-build / no-network / offline property that
 makes the app good today. Decide deliberately, do not drift into it.
 
-**P2 — gate features, not questions.** The app already has SRS, mistake
-tracking, streaks, achievements, readiness score and mock exams. That state is
-account-bound and cannot be copied; the question text can. Proposed split:
-free = study guide, all questions, 1–2 mock exams; paid = unlimited mocks,
-mistake drilling, spaced repetition, readiness report, cross-device progress.
+**P2 — DECIDED 2026-08-18: the 15 sets are free, everything else is paid.**
+The owner's call, restated and confirmed after discussion. Supersedes the
+earlier vaguer version of P2.
+
+FREE:
+- **Sets** — 15 sets x 50 = all 745 questions, with their answers and
+  explanations. `SET_SIZE = 50`, so 15 sets really is the entire bank.
+
+PAID (every other screen):
+- Mock exam · Smart Review (SRS) · Practice by topic · Road signs gallery ·
+  Flashcards · Official book sets · Study guide · Search & saved ·
+  Progress and stats · Achievements
+
+Two things were raised against this and the owner chose it anyway. Recorded so
+they are not re-argued, and because both affect how it should be *worded* in
+the app rather than whether to do it:
+
+1. **The study guide contains no text a free user has not already seen.** It is
+   built from `q.ex` — the same explanations printed when a question is
+   answered. Behind the paywall it is a convenience (illustrated, organised by
+   topic, 587 tips) rather than new content. Sell it as organisation, not as
+   extra material, or someone who notices will feel misled.
+2. **Nobody experiences needing the tools until they fail a mock exam.** With
+   the exam paid from the start, the free tier has to do that job some other
+   way — the sets do show a running score, so lean on that in the upgrade
+   prompt.
+
+The piracy reasoning behind the split is sound and unchanged: everything free
+leaks the moment one person saves the page; everything paid is account-bound
+state that cannot be copied.
 
 **P3 — do not gate the whole app behind the door.** Two reasons. It kills the
 TikTok funnel, which depends on a free layer being worth sharing. And it
