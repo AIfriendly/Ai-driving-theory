@@ -57,7 +57,11 @@ What is actually left, in order:
 2. Buy a domain — the last Phase 0 item, and the only one with a deadline,
    since the github.io URL cannot be migrated once it is in a TikTok bio.
 3. Phase 3, the paywall, **only if step 1 shows demand**. The split is decided
-   and exact — see P2.
+   and exact — see P2, and build the P6 manual gate, not the FIB API.
+
+**Steps 2 and 3 are independent — do not treat the domain as a prerequisite
+for payments.** The domain needs an international card; the FIB backend needs
+an Iraqi company. FIB's callback URL can be any free host subdomain. See P7.
 
 **Read *Distribution* before advising on posting, ads or automation.** That
 ground was covered in detail and several intuitive answers are wrong for this
@@ -547,6 +551,40 @@ client so a determined user can mint codes. It is survivable only because the
 gate protects a *feature* while the question text stays free — a bypass costs
 one sale, not the bank. Replace with a server check when revenue justifies it.
 
+**P7 — the FIB API is documented and buildable; the blocker is corporate, not
+technical.** Researched 2026-08-19. This resolves the FIB half of the open
+question below.
+
+*The domain is not a prerequisite and nobody should assume it is.* FIB requires
+a **public HTTPS callback URL**, not a custom one — any free host subdomain
+(`*.onrender.com`, `*.workers.dev`, `*.fly.dev`) satisfies it. Buying a domain
+and building the payment backend are independent tracks with different
+blockers: the domain needs an international card, the backend needs an Iraqi
+company.
+
+- **Flow is two approvals.** Register for the sandbox and test freely, then
+  submit the *FIB Integration Request Form* for production credentials. Only
+  the second is hard.
+- **Production requires legal documents and a company registered in Iraq.**
+  That is the wall. Onboarding portal: https://request-business.fib.iq/
+  Fees are card scheme fees plus **1–5% FIB**, set in the commercial contract.
+- **The API is ordinary.** OAuth2 `client_credentials`, REST/JSON, HTTPS
+  enforced. `createPayment` takes amount, currency, callback URL, description
+  and redirect URI; returns a payment id, a readable code, an app deeplink and
+  an expiry. Status is polled by id or pushed to the callback.
+- **Official SDKs exist** — Python, PHP, Laravel, Android, under
+  https://github.com/First-Iraqi-Bank. The Python one reads config from
+  `FIB_API_KEY`, `FIB_API_SECRET`, `FIB_BASE_URL`, `FIB_CALLBACK_URL`,
+  `FIB_CURRENCY` (IQD), `FIB_REFUNDABLE_FOR` (P7D). Dev host is
+  `fib.dev.fib.iq`.
+- **`fib.iq` returns 403 to this environment's fetcher.** The GitHub repos
+  fetch fine. Do not retry the site; read the SDKs instead.
+
+**So the ordering stands: P6 before P7.** The manual gate takes money this week
+with no company registration and no server. Build P7 when the hand-issued codes
+become the bottleneck — that is a volume problem worth having, and it is not
+one this project has yet.
+
 **Open questions, none resolved**
 
 - Real current KRG fees. The [KRG portal](https://services.gov.krd/en/service/moi-03-en)
@@ -556,8 +594,10 @@ one sale, not the bank. Replace with a server check when revenue justifies it.
   Iraq rather than KRG. **Verify before putting a figure in marketing**, and
   separately check whether a *retest* costs the same as a first attempt, since
   that is the number the pitch actually leans on.
-- Whether FIB and ZainCash onboard individuals or require commercial
-  registration, and their settlement terms.
+- ~~Whether **FIB** onboards individuals~~ — **resolved, see P7.** It does not:
+  production credentials need a company registered in Iraq plus legal
+  documents. Settlement terms are per-contract; the published fee is card
+  fees + 1–5%. **ZainCash is still unchecked.**
 
 **R — commercial redistribution of the source material is still unresolved.**
 The bank derives from the KRG Ministry of Interior / Directorate General of
