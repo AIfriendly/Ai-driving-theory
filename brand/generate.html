@@ -1,0 +1,30 @@
+<style>
+ body{margin:0;background:#888;font:0/0 sans-serif}
+ .p{width:1024px;height:1024px;display:grid;place-items:center;position:relative}
+ .p svg{width:660px;height:660px}
+ /* circular-crop guide is NOT rendered; mark sits inside 80% safe circle */
+ .a{background:#0f5f86} .a svg{color:#ffffff}
+ .b{background:#e29b00} .b svg{color:#161b26}
+ .c{background:#161b26} .c svg{color:#e29b00}
+ .ring{position:absolute;inset:96px;border-radius:50%;border:14px solid rgba(255,255,255,.16)}
+ .c .ring{border-color:rgba(226,155,0,.22)}
+ .b .ring{border-color:rgba(22,27,38,.16)}
+</style>
+<div class="p a" id="a"><div class="ring"></div>
+ <svg viewBox="0 0 48 48" fill="none">
+  <circle cx="24" cy="24" r="21" stroke="currentColor" stroke-width="4.6"/>
+  <circle cx="24" cy="24" r="6.5" fill="currentColor"/>
+  <path d="M24 3.5v14M8.5 33 20 26M39.5 33 28 26" stroke="currentColor" stroke-width="4.6" stroke-linecap="round"/>
+ </svg></div>
+<div class="p b" id="b"><div class="ring"></div>
+ <svg viewBox="0 0 48 48" fill="none">
+  <circle cx="24" cy="24" r="21" stroke="currentColor" stroke-width="4.6"/>
+  <circle cx="24" cy="24" r="6.5" fill="currentColor"/>
+  <path d="M24 3.5v14M8.5 33 20 26M39.5 33 28 26" stroke="currentColor" stroke-width="4.6" stroke-linecap="round"/>
+ </svg></div>
+<div class="p c" id="c"><div class="ring"></div>
+ <svg viewBox="0 0 48 48" fill="none">
+  <circle cx="24" cy="24" r="21" stroke="currentColor" stroke-width="4.6"/>
+  <circle cx="24" cy="24" r="6.5" fill="currentColor"/>
+  <path d="M24 3.5v14M8.5 33 20 26M39.5 33 28 26" stroke="currentColor" stroke-width="4.6" stroke-linecap="round"/>
+ </svg></div>
