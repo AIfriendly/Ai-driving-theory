@@ -43,6 +43,28 @@ migration), it does not depend on the repo name, and a bought domain attaches
 to it in one click. GitHub Pages costs nothing to leave running and covers a
 broken Cloudflare deploy.
 
+**The Worker URL is rented, not owned — and Cloudflare says so.** Their docs:
+*"your workers.dev subdomain is treated as a Free website and is intended for
+personal or hobby projects that aren't business-critical."* Phase 3 sells from
+this URL, so that caveat is aimed directly at the plan.
+
+What will *not* take the site down: traffic spikes (static is unlimited), this
+container being reclaimed (the deploy is independent), repo changes (the
+deployed Worker keeps serving; only future builds break), or inactivity —
+there is **no documented auto-deletion**, so it does not rot the way a gofile
+link does. What will: changing the subdomain or Worker name again (the old URL
+died instantly, confirmed by probe), an account problem, or a Cloudflare
+policy change — and against the last two there is no recourse.
+
+**This is precisely what the domain buys, and it is not aesthetics.** Today,
+if Cloudflare became a problem, the fix is to shrug and move. Once the URL is
+in a bio and on ten posted videos, moving means every published link is dead
+and unfixable — the videos are already out. With a bought domain pointed at
+this same Worker, any failure above is a five-minute re-point and every link
+ever published keeps working. **Sequencing stands: post first (waiting on $11
+costs more than the risk does at zero traffic), buy the domain before money
+changes hands, and certainly before Phase 3.**
+
 **Hard constraint on the owner's side: no TikTok app on the phone.** The owner
 has ADHD and is deliberately avoiding the app for addiction reasons. This is
 not a preference to optimise around — it rules out whole approaches. Anything
