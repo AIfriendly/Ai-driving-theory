@@ -210,7 +210,7 @@ Learned the hard way, and worth keeping:
 the development branch. The app is served at the site root:
 
 ```
-https://aifriendly.github.io/Ai-driving-theory/
+https://ai-driving-theory.tareeq.workers.dev/
 ```
 
 > **One-time setup:** in the repository's **Settings → Pages**, set

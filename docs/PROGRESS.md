@@ -33,8 +33,15 @@ local `origin` still points at the old name and works through the redirect).
 
 | Target | State |
 |---|---|
-| **GitHub Pages** | **LIVE** — https://aifriendly.github.io/Ai-driving-theory/ · ad recorder at `/ad.html` · first successful deploy 2026-08-18, run `32174909525` |
+| **Cloudflare Worker — THE LINK TO PUBLISH** | **LIVE** — https://ai-driving-theory.tareeq.workers.dev/ · `/ad.html` too · assets-only, served at no charge · this is the URL in `video/POSTING.md` |
+| GitHub Pages | LIVE, kept as fallback — https://aifriendly.github.io/Ai-driving-theory/ · first successful deploy 2026-08-18, run `32174909525` |
 | Claude artifact | current — https://claude.ai/code/artifact/c5c01665-6f71-4311-8309-246932861af4 · viewers on the share link see a *pinned earlier version*, so re-share from the page's share menu after publishing |
+
+**Both hosts serve the same file and both stay up.** Cloudflare is the one to
+advertise: it runs code (so Phase 3's FIB callback lands on the same host, no
+migration), it does not depend on the repo name, and a bought domain attaches
+to it in one click. GitHub Pages costs nothing to leave running and covers a
+broken Cloudflare deploy.
 
 **Hard constraint on the owner's side: no TikTok app on the phone.** The owner
 has ADHD and is deliberately avoiding the app for addiction reasons. This is
@@ -227,19 +234,19 @@ nobody came. Do not reorder without a reason.
       `startExam` defined and launching, **0 page errors**, no horizontal
       overflow.
 
-      **STOP — the URL contains the owner's phone number. Do not publish it.**
-      The account subdomain is `hama07705435002`, i.e. `0770 543 500x` in
-      Iraqi mobile format, so the address reads
-      `ai-driving-theory.hama07705435002.workers.dev`. Putting that in a
-      TikTok bio publishes the owner's personal number to their own local
-      community — and P6 plans to key unlock codes to buyers' phone numbers,
-      so this number is not a throwaway.
-      **Fix: Workers &amp; Pages → "Change" next to "Your subdomain"** (it is
-      changeable, not one-time). Suggested `tareeq`, giving
-      `ai-driving-theory.tareeq.workers.dev`. Existing `*.workers.dev` URLs
-      break on change — which is free today and expensive once ten clips carry
-      the link. **Cloudflare derives this subdomain from the account
-      automatically; nobody chose it, which is exactly why it gets missed.**
+      **Final URL: https://ai-driving-theory.tareeq.workers.dev/**
+
+      **RESOLVED — the first URL contained the owner's phone number.**
+      Cloudflare derived the account subdomain automatically as
+      `hama07705435002`, i.e. `0770 543 500x` in Iraqi mobile format, so the
+      address read `ai-driving-theory.hama07705435002.workers.dev`. That was
+      one step from a TikTok bio, which would have published the owner's
+      personal number to their own city — and P6 keys unlock codes to buyers'
+      phone numbers, so it is not a throwaway. Changed to `tareeq` at
+      **Workers &amp; Pages → "Change" next to "Your subdomain"** (changeable,
+      not one-time; the old `*.workers.dev` URL died immediately, confirmed by
+      probe). **Nobody picks this subdomain, which is exactly why it gets
+      missed — check it on any new Cloudflare account before publishing.**
 
       **Browser verification cannot reach the live URL from this
       environment.** Chromium does not inherit the agent proxy and dies with

@@ -30,7 +30,7 @@ clickable.
 **Description / bio link**
 ```
 بە شەو لەسەر ڕێگایەکی دووئاراستە بەرزترین خێرایی چەندە؟
-٧٤٥ پرسیاری تیۆری بەخۆڕایی: https://aifriendly.github.io/Ai-driving-theory/
+٧٤٥ پرسیاری تیۆری بەخۆڕایی: https://ai-driving-theory.tareeq.workers.dev/
 نافەرمی — بۆ ڕاهێنان تەنها.
 ```
 
@@ -57,7 +57,7 @@ clickable.
 **Description / bio link**
 ```
 لە کاتی وانەی شۆفێریدا فێرخواز سەرپێچییەکی هاتووچۆ دەکات. بەرپرس کێیە؟
-٧٤٥ پرسیاری تیۆری بەخۆڕایی: https://aifriendly.github.io/Ai-driving-theory/
+٧٤٥ پرسیاری تیۆری بەخۆڕایی: https://ai-driving-theory.tareeq.workers.dev/
 نافەرمی — بۆ ڕاهێنان تەنها.
 ```
 
@@ -84,7 +84,7 @@ clickable.
 **Description / bio link**
 ```
 بۆ ئەمبولانس لە هەرێمی کوردستان پەیوەندی بە چ ژمارەیەکەوە دەکەیت؟
-٧٤٥ پرسیاری تیۆری بەخۆڕایی: https://aifriendly.github.io/Ai-driving-theory/
+٧٤٥ پرسیاری تیۆری بەخۆڕایی: https://ai-driving-theory.tareeq.workers.dev/
 نافەرمی — بۆ ڕاهێنان تەنها.
 ```
 
@@ -111,7 +111,7 @@ clickable.
 **Description / bio link**
 ```
 بە گوریس ئۆتۆمبیلێکی تر ڕادەکێشیت. زۆرترین خێرایی چەندە؟
-٧٤٥ پرسیاری تیۆری بەخۆڕایی: https://aifriendly.github.io/Ai-driving-theory/
+٧٤٥ پرسیاری تیۆری بەخۆڕایی: https://ai-driving-theory.tareeq.workers.dev/
 نافەرمی — بۆ ڕاهێنان تەنها.
 ```
 
@@ -138,7 +138,7 @@ clickable.
 **Description / bio link**
 ```
 ژنی دووگیان چۆن دەبێت پشتێنی سەلامەتی ببەستێت؟
-٧٤٥ پرسیاری تیۆری بەخۆڕایی: https://aifriendly.github.io/Ai-driving-theory/
+٧٤٥ پرسیاری تیۆری بەخۆڕایی: https://ai-driving-theory.tareeq.workers.dev/
 نافەرمی — بۆ ڕاهێنان تەنها.
 ```
 
@@ -165,7 +165,7 @@ clickable.
 **Description / bio link**
 ```
 چرایەکی هاتوچۆ تیرێکی سەوز پیشان دەدات نەک چرایەکی سەوزی خڕ. کێ دەتوانێت بڕوات؟
-٧٤٥ پرسیاری تیۆری بەخۆڕایی: https://aifriendly.github.io/Ai-driving-theory/
+٧٤٥ پرسیاری تیۆری بەخۆڕایی: https://ai-driving-theory.tareeq.workers.dev/
 نافەرمی — بۆ ڕاهێنان تەنها.
 ```
 
@@ -192,7 +192,7 @@ clickable.
 **Description / bio link**
 ```
 مافی پێشینە بۆ کامیانە؟
-٧٤٥ پرسیاری تیۆری بەخۆڕایی: https://aifriendly.github.io/Ai-driving-theory/
+٧٤٥ پرسیاری تیۆری بەخۆڕایی: https://ai-driving-theory.tareeq.workers.dev/
 نافەرمی — بۆ ڕاهێنان تەنها.
 ```
 
@@ -219,7 +219,7 @@ clickable.
 **Description / bio link**
 ```
 بە خێرایی ٣٠ کم/کاتژمێر چەند دوور لە دوای ئۆتۆمبیلی پێشەوە بمێنیتەوە؟
-٧٤٥ پرسیاری تیۆری بەخۆڕایی: https://aifriendly.github.io/Ai-driving-theory/
+٧٤٥ پرسیاری تیۆری بەخۆڕایی: https://ai-driving-theory.tareeq.workers.dev/
 نافەرمی — بۆ ڕاهێنان تەنها.
 ```
 
@@ -246,7 +246,7 @@ clickable.
 **Description / bio link**
 ```
 هێڵێکی زەردی بەردەوام لەسەر لێواری ڕێگا هەیە لەو شوێنەی دەتەوێت پارک بکەیت. ئایا پارککردن ڕێگەپێدراوە؟
-٧٤٥ پرسیاری تیۆری بەخۆڕایی: https://aifriendly.github.io/Ai-driving-theory/
+٧٤٥ پرسیاری تیۆری بەخۆڕایی: https://ai-driving-theory.tareeq.workers.dev/
 نافەرمی — بۆ ڕاهێنان تەنها.
 ```
 
@@ -273,7 +273,7 @@ clickable.
 **Description / bio link**
 ```
 سزای ڕێگەدان بە کەسی بێ مۆڵەت بۆ لێخوڕینی ئۆتۆمبیلەکەت چییە؟
-٧٤٥ پرسیاری تیۆری بەخۆڕایی: https://aifriendly.github.io/Ai-driving-theory/
+٧٤٥ پرسیاری تیۆری بەخۆڕایی: https://ai-driving-theory.tareeq.workers.dev/
 نافەرمی — بۆ ڕاهێنان تەنها.
 ```
 
