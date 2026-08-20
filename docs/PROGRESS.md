@@ -755,6 +755,21 @@ one sale, not the bank. Replace with a server check when revenue justifies it.
 technical.** Researched 2026-08-19. This resolves the FIB half of the open
 question below.
 
+**UPDATE 2026-08-19: P1's architectural blocker is GONE.** This file said
+"Phase 3 forces a host change because Pages cannot run code." That is no
+longer true — the app is live on a Cloudflare Worker, which runs code, so the
+FIB callback and entitlement check land on the **same host with no migration
+and no purchase**. `ai-driving-theory.tareeq.workers.dev` is already a public
+HTTPS callback URL, which is all FIB asks for; **a custom domain was never a
+requirement and does not help.** The only remaining blocker is the Iraqi
+company below.
+
+**Adding the backend does not make the site billable.** The Worker is
+currently assets-only, so nothing counts against any quota. Adding API routes
+means only *those* routes invoke the script and count toward 100,000/day;
+static asset requests stay free and unlimited. Payment callbacks are a few
+requests per sale — the cap is around five orders of magnitude away.
+
 *The domain is not a prerequisite and nobody should assume it is.* FIB requires
 a **public HTTPS callback URL**, not a custom one — any free host subdomain
 (`*.onrender.com`, `*.workers.dev`, `*.fly.dev`) satisfies it. Buying a domain
