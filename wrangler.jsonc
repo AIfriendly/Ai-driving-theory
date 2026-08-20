@@ -1,0 +1,19 @@
+{
+  // Cloudflare Workers deploy config. The dashboard build runs `npx wrangler
+  // deploy` from the repo root, and without this file wrangler has no idea the
+  // site lives in web/ — the build goes green and serves nothing.
+  //
+  // This is an assets-only Worker: no `main`, no script, just static files.
+  // Every request is served from the asset store, which is free and unlimited
+  // on the Workers Free plan. Only Worker *script* invocations count against
+  // the 100,000/day cap, and there is no script here, so nothing counts.
+  //
+  // `name` must match the Worker created in the dashboard, or wrangler
+  // deploys to a differently-named Worker and the URL you are testing stays
+  // stale.
+  "name": "ai-driving-theory",
+  "compatibility_date": "2026-08-01",
+  "assets": {
+    "directory": "./web"
+  }
+}
