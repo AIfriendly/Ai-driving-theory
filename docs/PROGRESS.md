@@ -869,6 +869,38 @@ standing cadence**, and it gets cheaper then because Cloudflare Pages
 Functions will already be serving as the stable HTTPS redirect URI the OAuth
 flow needs — the same host as the FIB callback.
 
+**T4 — a hosted third-party scheduler, which beats all three.** Asked
+2026-08-19. The distinction that matters:
+
+- **Hosted SaaS (Buffer, Publer, Metricool) posts through *their* audited
+  TikTok client.** You connect by OAuth and publish publicly on day one — no
+  audit, no server, no OAuth code. This is the shortcut.
+- **Self-hosted open source (Postiz, Mixpost) does NOT inherit anyone's
+  audit.** Both require registering *your own* developer app per platform, so
+  you land back in T3's audit plus a $5–10/mo VPS. **Strictly worse than doing
+  nothing** — and worth recording because "open source and self-hosted" reads
+  like the obvious free answer and is a trap here.
+
+**The real gain is cross-posting, not TikTok scheduling.** TikTok's native
+scheduler is already free and unlimited, where Buffer's free tier caps at 10
+queued per channel. But Buffer free connects **3 channels — TikTok, YouTube
+Shorts and Instagram Reels** — and the clips are already 1080×1920 with the
+Kurdish voice baked in, so all three take them unmodified. This file already
+notes YouTube and Instagram have weaker in-app sound libraries; baked-in audio
+is therefore an *advantage* there rather than the loss it is on TikTok. Same
+ten clips, three platforms, one setup. Buffer free needs no card and refills
+the 10 slots per channel as posts publish.
+
+**Two setup catches, both of which reintroduce the phone-app constraint if
+missed:**
+- **TikTok must be a Business profile** for Buffer to auto-publish. Free to
+  switch; the Commercial-Sounds-only restriction is irrelevant with baked-in
+  audio.
+- **Instagram personal profiles get reminder-based publishing only** — a
+  notification you must finish *in the Instagram app*, which is exactly the
+  disqualifier that killed TikTok's draft flow. Needs a Business or Creator
+  profile for true automatic posting, or spend the third channel elsewhere.
+
 **Web upload requires no phone app**, which is the practical answer for now:
 tiktok.com in a desktop browser uploads, captions, schedules and shows
 analytics. Smaller sound library than the app; irrelevant once voice is baked
