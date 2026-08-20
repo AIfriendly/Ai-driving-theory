@@ -219,10 +219,36 @@ nobody came. Do not reorder without a reason.
       so the site still showed nothing and looked broken — the workflow has to
       run again), and the page shipped with no viewport meta, so phones laid
       out at ~980px and scaled the app to half-width until `d659882`.
-- [~] **Cloudflare deploy started 2026-08-19, not finished.** Worker is named
-      **`ai-driving-theory`** (the repo name, not the brand — see the naming
-      decision below). Config committed at `wrangler.jsonc` (`0661a62`).
-      **Blocked on one human action: the `workers.dev` URL is not enabled.**
+- [x] **Cloudflare Worker is LIVE and browser-verified 2026-08-19.**
+      Worker `ai-driving-theory`, config at `wrangler.jsonc` (`0661a62`).
+      Serves 1,052,116 bytes — byte-identical to `web/index.html` — plus
+      `/ad.html`. Executed the *deployed* bytes in Chromium at 390px:
+      viewport meta present, **10 home tiles**, 15 interactive elements,
+      `startExam` defined and launching, **0 page errors**, no horizontal
+      overflow.
+
+      **STOP — the URL contains the owner's phone number. Do not publish it.**
+      The account subdomain is `hama07705435002`, i.e. `0770 543 500x` in
+      Iraqi mobile format, so the address reads
+      `ai-driving-theory.hama07705435002.workers.dev`. Putting that in a
+      TikTok bio publishes the owner's personal number to their own local
+      community — and P6 plans to key unlock codes to buyers' phone numbers,
+      so this number is not a throwaway.
+      **Fix: Workers &amp; Pages → "Change" next to "Your subdomain"** (it is
+      changeable, not one-time). Suggested `tareeq`, giving
+      `ai-driving-theory.tareeq.workers.dev`. Existing `*.workers.dev` URLs
+      break on change — which is free today and expensive once ten clips carry
+      the link. **Cloudflare derives this subdomain from the account
+      automatically; nobody chose it, which is exactly why it gets missed.**
+
+      **Browser verification cannot reach the live URL from this
+      environment.** Chromium does not inherit the agent proxy and dies with
+      `ERR_CONNECTION_RESET`; do not fix that by disabling TLS. Working
+      recipe: `curl` the deployed bytes to a file, serve that file from a
+      throwaway `node:http` server on 127.0.0.1, and point playwright-core at
+      localhost. That still verifies the real deployed bytes execute — curl
+      already proves the network path — and it is how the numbers above were
+      obtained.
 
       Three traps hit in the first twenty minutes, all recorded because none
       announced itself:
