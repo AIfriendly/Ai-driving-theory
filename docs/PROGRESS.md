@@ -901,6 +901,39 @@ missed:**
   disqualifier that killed TikTok's draft flow. Needs a Business or Creator
   profile for true automatic posting, or spend the third channel elsewhere.
 
+**Upload-Post (API-first wrapper) — checked 2026-08-19, priced out for
+TikTok.** Read from their own `llms-full.txt`, not a review site:
+
+- **The free plan explicitly excludes TikTok.** Verbatim: *"Free plan: 10
+  uploads/month; platforms without TikTok (Instagram, LinkedIn, YouTube,
+  Facebook, X, Threads, Pinterest, Reddit, Bluesky)."* Cheapest tier with
+  TikTok is **Basic, $24/mo or $16/mo billed annually = $192/yr** — sixteen
+  times the domain the owner has just declined, for the one platform that
+  matters most.
+- **Two admissions in their own docs, both against their commercial
+  interest**, and worth more than the usual creator folklore for that reason:
+  1. Their *recommended* TikTok mode is **Draft** (`post_mode=MEDIA_UPLOAD`),
+     which *"lands in the user's TikTok inbox/drafts, and the caption and
+     settings are added in the app before publishing"* — the precise flow the
+     no-phone-app constraint rules out.
+  2. *"Publishing natively from inside the TikTok app tends to earn more
+     organic reach than posting directly via the API."* **This cuts against
+     the entire automation direction** for a new account, where reach is the
+     only thing that matters. Treat it as one vendor's claim, but note who is
+     making it.
+
+**Where it does earn a place: everything except TikTok.** The free tier (10
+uploads/mo, 2 profiles, no card) covers YouTube, Instagram, Reddit, Bluesky,
+X, Threads, Pinterest, LinkedIn and Facebook — and the batch is exactly 10.
+It also ships an **MCP server and a Claude Code plugin**, so a session can do
+this posting directly rather than handing the owner a checklist.
+
+**So the standing plan is the hybrid: post TikTok by hand on the web for the
+reach, fan the same ten clips out everywhere else with Upload-Post free.**
+Unresolved: whether one call to N platforms bills as 1 upload or N — their
+docs do not say, and it decides whether 10 clips fit the free tier across
+multiple platforms or only one.
+
 **Web upload requires no phone app**, which is the practical answer for now:
 tiktok.com in a desktop browser uploads, captions, schedules and shows
 analytics. Smaller sound library than the app; irrelevant once voice is baked
