@@ -494,6 +494,20 @@ Nothing below has been started.
 **The creative is built and verified — 16 clips are ready to post.** See
 *Ad creative* below. What is left here is the posting itself.
 
+- [ ] **Switch the account to BUSINESS before posting the first clip.** Not a
+      preference — **a personal account has no clickable bio link until 1,000
+      followers**, and a Business account gets one at zero. Every clip ends on
+      *لینک لە بایۆ* (link in bio), so posting from a personal account means
+      ten videos pointing at a link that does not exist. This would have
+      broken the whole funnel silently.
+      The usual objection — Business loses the trending-sound library — is
+      already void here, because the voice is baked in and there is no
+      trending sound to lose. Business also unlocks third-party schedulers and
+      real analytics. The only loss is Creator Rewards eligibility, i.e.
+      TikTok paying for views, which is irrelevant when the product is the
+      app. Set the bio link to
+      **https://ai-driving-theory.tareeq.workers.dev/** in the same sitting.
+
 - [ ] Post to TikTok and watch what happens. This is the cheap experiment and
       the whole reason the free tier exists. Suggested order, strongest hook
       first: mirrors, alley, helmet, burn, green, then the three sign rounds.
@@ -775,6 +789,20 @@ file means anyone reading the source can bypass it, and the salt is in the
 client so a determined user can mint codes. It is survivable only because the
 gate protects a *feature* while the question text stays free — a bypass costs
 one sale, not the bank. Replace with a server check when revenue justifies it.
+
+**No sign-in is needed, for either payment route — this is a design choice,
+not a gap.** Asked 2026-08-19. The app has no accounts and does not need any:
+entitlement keys to the buyer's normalised phone number, so there are no
+passwords, no account recovery, no PII on a server, and the offline property
+survives. **The code is deterministic** — the same phone number always yields
+the same code — so a buyer who clears their browser or changes phone is
+re-issued their exact code in seconds, or simply re-enters the one they saved.
+Two limits to state plainly when writing the strings: entitlement lives in
+localStorage and is therefore per-browser, and the honour-system caveat above.
+Even the P7 FIB integration needs no login; entitlement keys to the phone
+number server-side. **Accounts only become worth building for cross-device
+sync or to genuinely stop code sharing** — neither is a problem worth solving
+before there is revenue.
 
 **P7 — the FIB API is documented and buildable; the blocker is corporate, not
 technical.** Researched 2026-08-19. This resolves the FIB half of the open
