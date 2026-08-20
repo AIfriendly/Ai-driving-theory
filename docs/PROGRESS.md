@@ -219,6 +219,42 @@ nobody came. Do not reorder without a reason.
       so the site still showed nothing and looked broken — the workflow has to
       run again), and the page shipped with no viewport meta, so phones laid
       out at ~980px and scaled the app to half-width until `d659882`.
+- [~] **Cloudflare deploy started 2026-08-19, not finished.** Worker is named
+      **`ai-driving-theory`** (the repo name, not the brand — see the naming
+      decision below). Config committed at `wrangler.jsonc` (`0661a62`).
+      **Blocked on one human action: the `workers.dev` URL is not enabled.**
+
+      Three traps hit in the first twenty minutes, all recorded because none
+      announced itself:
+
+      1. **"Connect to Git" for a static site creates a *Worker*, not a Pages
+         static build.** The dashboard set Deploy command `npx wrangler deploy`
+         and Root directory `/`. There is **no build-output-directory field**
+         on that path, so nothing pointed at `web/`.
+      2. **With no wrangler config in the repo, that build goes green and
+         serves nothing.** It reported success in 38s having deployed a
+         placeholder. Identical in shape to the Pages runs that were green for
+         months while the site was never deployed — *a green build is not a
+         working site*, now proven on two different hosts. `wrangler.jsonc`
+         fixes it: assets-only Worker, `assets.directory = ./web`, no `main`.
+         **`name` must match the Worker in the dashboard** or wrangler deploys
+         to a differently-named Worker while you test a stale URL.
+      3. **New Workers ship with the `workers.dev` subdomain DISABLED.** The
+         Overview shows `No URLs enabled` and nothing resolves — which looks
+         exactly like a broken deploy. Enable at ··· → Settings → Domains &
+         Routes. Not a mistake on the owner's side; it is the current default.
+
+      **Confirmed free, from Cloudflare's own dashboard:** *"Metrics is
+      unavailable for Workers with only static assets. Requests for this kind
+      of Worker are served at no charge."* That is the cost analysis above
+      verified in situ — an assets-only Worker never invokes a script, so
+      nothing counts against the 100,000/day cap.
+
+      **Naming decision still open.** The URL will be
+      `ai-driving-theory.<account>.workers.dev` — not Tareeq, and tied to a
+      repo name this project has already changed once. Free to fix now,
+      expensive once it is in a bio. Ask before publishing anything.
+
 - [ ] Buy a domain and point it at Pages (Settings → Pages → Custom domain).
       `aifriendly.github.io/Ai-driving-theory/` converts badly from social,
       depends on the repo name (**this repo was already renamed once**), and
