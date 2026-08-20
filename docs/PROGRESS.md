@@ -497,6 +497,31 @@ Nothing below has been started.
 - [ ] Post to TikTok and watch what happens. This is the cheap experiment and
       the whole reason the free tier exists. Suggested order, strongest hook
       first: mirrors, alley, helmet, burn, green, then the three sign rounds.
+
+      **Cadence, decided 2026-08-19: post 2–3, then STOP for 48 hours and read
+      the result before posting the rest.** Then one per day, same time,
+      evening in Kurdistan (roughly 19:00–22:00, UTC+3).
+
+      Not all ten at once, for three reasons:
+      1. **It confounds the experiment.** Each video gets tested on ~100–500
+         people first (see *Distribution*); ten landing together compete for
+         the same pool, so a weak result cannot be distinguished from
+         crowding.
+      2. **The ten clips are a finite asset** — re-rendering costs the TTS
+         pipeline and real effort. Spending all ten before learning which hook
+         lands throws away the only information the batch can buy.
+      3. **Burst-then-silence is a worse pattern than a steady trickle** for a
+         new account, and ten videos on day one from an account with no
+         history reads as spam.
+
+      **The stop-and-read step is the one people skip.** The video files are
+      fixed, but captions and hashtags are not, and they carry much of the
+      weight — so a winning hook should change how the remaining clips are
+      captioned. **Do not pre-schedule more than 2–3 ahead** even though the
+      scheduler allows 10 days; scheduling the whole batch hands away the
+      ability to react. Lead with the strongest hooks (night speed,
+      unlicensed penalty, ambulance number) because a new account's first
+      posts calibrate who TikTok shows it to.
 - [ ] Add a trending sound in-app to each one. The clips ship silent on
       purpose — see the music note below.
 - [ ] Use the comments to settle the KRG fee question (see *open questions*) —
