@@ -9,7 +9,9 @@
     "render:all": "node render-all.mjs",
     "check": "node scripts/check-safe-zones.mjs night-ku instructor-ku ambulance-ku towing-ku pregnant-ku arrow-ku priority-ku gap-ku kerb-ku unlicensed-ku",
     "voice": "node --experimental-strip-types scripts/gen-voice.mjs",
-    "upload": "node scripts/upload-gofile.mjs"
+    "upload": "node scripts/upload-gofile.mjs",
+    "bundle": "node scripts/bundle-posts.mjs",
+    "upload:bundle": "node scripts/bundle-posts.mjs && node scripts/upload-bundle.mjs"
   },
   "dependencies": {
     "@fontsource/noto-kufi-arabic": "^5.1.0",
