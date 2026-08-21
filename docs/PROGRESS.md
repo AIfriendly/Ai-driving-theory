@@ -1087,6 +1087,31 @@ X, Threads, Pinterest, LinkedIn and Facebook — and the batch is exactly 10.
 It also ships an **MCP server and a Claude Code plugin**, so a session can do
 this posting directly rather than handing the owner a checklist.
 
+**Make.com and Zapier cannot post to TikTok. Checked 2026-08-19 — do not
+re-explore this.** Zapier's TikTok integration covers lead generation and ads
+conversion tracking only; its own community confirms publishing is still
+unsupported in 2026 and its recommended workaround is to route through Buffer.
+Make has a TikTok *trigger* (fires on upload) but **no posting action** — a
+long-standing open request on its own Canny board — and its workaround is to
+route through Upload-Post or TokPortal. Either one is therefore a **paid
+middleman in front of tools already evaluated above**: two subscriptions to do
+what Buffer's free tier does alone.
+
+**The pattern, recorded so the next session stops re-deriving it.** Four
+routes have now been checked — TikTok's API direct (T1–T3), hosted schedulers
+(T4), Upload-Post, and Make/Zapier. Every one converges on the same answer,
+because the arithmetic does not move: **ten videos × ~4 minutes is ~40 minutes
+once**, while any automation costs hours plus a subscription, still needs an
+audited client, and posts with less reach by the vendors' own admission. The
+arithmetic only flips at a standing weekly cadence.
+
+**And the owner's real constraint is not clicking — it is the TikTok app on
+the phone.** Automation was never what protected against that; **the browser
+is.** tiktok.com on desktop uploads, captions, schedules and reports analytics
+with the app nowhere near the phone. That constraint is already solved, so
+automation would only be saving clicks. Say this plainly rather than
+re-costing the tools a fifth time.
+
 **So the standing plan is the hybrid: post TikTok by hand on the web for the
 reach, fan the same ten clips out everywhere else with Upload-Post free.**
 Unresolved: whether one call to N platforms bills as 1 upload or N — their
