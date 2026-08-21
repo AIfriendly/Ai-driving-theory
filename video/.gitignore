@@ -2,3 +2,4 @@ node_modules/
 out/
 # Generated voice — reproducible with `npm run voice`, and large
 public/audio/*.wav
+bundle/
