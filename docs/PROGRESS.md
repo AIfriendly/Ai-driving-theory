@@ -183,7 +183,9 @@ owner — most of all anything that assumes the TikTok app is on their phone.
       1.05 MB, deployed bytes execute — 10 home tiles, 587/587 guide tips
       illustrated, mock exam launches, zero page errors.
 - [x] **Voiced batch of 10 built and delivered** — `d88b314`, gofile fix
-      `183c3e0`. **https://gofile.io/d/4pkWXKOg** (10 MP4s + POSTING.md),
+      `183c3e0`. **https://gofile.io/d/oHtGSroZ** (paired bundle: 10 MP4s each beside
+      its own `NN-name.txt` caption/tags/description, plus `00-START-HERE.txt`;
+      built by `npm run bundle`, earlier flat upload `4pkWXKOg`),
       re-uploaded 2026-08-19 and verified; the original `6C6fLr7d` was left
       unverified because **gofile expires inactive guest content** and its API
       now gates folder listing behind premium, so a 200 on the page proves
@@ -1419,3 +1421,28 @@ heredoc (`<< 'PYEOF'`), which passes the bytes through untouched. This has now
 cost time twice — and note it bit this very file: an Edit whose `old_string`
 was copied from a rendered view of the line above silently lost the glyphs and
 failed to match.
+
+---
+
+## Handoff bundle
+
+`npm run bundle` in `video/` splits `POSTING.md` into one `.txt` per clip
+beside its `.mp4`, numbered `01`–`10` so a flat gofile listing carries the
+running order on its own. `npm run upload:bundle` posts the folder and prints
+one link. **`POSTING.md` stays the source of truth** — the bundle is generated
+from it, so edit the markdown and rebuild, never the other way round.
+
+Two things this cost, both worth not repeating:
+
+- **JavaScript has no `\z`.** The block regex terminated each clip by looking
+  ahead to the next `## `, so the final clip never closed and the split
+  returned **9 of 10 silently**. Caught only because the script asserts the
+  count. A trailing `"\n## \n"` sentinel fixes it. Assert the count on any
+  parse whose input is supposed to have a known length.
+- **Paths in a nested `.gitignore` are relative to that file's directory.**
+  Writing `video/bundle/` inside `video/.gitignore` means
+  `video/video/bundle/`, so 21 files and 35 MB of MP4 were committed and
+  pushed — the exact duplication `out/` is ignored to prevent. The entry must
+  be `bundle/`. Fixed by amend plus `--force-with-lease` while the commit was
+  still the tip; verify with `git check-ignore -v <path>` rather than trusting
+  that the line looks right.
