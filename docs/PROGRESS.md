@@ -1770,3 +1770,95 @@ around it — enlarge or diff before deciding something isn't rendering.**
   lighting, three full mirror re-renders) makes real mobile GPU performance
   more of an open question than it was for the lighter hand-written build,
   not less.
+
+**Fourth pass, same session: real 3D models, not procedural geometry.**
+Still not satisfied after Three.js ("I still don't like this... 3D ultra
+realistic"), and asked to search for a better library, with SVG floated as
+an option. Neither would have closed the actual gap, so said so plainly
+before touching code: no web 3D library is meaningfully better than
+Three.js for this, and SVG is 2D vector art — a step backward, not toward
+"ultra realistic 3D". The real gap was never the renderer, it was that
+every shape (car, trees, buildings) was procedurally generated from boxes/
+cylinders/cones — no code library fixes that, only real 3D art does. Laid
+out the honest fork (`AskUserQuestion`): accept procedural as the ceiling,
+add real downloaded models, or drop the single-file constraint entirely
+for a real build+asset pipeline. **Chosen: real downloaded models.**
+
+- **Source: Kenney's "Starter Kit: Racing"**
+  (github.com/KenneyNL/Starter-Kit-Racing), **CC0 1.0** — public domain,
+  no attribution required, confirmed by reading the repo's own README
+  ("3D Models & sounds (CC0 licensed)") before using anything, not assumed.
+  Cloned via `add_repo`/git rather than scraped — poly.pizza and itch.io
+  both sit behind Cloudflare bot-challenge pages that blocked a plain
+  `curl`; the same assets are mirrored on GitHub, which the session's git
+  proxy serves directly.
+- **What was used:** `vehicle-truck-red.glb` (the pack has trucks and a
+  motorcycle, no sedan — a truck reads as a real road vehicle, not
+  perfectly car-shaped, and that trade-off was made for reliability/time
+  rather than holding out for a sedan-specific pack of uncertain license)
+  as the exterior body, and `decoration-forest.glb` (a multi-tree cluster,
+  not a single tree) instanced along the roadside in place of the
+  procedural cone-and-cylinder trees. Both share one small (10KB) texture
+  atlas.
+- **Made genuinely self-contained, not just downloaded.** Both source GLBs
+  reference their texture by a relative file path
+  (`Textures/colormap.png`) rather than embedding it — unusual for `.glb`
+  but valid per the glTF spec. Re-packed both with a Python script that
+  parses the GLB JSON+BIN chunks, swaps the image `uri` for a base64
+  `data:image/png` URI of the actual texture, and re-serializes a spec-
+  correct GLB (4-byte-aligned JSON chunk padded with spaces, BIN chunk
+  padded with zeros) — so the embedded copies have zero external file
+  references, matching every other asset in this file. Verified this
+  worked by actually loading both through `THREE.GLTFLoader` in a headless
+  browser before wiring anything into the app, not by assuming the
+  re-pack was correct.
+- **The 600KB+200KB blobs never passed through the assistant's own
+  context** — same discipline as inlining Three.js itself: a Python/bash
+  script spliced the base64 directly into `index.html` on disk.
+- **`GLTFLoader.js` (Three r128, the matching non-module build) is
+  inlined as its own `<script>` block**, same reasoning as the Three.js
+  core: a CDN reference would violate no-network-calls and the Artifact
+  CSP.
+- **Real payoff, not just a swap:** the truck has actual body panel
+  shape, a textured paint job, and real tire/rim geometry — reads as an
+  actual vehicle from the chase camera, not a red box. The named node
+  structure Kenney ships (`wheel-front-left/right`, `wheel-back-left/
+  right`, `body`) was used directly: each wheel still spins with speed
+  like before, and the **front two now also turn visually with the
+  steering input** — a detail the procedural build never had, since it
+  never had distinct front/rear wheel objects to steer independently.
+  Trees are now recognizable tree clusters with foliage texture instead
+  of flat-colour cones.
+- **Cost, stated plainly, again:** file grew from ~1.7MB/~446KB gzipped to
+  **~2.2MB raw / ~590KB gzipped** (measured directly) — roughly another
+  144KB gzipped on top of the Three.js jump, for the two models plus their
+  loader. Three rebuilds into this same session, the file has now more
+  than doubled from where it started (~300KB gzipped) purely in service of
+  this one screen's visual fidelity. Restated once more because it keeps
+  being true: this is the TikTok-funnel app's own load-speed priority
+  being traded away, deliberately, on the owner's informed and repeated
+  choice.
+- **Model loading is asynchronous** (`GLTFLoader.parse()` resolves on a
+  microtask even for an in-memory buffer, not synchronously) — the car and
+  tree groups exist as empty `THREE.Group`/counted arrays from the first
+  frame and populate themselves a moment later when the parse resolves;
+  nothing in `simTick()`/`simDraw()` had to change to accommodate this
+  since it was already written to tolerate empty wheel arrays.
+- **Interior is still procedural** — this pack has no cabin/dashboard
+  model, so the hand-built dashboard, seats, steering wheel and mirrors
+  from the Three.js pass are unchanged. If "more detailed" is still the
+  verdict specifically on the cockpit view, that's the next thing a real
+  asset would need to target.
+
+**Verified live again, the same way as every pass**: fetched and license-
+checked before use, re-packed GLBs test-loaded standalone first (catching
+nothing, but not assumed clean either), then the full app re-tested in
+headless Chromium — chase-cam view of the real truck, cockpit view
+unaffected, front wheels visibly turning with steering input, and a
+scripted checkpoint round-trip. Zero console errors.
+
+**Not done / open, on top of everything above:** the truck-not-car
+shape is a real, visible trade-off if anyone looks closely; interior
+detail didn't change this pass; and the file-size trajectory across four
+rounds in one session is worth a deliberate stop-and-look before a fifth,
+whatever "still not realistic enough" turns out to mean next.
