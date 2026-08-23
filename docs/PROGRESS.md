@@ -100,6 +100,27 @@ owner — most of all anything that assumes the TikTok app is on their phone.
 
 ## Done
 
+- [x] **Driving-sim cockpit: real hands on the wheel + leather interior** —
+      `0bf2be2`. The owner's repeated ask ("put my hand on the brake, the
+      drive, the neutral grip… make it realistic") was unmet — the cockpit was
+      a bare grey plastic torus with no driver. Now two modeled hands grip the
+      rim at 9 and 3 (built from rounded forms: back-of-hand, palm heel, four
+      fingers curling over the rim, a thumb, wrist + forearm receding to the
+      lap), parented to the wheel group so they turn with the steering. Rim is
+      photographic leather (the seats' CC0 map, tinted near-black, tiled
+      tight); dished horn-pad hub; leather shift boot + chromed stalk + leather
+      knob; dash picks up leather grain; a cabin fill light lifts it out of
+      shadow. Verified headless in cockpit **and** chase views — 0 page errors,
+      exterior model unaffected.
+      - **How to verify the sim visually from this environment** (Chromium does
+        not inherit the agent proxy — see the Cloudflare notes): `npm install
+        --no-save playwright-core` (the browser binaries are pre-installed at
+        `/opt/pw-browsers`, no download), serve `web/` from a throwaway
+        `node:http` server on 127.0.0.1, launch with
+        `executablePath:'/opt/pw-browsers/chromium-1194/chrome-linux/chrome'`
+        and `--use-gl=angle --use-angle=swiftshader`. `SIM` is closure-scoped,
+        not global — drive the sim through `window.startSim(n)` /
+        `window.simSetGear` / canvas pointer drag, not by touching `SIM`.
 - [x] Question bank built out to 736 active questions — `ab95e2f`
 - [x] Every question carries a visual; concept-icon library + keyword
       fallback so nothing renders text-only — `ab95e2f`
