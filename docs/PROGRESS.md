@@ -1446,3 +1446,94 @@ Two things this cost, both worth not repeating:
   be `bundle/`. Fixed by amend plus `--force-with-lease` while the commit was
   still the tip; verify with `git check-ignore -v <path>` rather than trusting
   that the line looks right.
+
+---
+
+## Driving simulation
+
+Built this session, in `web/index.html` — a new "Driving Simulation" screen,
+placed on Home right next to Mock Exam (the "final test" framing the owner
+asked for). Same single-file, no-build-step, no-network app; no new file, no
+dependency.
+
+**Asked for pygame; built browser-native JS/canvas instead, with the owner's
+sign-off.** pygame is a desktop-only library — it cannot run in a phone
+browser without a WASM compile step (pygbag), and this app's whole traffic
+plan is mobile TikTok visitors. Given the choice
+(`AskUserQuestion`), the owner picked a pseudo-3D first-person road rendered
+on `<canvas>`, embedded directly in `index.html` like every other screen. No
+build pipeline was added — this stays true to `web/README.md`'s constraints.
+
+**Scope, also chosen by the owner:** build the engine + framework for every
+set now, real content later. Concretely:
+
+- One route per set, reusing the exact same `QUESTIONS.slice(n*SET_SIZE,...)`
+  partition `renderSets()` already uses — currently 15 sets (`Math.ceil(745/50)`),
+  automatically whatever that number is if the bank grows.
+- One checkpoint per question, spaced along a procedurally generated road
+  (deterministic per set — seeded on the set index, so a set's route is
+  stable across replays). Reaching a checkpoint freezes the car and shows
+  that question as an overlay card (reusing the real question/options/
+  explanation, and the sign/scene SVG when the question has one); answering
+  resumes the drive. A generic warning-triangle sprite grows on the roadside
+  as each checkpoint approaches — **not** bespoke hazard art per question.
+  That's the deliberate content cut: 750 unique hand-built scenarios was
+  explicitly ruled out of scope for this pass.
+- Controls: on-screen ◀ ▶ steer buttons + a brake button (mobile-first, no
+  gas pedal — the car auto-cruises), mirrored on keyboard (arrows/WASD/Space)
+  for desktop testing.
+- **Finishing a route feeds the existing `finish()` → `renderResults()`
+  pipeline** — the same one the mock exam and practice sets use. This was a
+  deliberate design choice, not a shortcut: sim answers update SRS,
+  mistakes, category mastery and achievements exactly like any other
+  question-answering flow, and the pass/fail score screen, 80% line and
+  review-by-question list all come for free. New store key `st.simBest[n]`
+  holds the best score per set, separate from `st.best`/`st.exams` (which
+  stay scoped to the real 20-question mock exam format and are not touched
+  by sim runs).
+
+**Verified live, not just read.** Syntax-checked with `node -e "new
+Function(...)"`, then actually driven in headless Chromium (Playwright,
+pre-installed in this environment) against a local static server: navigated
+Home → sim set list → in-game, steered, watched a checkpoint trigger and
+answered it, then scripted a full 50-question run to completion and
+confirmed the results screen, category breakdown, a real achievement firing,
+and `simBest` persisting to `localStorage` — zero console errors throughout.
+Screenshots were read back to check the canvas actually renders a road, not
+just that no exception was thrown.
+
+**Two real bugs the live check caught, both fixed:**
+- **RTL (Kurdish, the default) mirrored the physical steer buttons** — the
+  DOM order was left-then-right, so under `dir="rtl"` the grid visually
+  reversed and the button showing "▶" ended up on the physical left,
+  meaning the left button steered right. Fixed with `direction:ltr` on
+  `.simctrls` — steering is spatial, not text, and must not follow reading
+  direction.
+- **The HUD's "1 / 50" reversed to "50 / 1"** — a bare `/` between two
+  number runs is bidi-neutral, so inside the app's RTL default the whole
+  expression got reordered. Same fix, `direction:ltr` on `.simhud .pill`.
+  (The rest of the app dodges this by using words between numbers — "١ لە
+  ٥٠" — which anchor the direction; the HUD needed the CSS version since a
+  numeric-only game readout reads oddly with words inserted.)
+
+**Not done, deliberately or by scope cut — read before touching this next:**
+- **No real device/touch testing.** Verified with Playwright's mouse-emulated
+  pointer events standing in for touch; never opened on an actual phone.
+  Button hit-targets, canvas sizing on real viewport quirks (notches, browser
+  chrome resizing on scroll) and actual touch-and-drag behavior are unchecked.
+- **Kurdish strings for this feature (`simB`, `simD`, `simPlayHint`,
+  `simLeft/Right/Brake/Drive`, `simExitConfirm`) are a first-pass translation,
+  not reviewed by a native speaker** — same caveat already on record for the
+  TTS voice in *Ad creative*. Don't assume they're natural phrasing.
+- **Speed/steering/curve constants are untuned guesses**, not playtested for
+  feel (`SIM_MAXSPD`, `SIM_STEER`, curve magnitude, checkpoint spacing —
+  all in the new code block in `index.html`, right after `renderSigns()`).
+  They produce a road that visibly curves and responds to input, verified by
+  screenshot, but "does it feel good to drive" is a human judgement call.
+- **No AI traffic, no collisions, no hills** — flat single road, no other
+  vehicles. Curves are cosmetic plus a light steering requirement; there is
+  no penalty for a wrong steer beyond mild off-road friction.
+- **Not gated behind any paywall** — reachable free from Home, like every
+  other screen today (P6's paywall was reverted and never shipped; see
+  *Product plan*). Whether this simulation should sit inside or outside that
+  future gate is undecided and wasn't asked.

@@ -290,6 +290,41 @@
      three moved, the movement itself would point at the answer. */
   .signopt svg *{animation:none!important}
   @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+  /* ---------- driving simulation ---------- */
+  .simsetbest{color:var(--good);font-weight:800}
+  .simstage{position:relative;border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);
+    border:1px solid var(--line);background:#0a1a12;touch-action:none}
+  .simcanvas{display:block;width:100%;height:auto}
+  .simhud{position:absolute;top:10px;left:10px;right:10px;display:flex;align-items:center;gap:8px;z-index:2}
+  /* direction:ltr because this is a numeric HUD readout, not running text —
+     without it the bidi algorithm reorders "1 / 50" to "50 / 1" inside the
+     app's RTL default (Kurdish), same reasoning as .simctrls above. */
+  .simhud .pill{background:rgba(10,15,25,.55);border-color:transparent;color:#fff;pointer-events:none;direction:ltr}
+  .simhud .simscore{margin-inline-start:auto}
+  .simexit{flex:none;width:34px;height:34px;border-radius:999px;border:0;background:rgba(10,15,25,.55);
+    color:#fff;font-size:15px;cursor:pointer;pointer-events:auto;line-height:1}
+  .simwheel{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);width:56px;height:56px;
+    pointer-events:none;opacity:.9}
+  /* Steering is spatial, not textual: left/right must stay physically fixed
+     regardless of page reading direction, or RTL would swap what the ◀ / ▶
+     buttons actually do relative to where they sit on screen. */
+  .simctrls{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;direction:ltr}
+  .simbtn{border:1.5px solid var(--line);border-radius:14px;font:inherit;font-weight:800;font-size:22px;
+    padding:18px 0;cursor:pointer;background:var(--surface);color:var(--ink);box-shadow:var(--shadow);
+    user-select:none;-webkit-user-select:none;touch-action:none}
+  .simbtn.on{background:var(--brand);color:var(--on-brand);border-color:var(--brand)}
+  .simbtn.brake{background:var(--bad-bg);color:var(--bad)}
+  .simbtn.brake.on{background:var(--bad);color:#fff;border-color:var(--bad)}
+  .simoverlay{position:absolute;inset:0;background:rgba(8,12,20,.72);display:flex;align-items:flex-end;
+    justify-content:center;padding:12px;backdrop-filter:blur(1px)}
+  .simoverlay.hidden{display:none}
+  .simcard{background:var(--surface);border-radius:var(--radius);box-shadow:var(--shadow);padding:16px;
+    width:100%;max-height:94%;overflow:auto}
+  .simcard .qtext{font-size:16.5px}
+  .simcard .signwrap,.simcard .scenewrap{padding:10px;margin-bottom:8px}
+  .simcard .signwrap svg{width:96px;height:96px}
+  @media (max-width:360px){.simbtn{padding:15px 0;font-size:19px}}
 </style>
 
 <div id="app" dir="ltr">
@@ -3472,7 +3507,11 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
     rd_ready:"You're ready! 🎉", rd_almost:"Almost there", rd_practise:"Keep practising", rd_start:"Check your readiness",
     rdd_ready:"You're consistently passing the mock exam. Keep it up and clear anything still due for review.", rdd_almost:"You're close to the 80% pass mark. Fix your weakest topic and take a few more mock exams.", rdd_practise:"You're below the 80% pass mark. Focus on your weakest topic and use Smart Review daily.", rdd_start:"Take a mock exam to measure how ready you are to pass.",
     guideB:"Study Guide", guideD:"Read & revise every sign and rule by topic", expandAll:"Expand all", collapseAll:"Collapse all",
-    achvB:"Achievements", achvD:"Badges you have earned so far", achvEarned:"earned", achvSub:"Keep practising to unlock them all.", achvNew:"New badge unlocked!", achvNewN:"New badges unlocked!"
+    achvB:"Achievements", achvD:"Badges you have earned so far", achvEarned:"earned", achvSub:"Keep practising to unlock them all.", achvNew:"New badge unlocked!", achvNewN:"New badges unlocked!",
+    simB:"Driving Simulation", simD:"Apply every set's 50 questions from behind the wheel — steer, brake, and answer as each hazard appears.",
+    simPlayHint:"Steer ◀ ▶ to stay on the road, ⛔ to slow down. A hazard sign means a question is coming — answer it to keep driving.",
+    simLeft:"Steer left", simRight:"Steer right", simBrake:"Brake", simDrive:"Keep driving",
+    simExitConfirm:"Leave this drive? Your progress in this set won't be saved."
   },ku:{bookB:"کتێبی فەرمی",bookD:"کۆمەڵە پرسیار ڕاستەوخۆ لە کتێبی فەرمیی تیۆریی کوردستانەوە.",bookAll:"هەموو پرسیارەکانی کتێب",mastered:"شارەزا",sgSearch:"گەڕان بۆ هێما…",sgAll:"هەموو",sgOther:"هێماکانی تر",sgNone:"هیچ هێمایەک لەگەڵ گەڕانەکەت نەگونجا.",
     brand:"تیۆری لێخوڕین – کوردستان", title:"لە تاقیکردنەوەی تیۆریدا سەرکەوتووبە", sub:"ڕاهێنان بەسەر فۆرمی ڕاستەقینەی هەولێر — ٢٠ پرسیار، ٢٠ خولەک، ٨٠٪ (١٦/٢٠) بۆ سەرکەوتن.",
     exam:"تاقیکردنەوەی نمونەیی", examD:"٢٠ پرسیار · ٢٠ خولەک · ٨٠٪ بۆ سەرکەوتن", practice:"ڕاهێنان بەپێی بابەت", practiceD:"فێربە لەگەڵ وەڵام و ڕوونکردنەوەی خێرا",
@@ -3506,11 +3545,15 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
     rd_ready:"ئامادەیت! 🎉", rd_almost:"نزیک بوویتەوە", rd_practise:"بەردەوام بە لە ڕاهێنان", rd_start:"ئامادەیی خۆت بپشکنە",
     rdd_ready:"بەردەوام لە تاقیکردنەوەی نمونەییدا سەردەکەویت. بەردەوام بە و ئەوەی ماوە پێداچوونەوەی بۆ بکە.", rdd_almost:"نزیکیت لە سنووری دەرچوونی ٨٠٪. لاوازترین بابەتت چاک بکە و چەند تاقیکردنەوەیەکی تر بکە.", rdd_practise:"لە خوار سنووری دەرچوونی ٨٠٪دایت. سەرنج بخەرە سەر لاوازترین بابەت و ڕۆژانە پێداچوونەوەی زیرەک بەکاربهێنە.", rdd_start:"تاقیکردنەوەیەکی نمونەیی بکە بۆ پێوانەکردنی ئامادەیی سەرکەوتنت.",
     guideB:"ڕێبەری خوێندن", guideD:"هەموو هێما و یاسایەک بەپێی بابەت بخوێنەرەوە و پێداچوونەوەی بۆ بکە", expandAll:"کردنەوەی هەموو", collapseAll:"داخستنی هەموو",
-    achvB:"دەستکەوتەکان", achvD:"ئەو نیشانانەی تا ئێستا بەدەستت هێناون", achvEarned:"بەدەستهێنراو", achvSub:"بەردەوام بە لە ڕاهێنان بۆ کردنەوەی هەموویان.", achvNew:"نیشانەیەکی نوێ کرایەوە!", achvNewN:"نیشانەی نوێ کرانەوە!"
+    achvB:"دەستکەوتەکان", achvD:"ئەو نیشانانەی تا ئێستا بەدەستت هێناون", achvEarned:"بەدەستهێنراو", achvSub:"بەردەوام بە لە ڕاهێنان بۆ کردنەوەی هەموویان.", achvNew:"نیشانەیەکی نوێ کرایەوە!", achvNewN:"نیشانەی نوێ کرانەوە!",
+    simB:"سیمولەیشنی لێخوڕین", simD:"٥٠ پرسیارەکەی هەر کۆمەڵە بخەرە کار لە پشتەوەی سکانەوە — بەرەو بکە، ترمز بگرە، و لە کاتی دەرکەوتنی هەر مەترسییەک وەڵامی پرسیارەکە بدەرەوە.",
+    simPlayHint:"بۆ مانەوە لەسەر ڕێگا بەرەو بکە ◀ ▶، بۆ کەمکردنەوەی خێرایی ⛔ بگرە. هێمای مەترسی واتای ئەوەیە پرسیارێک دێت — وەڵامی بدەرەوە بۆ بەردەوامبوونی لێخوڕین.",
+    simLeft:"بەرەوی چەپ", simRight:"بەرەوی ڕاست", simBrake:"ترمز", simDrive:"بەردەوامبە لە لێخوڕین",
+    simExitConfirm:"ئەم لێخوڕینە بەجێبهێڵیت؟ پێشکەوتنت لەم کۆمەڵەیەدا پاشەکەوت ناکرێت."
   }};
 
   /* ---------- state ---------- */
-  var S={lang:"ku", screen:"home", mode:null, queue:[], i:0, picked:null, ans:[], t:1200, timer:null};
+  var S={lang:"ku", screen:"home", mode:null, queue:[], i:0, picked:null, ans:[], t:1200, timer:null, simSet:0};
   var view=document.getElementById("view"), foot=document.getElementById("foot");
   function t(k){var d=UI[S.lang]||UI.en;var v=d[k];return v!=null?v:UI.en[k];}
   function L(o){var v=o[S.lang];return (v!=null&&v!=="")?v:o.en;}
@@ -3633,7 +3676,7 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
   }
 
   /* ---------- router ---------- */
-  window.Go=function(scr){clearTimer();S.screen=scr;render();};
+  window.Go=function(scr){clearTimer();if(S.screen==="simplay"&&scr!=="simplay")simStop();S.screen=scr;render();};
 
   function render(){
     // Footer carries the study disclaimer and a link to the About & sources
@@ -3641,7 +3684,7 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
     foot.innerHTML=esc(t("disclaimer"))+' · <span class="footlink" role="button" tabindex="0"'
       +' onclick="Go(\'about\')" onkeydown="kbAct(event,function(){Go(\'about\')})">'+esc(t("aboutLink"))+'</span>';
     var s=S.screen;
-    if(s==="home")renderHome();else if(s==="quiz")renderQuiz();else if(s==="results")renderResults();else if(s==="topics")renderTopics();else if(s==="sets")renderSets();else if(s==="stats")renderStats();else if(s==="signs")renderSigns();else if(s==="flash")renderFlash();else if(s==="find")renderFind();else if(s==="guide")renderGuide();else if(s==="achv")renderAchv();else if(s==="book")renderBook();else if(s==="about")renderAbout();
+    if(s==="home")renderHome();else if(s==="quiz")renderQuiz();else if(s==="results")renderResults();else if(s==="topics")renderTopics();else if(s==="sets")renderSets();else if(s==="stats")renderStats();else if(s==="signs")renderSigns();else if(s==="flash")renderFlash();else if(s==="find")renderFind();else if(s==="guide")renderGuide();else if(s==="achv")renderAchv();else if(s==="book")renderBook();else if(s==="about")renderAbout();else if(s==="sim")renderSimSets();else if(s==="simplay")renderSimPlay();
     localizeDigits();
   }
   function renderAbout(){
@@ -3851,6 +3894,7 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
         '<span class="pill">🗣️ کوردی / EN</span><span class="pill">🚗 '+Object.keys(CATS).length+' '+esc(t("byTopic"))+'</span>'+(_best?'<span class="pill">🏆 '+esc(t("best"))+' '+_best+'%</span>':'')+(_streak?'<span class="pill">🔥 '+_streak+' '+esc(t("dayStreak"))+'</span>':'')+(_rd.examCount?'<span class="pill">🎯 '+(_rd.level==="ready"?esc(t("rdReadyShort")):_rd.pct+'%')+'</span>':'')+'</div>'+
       '<div class="menu">'+
         tile("exam","exam","examD",'<svg viewBox="0 0 24 24" fill="none"><path d="M9 3h6l1 3H8l1-3Z" fill="currentColor"/><rect x="5" y="6" width="14" height="15" rx="2.5" stroke="currentColor" stroke-width="2"/><path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>',"exam")+
+        '<button class="tile exam" onclick="Go(\'sim\')"><span class="ic"><svg viewBox="0 0 24 24" fill="none"><path d="M4 17l2.3-6.8A2 2 0 0 1 8.2 9h7.6a2 2 0 0 1 1.9 1.2L20 17" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M4 17h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="7.6" cy="17" r="1.7" fill="currentColor"/><circle cx="16.4" cy="17" r="1.7" fill="currentColor"/><path d="M9 9V6.5M15 9V6.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span><span><b>'+esc(t("simB"))+'</b><span>'+esc(t("simD"))+'</span></span><span class="arw">'+(S.lang!=="en"?"‹":"›")+'</span></button>'+
         '<button class="tile'+(_sc.due?' review-tile':'')+'" onclick="startSmart()"><span class="ic"><svg viewBox="0 0 24 24" fill="none"><path d="M4.5 12a7.5 7.5 0 1 1 2.2 5.3" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><path d="M4 20.5V15h5.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span><b>'+esc(t("smart"))+'</b><span>'+(_sc.due?_sc.due+' '+esc(t("due")):(_sc.unseen?esc(t("smartNew")):esc(t("smartDone"))))+'</span></span><span class="arw">'+(S.lang!=="en"?"‹":"›")+'</span></button>'+
         '<button class="tile" onclick="Go(\'sets\')"><span class="ic"><svg viewBox="0 0 24 24" fill="none"><rect x="4" y="4" width="16" height="16" rx="2.5" stroke="currentColor" stroke-width="2"/><path d="M8 9h8M8 13h8M8 17h5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span><span><b>'+esc(t("sets"))+'</b><span>'+esc(t("setD"))+'</span></span><span class="arw">'+(S.lang!=="en"?"‹":"›")+'</span></button>'+
         '<button class="tile" onclick="Go(\'stats\')"><span class="ic"><svg viewBox="0 0 24 24" fill="none"><path d="M4 20V11M9.3 20V4M14.7 20v-6M20 20V8" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></span><span><b>'+esc(t("progressB"))+'</b><span>'+esc(t("progressD"))+'</span></span><span class="arw">'+(S.lang!=="en"?"‹":"›")+'</span></button>'+
@@ -4081,6 +4125,7 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
       if(!q.sq){var c=q.cat;st.cat[c]=st.cat[c]||{c:0,n:0};st.cat[c].n++;if(S.ans[i]===q.a)st.cat[c].c++;}
     });
     if(S.mode==="exam"){var xp=Math.round(correct/S.queue.length*100);st.best=Math.max(st.best||0,xp);st.exams=st.exams||[];st.exams.push(xp);st.exams=st.exams.slice(-24);}
+    else if(S.mode==="sim"){var sp=Math.round(correct/S.queue.length*100);st.simBest=st.simBest||{};st.simBest[S.simSet]=Math.max(st.simBest[S.simSet]||0,sp);}
     saveStore(st);
     S.newAchv=syncAchv();
     S.result={correct:correct,total:S.queue.length,timeUp:!!timeUp};S.screen="results";render();
@@ -4103,8 +4148,9 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
       html+='<div class="bd"><span>'+CATS[c].ic+' '+esc(L(CATS[c]))+'</span><span class="n tnum">'+byCat[c].c+'/'+byCat[c].n+'</span></div>';
     });
     html+='</div>';
+    var retryCall=S.mode==="exam"?"startExam()":(S.mode==="sim"?("startSim("+S.simSet+")"):"Go('home')");
     html+='<div class="row"><button class="btn ghost" onclick="Go(\'home\')">'+esc(t("home"))+'</button>'+
-      '<button class="btn" onclick="'+(S.mode==="exam"?"startExam()":"Go('home')")+'">'+esc(t("retry"))+'</button></div>';
+      '<button class="btn" onclick="'+retryCall+'">'+esc(t("retry"))+'</button></div>';
     // review
     html+='<h1 style="font-size:18px;margin-top:6px">'+esc(t("review"))+'</h1><div class="card review">';
     S.queue.forEach(function(q,i){
@@ -4500,6 +4546,314 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
       '<button class="btn ghost" onclick="Go(\'home\')">'+esc(t("back"))+'</button>';
   }
 
+  /* ==========================================================================
+     Driving simulation — pseudo-3D first-person road rendered on <canvas>,
+     no libraries. Each of the SET_SIZE-question sets gets its own procedurally
+     generated route (deterministic per set, seeded on the set index) with one
+     checkpoint per question. Reaching a checkpoint freezes the car and shows
+     that question as an overlay card; answering resumes the drive. Finishing
+     the route feeds the same finish()/renderResults() pipeline as the mock
+     exam and practice sets, so sim answers also update SRS/mistakes/category
+     stats and achievements — this is a driving skin on the existing quiz
+     engine, not a parallel one. Content is intentionally generic (a road, a
+     generic hazard sign, the real question) rather than a bespoke scenario per
+     question — see docs/PROGRESS.md for what a richer pass would add. */
+
+  var SIM={};
+  var SIM_SEG=90, SIM_SPACING=5200, SIM_MAXSPD=2500, SIM_ACCEL=1500, SIM_BRAKE=2600, SIM_STEER=1.15, SIM_MAXDIST=6200;
+
+  function mulberry32(seed){
+    var a=seed|0;
+    return function(){
+      a=a+0x6D2B79F5|0;
+      var t=Math.imul(a^a>>>15,1|a);
+      t=t+Math.imul(t^t>>>7,61|t)^t;
+      return ((t^t>>>14)>>>0)/4294967296;
+    };
+  }
+
+  /* One curve value per SIM_SEG world units, generated as alternating straight
+     runs and eased-in/eased-out bends. Deterministic per (seed,count) so a
+     set's route is stable across replays but distinct from other sets. */
+  function simTrack(seed,count){
+    var rnd=mulberry32(seed*97+13), curves=[], target=Math.ceil((SIM_SPACING*(count+1)+2000)/SIM_SEG);
+    while(curves.length<target){
+      var r=rnd();
+      if(r<0.4){
+        var len=16+Math.floor(rnd()*18);
+        for(var k=0;k<len&&curves.length<target;k++)curves.push(0);
+      }else{
+        var mag=(0.5+rnd()*0.9)*(r<0.7?-1:1), enter=14, hold=18+Math.floor(rnd()*20), leave=14;
+        for(var k=0;k<enter&&curves.length<target;k++)curves.push(mag*(k/enter));
+        for(var k=0;k<hold&&curves.length<target;k++)curves.push(mag);
+        for(var k=0;k<leave&&curves.length<target;k++)curves.push(mag*(1-k/leave));
+      }
+    }
+    var cks=[];for(var i=0;i<count;i++)cks.push(SIM_SPACING*(i+1));
+    return {curves:curves,cks:cks};
+  }
+  function simCurveAt(track,z){
+    var i=Math.floor(z/SIM_SEG);
+    if(i<0)i=0;else if(i>=track.curves.length)i=track.curves.length-1;
+    return track.curves[i];
+  }
+
+  function renderSimSets(){
+    var per=SET_SIZE, total=QUESTIONS.length, real=Math.ceil(total/per);
+    var best=(loadStore().simBest)||{};
+    var html='<div><h1>'+esc(t("simB"))+'</h1><p class="sub">'+esc(t("simD"))+'</p></div><div class="menu">';
+    for(var n=0;n<real;n++){
+      var count=Math.min(per,total-n*per), b=best[n];
+      html+='<button class="tile" onclick="startSim('+n+')">'+
+        '<span class="ic" style="font-weight:800;font-size:18px">'+(n+1)+'</span>'+
+        '<span><b>'+esc(t("setWord"))+' '+(n+1)+'</b><span>'+count+' '+esc(t("questions"))+
+          (b!=null?' · <span class="simsetbest">'+esc(t("best"))+' '+b+'%</span>':'')+'</span></span>'+
+        '<span class="arw">'+(S.lang!=="en"?"‹":"›")+'</span></button>';
+    }
+    html+='</div><button class="btn ghost" onclick="Go(\'home\')">'+esc(t("back"))+'</button>';
+    view.innerHTML=html;
+  }
+  window.startSim=function(n){
+    S.simSet=n; S.mode="sim";
+    S.queue=QUESTIONS.slice(n*SET_SIZE,(n+1)*SET_SIZE);
+    S.i=0; S.ans=[]; S.picked=null;
+    clearTimer(); S.screen="simplay"; render();
+  };
+
+  function renderSimPlay(){
+    var total=S.queue.length;
+    view.innerHTML=
+      '<div><h1>'+esc(t("setWord"))+' '+(S.simSet+1)+' · '+esc(t("simB"))+'</h1>'+
+      '<p class="sub">'+esc(t("simPlayHint"))+'</p></div>'+
+      '<div class="simstage" id="simStage">'+
+        '<canvas class="simcanvas" id="simCanvas" aria-hidden="true"></canvas>'+
+        '<div class="simhud"><button class="simexit" onclick="simExit()" aria-label="'+esc(t("back"))+'">✕</button>'+
+          '<span class="pill" id="simProg">1 / '+total+'</span>'+
+          '<span class="pill simscore" id="simScoreEl">✓ 0</span></div>'+
+        '<svg class="simwheel" id="simWheel" viewBox="0 0 64 64" aria-hidden="true">'+
+          '<circle cx="32" cy="32" r="26" fill="none" stroke="#fff" stroke-width="5"/>'+
+          '<circle cx="32" cy="32" r="6" fill="#fff"/>'+
+          '<path d="M32 6v14M11 44l12-8M53 44l-12-8" stroke="#fff" stroke-width="5" stroke-linecap="round"/></svg>'+
+        '<div class="simoverlay hidden" id="simOverlay"><div class="simcard" id="simCard"></div></div>'+
+      '</div>'+
+      '<div class="simctrls">'+
+        '<button class="simbtn" id="simLeftBtn" aria-label="'+esc(t("simLeft"))+'">◀</button>'+
+        '<button class="simbtn brake" id="simBrakeBtn" aria-label="'+esc(t("simBrake"))+'">⛔</button>'+
+        '<button class="simbtn" id="simRightBtn" aria-label="'+esc(t("simRight"))+'">▶</button>'+
+      '</div>'+
+      '<button class="btn ghost" onclick="simExit()">'+esc(t("back"))+'</button>';
+    simInit();
+  }
+
+  function simInit(){
+    var canvas=document.getElementById("simCanvas"), stage=document.getElementById("simStage");
+    var ctx=canvas.getContext("2d");
+    var w=stage.clientWidth||320, h=Math.round(w*0.72), dpr=Math.min(window.devicePixelRatio||1,2);
+    canvas.width=Math.round(w*dpr); canvas.height=Math.round(h*dpr);
+    canvas.style.height=h+"px";
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+
+    SIM.ctx=ctx; SIM.w=w; SIM.h=h; SIM.last=null;
+    SIM.track=simTrack(S.simSet+1, S.queue.length);
+    SIM.car={z:0,x:0,speed:0};
+    SIM.paused=false; SIM.input={l:false,r:false,b:false}; SIM.perm={};
+
+    simBindControls();
+    SIM.running=true;
+    SIM.raf=requestAnimationFrame(simTick);
+    simUpdateHud();
+  }
+
+  function simBindControls(){
+    function bind(el,key){
+      if(!el)return;
+      function on(e){e.preventDefault();SIM.input[key]=true;el.classList.add("on");}
+      function off(){SIM.input[key]=false;el.classList.remove("on");}
+      el.addEventListener("pointerdown",on);
+      el.addEventListener("pointerup",off);
+      el.addEventListener("pointerleave",off);
+      el.addEventListener("pointercancel",off);
+    }
+    bind(document.getElementById("simLeftBtn"),"l");
+    bind(document.getElementById("simRightBtn"),"r");
+    bind(document.getElementById("simBrakeBtn"),"b");
+
+    SIM.keydown=function(e){
+      var k=e.key;
+      if(k==="ArrowLeft"||k==="a"||k==="A"){SIM.input.l=true;e.preventDefault();}
+      else if(k==="ArrowRight"||k==="d"||k==="D"){SIM.input.r=true;e.preventDefault();}
+      else if(k==="ArrowDown"||k==="s"||k==="S"||k===" "){SIM.input.b=true;e.preventDefault();}
+    };
+    SIM.keyup=function(e){
+      var k=e.key;
+      if(k==="ArrowLeft"||k==="a"||k==="A")SIM.input.l=false;
+      else if(k==="ArrowRight"||k==="d"||k==="D")SIM.input.r=false;
+      else if(k==="ArrowDown"||k==="s"||k==="S"||k===" ")SIM.input.b=false;
+    };
+    window.addEventListener("keydown",SIM.keydown);
+    window.addEventListener("keyup",SIM.keyup);
+  }
+
+  function simTick(ts){
+    if(!SIM.running)return;
+    if(SIM.last==null)SIM.last=ts;
+    var dt=Math.min((ts-SIM.last)/1000,0.05); SIM.last=ts;
+    if(!SIM.paused){
+      var car=SIM.car;
+      if(SIM.input.b)car.speed=Math.max(0,car.speed-SIM_BRAKE*dt);
+      else car.speed+=(SIM_MAXSPD-car.speed)*Math.min(1,SIM_ACCEL*dt/SIM_MAXSPD);
+      if(SIM.input.l)car.x-=SIM_STEER*dt;
+      if(SIM.input.r)car.x+=SIM_STEER*dt;
+      var off=false;
+      if(car.x>1){car.x=1;off=true;}
+      if(car.x<-1){car.x=-1;off=true;}
+      if(off)car.speed=Math.max(0,car.speed-SIM_BRAKE*0.6*dt);
+      car.z+=car.speed*dt;
+      var nextCk=SIM.track.cks[S.i];
+      if(nextCk!=null&&car.z>=nextCk){car.z=nextCk;car.speed=0;simTriggerCheckpoint();}
+    }
+    simDraw();
+    SIM.raf=requestAnimationFrame(simTick);
+  }
+
+  function simDraw(){
+    var ctx=SIM.ctx,W=SIM.w,H=SIM.h,car=SIM.car,track=SIM.track;
+    if(!ctx)return;
+    var horizon=Math.round(H*0.42);
+    ctx.clearRect(0,0,W,H);
+    var sky=ctx.createLinearGradient(0,0,0,horizon);
+    sky.addColorStop(0,"#274a6e"); sky.addColorStop(1,"#6ea8c9");
+    ctx.fillStyle=sky; ctx.fillRect(0,0,W,horizon);
+
+    var maxHalf=W*0.46, minHalf=5, maxBend=W*0.62, maxSteer=W*0.5, stripeLen=340;
+    for(var y=horizon+1;y<H;y+=2){
+      var t=(y-horizon)/(H-horizon), depth=t*t;
+      var aheadZ=car.z+SIM_MAXDIST*(1-depth);
+      var curve=simCurveAt(track,aheadZ);
+      var half=minHalf+(maxHalf-minHalf)*depth;
+      var cx=W/2+curve*(1-depth)*maxBend-car.x*depth*maxSteer;
+      var phase=Math.floor(aheadZ/stripeLen)%2===0;
+
+      ctx.fillStyle=phase?"#31502f":"#2b482a";
+      ctx.fillRect(0,y,W,2);
+      var rw=Math.max(2,half*0.06);
+      ctx.fillStyle=phase?"#d33b3b":"#ececeb";
+      ctx.fillRect(cx-half-rw,y,rw,2);
+      ctx.fillRect(cx+half,y,rw,2);
+      ctx.fillStyle=phase?"#43474d":"#3a3e44";
+      ctx.fillRect(cx-half,y,half*2,2);
+      if(half>26&&phase){
+        var lw=Math.max(2,half*0.045);
+        ctx.fillStyle="#e7d98a";
+        ctx.fillRect(cx-lw/2,y,lw,2);
+      }
+    }
+    simDrawSign();
+    var wheel=document.getElementById("simWheel");
+    if(wheel)wheel.style.transform="translateX(-50%) rotate("+(car.x*35)+"deg)";
+  }
+
+  function simDrawSign(){
+    var ctx=SIM.ctx,W=SIM.w,H=SIM.h,car=SIM.car,track=SIM.track;
+    var horizon=Math.round(H*0.42);
+    var nextCk=track.cks[S.i]; if(nextCk==null)return;
+    var dist=nextCk-car.z;
+    if(dist<0||dist>SIM_MAXDIST)return;
+    var depth=1-dist/SIM_MAXDIST; if(depth<0)depth=0; if(depth>0.985)depth=0.985;
+    var t=Math.sqrt(depth);
+    var y=horizon+t*(H-horizon);
+    var half=5+(W*0.46-5)*depth;
+    var curve=simCurveAt(track,nextCk);
+    var cx=W/2+curve*(1-depth)*(W*0.62)-car.x*depth*(W*0.5);
+    var side=cx+half+half*0.35;
+    var size=Math.max(10,half*0.5);
+    ctx.save();
+    ctx.translate(side,y);
+    ctx.beginPath();
+    ctx.moveTo(0,-size); ctx.lineTo(size*0.9,size*0.7); ctx.lineTo(-size*0.9,size*0.7); ctx.closePath();
+    ctx.fillStyle="#f4c400"; ctx.fill();
+    ctx.lineWidth=Math.max(1,size*0.12); ctx.strokeStyle="#1a1a1a"; ctx.stroke();
+    ctx.fillStyle="#1a1a1a"; ctx.font="bold "+Math.round(size*0.9)+"px sans-serif";
+    ctx.textAlign="center"; ctx.textBaseline="middle";
+    ctx.fillText("!",0,size*0.12);
+    ctx.restore();
+  }
+
+  function simUpdateHud(){
+    var p=document.getElementById("simProg"), s=document.getElementById("simScoreEl");
+    if(!p||!s)return;
+    var correct=0;for(var k=0;k<S.i;k++)if(S.ans[k]===S.queue[k].a)correct++;
+    p.textContent=(S.i+1)+" / "+S.queue.length;
+    s.textContent="✓ "+correct;
+  }
+
+  function simTriggerCheckpoint(){
+    SIM.paused=true;
+    var q=S.queue[S.i];
+    if(!SIM.perm[S.i])SIM.perm[S.i]=shuffle(q.opts.map(function(_,idx){return idx;}));
+    simRenderCard();
+    var ov=document.getElementById("simOverlay");
+    if(ov)ov.classList.remove("hidden");
+  }
+
+  function simRenderCard(){
+    var q=S.queue[S.i], keys=["A","B","C","D"];
+    var html='<p class="qcount" style="margin:0 0 8px">'+esc(t("q"))+' '+(S.i+1)+' '+esc(t("of"))+' '+S.queue.length+'</p>';
+    if(q.scene&&SCENES[q.scene])html+='<div class="scenewrap">'+SCENES[q.scene]+'</div>';
+    else if(q.sign&&SIGNS[q.sign])html+='<div class="signwrap">'+SIGNS[q.sign].svg+'</div>';
+    html+='<p class="qtext">'+esc(L(q.q))+'</p><div class="opts">';
+    var answered=S.ans[S.i]!=null;
+    SIM.perm[S.i].forEach(function(actual,dpos){
+      var o=q.opts[actual], cls="opt";
+      if(answered){if(actual===q.a)cls+=" correct";else if(actual===S.ans[S.i])cls+=" wrong";}
+      html+='<button class="'+cls+'" '+(answered?"disabled":"")+' onclick="simAnswer('+actual+')">'+
+        '<span class="key">'+keys[dpos]+'</span><span>'+esc(L(o))+'</span></button>';
+    });
+    html+='</div>';
+    if(answered){
+      if(S.ans[S.i]===q.a){
+        html+='<div class="explain ok"><b>✓ '+esc(t("correct"))+'.</b> '+esc(L(q.ex))+'</div>';
+      }else{
+        var wr=(q.w&&q.w[S.ans[S.i]])?' — '+esc(L(q.w[S.ans[S.i]])):'';
+        html+='<div class="explain no"><b>✗ '+esc(t("wrong"))+'.</b> '+esc(t("youPicked"))+': '+esc(L(q.opts[S.ans[S.i]]))+wr+'</div>'+
+          '<div class="explain ok"><b>✓ '+esc(t("right"))+':</b> '+esc(L(q.opts[q.a]))+' — '+esc(L(q.ex))+'</div>';
+      }
+      var last=S.i===S.queue.length-1;
+      html+='<button class="btn" onclick="simContinue()">'+esc(last?t("finish"):t("simDrive"))+'</button>';
+    }
+    var card=document.getElementById("simCard");
+    if(card)card.innerHTML=html;
+  }
+
+  window.simAnswer=function(idx){
+    if(S.ans[S.i]!=null)return;
+    S.ans[S.i]=idx; markActivity();
+    simRenderCard();
+    simUpdateHud();
+  };
+  window.simContinue=function(){
+    var ov=document.getElementById("simOverlay");
+    if(ov)ov.classList.add("hidden");
+    if(S.i<S.queue.length-1){
+      S.i++; SIM.paused=false; SIM.last=null; simUpdateHud();
+    }else{
+      simStop(); finish(false);
+    }
+  };
+  window.simExit=function(){
+    if(S.i>0&&!window.confirm(t("simExitConfirm")))return;
+    simStop(); Go("sim");
+  };
+  function simStop(){
+    SIM.running=false;
+    if(SIM.raf)cancelAnimationFrame(SIM.raf);
+    SIM.raf=null;
+    if(SIM.keydown){
+      window.removeEventListener("keydown",SIM.keydown);
+      window.removeEventListener("keyup",SIM.keyup);
+      SIM.keydown=null; SIM.keyup=null;
+    }
+  }
 
   /* ---------- language ---------- */
   window.setLang=function(l){
