@@ -1679,3 +1679,94 @@ loop with real question data, and zero console errors throughout.
   car independently. Never tested on a real phone GPU, only SwiftShader
   software rendering — real mobile GPU performance (especially the
   per-frame road-mesh rebuild and three mirror render passes) is unverified.
+
+**Rebuilt again, same session, on Three.js — by name, on request.** Shown
+the hand-written low-poly result, the owner asked for "more realistic,
+more detailed... can't you use Three.js library." Went with it: this
+reverses the earlier trade-off (hand-written WebGL was chosen specifically
+to avoid Three.js's size), and it's worth being honest about what changed
+and why.
+
+- **Three.js r128 (minified, MIT-licensed) is inlined directly into
+  `index.html`** — not a `<script src="cdn...">` tag. A CDN reference would
+  violate "no network calls" and would not survive the Claude Artifact's
+  CSP (blocks all external hosts except Google Fonts) or the offline
+  property `web/README.md` documents. Fetched once via `curl` to unpkg,
+  spliced into the file with a Python script (kept the ~600KB blob out of
+  the assistant's own context — piping it through `old_string`/`new_string`
+  edits would have been enormously wasteful).
+- **Cost, stated plainly: the file roughly grew from ~1.1MB to ~1.7MB raw,
+  ~300KB to ~446KB gzipped** (measured directly, not estimated). Every
+  visitor now downloads that ~150KB extra, once (cached after). This
+  directly cuts against the load-speed priority this same file documents
+  for the TikTok funnel — flagged before building, the owner chose it
+  anyway after seeing the low-poly alternative, so the trade is deliberate
+  and on the record here for whoever revisits it.
+- **What Three.js bought:** its `Object3D` scene graph replaced all the
+  hand-rolled matrix-composition code the previous version needed (parent
+  a mesh to a group, set `.position`/`.rotation`, done) — meaningfully less
+  custom code to get wrong. Real primitives (`TorusGeometry` for the
+  steering wheel, `CylinderGeometry` for wheels/lamp poles, `ConeGeometry`
+  for trees) instead of boxes standing in for round things. Proper
+  materials (`MeshStandardMaterial` roughness/metalness for painted
+  body/chrome trim, `MeshPhysicalMaterial` for glass) lit by a
+  `HemisphereLight` + `DirectionalLight` instead of one flat directional
+  term. A gradient sky dome (vertex-coloured sphere) and `THREE.Fog` for
+  depth. `WebGLRenderTarget` for the mirrors instead of hand-rolled
+  framebuffers — same live-reflection technique as before, less code.
+- **World now has content beyond the road**, addressing "more realistic
+  open world" as *richer scenery along the drive*, not free-roam — the
+  owner had already said seeing the car from outside (chase cam) was
+  enough, not getting out and walking around, so this pass didn't reopen
+  that. Trees (`InstancedMesh`, ~20-220 per set depending on route length,
+  two draw calls total regardless of count) and street lamps (also
+  instanced) scattered deterministically along the roadside using the same
+  seeded RNG as the track curves; distant low-poly buildings on the
+  horizon for a sense of a bigger place. All positioned via the existing
+  `simTrackPose()` — unchanged from every earlier version.
+- **Interior got measurably more detailed**: a proper torus-and-spoke
+  steering wheel instead of a flat annulus, a raised gauge-cluster hump
+  with an actual `CanvasTexture` gauge face (drawn once via 2D canvas, no
+  image asset — same "no external files" rule the sign icons in
+  `web/index.html` already follow), driver *and* passenger seats with
+  headrests, sun visors, door trim with armrests, a center console.
+- **All physics/checkpoint/question/scoring/SFX logic is unchanged again**
+  — this is the second time the rendering layer has been swapped out from
+  under an unchanged game-logic core (`simTick`, `simTriggerCheckpoint`,
+  `finish()`, the Web Audio SFX), which is the strongest evidence yet that
+  separating "what the sim does" from "how it's drawn" in the first version
+  was the right call.
+
+**Verified the same way as every pass before this — live in headless
+Chromium, not just written and assumed correct.** Confirmed Three.js
+actually loads (`THREE.REVISION` read back as 128) with zero console
+errors, then re-ran every check from the hand-written-WebGL pass:
+cockpit view, chase-cam orbit, steering turning the wheel and bending the
+road, gear-gated physics, a full checkpoint round-trip, and — this time
+budgeted correctly — a scripted full 50/50 completion to the results
+screen (the first attempt undershot its own iteration budget by a
+timing miscalculation on my part, not a game bug: this build runs
+measurably heavier per frame than the hand-written version, so 50
+checkpoints at ~4-5s each needed more wall-clock than the same test
+budgeted before). One mirror-specific check worth recording: at normal
+size the reflections were hard to visually distinguish from the real
+background in a screenshot (both often show plain sky/grass), which read
+at a glance like "maybe broken" — resolved by temporarily blowing the
+mirror quads up 4x, confirming they render a live, correctly-lit
+gradient scene, then reverting. **Don't conclude "blank" from a small
+screenshot where the reflected content is genuinely similar to what's
+around it — enlarge or diff before deciding something isn't rendering.**
+
+**Not done / open honestly, on top of the carried-over items above:**
+- **File-size cost is real and unmeasured in practice** — gzipped ~446KB is
+  a one-time download, not per-visit, but nobody has checked actual load
+  time on a throttled mobile connection from a cold cache, which is the
+  TikTok-referred visitor's real first experience.
+- **Mirror and gauge-texture framing are still first-pass**, same caveat
+  as the hand-written version: functionally correct, not hand-tuned by
+  eye on a real device.
+- **Still no real phone GPU test** — SwiftShader software rendering only.
+  Three.js's heavier per-frame work (more draw calls, `MeshStandardMaterial`
+  lighting, three full mirror re-renders) makes real mobile GPU performance
+  more of an open question than it was for the lighter hand-written build,
+  not less.
