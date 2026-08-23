@@ -8557,10 +8557,17 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
       rim:new THREE.MeshStandardMaterial({color:0xd6dadd,roughness:0.3,metalness:0.75}),
       light:new THREE.MeshBasicMaterial({color:0xfff3c6}),
       tail:new THREE.MeshBasicMaterial({color:0xc21c1c}),
-      dash:new THREE.MeshStandardMaterial({color:0x1a1d21,roughness:0.65}),
+      dash:new THREE.MeshStandardMaterial(Object.assign({color:0x191b1f,roughness:0.82,metalness:0.0,normalScale:new THREE.Vector2(0.5,0.5)},simMakeLeatherMaps(1.5))),
       trim:new THREE.MeshStandardMaterial({color:0x2a2f36,roughness:0.55,metalness:0.15}),
       seat:new THREE.MeshStandardMaterial(Object.assign({color:0x3a2a22,roughness:0.7,normalScale:new THREE.Vector2(0.8,0.8)},simMakeLeatherMaps())),
+      // Steering wheel and shift-boot: the same photographic leather, tinted
+      // near-black and tiled tight so the grain reads at rim scale.
+      wheelLeather:new THREE.MeshStandardMaterial(Object.assign({color:0x14100e,roughness:0.58,metalness:0.0,normalScale:new THREE.Vector2(1.1,1.1)},simMakeLeatherMaps(5))),
       wheelRim:new THREE.MeshStandardMaterial({color:0xe4e6e8,roughness:0.25,metalness:0.55}),
+      // Two skin tones so knuckles/finger edges read as separate forms
+      // instead of one flat blob when the hands grip the wheel.
+      skin:new THREE.MeshStandardMaterial({color:0xc98f6b,roughness:0.66,metalness:0.0}),
+      skinDark:new THREE.MeshStandardMaterial({color:0xb0754f,roughness:0.68,metalness:0.0}),
       ground:new THREE.MeshLambertMaterial({color:0x2e4c27}),
       trunk:new THREE.MeshLambertMaterial({color:0x5c4630}),
       leaf:new THREE.MeshLambertMaterial({color:0x3d6e32}),
@@ -8687,27 +8694,98 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
     carGroup.add(intr);
     P.intr=intr;
 
+    // Leather-wrapped wheel with real hands gripping it. The rim is now
+    // photographic leather (mat.wheelLeather) at higher tessellation so it
+    // reads round, the hub is a dished horn-pad, and two modeled hands hold
+    // it at 9 and 3 — the grip the app itself teaches (#296) — so the driver
+    // sees their own hands on the wheel, not a bare plastic ring. Everything
+    // is parented under wheelGroup, so it all turns with the steering.
     var wheelGroup=new THREE.Group();
-    var rim=new THREE.Mesh(new THREE.TorusGeometry(42,7,10,22),mat.wheelRim);
+    var RIM_R=44, TUBE_R=8;
+    var rim=new THREE.Mesh(new THREE.TorusGeometry(RIM_R,TUBE_R,18,44),mat.wheelLeather);
     wheelGroup.add(rim);
+    // three spokes fanning from the hub, a touch of brushed metal
     for(var wi=0;wi<3;wi++){
-      var ang=wi/3*Math.PI*2;
-      var spoke=new THREE.Mesh(new THREE.BoxGeometry(8,36,8),mat.trim);
-      spoke.position.set(Math.sin(ang)*20,Math.cos(ang)*20,0);
+      var ang=(wi/3)*Math.PI*2+Math.PI; // one pointing down, two up-sides
+      var spoke=new THREE.Mesh(new THREE.BoxGeometry(9,RIM_R-14,5),mat.wheelRim);
+      spoke.position.set(Math.sin(ang)*(RIM_R-14)/2,Math.cos(ang)*(RIM_R-14)/2,-1);
       spoke.rotation.z=-ang;
       wheelGroup.add(spoke);
     }
-    var hub=new THREE.Mesh(new THREE.CylinderGeometry(16,16,16,14),mat.trim);
-    hub.rotation.x=Math.PI/2;
-    wheelGroup.add(hub);
+    // dished centre hub / horn pad with a small emblem boss
+    var hub=new THREE.Mesh(new THREE.CylinderGeometry(17,15,11,20),mat.dash);
+    hub.rotation.x=Math.PI/2; hub.position.z=-2;
+    var emblem=new THREE.Mesh(new THREE.CylinderGeometry(7,7,3,16),mat.wheelRim);
+    emblem.rotation.x=Math.PI/2; emblem.position.z=4;
+    wheelGroup.add(hub,emblem);
+
+    // A hand gripping the rim, built from rounded forms (spheres + capped
+    // cylinders) so it reads as a hand and not a mitten. `sign` = +1
+    // right(3 o'clock), -1 left(9 o'clock); the rim tangent is vertical at
+    // both, so one build mirrored across x serves both. Local frame at the
+    // grip point: +x is radially outward, -z faces the driver. The back of
+    // the hand sits on the driver side, four fingers curl over the top edge
+    // and down the far side, the thumb rides the inner face, and a forearm
+    // recedes toward the driver's lap so the hands aren't floating.
+    function simBuildHand(sign){
+      var h=new THREE.Group(), S=mat.skin, SD=mat.skinDark;
+      // back of the hand: a flattened rounded mass on the driver side
+      var back=new THREE.Mesh(new THREE.SphereGeometry(11,18,14),S);
+      back.scale.set(0.62,1.35,0.6); back.position.set(sign*1.5,-1,-8.5); h.add(back);
+      // heel of the palm, lower down
+      var palm=new THREE.Mesh(new THREE.SphereGeometry(8,14,12),S);
+      palm.scale.set(0.72,1.0,0.7); palm.position.set(sign*2.5,-11,-6); h.add(palm);
+      // four fingers, each a segment over the top + a curled segment + a tip,
+      // spread along the rim (y). Knuckle bumps show from the driver's side.
+      for(var f=0;f<4;f++){
+        var y=8.5-f*6.0;
+        var seg1=new THREE.Mesh(new THREE.CylinderGeometry(2.7,2.9,11,8),S);
+        seg1.rotation.x=Math.PI/2; seg1.position.set(sign*5,y,-1);
+        var seg2=new THREE.Mesh(new THREE.CylinderGeometry(2.4,2.7,9,8),SD);
+        seg2.rotation.x=Math.PI/2+0.95; seg2.position.set(sign*5,y-1.6,7);
+        var tip=new THREE.Mesh(new THREE.SphereGeometry(2.4,8,6),S);
+        tip.position.set(sign*5,y-4.2,10.2);
+        var kn=new THREE.Mesh(new THREE.SphereGeometry(2.7,8,6),SD);
+        kn.position.set(sign*4,y,-3);
+        h.add(seg1,seg2,tip,kn);
+      }
+      // thumb: two segments riding up the inner face toward 12 o'clock
+      var thumb=new THREE.Group();
+      var th1=new THREE.Mesh(new THREE.CylinderGeometry(3.0,3.4,10,8),S); th1.position.y=5;
+      var th2=new THREE.Mesh(new THREE.CylinderGeometry(2.6,3.0,8,8),S); th2.position.set(0,11,1.5); th2.rotation.x=-0.5;
+      var thtip=new THREE.Mesh(new THREE.SphereGeometry(2.7,8,6),S); thtip.position.set(0,14.5,3);
+      thumb.add(th1,th2,thtip);
+      thumb.position.set(-sign*3.5,-6,-3); thumb.rotation.z=sign*0.55; thumb.rotation.x=-0.35;
+      h.add(thumb);
+      // wrist + forearm receding toward the driver and slightly inward
+      var wrist=new THREE.Mesh(new THREE.SphereGeometry(7,12,10),SD);
+      wrist.scale.set(0.85,0.85,1); wrist.position.set(sign*1.5,-16,-11); h.add(wrist);
+      var arm=new THREE.Mesh(new THREE.CylinderGeometry(6.5,8,40,14),SD);
+      arm.position.set(sign*1,-28,-26); arm.rotation.x=1.05; arm.rotation.z=sign*0.14; h.add(arm);
+      h.position.set(sign*RIM_R,0,0);
+      return h;
+    }
+    wheelGroup.add(simBuildHand(1),simBuildHand(-1));
+
     wheelGroup.position.set(0,SIM_EYE_H-18,108);
     intr.add(wheelGroup);
     P.wheelGroup=wheelGroup;
 
+    // Soft cabin fill light so the wheel, hands and dash aren't left in the
+    // car's own shadow — parented to the interior, so it only costs anything
+    // in cockpit view (the interior group is culled in chase view and in the
+    // mirror passes).
+    var cabinLight=new THREE.PointLight(0xfff2e0,0.55,900,1.4);
+    cabinLight.position.set(0,150,30);
+    intr.add(cabinLight);
+
     var leverGroup=new THREE.Group();
-    var stick=new THREE.Mesh(new THREE.CylinderGeometry(4,5,54,8),mat.trim); stick.position.y=27;
-    var knob=new THREE.Mesh(new THREE.SphereGeometry(11,10,8),mat.trim); knob.position.y=54;
-    leverGroup.add(stick,knob);
+    // leather shift boot flaring from the console, chromed stalk, leather knob
+    var boot=new THREE.Mesh(new THREE.CylinderGeometry(9,15,20,12),mat.wheelLeather); boot.position.y=6;
+    var stick=new THREE.Mesh(new THREE.CylinderGeometry(3.5,4.5,44,10),mat.wheelRim); stick.position.y=32;
+    var knob=new THREE.Mesh(new THREE.SphereGeometry(12,14,12),mat.wheelLeather); knob.position.y=56;
+    var knobTop=new THREE.Mesh(new THREE.CylinderGeometry(9,9,3,14),mat.trim); knobTop.position.y=64;
+    leverGroup.add(boot,stick,knob,knobTop);
     leverGroup.position.set(40,SIM_EYE_H-64,72);
     intr.add(leverGroup);
     P.leverGroup=leverGroup;
@@ -8774,12 +8852,16 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
   // Real CC0 photographic leather (ambientCG Leather034C — diamond-quilted,
   // stitched) for the seats: colour map plus a normal map so the quilting
   // and stitch lines actually catch light instead of being a flat colour.
-  function simMakeLeatherMaps(){
+  // Each call returns FRESH texture instances (TextureLoader().load is new
+  // every time), so the wheel and dash can tile the same photo at their own
+  // density without disturbing the seats. `rep` is the tile repeat.
+  function simMakeLeatherMaps(rep){
+    if(rep==null)rep=0.6;
     var col=new THREE.TextureLoader().load(SEAT_LEATHER_COLOR_DATAURI);
     var nrm=new THREE.TextureLoader().load(SEAT_LEATHER_NORMAL_DATAURI);
     [col,nrm].forEach(function(t){
       t.wrapS=THREE.RepeatWrapping; t.wrapT=THREE.RepeatWrapping;
-      t.repeat.set(0.6,0.6);
+      t.repeat.set(rep,rep);
     });
     return {map:col,normalMap:nrm};
   }
