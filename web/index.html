@@ -304,10 +304,6 @@
   .simhud .simscore{margin-inline-start:auto}
   .simexit{flex:none;width:34px;height:34px;border-radius:999px;border:0;background:rgba(10,15,25,.55);
     color:#fff;font-size:15px;cursor:pointer;pointer-events:auto;line-height:1}
-  /* Dash band reserves the bottom ~24% of the canvas (see simDrawDashboard),
-     so the wheel is sized/placed to sit inside it rather than over the road. */
-  .simwheel{position:absolute;bottom:6px;left:50%;transform:translateX(-50%);width:44px;height:44px;
-    pointer-events:none;opacity:.92;z-index:1}
   /* Steering is spatial, not textual: left/right must stay physically fixed
      regardless of page reading direction, or RTL would swap what the ◀ / ▶
      buttons actually do relative to where they sit on screen. */
@@ -325,8 +321,9 @@
   .simgearbtn{border:1.5px solid var(--line);border-radius:12px;font:inherit;font-weight:800;font-size:15px;
     padding:10px 0;cursor:pointer;background:var(--surface);color:var(--muted);box-shadow:var(--shadow)}
   .simgearbtn.on{background:var(--accent);color:#20170a;border-color:var(--accent)}
-  .simlookback{width:100%;font-size:15px;padding:12px 0}
-  .simlookback.on{background:var(--brand);color:var(--on-brand);border-color:var(--brand)}
+  .simcammode{width:100%;font-size:15px;padding:12px 0}
+  .simcammode.chase{background:var(--brand);color:var(--on-brand);border-color:var(--brand)}
+  .simhint{color:var(--muted);font-size:12.5px;margin:0;text-align:center}
   .simoverlay{position:absolute;inset:0;background:rgba(8,12,20,.72);display:flex;align-items:flex-end;
     justify-content:center;padding:12px;backdrop-filter:blur(1px)}
   .simoverlay.hidden{display:none}
@@ -3523,7 +3520,10 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
     simPlayHint:"Steer ◀ ▶ to stay on the road, ⛔ to slow down. A hazard sign means a question is coming — answer it to keep driving.",
     simLeft:"Steer left", simRight:"Steer right", simBrake:"Brake", simDrive:"Keep driving",
     simExitConfirm:"Leave this drive? Your progress in this set won't be saved.",
-    simGear:"Gear", simLookBack:"Look back", simMute:"Sound on/off"
+    simGear:"Gear", simLookBack:"Look back", simMute:"Sound on/off",
+    simDragHint:"Drag on the view to look around — the mirrors and the road behind are real, not painted on.",
+    simCamToggle:"Switch camera", simCamCockpit:"Cockpit", simCamChase:"Chase cam",
+    simNoWebgl:"This device's browser can't render 3D (WebGL unavailable), so the driving simulation can't run here."
   },ku:{bookB:"کتێبی فەرمی",bookD:"کۆمەڵە پرسیار ڕاستەوخۆ لە کتێبی فەرمیی تیۆریی کوردستانەوە.",bookAll:"هەموو پرسیارەکانی کتێب",mastered:"شارەزا",sgSearch:"گەڕان بۆ هێما…",sgAll:"هەموو",sgOther:"هێماکانی تر",sgNone:"هیچ هێمایەک لەگەڵ گەڕانەکەت نەگونجا.",
     brand:"تیۆری لێخوڕین – کوردستان", title:"لە تاقیکردنەوەی تیۆریدا سەرکەوتووبە", sub:"ڕاهێنان بەسەر فۆرمی ڕاستەقینەی هەولێر — ٢٠ پرسیار، ٢٠ خولەک، ٨٠٪ (١٦/٢٠) بۆ سەرکەوتن.",
     exam:"تاقیکردنەوەی نمونەیی", examD:"٢٠ پرسیار · ٢٠ خولەک · ٨٠٪ بۆ سەرکەوتن", practice:"ڕاهێنان بەپێی بابەت", practiceD:"فێربە لەگەڵ وەڵام و ڕوونکردنەوەی خێرا",
@@ -3562,7 +3562,10 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
     simPlayHint:"بۆ مانەوە لەسەر ڕێگا بەرەو بکە ◀ ▶، بۆ کەمکردنەوەی خێرایی ⛔ بگرە. هێمای مەترسی واتای ئەوەیە پرسیارێک دێت — وەڵامی بدەرەوە بۆ بەردەوامبوونی لێخوڕین.",
     simLeft:"بەرەوی چەپ", simRight:"بەرەوی ڕاست", simBrake:"ترمز", simDrive:"بەردەوامبە لە لێخوڕین",
     simExitConfirm:"ئەم لێخوڕینە بەجێبهێڵیت؟ پێشکەوتنت لەم کۆمەڵەیەدا پاشەکەوت ناکرێت.",
-    simGear:"گیر", simLookBack:"سەیری پشتەوە", simMute:"دەنگ لادان/کردنەوە"
+    simGear:"گیر", simLookBack:"سەیری پشتەوە", simMute:"دەنگ لادان/کردنەوە",
+    simDragHint:"بۆ ئاوڕدانەوە بەسەر شاشەکەدا خامۆشە بگرە — ئاوێنەکان و ڕێگای پشتەوە ڕاستەقینەن، وێنە نین.",
+    simCamToggle:"گۆڕینی کامێرا", simCamCockpit:"ناوەوە", simCamChase:"کامێرای دوورەوە",
+    simNoWebgl:"وێبگەڕی ئەم ئامێرە ناتوانێت شێوەی سێ-ڕەهەندی نیشان بدات (WebGL بەردەست نییە)، بۆیە سیمولەیشنی لێخوڕین لێرە ناخوڕێت."
   }};
 
   /* ---------- state ---------- */
@@ -4574,6 +4577,11 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
 
   var SIM={};
   var SIM_SEG=90, SIM_SPACING=5200, SIM_MAXSPD=2500, SIM_ACCEL=1500, SIM_BRAKE=2600, SIM_STEER=1.15, SIM_MAXDIST=6200;
+  /* 3D world scale: SIM_SEG world-units (~90) is treated as ~3m of road for
+     sizing the car/road/camera, i.e. 1 world unit ≈ 1/30 m. SIM_TURN converts
+     a track segment's abstract curve value into an actual heading change;
+     SIM_ROADW is the drivable half-width a steering car.x of ±1 can reach. */
+  var SIM_TURN=0.011, SIM_ROADW=130, SIM_DRAWSEG=46, SIM_EYE_H=118;
 
   function mulberry32(seed){
     var a=seed|0;
@@ -4603,12 +4611,41 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
       }
     }
     var cks=[];for(var i=0;i<count;i++)cks.push(SIM_SPACING*(i+1));
-    return {curves:curves,cks:cks};
+
+    /* Walk the curve list into an actual 3D path (Euler-integrated, like a
+       turtle): each segment turns by its curve value * SIM_TURN radians, then
+       steps forward SIM_SEG in the new heading. cx/cz/hd[i] is the pose at
+       the START of segment i (world units, XZ ground plane, heading in
+       radians from +Z). This is the same procedural curve data the old 2D
+       scanline renderer used, just consumed as real geometry instead of a
+       per-pixel screen offset. */
+    var heading=0, cx=0, cz=0, cxs=[0], czs=[0], hds=[0];
+    for(var s=0;s<curves.length;s++){
+      heading+=curves[s]*SIM_TURN;
+      cx+=Math.sin(heading)*SIM_SEG; cz+=Math.cos(heading)*SIM_SEG;
+      cxs.push(cx); czs.push(cz); hds.push(heading);
+    }
+    return {curves:curves,cks:cks,cx:cxs,cz:czs,hd:hds};
   }
   function simCurveAt(track,z){
     var i=Math.floor(z/SIM_SEG);
     if(i<0)i=0;else if(i>=track.curves.length)i=track.curves.length-1;
     return track.curves[i];
+  }
+  /* World-space pose (center-of-road position + heading) at distance z along
+     the route, linearly interpolated between the two nearest integrated
+     points above. Everything car-relative (camera, dashboard, mirrors, the
+     car's own body) is built from this one function. */
+  function simTrackPose(track,z){
+    if(z<0)z=0;
+    var n=track.curves.length, f=z/SIM_SEG, i=Math.floor(f);
+    if(i>=n)i=n-1; if(i<0)i=0;
+    var frac=f-i;
+    return {
+      x:track.cx[i]+(track.cx[i+1]-track.cx[i])*frac,
+      z:track.cz[i]+(track.cz[i+1]-track.cz[i])*frac,
+      heading:track.hd[i]+(track.hd[i+1]-track.hd[i])*frac
+    };
   }
 
   function renderSimSets(){
@@ -4639,17 +4676,15 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
       '<div><h1>'+esc(t("setWord"))+' '+(S.simSet+1)+' · '+esc(t("simB"))+'</h1>'+
       '<p class="sub">'+esc(t("simPlayHint"))+'</p></div>'+
       '<div class="simstage" id="simStage">'+
-        '<canvas class="simcanvas" id="simCanvas" aria-hidden="true"></canvas>'+
+        '<canvas class="simcanvas" id="simCanvas"></canvas>'+
         '<div class="simhud"><button class="simexit" onclick="simExit()" aria-label="'+esc(t("back"))+'">✕</button>'+
           '<span class="pill" id="simProg">1 / '+total+'</span>'+
+          '<span class="pill" id="simSpeedEl" style="margin-inline-start:8px">0</span>'+
           '<span class="pill simscore" id="simScoreEl">✓ 0</span>'+
           '<button class="simexit" id="simMuteBtn" onclick="simToggleMute()" aria-label="'+esc(t("simMute"))+'">'+(simMuted()?"🔇":"🔊")+'</button></div>'+
-        '<svg class="simwheel" id="simWheel" viewBox="0 0 64 64" aria-hidden="true">'+
-          '<circle cx="32" cy="32" r="26" fill="none" stroke="#fff" stroke-width="5"/>'+
-          '<circle cx="32" cy="32" r="6" fill="#fff"/>'+
-          '<path d="M32 6v14M11 44l12-8M53 44l-12-8" stroke="#fff" stroke-width="5" stroke-linecap="round"/></svg>'+
         '<div class="simoverlay hidden" id="simOverlay"><div class="simcard" id="simCard"></div></div>'+
       '</div>'+
+      '<p class="simhint">'+esc(t("simDragHint"))+'</p>'+
       '<div class="simgear" role="group" aria-label="'+esc(t("simGear"))+'">'+
         '<button class="simgearbtn on" id="simGearP" onclick="simSetGear(\'P\')" aria-label="'+esc(t("simGear"))+' P">P</button>'+
         '<button class="simgearbtn" id="simGearN" onclick="simSetGear(\'N\')" aria-label="'+esc(t("simGear"))+' N">N</button>'+
@@ -4660,24 +4695,30 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
         '<button class="simbtn brake" id="simBrakeBtn" aria-label="'+esc(t("simBrake"))+'">⛔</button>'+
         '<button class="simbtn" id="simRightBtn" aria-label="'+esc(t("simRight"))+'">▶</button>'+
       '</div>'+
-      '<button class="simbtn simlookback" id="simLookBtn" aria-label="'+esc(t("simLookBack"))+'">👀 '+esc(t("simLookBack"))+'</button>'+
+      '<button class="simbtn simcammode" id="simCamBtn" aria-label="'+esc(t("simCamToggle"))+'">🎥 '+esc(t("simCamCockpit"))+'</button>'+
       '<button class="btn ghost" onclick="simExit()">'+esc(t("back"))+'</button>';
     simInit();
   }
 
   function simInit(){
     var canvas=document.getElementById("simCanvas"), stage=document.getElementById("simStage");
-    var ctx=canvas.getContext("2d");
     var w=stage.clientWidth||320, h=Math.round(w*0.72), dpr=Math.min(window.devicePixelRatio||1,2);
     canvas.width=Math.round(w*dpr); canvas.height=Math.round(h*dpr);
     canvas.style.height=h+"px";
-    ctx.setTransform(dpr,0,0,dpr,0,0);
 
-    SIM.ctx=ctx; SIM.w=w; SIM.h=h; SIM.last=null;
+    SIM.w=canvas.width; SIM.h=canvas.height; SIM.last=null;
     SIM.track=simTrack(S.simSet+1, S.queue.length);
     SIM.car={z:0,x:0,speed:0};
     SIM.paused=false; SIM.input={l:false,r:false,b:false}; SIM.perm={};
-    SIM.gear="P"; SIM.lookBack=false; SIM.wasBraking=false; SIM.audio=null;
+    SIM.gear="P"; SIM.wasBraking=false; SIM.audio=null;
+    SIM.camMode="cockpit"; SIM.lookYaw=0; SIM.lookPitch=0; SIM.orbitYaw=Math.PI; SIM.orbitPitch=0.22;
+    SIM.wheelSpin=0; SIM.gearLever=0; SIM.drag=null;
+
+    SIM.gl=simGLInit(canvas);
+    if(!SIM.gl){
+      var stage2=document.getElementById("simStage");
+      if(stage2)stage2.innerHTML='<p style="padding:20px;color:#fff">'+esc(t("simNoWebgl"))+'</p>';
+    }
 
     simBindControls();
     SIM.running=true;
@@ -4699,14 +4740,42 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
     bind(document.getElementById("simRightBtn"),"r");
     bind(document.getElementById("simBrakeBtn"),"b");
 
-    var lookBtn=document.getElementById("simLookBtn");
-    if(lookBtn){
-      function lookOn(e){e.preventDefault();SIM.lookBack=true;lookBtn.classList.add("on");}
-      function lookOff(){SIM.lookBack=false;lookBtn.classList.remove("on");}
-      lookBtn.addEventListener("pointerdown",lookOn);
-      lookBtn.addEventListener("pointerup",lookOff);
-      lookBtn.addEventListener("pointerleave",lookOff);
-      lookBtn.addEventListener("pointercancel",lookOff);
+    var camBtn=document.getElementById("simCamBtn");
+    if(camBtn){
+      camBtn.addEventListener("click",function(){
+        SIM.camMode=(SIM.camMode==="cockpit")?"chase":"cockpit";
+        camBtn.classList.toggle("chase",SIM.camMode==="chase");
+        camBtn.textContent="🎥 "+(SIM.camMode==="cockpit"?t("simCamCockpit"):t("simCamChase"));
+      });
+    }
+
+    /* Drag-to-look, directly on the 3D view: one finger/mouse drag rotates the
+       look direction (cockpit) or swings the orbit camera (chase). This is the
+       "look around" the user asked for — continuous, not a hold-to-glance
+       toggle. Kept off the steer/brake/gear buttons entirely (separate
+       elements below the canvas) so the two input schemes never fight. */
+    var canvas=document.getElementById("simCanvas");
+    if(canvas){
+      canvas.addEventListener("pointerdown",function(e){
+        SIM.drag={x:e.clientX,y:e.clientY};
+        try{canvas.setPointerCapture(e.pointerId);}catch(err){}
+      });
+      canvas.addEventListener("pointermove",function(e){
+        if(!SIM.drag)return;
+        var dx=e.clientX-SIM.drag.x, dy=e.clientY-SIM.drag.y;
+        SIM.drag={x:e.clientX,y:e.clientY};
+        var s=0.008;
+        if(SIM.camMode==="cockpit"){
+          SIM.lookYaw-=dx*s; SIM.lookPitch=simClamp(SIM.lookPitch-dy*s,-1.0,1.0);
+          SIM.lookYaw=simWrapAngle(SIM.lookYaw);
+        }else{
+          SIM.orbitYaw+=dx*s; SIM.orbitPitch=simClamp(SIM.orbitPitch-dy*s,-0.15,0.9);
+        }
+      });
+      function endDrag(){SIM.drag=null;}
+      canvas.addEventListener("pointerup",endDrag);
+      canvas.addEventListener("pointercancel",endDrag);
+      canvas.addEventListener("pointerleave",endDrag);
     }
 
     SIM.keydown=function(e){
@@ -4714,18 +4783,19 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
       if(k==="ArrowLeft"||k==="a"||k==="A"){SIM.input.l=true;e.preventDefault();}
       else if(k==="ArrowRight"||k==="d"||k==="D"){SIM.input.r=true;e.preventDefault();}
       else if(k==="ArrowDown"||k==="s"||k==="S"||k===" "){SIM.input.b=true;e.preventDefault();}
-      else if(k==="l"||k==="L"){SIM.lookBack=true;if(lookBtn)lookBtn.classList.add("on");}
     };
     SIM.keyup=function(e){
       var k=e.key;
       if(k==="ArrowLeft"||k==="a"||k==="A")SIM.input.l=false;
       else if(k==="ArrowRight"||k==="d"||k==="D")SIM.input.r=false;
       else if(k==="ArrowDown"||k==="s"||k==="S"||k===" ")SIM.input.b=false;
-      else if(k==="l"||k==="L"){SIM.lookBack=false;if(lookBtn)lookBtn.classList.remove("on");}
     };
     window.addEventListener("keydown",SIM.keydown);
     window.addEventListener("keyup",SIM.keyup);
   }
+
+  function simClamp(v,lo,hi){return v<lo?lo:(v>hi?hi:v);}
+  function simWrapAngle(a){while(a>Math.PI)a-=Math.PI*2;while(a<-Math.PI)a+=Math.PI*2;return a;}
 
   window.simSetGear=function(g){
     if(SIM.gear===g)return;
@@ -4768,148 +4838,387 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
     SIM.raf=requestAnimationFrame(simTick);
   }
 
-  /* Draws the road+sky into the rectangle (ox,oy,W,H) of the given context.
-     dir=1 is the normal forward view; dir=-1 samples the track behind the
-     car instead (used by the rear-view/wing mirrors and the look-back view)
-     — same road, same curve data, just walked the other way. flip=true
-     additionally mirrors the image left-right, because a real mirror shows
-     a reflection, not just "the view facing backward" (that distinction is
-     what makes the wing mirrors read as mirrors and the look-back view read
-     as turning your head). step is the scanline stride in px — mirrors use
-     a coarser step since they render at a fraction of the main view's size. */
-  function simRenderRoad(ctx,ox,oy,W,H,dir,flip,step){
-    var car=SIM.car, track=SIM.track;
-    var horizon=Math.round(H*0.42);
-    var sky=ctx.createLinearGradient(0,oy,0,oy+horizon);
-    if(dir<0){sky.addColorStop(0,"#1c3652");sky.addColorStop(1,"#4d7a99");}
-    else{sky.addColorStop(0,"#274a6e");sky.addColorStop(1,"#6ea8c9");}
-    ctx.fillStyle=sky; ctx.fillRect(ox,oy,W,horizon);
+  /* ==========================================================================
+     Hand-written WebGL 3D engine — no Three.js, no libraries, no external
+     assets. One flat-lit vertex-colored shader draws almost everything
+     (a deliberate low-poly look, chosen to stay fast on the phones this app
+     actually runs on); the mirrors are the one exception, textured from a
+     framebuffer rendered a moment earlier from a camera facing back down
+     the road, so they show a genuine live reflection instead of painted-on
+     art. The road itself is real 3D geometry, walked out of the same
+     procedural curve data the old 2D build used (see simTrack/simTrackPose
+     above) — only how that data becomes pixels changed. ========================================================================== */
 
-    var maxHalf=W*0.46, minHalf=Math.max(2,W*0.015), maxBend=W*0.62, maxSteer=W*0.5, stripeLen=340;
-    for(var y=horizon+1;y<H;y+=step){
-      var t=(y-horizon)/(H-horizon), depth=t*t;
-      var z=car.z+dir*SIM_MAXDIST*(1-depth); if(z<0)z=0;
-      var curve=simCurveAt(track,z)*dir;
-      var half=minHalf+(maxHalf-minHalf)*depth;
-      var cx=W/2+curve*(1-depth)*maxBend-car.x*dir*depth*maxSteer;
-      if(flip)cx=W-cx;
-      var phase=Math.floor(z/stripeLen)%2===0;
+  function v3Sub(a,b){return [a[0]-b[0],a[1]-b[1],a[2]-b[2]];}
+  function v3Cross(a,b){return [a[1]*b[2]-a[2]*b[1], a[2]*b[0]-a[0]*b[2], a[0]*b[1]-a[1]*b[0]];}
+  function v3Dot(a,b){return a[0]*b[0]+a[1]*b[1]+a[2]*b[2];}
+  function v3Norm(a){var l=Math.sqrt(v3Dot(a,a))||1;return [a[0]/l,a[1]/l,a[2]/l];}
 
-      ctx.fillStyle=phase?"#31502f":"#2b482a";
-      ctx.fillRect(ox,oy+y,W,step);
-      var rw=Math.max(1.5,half*0.06);
-      ctx.fillStyle=phase?"#d33b3b":"#ececeb";
-      ctx.fillRect(ox+cx-half-rw,oy+y,rw,step);
-      ctx.fillRect(ox+cx+half,oy+y,rw,step);
-      ctx.fillStyle=phase?"#43474d":"#3a3e44";
-      ctx.fillRect(ox+cx-half,oy+y,half*2,step);
-      if(half>26&&phase){
-        var lw=Math.max(1.5,half*0.045);
-        ctx.fillStyle="#e7d98a";
-        ctx.fillRect(ox+cx-lw/2,oy+y,lw,step);
-      }
+  // All matrices are flat 16-element column-major arrays, WebGL's native
+  // layout. m4Mul(a,b) composes them so a point transforms as a*(b*p) —
+  // i.e. b is applied first, matching the usual T*R*S reading order.
+  function m4Mul(a,b){
+    var r=new Array(16);
+    for(var c=0;c<4;c++)for(var row=0;row<4;row++){
+      var s=0;for(var k=0;k<4;k++)s+=a[k*4+row]*b[c*4+k];
+      r[c*4+row]=s;
     }
+    return r;
+  }
+  function m4Identity(){return [1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1];}
+  function m4Translate(x,y,z){return [1,0,0,0, 0,1,0,0, 0,0,1,0, x,y,z,1];}
+  function m4ScaleXY(x,y){return [x,0,0,0, 0,y,0,0, 0,0,1,0, 0,0,0,1];}
+  function m4RotX(r){var c=Math.cos(r),s=Math.sin(r);return [1,0,0,0, 0,c,s,0, 0,-s,c,0, 0,0,0,1];}
+  function m4RotY(r){var c=Math.cos(r),s=Math.sin(r);return [c,0,-s,0, 0,1,0,0, s,0,c,0, 0,0,0,1];}
+  function m4RotZ(r){var c=Math.cos(r),s=Math.sin(r);return [c,s,0,0, -s,c,0,0, 0,0,1,0, 0,0,0,1];}
+  function m4Perspective(fovy,aspect,near,far){
+    var f=1/Math.tan(fovy/2), nf=1/(near-far);
+    return [f/aspect,0,0,0, 0,f,0,0, 0,0,(far+near)*nf,-1, 0,0,2*far*near*nf,0];
+  }
+  function m4LookAt(eye,center,up){
+    var z=v3Norm(v3Sub(eye,center)), x=v3Norm(v3Cross(up,z)), y=v3Cross(z,x);
+    return [x[0],y[0],z[0],0, x[1],y[1],z[1],0, x[2],y[2],z[2],0,
+      -v3Dot(x,eye),-v3Dot(y,eye),-v3Dot(z,eye),1];
+  }
+  function m4TransformPoint(m,p){
+    return [m[0]*p[0]+m[4]*p[1]+m[8]*p[2]+m[12],
+      m[1]*p[0]+m[5]*p[1]+m[9]*p[2]+m[13],
+      m[2]*p[0]+m[6]*p[1]+m[10]*p[2]+m[14]];
+  }
+  // The upper-left 3x3 of a model matrix, used to transform normals. Only
+  // valid for rigid transforms (rotation+translation, no scale) — true for
+  // every mesh here except the mirror quads, which skip lighting entirely
+  // (see the shader) precisely so this shortcut can stay safe for them too.
+  function m4Normal3(m){return [m[0],m[1],m[2], m[4],m[5],m[6], m[8],m[9],m[10]];}
+
+  var SIM_VS=
+    "attribute vec3 aPos;attribute vec3 aNormal;attribute vec3 aColor;attribute vec2 aUV;"+
+    "uniform mat4 uModel,uView,uProj;uniform mat3 uNormalMat;"+
+    "varying vec3 vColor;varying vec3 vNormal;varying vec2 vUV;"+
+    "void main(){gl_Position=uProj*uView*uModel*vec4(aPos,1.0);"+
+    "vNormal=uNormalMat*aNormal;vColor=aColor;vUV=aUV;}";
+  var SIM_FS=
+    "precision mediump float;"+
+    "varying vec3 vColor;varying vec3 vNormal;varying vec2 vUV;"+
+    "uniform vec3 uLightDir;uniform float uUseTex;uniform sampler2D uTex;"+
+    "void main(){"+
+    "float diff=max(dot(normalize(vNormal),normalize(uLightDir)),0.0);"+
+    "float lit=0.45+0.55*diff;"+
+    "vec3 base=mix(vColor,texture2D(uTex,vUV).rgb,uUseTex);"+
+    "float light=mix(lit,1.0,uUseTex);"+
+    "gl_FragColor=vec4(base*light,1.0);}";
+
+  function simCompile(gl,type,src){
+    var sh=gl.createShader(type);
+    gl.shaderSource(sh,src); gl.compileShader(sh);
+    if(!gl.getShaderParameter(sh,gl.COMPILE_STATUS)){
+      var log=gl.getShaderInfoLog(sh); gl.deleteShader(sh);
+      throw new Error("shader compile failed: "+log);
+    }
+    return sh;
   }
 
-  function simRenderMirror(x,y,w,h){
-    var ctx=SIM.ctx;
-    ctx.save();
-    ctx.beginPath();
-    if(ctx.roundRect)ctx.roundRect(x,y,w,h,4);else ctx.rect(x,y,w,h);
-    ctx.clip();
-    ctx.fillStyle="#05070a"; ctx.fillRect(x,y,w,h);
-    simRenderRoad(ctx,x,y,w,h,-1,true,3);
-    ctx.restore();
-    ctx.save();
-    ctx.beginPath();
-    if(ctx.roundRect)ctx.roundRect(x,y,w,h,4);else ctx.rect(x,y,w,h);
-    ctx.lineWidth=2.5; ctx.strokeStyle="#1a1d21"; ctx.stroke();
-    ctx.restore();
-  }
-
-  /* The cockpit: a dash panel across the bottom with a live speedometer and
-     a lit P/N/D indicator, plus (unless look-back is held) the rear-view and
-     two wing mirrors — "see what's inside the car" as an always-visible
-     instrument cluster, not just a road with a wheel floating over it. */
-  function simDrawDashboard(){
-    var ctx=SIM.ctx,W=SIM.w,H=SIM.h,car=SIM.car;
-    var dashH=Math.round(H*0.24), dy=H-dashH;
-    ctx.fillStyle="#14171b"; ctx.fillRect(0,dy,W,dashH);
-    ctx.fillStyle="#0a0c0e"; ctx.fillRect(0,dy,W,3);
-
-    if(!SIM.lookBack){
-      var mw=W*0.30, mh=dashH*0.5, mx=W/2-mw/2, my=dy-mh*0.68;
-      simRenderMirror(mx,my,mw,mh);
-      var sw=W*0.19, sh=dashH*0.46, sy=dy-sh*0.32;
-      simRenderMirror(3,sy,sw,sh);
-      simRenderMirror(W-sw-3,sy,sw,sh);
-    }
-
-    var scx=W*0.15, scy=dy+dashH*0.56, srad=dashH*0.4;
-    ctx.beginPath(); ctx.arc(scx,scy,srad,0,Math.PI*2);
-    ctx.fillStyle="#1f2429"; ctx.fill();
-    ctx.lineWidth=2; ctx.strokeStyle="#33393f"; ctx.stroke();
-    var pct=Math.min(1,car.speed/SIM_MAXSPD);
-    ctx.save();
-    ctx.translate(scx,scy); ctx.rotate(Math.PI*0.75+pct*Math.PI*1.5);
-    ctx.strokeStyle="#e29b00"; ctx.lineWidth=Math.max(2,srad*0.12); ctx.lineCap="round";
-    ctx.beginPath(); ctx.moveTo(0,0); ctx.lineTo(srad*0.76,0); ctx.stroke();
-    ctx.restore();
-    ctx.fillStyle="#9aa3ac"; ctx.font="700 "+Math.round(srad*0.36)+"px sans-serif";
-    ctx.textAlign="center"; ctx.textBaseline="middle";
-    ctx.fillText(String(Math.round(pct*180)),scx,scy+srad*0.62);
-
-    var labels=["P","N","D"], gs=Math.min(24,dashH*0.3), gx0=W*0.68, gy=dy+dashH*0.3;
-    labels.forEach(function(g,i){
-      var x=gx0+i*(gs+7);
-      ctx.beginPath(); ctx.arc(x,gy,gs*0.5,0,Math.PI*2);
-      ctx.fillStyle=(SIM.gear===g)?"#e29b00":"#252a30"; ctx.fill();
-      ctx.fillStyle=(SIM.gear===g)?"#20170a":"#7a8390";
-      ctx.font="800 "+Math.round(gs*0.52)+"px sans-serif";
-      ctx.textAlign="center"; ctx.textBaseline="middle";
-      ctx.fillText(g,x,gy+1);
+  function simMeshBox(cx,cy,cz,w,h,d,color){
+    var x=w/2,y=h/2,z=d/2;
+    var faces=[
+      {n:[0,0,1], v:[[-x,-y,z],[x,-y,z],[x,y,z],[-x,y,z]]},
+      {n:[0,0,-1],v:[[x,-y,-z],[-x,-y,-z],[-x,y,-z],[x,y,-z]]},
+      {n:[1,0,0], v:[[x,-y,z],[x,-y,-z],[x,y,-z],[x,y,z]]},
+      {n:[-1,0,0],v:[[-x,-y,-z],[-x,-y,z],[-x,y,z],[-x,y,-z]]},
+      {n:[0,1,0], v:[[-x,y,z],[x,y,z],[x,y,-z],[-x,y,-z]]},
+      {n:[0,-1,0],v:[[-x,-y,-z],[x,-y,-z],[x,-y,z],[-x,-y,z]]}
+    ];
+    var pos=[],nor=[],col=[],uv=[],idx=[],base=0;
+    faces.forEach(function(f){
+      f.v.forEach(function(p){
+        pos.push(p[0]+cx,p[1]+cy,p[2]+cz); nor.push(f.n[0],f.n[1],f.n[2]);
+        col.push(color[0],color[1],color[2]); uv.push(0,0);
+      });
+      idx.push(base,base+1,base+2, base,base+2,base+3); base+=4;
     });
+    return {pos:pos,nor:nor,col:col,uv:uv,idx:idx};
+  }
+  function simMeshConcat(meshes){
+    var pos=[],nor=[],col=[],uv=[],idx=[],base=0;
+    meshes.forEach(function(m){
+      pos=pos.concat(m.pos); nor=nor.concat(m.nor); col=col.concat(m.col); uv=uv.concat(m.uv);
+      m.idx.forEach(function(i){idx.push(i+base);});
+      base+=m.pos.length/3;
+    });
+    return {pos:pos,nor:nor,col:col,uv:uv,idx:idx};
+  }
+  function simUpload(gl,mesh){
+    function buf(arr){var b=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,b);
+      gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(arr),gl.STATIC_DRAW);return b;}
+    var idxBuf=gl.createBuffer();
+    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,idxBuf);
+    gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,new Uint16Array(mesh.idx),gl.STATIC_DRAW);
+    return {pos:buf(mesh.pos),nor:buf(mesh.nor),col:buf(mesh.col),uv:buf(mesh.uv),idx:idxBuf,count:mesh.idx.length};
+  }
+  function simUploadDynamic(gl,buf,mesh){
+    gl.bindBuffer(gl.ARRAY_BUFFER,buf.pos); gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(mesh.pos),gl.DYNAMIC_DRAW);
+    gl.bindBuffer(gl.ARRAY_BUFFER,buf.nor); gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(mesh.nor),gl.DYNAMIC_DRAW);
+    gl.bindBuffer(gl.ARRAY_BUFFER,buf.col); gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(mesh.col),gl.DYNAMIC_DRAW);
+    gl.bindBuffer(gl.ARRAY_BUFFER,buf.uv);  gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(mesh.uv),gl.DYNAMIC_DRAW);
+    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,buf.idx); gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,new Uint16Array(mesh.idx),gl.DYNAMIC_DRAW);
+    return mesh.idx.length;
+  }
+
+  var SIM_COL={
+    body:[0.72,0.16,0.16], cabin:[0.14,0.16,0.20], glass:[0.35,0.45,0.52],
+    wheel:[0.08,0.08,0.09], light:[0.95,0.9,0.7], tail:[0.75,0.1,0.1],
+    dash:[0.10,0.11,0.13], trim:[0.16,0.17,0.20], wheelRim:[0.85,0.85,0.87],
+    ground:[0.14,0.28,0.14], sign:[0.96,0.78,0.0], mirrorHousing:[0.10,0.11,0.13]
+  };
+  function simMeshGround(){return simMeshBox(0,-2,0,40000,4,40000,SIM_COL.ground);}
+  function simMeshCarExterior(){
+    var parts=[
+      simMeshBox(0,70,0, 175,90,420, SIM_COL.body),
+      simMeshBox(0,128,-10, 150,55,220, SIM_COL.cabin),
+      simMeshBox(0,128,-10, 156,45,214, SIM_COL.glass),
+      simMeshBox(0,58,205, 140,30,10, SIM_COL.light),
+      simMeshBox(0,58,-205, 140,30,10, SIM_COL.tail)
+    ];
+    [[-95,190],[95,190],[-95,-170],[95,-170]].forEach(function(p){
+      parts.push(simMeshBox(p[0],40,p[1], 34,70,70, SIM_COL.wheel));
+    });
+    return simMeshConcat(parts);
+  }
+  function simMeshRoadWheel(){return simMeshBox(0,0,0, 34,70,70, SIM_COL.wheel);}
+  function simMeshInterior(){
+    return simMeshConcat([
+      simMeshBox(0,50,150, 160,80,60, SIM_COL.dash),
+      simMeshBox(-98,110,60, 8,110,220, SIM_COL.trim),
+      simMeshBox(98,110,60, 8,110,220, SIM_COL.trim),
+      simMeshBox(0,SIM_EYE_H+46,78, 130,8,10, SIM_COL.trim),
+      simMeshBox(-60,SIM_EYE_H+11,105, 18,10,24, SIM_COL.mirrorHousing),
+      simMeshBox(60,SIM_EYE_H+11,105, 18,10,24, SIM_COL.mirrorHousing)
+    ]);
+  }
+  /* A flat annulus (ring of quads between two radii), not a ring of separate
+     cubes: discrete gapped boxes read as scattered debris up close, where the
+     driver's eye sits only ~85 units from a 42-radius ring — found by
+     screenshotting this exact spot and comparing against a debug view with
+     the wheel disabled. A continuous ring reads as a wheel from any angle. */
+  function simMeshSteeringWheel(){
+    var n=20, rOut=44, rIn=33, pos=[],nor=[],col=[],uv=[],idx=[],base=0;
+    for(var i=0;i<n;i++){
+      var a0=(i/n)*Math.PI*2, a1=((i+1)/n)*Math.PI*2;
+      [[Math.sin(a0)*rIn,Math.cos(a0)*rIn,0],[Math.sin(a0)*rOut,Math.cos(a0)*rOut,0],
+       [Math.sin(a1)*rOut,Math.cos(a1)*rOut,0],[Math.sin(a1)*rIn,Math.cos(a1)*rIn,0]
+      ].forEach(function(v){pos.push(v[0],v[1],v[2]);nor.push(0,0,-1);col.push(SIM_COL.wheelRim[0],SIM_COL.wheelRim[1],SIM_COL.wheelRim[2]);uv.push(0,0);});
+      idx.push(base,base+1,base+2, base,base+2,base+3); base+=4;
+    }
+    return simMeshConcat([{pos:pos,nor:nor,col:col,uv:uv,idx:idx}, simMeshBox(0,0,-8, 20,20,10, SIM_COL.trim)]);
+  }
+  function simMeshLever(){return simMeshBox(0,30,0, 10,60,10, SIM_COL.trim);}
+  function simMeshMirrorQuad(){
+    return {
+      pos:[-0.5,-0.5,0, 0.5,-0.5,0, 0.5,0.5,0, -0.5,0.5,0],
+      nor:[0,0,1, 0,0,1, 0,0,1, 0,0,1],
+      col:[1,1,1, 1,1,1, 1,1,1, 1,1,1],
+      uv:[0,0, 1,0, 1,1, 0,1],
+      idx:[0,1,2, 0,2,3]
+    };
+  }
+  function simMeshSign(){
+    return simMeshConcat([simMeshBox(0,-60,0, 10,120,10, [0.3,0.3,0.32]), simMeshBox(0,30,0, 60,60,6, SIM_COL.sign)]);
+  }
+
+  function simMakeMirrorFBO(gl,size){
+    var tex=gl.createTexture();
+    gl.bindTexture(gl.TEXTURE_2D,tex);
+    gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,size,size,0,gl.RGBA,gl.UNSIGNED_BYTE,null);
+    gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR);
+    gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR);
+    gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE);
+    var depth=gl.createRenderbuffer();
+    gl.bindRenderbuffer(gl.RENDERBUFFER,depth);
+    gl.renderbufferStorage(gl.RENDERBUFFER,gl.DEPTH_COMPONENT16,size,size);
+    var fb=gl.createFramebuffer();
+    gl.bindFramebuffer(gl.FRAMEBUFFER,fb);
+    gl.framebufferTexture2D(gl.FRAMEBUFFER,gl.COLOR_ATTACHMENT0,gl.TEXTURE_2D,tex,0);
+    gl.framebufferRenderbuffer(gl.FRAMEBUFFER,gl.DEPTH_ATTACHMENT,gl.RENDERBUFFER,depth);
+    gl.bindFramebuffer(gl.FRAMEBUFFER,null);
+    return {fb:fb,tex:tex,size:size};
+  }
+
+  function simGLInit(canvas){
+    var gl=null;
+    try{gl=canvas.getContext("webgl")||canvas.getContext("experimental-webgl");}catch(e){gl=null;}
+    if(!gl)return null;
+    var prog;
+    try{
+      prog=gl.createProgram();
+      gl.attachShader(prog,simCompile(gl,gl.VERTEX_SHADER,SIM_VS));
+      gl.attachShader(prog,simCompile(gl,gl.FRAGMENT_SHADER,SIM_FS));
+      gl.linkProgram(prog);
+      if(!gl.getProgramParameter(prog,gl.LINK_STATUS))return null;
+    }catch(e){return null;}
+    gl.useProgram(prog);
+    var P={
+      gl:gl, prog:prog,
+      aPos:gl.getAttribLocation(prog,"aPos"), aNormal:gl.getAttribLocation(prog,"aNormal"),
+      aColor:gl.getAttribLocation(prog,"aColor"), aUV:gl.getAttribLocation(prog,"aUV"),
+      uModel:gl.getUniformLocation(prog,"uModel"), uView:gl.getUniformLocation(prog,"uView"),
+      uProj:gl.getUniformLocation(prog,"uProj"), uNormalMat:gl.getUniformLocation(prog,"uNormalMat"),
+      uLightDir:gl.getUniformLocation(prog,"uLightDir"), uUseTex:gl.getUniformLocation(prog,"uUseTex"),
+      uTex:gl.getUniformLocation(prog,"uTex")
+    };
+    gl.enable(gl.DEPTH_TEST);
+    gl.disable(gl.CULL_FACE); // hand-authored meshes: skip winding-order risk entirely
+
+    P.ground=simUpload(gl,simMeshGround());
+    P.carExt=simUpload(gl,simMeshCarExterior());
+    P.wheelRoad=simUpload(gl,simMeshRoadWheel());
+    P.interior=simUpload(gl,simMeshInterior());
+    P.steer=simUpload(gl,simMeshSteeringWheel());
+    P.lever=simUpload(gl,simMeshLever());
+    P.mirrorQuad=simUpload(gl,simMeshMirrorQuad());
+    P.sign=simUpload(gl,simMeshSign());
+    P.mirrors=[simMakeMirrorFBO(gl,128),simMakeMirrorFBO(gl,96),simMakeMirrorFBO(gl,96)];
+    P.roadBuf={pos:gl.createBuffer(),nor:gl.createBuffer(),col:gl.createBuffer(),uv:gl.createBuffer(),idx:gl.createBuffer()};
+    return P;
+  }
+
+  function simDrawMesh(P,handles,count,model,useTex,tex){
+    var gl=P.gl;
+    gl.bindBuffer(gl.ARRAY_BUFFER,handles.pos); gl.enableVertexAttribArray(P.aPos); gl.vertexAttribPointer(P.aPos,3,gl.FLOAT,false,0,0);
+    gl.bindBuffer(gl.ARRAY_BUFFER,handles.nor); gl.enableVertexAttribArray(P.aNormal); gl.vertexAttribPointer(P.aNormal,3,gl.FLOAT,false,0,0);
+    gl.bindBuffer(gl.ARRAY_BUFFER,handles.col); gl.enableVertexAttribArray(P.aColor); gl.vertexAttribPointer(P.aColor,3,gl.FLOAT,false,0,0);
+    gl.bindBuffer(gl.ARRAY_BUFFER,handles.uv); gl.enableVertexAttribArray(P.aUV); gl.vertexAttribPointer(P.aUV,2,gl.FLOAT,false,0,0);
+    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,handles.idx);
+    gl.uniformMatrix4fv(P.uModel,false,model);
+    gl.uniformMatrix3fv(P.uNormalMat,false,m4Normal3(model));
+    gl.uniform1f(P.uUseTex,useTex?1:0);
+    if(useTex){gl.activeTexture(gl.TEXTURE0);gl.bindTexture(gl.TEXTURE_2D,tex);gl.uniform1i(P.uTex,0);}
+    gl.drawElements(gl.TRIANGLES,count,gl.UNSIGNED_SHORT,0);
+  }
+
+  // Builds only the segments within draw distance ahead of the car, each
+  // frame, as one small ribbon mesh in world space (so its model matrix is
+  // just identity) — the same "don't draw the whole 15,000-segment route"
+  // windowing the old 2D build used, just producing real geometry now
+  // instead of screen-space scanlines.
+  function simBuildRoadMesh(track,fromZ){
+    var pos=[],nor=[],col=[],uv=[],idx=[],base=0;
+    var startSeg=Math.max(0,Math.floor(fromZ/SIM_SEG)-2), n=track.curves.length;
+    function quad(pts,c){
+      pts.forEach(function(p){pos.push(p[0],p[1],p[2]);nor.push(0,1,0);col.push(c[0],c[1],c[2]);uv.push(0,0);});
+      idx.push(base,base+1,base+2, base,base+2,base+3); base+=4;
+    }
+    for(var s=0;s<SIM_DRAWSEG;s++){
+      var i=startSeg+s; if(i>=n-1)break;
+      var p0=simTrackPose(track,i*SIM_SEG), p1=simTrackPose(track,(i+1)*SIM_SEG);
+      var pr0=[Math.cos(p0.heading),0,-Math.sin(p0.heading)], pr1=[Math.cos(p1.heading),0,-Math.sin(p1.heading)];
+      var phase=(i%6)<3;
+      var lx0=p0.x-pr0[0]*SIM_ROADW, lz0=p0.z-pr0[2]*SIM_ROADW, rx0=p0.x+pr0[0]*SIM_ROADW, rz0=p0.z+pr0[2]*SIM_ROADW;
+      var lx1=p1.x-pr1[0]*SIM_ROADW, lz1=p1.z-pr1[2]*SIM_ROADW, rx1=p1.x+pr1[0]*SIM_ROADW, rz1=p1.z+pr1[2]*SIM_ROADW;
+      quad([[lx0,0,lz0],[rx0,0,rz0],[rx1,0,rz1],[lx1,0,lz1]], phase?[0.30,0.30,0.32]:[0.26,0.26,0.28]);
+      var ex=SIM_ROADW*1.6, gcol=phase?[0.16,0.32,0.16]:[0.14,0.29,0.14];
+      var glx0=p0.x-pr0[0]*ex, glz0=p0.z-pr0[2]*ex, glx1=p1.x-pr1[0]*ex, glz1=p1.z-pr1[2]*ex;
+      var grx0=p0.x+pr0[0]*ex, grz0=p0.z+pr0[2]*ex, grx1=p1.x+pr1[0]*ex, grz1=p1.z+pr1[2]*ex;
+      quad([[glx0,0,glz0],[lx0,0,lz0],[lx1,0,lz1],[glx1,0,glz1]], gcol);
+      quad([[rx0,0,rz0],[grx0,0,grz0],[grx1,0,grz1],[rx1,0,rz1]], gcol);
+    }
+    return {pos:pos,nor:nor,col:col,uv:uv,idx:idx};
+  }
+
+  // World position/heading of the CAR (not just the road centerline): the
+  // road's own pose, offset sideways by the player's steering (car.x, ±1 =
+  // the edges of the drivable width) — the same "steer within your lane"
+  // layer the 2D build had, just applied to real XZ coordinates now.
+  function simCarWorldPose(){
+    var track=SIM.track, car=SIM.car, pose=simTrackPose(track,car.z);
+    var perp=[Math.cos(pose.heading),0,-Math.sin(pose.heading)];
+    return {x:pose.x+perp[0]*car.x*SIM_ROADW, z:pose.z+perp[2]*car.x*SIM_ROADW, heading:pose.heading};
   }
 
   function simDraw(){
-    var ctx=SIM.ctx,W=SIM.w,H=SIM.h,car=SIM.car;
-    if(!ctx)return;
-    ctx.clearRect(0,0,W,H);
-    if(SIM.lookBack){
-      simRenderRoad(ctx,0,0,W,H,-1,false,2);
-    }else{
-      simRenderRoad(ctx,0,0,W,H,1,false,2);
-      simDrawSign();
-    }
-    simDrawDashboard();
-    var wheel=document.getElementById("simWheel");
-    if(wheel)wheel.style.transform="translateX(-50%) rotate("+(car.x*35)+"deg)";
-  }
+    var P=SIM.gl; if(!P)return;
+    var gl=P.gl, car=SIM.car, pose=simCarWorldPose();
+    var carModel=m4Mul(m4Translate(pose.x,0,pose.z), m4RotY(pose.heading));
 
-  function simDrawSign(){
-    var ctx=SIM.ctx,W=SIM.w,H=SIM.h,car=SIM.car,track=SIM.track;
-    var horizon=Math.round(H*0.42);
-    var nextCk=track.cks[S.i]; if(nextCk==null)return;
-    var dist=nextCk-car.z;
-    if(dist<0||dist>SIM_MAXDIST)return;
-    var depth=1-dist/SIM_MAXDIST; if(depth<0)depth=0; if(depth>0.985)depth=0.985;
-    var t=Math.sqrt(depth);
-    var y=horizon+t*(H-horizon);
-    var half=5+(W*0.46-5)*depth;
-    var curve=simCurveAt(track,nextCk);
-    var cx=W/2+curve*(1-depth)*(W*0.62)-car.x*depth*(W*0.5);
-    var side=cx+half+half*0.35;
-    var size=Math.max(10,half*0.5);
-    ctx.save();
-    ctx.translate(side,y);
-    ctx.beginPath();
-    ctx.moveTo(0,-size); ctx.lineTo(size*0.9,size*0.7); ctx.lineTo(-size*0.9,size*0.7); ctx.closePath();
-    ctx.fillStyle="#f4c400"; ctx.fill();
-    ctx.lineWidth=Math.max(1,size*0.12); ctx.strokeStyle="#1a1a1a"; ctx.stroke();
-    ctx.fillStyle="#1a1a1a"; ctx.font="bold "+Math.round(size*0.9)+"px sans-serif";
-    ctx.textAlign="center"; ctx.textBaseline="middle";
-    ctx.fillText("!",0,size*0.12);
-    ctx.restore();
+    SIM.wheelSpin+=car.speed*0.0009; // cosmetic only, no physical torque model
+    var targetLever=SIM.gear==="P"?0.9:(SIM.gear==="N"?0.15:-0.5);
+    SIM.gearLever+=(targetLever-SIM.gearLever)*0.15;
+
+    var lightDir=v3Norm([0.4,1,0.3]);
+    var road=simBuildRoadMesh(SIM.track,car.z);
+    var roadCount=simUploadDynamic(gl,P.roadBuf,road);
+
+    if(SIM.camMode==="cockpit"){
+      var eyeWorld=m4TransformPoint(carModel,[0,SIM_EYE_H,20]);
+      [{fbo:P.mirrors[0],yaw:Math.PI,pitch:0.22},
+       {fbo:P.mirrors[1],yaw:Math.PI-0.5,pitch:0.16},
+       {fbo:P.mirrors[2],yaw:Math.PI+0.5,pitch:0.16}
+      ].forEach(function(m){
+        gl.bindFramebuffer(gl.FRAMEBUFFER,m.fbo.fb);
+        gl.viewport(0,0,m.fbo.size,m.fbo.size);
+        gl.clearColor(0.14,0.20,0.28,1); gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);
+        var yaw=pose.heading+m.yaw, pitch=m.pitch;
+        var dir=[Math.sin(yaw)*Math.cos(pitch), Math.sin(pitch), Math.cos(yaw)*Math.cos(pitch)];
+        gl.uniformMatrix4fv(P.uView,false,m4LookAt(eyeWorld,[eyeWorld[0]+dir[0],eyeWorld[1]+dir[1],eyeWorld[2]+dir[2]],[0,1,0]));
+        gl.uniformMatrix4fv(P.uProj,false,m4Perspective(1.1,1,20,20000));
+        gl.uniform3fv(P.uLightDir,lightDir);
+        simDrawMesh(P,P.ground,P.ground.count,m4Identity(),false);
+        simDrawMesh(P,P.roadBuf,roadCount,m4Identity(),false);
+      });
+    }
+
+    gl.bindFramebuffer(gl.FRAMEBUFFER,null);
+    gl.viewport(0,0,SIM.w,SIM.h);
+    gl.clearColor(0.42,0.62,0.78,1); gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);
+
+    var eye,center,fov;
+    if(SIM.camMode==="cockpit"){
+      eye=m4TransformPoint(carModel,[0,SIM_EYE_H,20]);
+      var yaw=pose.heading+SIM.lookYaw, pitch=SIM.lookPitch;
+      var dir2=[Math.sin(yaw)*Math.cos(pitch), Math.sin(pitch), Math.cos(yaw)*Math.cos(pitch)];
+      center=[eye[0]+dir2[0],eye[1]+dir2[1],eye[2]+dir2[2]]; fov=1.3;
+    }else{
+      var dist=520, oy=Math.sin(SIM.orbitPitch)*dist+140, oxz=Math.cos(SIM.orbitPitch)*dist;
+      eye=[pose.x+Math.sin(SIM.orbitYaw)*oxz, oy, pose.z+Math.cos(SIM.orbitYaw)*oxz];
+      center=[pose.x,90,pose.z]; fov=0.9;
+    }
+    gl.uniformMatrix4fv(P.uView,false,m4LookAt(eye,center,[0,1,0]));
+    gl.uniformMatrix4fv(P.uProj,false,m4Perspective(fov,SIM.w/SIM.h,10,20000));
+    gl.uniform3fv(P.uLightDir,lightDir);
+
+    simDrawMesh(P,P.ground,P.ground.count,m4Identity(),false);
+    simDrawMesh(P,P.roadBuf,roadCount,m4Identity(),false);
+
+    var nextCk=SIM.track.cks[S.i];
+    if(nextCk!=null && nextCk-car.z<SIM_DRAWSEG*SIM_SEG && nextCk-car.z>-200){
+      var sp=simTrackPose(SIM.track,nextCk), perp=[Math.cos(sp.heading),0,-Math.sin(sp.heading)];
+      var sx=sp.x+perp[0]*(SIM_ROADW+40), sz=sp.z+perp[2]*(SIM_ROADW+40);
+      simDrawMesh(P,P.sign,P.sign.count,m4Mul(m4Translate(sx,80,sz),m4RotY(sp.heading)),false);
+    }
+
+    if(SIM.camMode==="chase"){
+      simDrawMesh(P,P.carExt,P.carExt.count,carModel,false);
+      [[-95,40,190],[95,40,190],[-95,40,-170],[95,40,-170]].forEach(function(p){
+        var wm=m4Mul(carModel, m4Mul(m4Translate(p[0],p[1],p[2]), m4RotX(SIM.wheelSpin)));
+        simDrawMesh(P,P.wheelRoad,P.wheelRoad.count,wm,false);
+      });
+    }else{
+      simDrawMesh(P,P.interior,P.interior.count,carModel,false);
+      simDrawMesh(P,P.steer,P.steer.count,
+        m4Mul(carModel,m4Mul(m4Translate(0,SIM_EYE_H-18,105),m4RotZ(-car.x*0.9))),false);
+      simDrawMesh(P,P.lever,P.lever.count,
+        m4Mul(carModel,m4Mul(m4Translate(40,SIM_EYE_H-65,80),m4RotX(SIM.gearLever))),false);
+      [{i:0,local:[0,SIM_EYE_H+38,78],yaw:Math.PI,w:100,h:38},
+       {i:1,local:[-60,SIM_EYE_H+14,105],yaw:Math.PI-0.5,w:50,h:38},
+       {i:2,local:[60,SIM_EYE_H+14,105],yaw:Math.PI+0.5,w:50,h:38}
+      ].forEach(function(m){
+        var mm=m4Mul(carModel, m4Mul(m4Translate(m.local[0],m.local[1],m.local[2]), m4Mul(m4RotY(m.yaw), m4ScaleXY(m.w,m.h))));
+        simDrawMesh(P,P.mirrorQuad,P.mirrorQuad.count,mm,true,P.mirrors[m.i].tex);
+      });
+    }
+
+    var speedEl=document.getElementById("simSpeedEl");
+    if(speedEl)speedEl.textContent=String(Math.round(car.speed/SIM_MAXSPD*180));
   }
 
   /* ---------- SFX (Web Audio, synthesized — no audio files, no network) ---------- */

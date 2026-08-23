@@ -1596,3 +1596,86 @@ visual comparison of near-identical small screenshots.
 more untuned-by-ear surface (engine pitch curve, brake-noise loudness,
 speedometer's arbitrary 0-180 scale) — still nobody has driven this on an
 actual phone with the sound on.
+
+**Replaced with a real 3D engine, same session, on request.** The owner
+rejected the 2D-canvas cockpit above outright ("I don't like this") and
+asked for an actual 3D game — first-person, look around, see the car from
+outside, "like San Andreas." Asked to clarify scope
+(`AskUserQuestion`) since a literal GTA-style open-world game is not
+buildable in a single self-contained HTML file: owner picked **hand-written
+WebGL, no libraries** (not Three.js — keeps the file light for the TikTok
+mobile funnel) and **an orbit/chase camera to see the car from outside
+while driving**, not a walk-around-on-foot mode.
+
+**What's there now:** the entire 2D scanline renderer is gone, replaced by
+a real WebGL scene — matrix math, shaders, and every mesh (car body,
+interior, steering wheel, mirrors, road) hand-written from scratch, no
+Three.js, no external assets. The procedural curve data from the 2D build
+(`simTrack`) is reused unchanged, just consumed differently: `simTrackPose()`
+Euler-integrates it into an actual XZ path with heading, instead of a
+per-pixel screen offset. Two camera modes, switchable mid-drive:
+- **Cockpit** — first-person from the driver's seat. Drag anywhere on the
+  canvas to freely look around (continuous, not the old hold-to-glance
+  toggle) — out the side windows, at the dashboard, wherever. A real
+  steering wheel rotates with input, a gear lever eases toward P/N/D, and
+  three mirrors (rear-view + two wing) are textured live each frame from a
+  second camera facing back down the road via a WebGL framebuffer —
+  genuine reflections, not painted-on art.
+- **Chase** — an orbit camera around the moving car, drag to swing freely
+  around it, satisfying "see the car from outside" without the much larger
+  scope of an on-foot mode.
+
+Steer/brake/gear buttons, checkpoint logic, question overlay, scoring,
+SRS/achievements integration, and the synthesized SFX are **all unchanged**
+— only the rendering layer was replaced, and it turned out to be a clean
+seam: `simTick()`'s physics still just outputs `car.z/car.x/speed`, and the
+3D layer consumes those exactly like the 2D one did.
+
+**Two real bugs the live-in-browser check caught, both fixed, worth
+remembering for the next 3D pass:**
+- **The steering wheel was built from 14 separate small cubes arranged in a
+  ring, gapped apart with nothing connecting them.** Looked fine as a
+  mental model; up close (the driver's eye is only ~85 units from a
+  42-radius ring) it rendered as a cluster of scattered floating boxes, not
+  a wheel — screenshotted, initially misread as a matrix/camera bug, and
+  only correctly diagnosed by toggling pieces off one at a time via a
+  temporary debug flag until the culprit was isolated. Fixed by rebuilding
+  it as a flat annulus (a ring of connected quads between two radii) —
+  continuous geometry reads as a shape; gapped discrete pieces don't, even
+  when individually positioned correctly. **Lesson: don't assume "small
+  boxes arranged in a circle" will read as a ring up close — verify.**
+- **The three mirrors were positioned outside the camera's own field of
+  view** — simple trig error: the rear-view mirror sat at ~40° of
+  elevation and the wing mirrors at ~70° off-axis, both well past the
+  camera's ~30°/~39° half-angle FOV, so they were being drawn every frame
+  but never actually on screen. Fixed by repositioning them within the
+  frustum and widening the cockpit FOV (1.05 → 1.3 rad) for more margin.
+
+**Verified live, not just read** — the same discipline as every pass
+before this: syntax-checked, then driven in headless Chromium via
+Playwright with `--use-gl=swiftshader` (headless Chromium has no real GPU
+here, needs software WebGL explicitly enabled or `getContext('webgl')`
+silently returns null). Confirmed: chase-mode orbit around a correctly-lit
+low-poly car, cockpit free-look showing the road through a side window,
+steering turning the wheel and bending the road, gear-gated physics (P
+truly immobile, D drives), the full checkpoint→question→answer→continue
+loop with real question data, and zero console errors throughout.
+
+**Not done / open honestly:**
+- **Mirror framing is still not great** — the reflections are real
+  (confirmed via pixel screenshots, not assumed) but the rear-view mirror
+  shows mostly ground rather than a balanced road/horizon view. Adjusted
+  once (mirror-camera pitch) and left rather than continuing to hand-tune
+  angles by screenshot; a native playtest would fix this faster than more
+  guessing.
+- **Low-poly, flat-shaded aesthetic, by design** — this was the explicit
+  trade-off for staying hand-written/lightweight rather than pulling in
+  Three.js. It looks like an early-2000s game, not a modern one. If that
+  reads as "unfinished" rather than "stylized" to real users, the fallback
+  discussed but not chosen was inlining Three.js at the cost of roughly
+  doubling the file size.
+- **No collision, no AI traffic, car always follows the road's own
+  curvature** — steering shifts lateral lane position, it doesn't turn the
+  car independently. Never tested on a real phone GPU, only SwiftShader
+  software rendering — real mobile GPU performance (especially the
+  per-frame road-mesh rebuild and three mirror render passes) is unverified.
