@@ -1941,3 +1941,89 @@ winding changes — zero console errors.
 "road and interior visuals" and only the road side landed this round);
 building-facade tiling at various box sizes wasn't screenshot-checked
 individually, only generally confirmed present.
+
+**Sixth pass, same session: the interior, and a real search for a real
+model first.** Asked again to fix the interior "with more realistic
+assets, find it online" — so before touching the procedural cockpit,
+spent real effort trying to find an actual downloadable car-interior
+model (dashboard + seats + wheel geometry, not just a texture), the same
+strategy that worked for the exterior truck in the fourth pass.
+
+- **Searched, and came up empty on a genuinely usable one.** Checked, in
+  order: Kenney's own Car Kit (`carkit_v1.4`, pulled via the
+  `ETdoFresh/kenney.nl` GitHub mirror using a `--filter=blob:none
+  --sparse` clone so only that one folder downloaded) — its `sedan.glb`
+  is confirmed hollow, `nodes: [body, wheel_*]` only, no interior
+  geometry at all, same limitation as the racing truck already in use.
+  Quaternius's car pack — CC0 but its own page doesn't confirm interior
+  detail and its download is a JS-driven button, not a stable URL.
+  OpenGameArt's several CC0 vehicle packs — none advertise interior
+  parts specifically. Sketchfab/CGTrader/TurboSquid — real interior
+  models exist there, but every download path needs an account login,
+  which this environment can't drive. The one model that actually
+  matched the ask ("full placeholder interior, detailed steering wheel
+  and dashboard") was a paid itch.io asset whose license explicitly
+  forbids redistributing the model — incompatible with a publicly
+  hosted, freely distributed app regardless of the $5 price. Put the
+  honest result to the owner (`AskUserQuestion`): no free, redistributable,
+  no-login car-interior model was found. **Chosen: improve the
+  procedural interior with real CC0 PBR textures (with normal maps this
+  time) plus more geometry, rather than buy a model this app legally
+  couldn't ship.**
+- **Source: ambientCG again — `Leather034C`** (diamond-quilted, stitched,
+  CC0), fetched with both its Color and NormalGL maps this time (last
+  round only pulled colour, which is why the earlier leather attempt
+  looked flat and got dropped). The quilting and stitch lines are
+  strong enough to read directly in the colour map alone, and the
+  normal map has real bump depth on the padded diamonds — checked both
+  visually before committing to using it, not assumed.
+  Resized to 384×384 JPEGs (~14KB colour + ~19KB normal, ~33KB total),
+  embedded as base64 `data:` URIs the same way as every other asset.
+  Applied to `mat.seat` as `map`+`normalMap` (`MeshStandardMaterial`,
+  `normalScale` 0.8, `repeat` 0.6×0.6 so the diamond size reads at seat
+  scale) — confirmed via a direct in-page `renderer.domElement.
+  toDataURL()` capture (screenshots via the normal Playwright path kept
+  landing on the wrong camera angle since the seats sit behind the
+  driver's own eyepoint; capturing the frame from inside the same
+  `evaluate()` call that moved the camera sidesteps the render loop
+  overwriting it before a separate screenshot() could fire) that the
+  quilting and stitching genuinely show up, lit, on the seat back and
+  headrest.
+  Also checked `Plastic012A` (black plastic, matches the dashboard's
+  dark scheme better than the previously-rejected white one) with its
+  own normal map this round — its normal map turned out just as flat as
+  its colour map (near-uniform "pointing straight up" blue, no real
+  bump variation), so the earlier judgment to skip textured plastic
+  stands, now confirmed with the normal map in hand rather than assumed
+  from the albedo alone.
+- **Reused the same leather material on the door armrest padding**
+  (`mat.stitch`, previously a flat colour with no other use, was removed
+  as dead code — replaced by `mat.seat` on the armrests) — zero extra
+  asset cost, and armrest padding matching seat leather is how a real
+  interior actually looks.
+- **Added geometric detail where the texture wasn't worth it:** four
+  thin dark slats per side set into the dash top as air vents, and four
+  small knobs on the centre console — plain `BoxGeometry`/
+  `CylinderGeometry` in the same procedural style as the rest of the
+  cockpit, no new assets.
+- **File size:** ~2.29MB raw / ~626KB gzipped (was ~2.24MB / ~610KB
+  after the fifth pass) — the ~33KB of new leather textures accounts for
+  essentially all of the gzipped delta; the geometry additions are
+  trivial JS.
+
+**Verified:** all 5 inline `<script>` blocks parse after each edit.
+Seat leather confirmed visually (quilting + stitching genuinely lit and
+visible, not flat) via direct canvas capture from a repositioned camera.
+A 12-checkpoint scripted playthrough (short by design — the full
+50-checkpoint run kept exceeding the sandbox's background-command wall-
+clock budget on pure iteration overhead, not an app fault; 12 checkpoints
+already exercises every code path the change touches) ran clean both
+before and after removing a temporary `window.SIM` debug hook used only
+for camera-repositioning screenshots.
+
+**Not done:** the new dash vents/knobs weren't confirmed in a clean
+screenshot — every camera angle tried either clipped through nearby
+geometry or had the steering wheel occluding them — so their placement
+is trusted from the code (plain non-overlapping boxes matching the
+existing dashboard construction pattern) rather than eyeballed; worth a
+closer look next time the interior comes up.
