@@ -1537,3 +1537,62 @@ just that no exception was thrown.
   other screen today (P6's paywall was reverted and never shipped; see
   *Product plan*). Whether this simulation should sit inside or outside that
   future gate is undecided and wasn't asked.
+
+**Cockpit pass, same session, on request** ("I need to see what's inside the
+car", "SFX and sounds"). Added on top of the above, same file, still no new
+dependency:
+
+- **A real dashboard band** (`simDrawDashboard()`, bottom ~24% of the
+  canvas): a live speedometer with a needle driven by actual `car.speed`, and
+  a lit P/N/D indicator mirroring the shifter state.
+- **A functional P/N/D shifter**, not decorative. The route starts in **P**
+  (parked) — the car cannot move until the player taps **D**; tapping **P**
+  sheds speed fast (parked), **N** coasts down gently (freewheel friction,
+  no engine push), **D** drives normally. Steering still turns the wheel in
+  any gear (realistic — turning the wheel while stationary doesn't move a
+  real car either), but only **D** ever advances distance.
+- **Rear-view + two wing mirrors**, not static art — `simRenderMirror()`
+  clips a small rounded rect and renders the *same* road/curve data as the
+  main view, just walked backward (`dir=-1`) from the car's current
+  position, and horizontally flipped (a reflection, not just "facing
+  backward"). They hide automatically while look-back is held, since
+  showing forward-in-a-mirror while the main view faces backward would be
+  contradictory.
+- **A "Look back" button** (hold — touch button, or keyboard `L`) swaps the
+  *entire* main view to face backward at full size — distinct from the
+  mirrors: this is turning your head, not glancing at glass. Implemented by
+  generalizing the old single-purpose forward-road-drawing code into one
+  `simRenderRoad(ctx,x,y,w,h,dir,flip,step)` function used for all four
+  views (main forward, main look-back, and the three mirrors) — one tested
+  function instead of four near-duplicates.
+- **Synthesized SFX via Web Audio** — no audio files, no network, consistent
+  with the file's constraints. An engine oscillator whose pitch/volume track
+  `car.speed` in real time (idles low when not in D); a filtered white-noise
+  burst on hard braking; a click on every gear change; a rising two-note
+  chime on a correct answer and a low buzz on a wrong one; a short tone when
+  a checkpoint first appears. A speaker icon in the HUD mutes/unmutes
+  (persisted to `localStorage`, key `tareeq_sim_mute`). The `AudioContext` is
+  created lazily on the first gear tap specifically because that is a
+  guaranteed user gesture — browsers refuse to play audio before one, and
+  gear-tap is also the thematically right moment ("starting the engine").
+  Audio is torn down in `simStop()` (oscillator stopped, context closed) so
+  leaving the screen doesn't leave a hum running in the background.
+
+**Verified the same way as the base build** — live in headless Chromium, not
+just read: parked in P (steering still turns the wheel, distance does not
+advance), shifted to D (speed and distance ramp, dashboard needle moves,
+D lights up), held look-back (main view swaps to a visibly different
+backward-tinted scene, mirrors correctly disappear), toggled mute (icon
+flips, `localStorage` updates). Zero console errors across all of it.
+One real false alarm during this pass worth recording: two screenshots taken
+moments apart looked identical to the eye at a glance and were nearly
+mistaken for a stuck-input bug; querying `#simWheel`'s actual `style.transform`
+directly (a DOM property, not a closure internal) proved the wheel *had*
+turned ~32°. When two renders look suspiciously alike, check a concrete DOM/
+state value before concluding something is broken — don't trust a quick
+visual comparison of near-identical small screenshots.
+
+**Same open items as before, plus:** the dashboard/mirror/SFX layer adds
+more untuned-by-ear surface (engine pitch curve, brake-noise loudness,
+speedometer's arbitrary 0-180 scale) — still nobody has driven this on an
+actual phone with the sound on.
