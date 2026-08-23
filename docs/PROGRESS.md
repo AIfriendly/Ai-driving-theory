@@ -1862,3 +1862,82 @@ shape is a real, visible trade-off if anyone looks closely; interior
 detail didn't change this pass; and the file-size trajectory across four
 rounds in one session is worth a deliberate stop-and-look before a fifth,
 whatever "still not realistic enough" turns out to mean next.
+
+**Fifth pass, new session: real road/building textures — and a real bug
+found underneath them.** Asked to "find more packs for the road and
+interior visuals" and confirm what "more" meant: chose *more realistic
+via textures/detail* over `AskUserQuestion`.
+
+- **Source: ambientCG**, CC0 1.0 confirmed (site-wide statement on every
+  asset page), fetched through its own REST API
+  (`api/v2/downloads_csv`, `get?file=`) which — unlike poly.pizza/itch.io
+  — isn't behind a bot-challenge, so no repo-mirror workaround was needed
+  this time.
+- **Used:** `Road007` (asphalt + lane markings, photographic) on the
+  paved strip, `Facade001` (building panels) on the distant procedural
+  boxes. Both resized/recompressed with Pillow (`pip install`d — not
+  preinstalled) to 256–384px JPEGs, ~10–15KB each, embedded as base64
+  `data:` URIs the same way every other binary asset in this file is.
+- **Tried and rejected: `Leather037`/`Plastic013A` for the interior.**
+  Color-only (albedo) PBR maps for low-relief materials like leather
+  grain or dashboard plastic carry almost none of their visual detail in
+  the albedo channel — the real detail lives in a normal map, which
+  wasn't fetched. Resized, both came out visually flat (near-solid
+  colour, 676–825 bytes) even from a native-resolution crop with no
+  downscale blur, and the plastic's grey didn't match the dashboard's
+  dark scheme anyway. Skipped rather than adding normal-map complexity
+  for a payoff this low — the interior is still the procedural materials
+  from the cockpit pass.
+- **Found a real, pre-existing bug while verifying this — not caused by
+  this pass, but caught here for the first time:** the paved road and
+  its grass shoulder were **never actually visible**, in any round back
+  to the original Three.js rewrite. Every past "verified" screenshot
+  either looked from inside the cockpit (dashboard/hood covers that part
+  of the view) or happened not to have anything to contrast against on
+  the flat green ground. This time a chase-cam / top-down check showed
+  pure ground colour with no road at all, so it got root-caused instead
+  of shrugged off:
+  - Isolating meshes one at a time (hide everything else, force a flat
+    unlit colour, read back actual GPU pixels with `gl.readPixels`
+    rather than trusting screenshots) showed the road/shoulder quads
+    were being **backface-culled** — computing the cross-product of the
+    quad's own vertex winding gave a normal pointing *down*
+    `(0,-1,0)`, opposite the `(0,1,0)` written into the normal
+    attribute, so the default `THREE.FrontSide` culled the face the
+    camera actually sees on every frame.
+  - First fix attempt (`side: THREE.DoubleSide`) made the mesh visible
+    but rendered it near-black: Three's standard shader chunk flips the
+    normal for back-facing fragments under double-sided rendering, so
+    the "fix" was lighting the mesh with an effectively downward-facing
+    normal — explainable and confirmed by swapping in a plain white
+    unlit material and seeing the same near-black result.
+  - **Real fix:** reversed the two triangles' index order in
+    `simBuildRoadMesh()` (both the road strip and the grass-shoulder
+    quads) so the winding matches the authored up-normal. `DoubleSide`
+    was left on as a harmless margin for tight curves, but it's the
+    winding fix that actually makes the road correctly lit and visible.
+  - This means **every prior "verified working" screenshot of the
+    chase/orbit camera in this whole simulation feature was standing on
+    a green field with an invisible road** — cockpit view (the one
+    angle that happened to look fine) was the only one ever actually
+    checked closely. Worth remembering next time a change "only" touches
+    rendering: check the thing from outside the cockpit, not just that
+    nothing throws.
+- **File size:** ~2.24MB raw / ~610KB gzipped (was ~2.2MB / ~590KB after
+  the fourth pass) — the two textures added about 20KB gzipped; the
+  rest of the delta is the road/shoulder mesh split and the winding fix,
+  which added no new assets.
+
+**Verified:** all 5 inline `<script>` blocks still parse
+(`new Function(...)` per block). Isolated GPU pixel readback confirmed
+the winding bug and its fix independent of screenshot timing. Chase-cam
+screenshots after the fix show correctly lit grey asphalt with visible
+white edge lines and alternating grass-shoulder patches; cockpit view
+shows a lighter road strip where before it was flat green. Full
+50-checkpoint scripted playthrough re-run after the mesh-splitting and
+winding changes — zero console errors.
+
+**Not done:** interior texture pack (rejected, see above — the ask was
+"road and interior visuals" and only the road side landed this round);
+building-facade tiling at various box sizes wasn't screenshot-checked
+individually, only generally confirmed present.
