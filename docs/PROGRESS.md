@@ -100,6 +100,20 @@ owner — most of all anything that assumes the TikTok app is on their phone.
 
 ## Done
 
+- [x] **Driving-sim: steering wheel + gear-shifter animation, and real modeled
+      buildings in the world.** Wheel: rotate the Corolla's `steering_wheel`
+      node with the steering input (re-optimized the GLB with `--flatten false`
+      so the node keeps its pivot). Gear: the model has no gear-stick node, so a
+      small shifter on the console slides with P/N/D. World: pulled **"Low-poly
+      City Buildings" by smooth998** (CC-BY) from Sketchfab (same token), 4.3 MB
+      → **0.68 MB** (texture-only, hierarchy kept), network-loaded and scattered
+      along the roadside (each placement clones a building mesh, recentres it,
+      normalises height, drops it just past the shoulder) — replacing the flat
+      boxes, with a fallback to the boxes if the fetch fails. **Gotcha logged:**
+      the city model includes a flat ground slab with a non-English name; a
+      name-based filter missed it and it scaled ~300,000× into a world-covering
+      dark plane — fixed by filtering protos on geometry (skip near-flat meshes,
+      `hy>0.18 && hy>foot*0.12`) not name. CC-BY credit extended to both models.
 - [x] **Driving-sim: a REAL modeled car with a real interior (the big one).**
       The owner made a Sketchfab account and handed over an API token; searched
       Sketchfab's public API, shortlisted CC-BY (commercial-OK) car-with-interior

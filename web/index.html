@@ -8338,7 +8338,7 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
         '<div class="simoverlay hidden" id="simOverlay"><div class="simcard" id="simCard"></div></div>'+
       '</div>'+
       '<p class="simhint">'+esc(t("simDragHint"))+'</p>'+
-      '<p class="simcredit">3D car: <a href="https://sketchfab.com/3d-models/2014-toyota-corolla-e180-eu-with-interior-36f95efb0585464cae43a25a3b3392e8" target="_blank" rel="noopener">“2014 Toyota Corolla E180”</a> by Armored Wave · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a></p>'+
+      '<p class="simcredit">3D car: <a href="https://sketchfab.com/3d-models/2014-toyota-corolla-e180-eu-with-interior-36f95efb0585464cae43a25a3b3392e8" target="_blank" rel="noopener">“2014 Toyota Corolla E180”</a> by Armored Wave · buildings: <a href="https://sketchfab.com/3d-models/low-poly-city-buildings-e0209ac5bb684d2d85e5ade96c92d2ff" target="_blank" rel="noopener">“Low-poly City Buildings”</a> by smooth998 · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a></p>'+
       '<div class="simgear" role="group" aria-label="'+esc(t("simGear"))+'">'+
         '<button class="simgearbtn on" id="simGearP" onclick="simSetGear(\'P\')" aria-label="'+esc(t("simGear"))+' P">P</button>'+
         '<button class="simgearbtn" id="simGearN" onclick="simSetGear(\'N\')" aria-label="'+esc(t("simGear"))+' N">N</button>'+
@@ -8376,10 +8376,9 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
       SIM.gl.renderer.setSize(SIM.w,SIM.h,false);
       SIM.gl.camera.aspect=SIM.w/SIM.h;
       SIM.gl.camera.updateProjectionMatrix();
-      // Trees are added from inside simBuildScene() itself once the real
-      // tree model finishes loading (async) — see the comment there.
+      // Trees and roadside buildings are added from inside simBuildScene()
+      // once their models finish loading (async) — see the comments there.
       SIM.gl.scene.add(simBuildLamps(SIM.track,SIM.gl.mat));
-      SIM.gl.scene.add(simBuildDistantScenery(SIM.track,S.simSet+1,SIM.gl.mat));
     }
 
     simBindControls();
@@ -8879,6 +8878,26 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
       if(treeMesh)scene.add(simBuildTrees(SIM.track,S.simSet+1,treeMesh.geometry,treeMesh.material));
     },function(err){ console.error("tree model failed to load",err); });
 
+    // Real modeled city buildings (CC-BY, smooth998) scattered along the
+    // roadside in place of the plain boxes — network-loaded, falling back to
+    // the procedural boxes if the fetch fails.
+    var bldLoader=new THREE.GLTFLoader();
+    bldLoader.load("models/buildings.glb",function(gltf){
+      var protos=[];
+      gltf.scene.traverse(function(o){
+        if(!o.isMesh)return;
+        o.geometry.computeBoundingBox();
+        var bb=o.geometry.boundingBox;
+        var hy=bb.max.y-bb.min.y, foot=Math.max(bb.max.x-bb.min.x,bb.max.z-bb.min.z);
+        // keep buildings (reasonably tall), skip flat slabs like the city
+        // ground/roads — those are near-zero height over a huge footprint and
+        // would scale to a world-covering plane.
+        if(hy>0.18 && hy>foot*0.12) protos.push(o);
+      });
+      if(protos.length)scene.add(simBuildScatteredBuildings(SIM.track,S.simSet+1,protos));
+      else scene.add(simBuildDistantScenery(SIM.track,S.simSet+1,mat));
+    },undefined,function(err){ console.warn("buildings load failed; using boxes",err); scene.add(simBuildDistantScenery(SIM.track,S.simSet+1,mat)); });
+
     return P;
   }
 
@@ -8982,6 +9001,31 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
     poles.instanceMatrix.needsUpdate=true; heads.instanceMatrix.needsUpdate=true;
     var g=new THREE.Group(); g.add(poles,heads); return g;
   }
+  // Scatter real modeled buildings along the roadside: each placement clones
+  // one of the model's building meshes, recentres it so its base sits at
+  // ground, scales it to a plausible roadside height, and drops it off to one
+  // side of the route. Replaces the flat-colour boxes when the model loads.
+  function simBuildScatteredBuildings(track,seed,protos){
+    var rnd=mulberry32(seed*211+31), group=new THREE.Group(), n=64;
+    for(var i=0;i<n;i++){
+      var proto=protos[Math.floor(rnd()*protos.length)];
+      var b=proto.clone();
+      b.geometry.computeBoundingBox();
+      var bb=b.geometry.boundingBox, hy=Math.max(0.001,bb.max.y-bb.min.y);
+      b.position.set(-(bb.min.x+bb.max.x)/2,-bb.min.y,-(bb.min.z+bb.max.z)/2);
+      var wrap=new THREE.Group();
+      wrap.add(b);
+      wrap.scale.setScalar((240+rnd()*520)/hy); // normalise varied sizes -> roadside scale
+      wrap.rotation.y=rnd()*Math.PI*2;
+      var z=(i/n)*track.curves.length*SIM_SEG, pose=simTrackPose(track,z);
+      var side=rnd()<0.5?-1:1, dist=360+rnd()*820; // just past the shoulder so you drive past them
+      var perp=[Math.cos(pose.heading),0,-Math.sin(pose.heading)];
+      wrap.position.set(pose.x+perp[0]*dist*side,0,pose.z+perp[2]*dist*side);
+      group.add(wrap);
+    }
+    return group;
+  }
+
   function simBuildDistantScenery(track,seed,mat){
     var rnd=mulberry32(seed*211+31), group=new THREE.Group(), n=22;
     for(var i=0;i<n;i++){
