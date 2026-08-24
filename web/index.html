@@ -8673,6 +8673,22 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
       model.rotation.y=0; // nose points +Z, the drive direction
       ext.add(model);
       P.carModel=model;
+      // grab the modeled steering wheel so it can turn with the input; store
+      // its rest orientation so each frame rotates about the column from rest.
+      model.traverse(function(o){
+        if(o.name==="corolla_e180_steering_wheel"){ P.steerWheel=o; P.steerRest=o.quaternion.clone(); }
+      });
+      // The model has no separate gear-stick node, so add a small shifter on
+      // the centre console that slides fore/aft with the P/N/D selection.
+      var shifter=new THREE.Group();
+      var stalk=new THREE.Mesh(new THREE.CylinderGeometry(1.4,2.0,12,10),new THREE.MeshStandardMaterial({color:0x151515,roughness:0.5,metalness:0.3}));
+      stalk.position.y=6;
+      var knob=new THREE.Mesh(new THREE.SphereGeometry(3.8,14,12),new THREE.MeshStandardMaterial({color:0x0d0d0d,roughness:0.35}));
+      knob.position.y=13; knob.scale.set(1,0.9,1.25);
+      shifter.add(stalk,knob);
+      shifter.position.set(13,43,20);
+      ext.add(shifter);
+      P.modelShifter=shifter; P.shifterBaseZ=20;
     },undefined,function(err){ console.warn("Corolla load failed; using procedural car",err); loadProceduralCar(); });
     carGroup.add(ext);
     P.ext=ext; P.extWheels=wheels; P.extWheelsFront=wheelsFront;
@@ -9047,6 +9063,8 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
     P.leverGroup.rotation.x=SIM.gearLever;
     P.extWheels.forEach(function(w){w.rotation.x=SIM.wheelSpin;});
     P.extWheelsFront.forEach(function(w){w.rotation.y=car.x*0.5;});
+    if(P.steerWheel){ P.steerWheel.quaternion.copy(P.steerRest); P.steerWheel.rotateZ(-car.x*3.2); }
+    if(P.modelShifter){ P.modelShifter.position.z=P.shifterBaseZ+SIM.gearLever*14; }
     P.carGroup.updateMatrixWorld(true);
 
     var roadData=simBuildRoadMesh(SIM.track,car.z);
