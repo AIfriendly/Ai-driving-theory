@@ -43,15 +43,23 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Verify the site is self-contained
-        # The app must have no external references: a strict CSP blocks every
-        # outside host, so a stray CDN link would silently break the page.
+        # No external *resource loads*: a strict CSP blocks every outside host,
+        # so a stray CDN script/style/image would silently break the page.
+        # Anchor links (<a href="https://…">) are navigation, not a resource
+        # load — CSP doesn't touch them — so they're allowed (e.g. the CC-BY
+        # attribution credit for the 3D car model links to Sketchfab + the
+        # licence). Block external src= and external <link href=> only.
         run: |
           set -euo pipefail
-          if grep -nEi '(src|href)="https?://' web/index.html; then
-            echo "::error::external resource reference found in index.html"
+          if grep -nEi 'src="https?://' web/index.html; then
+            echo "::error::external resource (src) reference found in index.html"
             exit 1
           fi
-          echo "OK: no external resource references"
+          if grep -nEi '<link[^>]+href="https?://' web/index.html; then
+            echo "::error::external stylesheet (link href) found in index.html"
+            exit 1
+          fi
+          echo "OK: no external resource loads (anchor links allowed)"
 
       - name: Verify each page carries a document shell
         # index.html doubles as a Claude Artifact body, and the Artifact

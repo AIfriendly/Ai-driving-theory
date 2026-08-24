@@ -100,6 +100,23 @@ owner — most of all anything that assumes the TikTok app is on their phone.
 
 ## Done
 
+- [x] **Driving-sim: a REAL modeled car with a real interior (the big one).**
+      The owner made a Sketchfab account and handed over an API token; searched
+      Sketchfab's public API, shortlisted CC-BY (commercial-OK) car-with-interior
+      models, and pulled **"2014 Toyota Corolla E180 (with interior)" by Armored
+      Wave** (CC-BY) via the download API. 18.5 MB → **3.5 MB** with
+      `gltf-transform` (texture resize to 512 + WebP, no Draco/no mesh-decimation
+      so it loads with the GLTFLoader already inlined). Served as a **separate
+      file** `web/models/corolla.glb` (single-file rule dropped for exactly this)
+      and network-loaded with a **graceful fallback to the procedural truck** if
+      the fetch 404s — verified the fallback renders and doesn't crash. Chase cam
+      shows the modeled Corolla; **cockpit cam now sits inside the real modeled
+      interior** — actual dashboard, gauges, Toyota wheel, centre console,
+      mirrors, look-around out the windows. This is the realism leap the owner
+      kept asking for. CC-BY **attribution** credit added under the sim canvas
+      (links to the model + licence). Pages "self-contained" CI check refined to
+      allow anchor links (it was blocking the attribution `href`s). Token was
+      used only for the download and never stored; owner advised to regenerate.
 - [x] **Driving-sim: image-based reflections** — `82fe45c`. Sky baked into a
       `PMREMGenerator` env map on `scene.environment`, so paint/glass/chrome/
       wheel-rim pick up real glossy reflections. A full sRGB+ACES tone-mapping
