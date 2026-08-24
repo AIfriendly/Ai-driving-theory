@@ -8538,10 +8538,24 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
       skyCol[i*3]=c.r; skyCol[i*3+1]=c.g; skyCol[i*3+2]=c.b;
     }
     skyGeo.setAttribute("color",new THREE.BufferAttribute(skyCol,3));
-    scene.add(new THREE.Mesh(skyGeo,new THREE.MeshBasicMaterial({vertexColors:true,side:THREE.BackSide,fog:false})));
+    var skyMesh=new THREE.Mesh(skyGeo,new THREE.MeshBasicMaterial({vertexColors:true,side:THREE.BackSide,fog:false}));
+    scene.add(skyMesh);
 
-    scene.add(new THREE.HemisphereLight(0xcfe6f5,0x3a5230,1.0));
-    var sun=new THREE.DirectionalLight(0xfff3dc,1.05);
+    // Image-based lighting: bake the sky into a prefiltered environment map
+    // and hang it on the scene so every metal/glass/paint surface picks up
+    // real reflections + ambient tint — what makes car paint and windows
+    // read as glossy instead of flat-shaded plastic.
+    try{
+      var pmrem=new THREE.PMREMGenerator(renderer);
+      var envScene=new THREE.Scene();
+      var envSky=new THREE.Mesh(skyGeo,new THREE.MeshBasicMaterial({vertexColors:true,side:THREE.BackSide}));
+      envScene.add(envSky);
+      scene.environment=pmrem.fromScene(envScene,0,10,8000).texture;
+      envSky.material.dispose(); pmrem.dispose();
+    }catch(e){ /* IBL is a bonus; scene still renders without it */ }
+
+    scene.add(new THREE.HemisphereLight(0xcfe6f5,0x3a5230,0.9));
+    var sun=new THREE.DirectionalLight(0xfff3dc,1.0);
     sun.position.set(700,1100,400);
     scene.add(sun);
 

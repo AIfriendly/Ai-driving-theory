@@ -2048,3 +2048,42 @@ geometry or had the steering wheel occluding them — so their placement
 is trusted from the code (plain non-overlapping boxes matching the
 existing dashboard construction pattern) rather than eyeballed; worth a
 closer look next time the interior comes up.
+
+**Vents later confirmed** (direct canvas capture, wheel hidden for the
+shot): the dash-top air vents render as dark slats set into the dash;
+the console knobs render without error but the cabin is too cramped to
+frame them in isolation.
+
+**Seventh pass: owner wants it to look like native App Store driving
+games** (sent screenshots of Driving School Simulator: EVO / Driving
+Academy — Unity/Unreal titles, pro-modeled photoreal interiors, RT
+reflections, hundreds of MB of assets). Told them plainly: a single
+embedded HTML mini-game is a different production category and can't
+match that, and the specific blocker (a detailed, redistributable,
+no-login car-interior model) still doesn't exist free after searching
+Kenney / Quaternius / OpenGameArt / Sketchfab / CGTrader / poly.pizza —
+the good ones are login-walled or paid + non-redistributable. Owner
+chose to **drop the single-file constraint** so big assets can be
+network-loaded going forward. Shipped the highest realism-per-effort
+change that needs no new asset and risks no regression:
+- **Image-based reflections:** bake the sky dome into a
+  `PMREMGenerator` env map and set `scene.environment`, so paint /
+  glass / chrome / wheel rim pick up real glossy reflections instead of
+  flat shading. Modest but genuine.
+- **Tried and reverted a full sRGB + ACES tone-mapping pipeline:** it
+  washed the scene out (milky sky/fog, low contrast) because every
+  colour/vertex-colour/texture was authored for the old linear-ish
+  pipeline. Doing it right needs a deep re-tune of every colour across
+  all camera angles — reverted, kept only the env-map win. **If ever
+  revisited: sRGB output + tone mapping is the right target, but budget
+  real time to re-tune fog/sky/vertex/material colours + texture
+  encodings together or it looks worse than flat.**
+- **The real leap still needs a supplied asset.** Dropping the single-
+  file rule solves size, not sourcing. Path to a screenshot-grade
+  interior: owner downloads a detailed car+interior model from Sketchfab
+  (free CC-BY, needs their login, which this env can't drive) or buys a
+  redistributable one, then it's loaded as a proper asset file. That
+  network-load pipeline isn't built yet — build it around the actual
+  model when one's in hand, with a graceful fallback to the current
+  procedural car, and verify the Cloudflare Worker + Pages actually
+  serve the new file path before relying on it.
