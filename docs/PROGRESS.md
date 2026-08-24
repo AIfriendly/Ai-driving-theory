@@ -100,6 +100,26 @@ owner — most of all anything that assumes the TikTok app is on their phone.
 
 ## Done
 
+- [x] **Driving-sim: image-based reflections** — `82fe45c`. Sky baked into a
+      `PMREMGenerator` env map on `scene.environment`, so paint/glass/chrome/
+      wheel-rim pick up real glossy reflections. A full sRGB+ACES tone-mapping
+      pipeline was tried and reverted (washed the scene out — see the sim
+      narrative's "Seventh pass" for the re-tune caveat). **Live on both hosts**
+      (Cloudflare + Pages), Pages run #59 green, Cloudflare auto-deploy confirmed
+      serving the commit.
+- [x] **Driving-sim interior: real CC0 leather + dash detail** — `7551ea5`.
+      ambientCG Leather034C (diamond-quilted, colour **and** normal map this
+      time) on seats + door armrests; procedural dash vents/knobs added; dead
+      `mat.stitch` removed. Searched Kenney/Quaternius/OpenGameArt/Sketchfab/
+      CGTrader first — confirmed no free, redistributable, no-login car-interior
+      *model* exists (the real blocker for matching native driving games).
+- [x] **Driving-sim road/building textures + a real rendering bug fixed** —
+      `b36b00f`. ambientCG Road007 asphalt+markings on the road, Facade001 on
+      distant buildings. Found & fixed that the road/shoulder mesh had been
+      invisible in chase/orbit view since the Three.js rewrite (quad winding was
+      backwards → back-face culled every frame); fixed the triangle index order.
+- [x] `.gitignore`: ignore stray top-level `node_modules/` from verification
+      tooling — `536b404` (the web app has no deps / no build step).
 - [x] **Driving-sim cockpit: real hands on the wheel + leather interior** —
       `0bf2be2`. The owner's repeated ask ("put my hand on the brake, the
       drive, the neutral grip… make it realistic") was unmet — the cockpit was
@@ -253,6 +273,19 @@ the book read completely (234/234), and Part 1 + Part 2 proven page-for-page to
 be book pp 22–229 and therefore already covered.
 
 Nothing in the question bank is currently known to be wrong or missing.
+
+**Open side-thread — driving-sim realism.** The owner keeps asking for the sim
+to look like native App Store driving games (Driving School Simulator: EVO
+etc.). Told them honestly that's a different production category; the real
+blocker is a detailed, redistributable, no-login car-**interior** model, which
+doesn't exist free. Owner agreed to drop the single-file constraint so a model
+can be network-loaded. **Next actionable step is on the owner:** supply a
+car+interior `.glb` (free CC-BY from Sketchfab via their login, or a purchased
+redistributable one); then build the asset-load pipeline around it (graceful
+fallback to the procedural car; verify Cloudflare Worker + Pages both serve the
+new file path). Everything code-only that helps without a new model is now done
+(env reflections, leather, road textures, hands on the wheel). See the *Driving
+simulation* section for the full history.
 
 The plan is ordered deliberately: **ship free, prove people want it, then
 charge.** Building payments before step 2 is the expensive way to find out
