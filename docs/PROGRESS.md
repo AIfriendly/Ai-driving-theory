@@ -100,6 +100,26 @@ owner — most of all anything that assumes the TikTok app is on their phone.
 
 ## Done
 
+- [x] **Driving-sim → OPEN WORLD free-roam + engine sound** (on dev branch,
+      NOT yet on live — owner to review first). Replaced the on-rails "car
+      slides along a fixed road between questions" with real heading-based
+      physics: steering rotates the car body (turnrate scales with speed so it
+      can't pivot in place), so you can turn around and drive anywhere on a big
+      open ground. One straight "main road" runs +z and carries all the
+      question signs; questions trigger by proximity to the active sign
+      (`SIM.signZ[S.i]`) instead of a fixed `car.z` checkpoint. `simTrack` now
+      emits a straight (zero-curvature) path so the existing scenery scatter
+      lines the straight road; the road is one static textured strip (no
+      per-frame windowed rebuild) with `polygonOffset` so it doesn't z-fight
+      the huge ground. **Engine sound fixed and shipped to live separately**
+      (`ctx.resume()` for iOS's suspended context + a sub-oscillator/lowpass
+      and higher gains). Verified headless: drives straight down the road and
+      triggers signs in order (12-checkpoint loop clean), steering turns the
+      correct way, can drive off-road onto open grass, road/cockpit/chase all
+      render. **Gotcha:** a thin road only 2u above a 600k ground z-fights
+      green over the asphalt at distance — fix with material `polygonOffset`,
+      not by nudging Y. Open item: the terrain beyond the road is empty green
+      ("open" but not "random detail") — scenery only lines the road so far.
 - [x] **Driving-sim: steering wheel + gear-shifter animation, and real modeled
       buildings in the world.** Wheel: rotate the Corolla's `steering_wheel`
       node with the steering input (re-optimized the GLB with `--flatten false`
