@@ -14,3 +14,7 @@ build/
 # Remotion render output and deps
 video/node_modules/
 video/out/
+
+# Stray deps from local verification tooling (Playwright etc.) — the web app
+# itself has no dependencies and no build step
+/node_modules/
