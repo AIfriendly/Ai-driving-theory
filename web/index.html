@@ -8864,6 +8864,18 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
     var pole=new THREE.Mesh(new THREE.CylinderGeometry(5,5,120,8),mat.pole); pole.position.y=60;
     var board=new THREE.Mesh(new THREE.BoxGeometry(58,58,6),mat.sign); board.position.y=150; board.rotation.z=Math.PI/4;
     signGroup.add(pole,board);
+    // A bold "?" on the yellow diamond so it reads as a "question ahead"
+    // warning sign, not a blank board. Upright (not rotated with the diamond),
+    // shown on both faces so it's legible from either approach.
+    var qcan=document.createElement("canvas"); qcan.width=qcan.height=128;
+    var qg=qcan.getContext("2d");
+    qg.fillStyle="#14181c"; qg.font="bold 112px system-ui,Arial,sans-serif";
+    qg.textAlign="center"; qg.textBaseline="middle"; qg.fillText("?",64,72);
+    var qtex=new THREE.CanvasTexture(qcan); qtex.anisotropy=4;
+    var qmat=new THREE.MeshBasicMaterial({map:qtex,transparent:true,side:THREE.DoubleSide});
+    var qFront=new THREE.Mesh(new THREE.PlaneGeometry(46,46),qmat); qFront.position.set(0,150,4);
+    var qBack=qFront.clone(); qBack.position.z=-4;
+    signGroup.add(qFront,qBack);
     scene.add(signGroup); signGroup.visible=false;
     P.signGroup=signGroup;
 
