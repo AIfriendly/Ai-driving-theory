@@ -8390,7 +8390,7 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
   function simBindControls(){
     function bind(el,key){
       if(!el)return;
-      function on(e){e.preventDefault();SIM.input[key]=true;el.classList.add("on");}
+      function on(e){e.preventDefault();simAudioInit();SIM.input[key]=true;el.classList.add("on");}
       function off(){SIM.input[key]=false;el.classList.remove("on");}
       el.addEventListener("pointerdown",on);
       el.addEventListener("pointerup",off);
@@ -9224,25 +9224,36 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
      Failure (no Web Audio support, or blocked) is silent and non-fatal: the
      game is fully playable without sound. */
   function simAudioInit(){
-    if(SIM.audio)return SIM.audio;
+    // Resume on every call: iOS/Safari starts the context SUSPENDED even when
+    // created inside a gesture, so without this the engine is silent.
+    if(SIM.audio){ try{ if(SIM.audio.ctx.state!=="running")SIM.audio.ctx.resume(); }catch(e){} return SIM.audio; }
     try{
       var Ctx=window.AudioContext||window.webkitAudioContext;
       var ctx=new Ctx();
-      var master=ctx.createGain(); master.gain.value=simMuted()?0:0.5; master.connect(ctx.destination);
-      var engineOsc=ctx.createOscillator(); engineOsc.type="sawtooth"; engineOsc.frequency.value=45;
+      try{ if(ctx.state!=="running")ctx.resume(); }catch(e){}
+      var master=ctx.createGain(); master.gain.value=simMuted()?0:0.6; master.connect(ctx.destination);
+      // engine = a body sawtooth + a square an octave down for the low rumble,
+      // through a gentle lowpass so it's a motor, not a buzzer.
       var engineGain=ctx.createGain(); engineGain.gain.value=0;
-      engineOsc.connect(engineGain); engineGain.connect(master); engineOsc.start();
-      SIM.audio={ctx:ctx,master:master,engineOsc:engineOsc,engineGain:engineGain};
+      var lp=ctx.createBiquadFilter(); lp.type="lowpass"; lp.frequency.value=900;
+      engineGain.connect(lp); lp.connect(master);
+      var engineOsc=ctx.createOscillator(); engineOsc.type="sawtooth"; engineOsc.frequency.value=60; engineOsc.connect(engineGain);
+      var subGain=ctx.createGain(); subGain.gain.value=0.6; subGain.connect(engineGain);
+      var subOsc=ctx.createOscillator(); subOsc.type="square"; subOsc.frequency.value=30; subOsc.connect(subGain);
+      engineOsc.start(); subOsc.start();
+      SIM.audio={ctx:ctx,master:master,engineOsc:engineOsc,subOsc:subOsc,engineGain:engineGain};
     }catch(e){SIM.audio=null;}
     return SIM.audio;
   }
   function simUpdateAudio(){
     var a=SIM.audio; if(!a)return;
     var pct=Math.min(1,SIM.car.speed/SIM_MAXSPD);
-    var idle=SIM.gear==="D";
+    var driving=SIM.gear==="D";
     var t=a.ctx.currentTime;
-    a.engineOsc.frequency.setTargetAtTime(45+pct*150,t,0.08);
-    a.engineGain.gain.setTargetAtTime(idle?0.045+pct*0.09:0.02,t,0.1);
+    a.engineOsc.frequency.setTargetAtTime(60+pct*185,t,0.08);
+    if(a.subOsc)a.subOsc.frequency.setTargetAtTime(30+pct*92,t,0.08);
+    // audible idle even in P/N, rising strongly with speed in D
+    a.engineGain.gain.setTargetAtTime(driving?0.11+pct*0.17:0.055,t,0.1);
   }
   function simPlayBrake(){
     var a=simAudioInit(); if(!a)return;
