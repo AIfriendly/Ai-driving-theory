@@ -8688,6 +8688,17 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
       shifter.position.set(13,43,20);
       ext.add(shifter);
       P.modelShifter=shifter; P.shifterBaseZ=20;
+      // Driver's hands gripping the modeled wheel at 9 & 3 (reusing the
+      // cockpit hand builder, scaled down to the real wheel's radius and raked
+      // back to match the column). Shown only in the cockpit view.
+      var hands=new THREE.Group();
+      hands.add(simBuildHand(1),simBuildHand(-1));
+      hands.scale.setScalar(0.42);
+      hands.position.set(36,86,52);
+      hands.rotation.x=0.45;
+      hands.visible=false;
+      ext.add(hands);
+      P.hands=hands;
     },undefined,function(err){ console.warn("Corolla load failed; using procedural car",err); loadProceduralCar(); });
     carGroup.add(ext);
     P.ext=ext; P.extWheels=wheels; P.extWheelsFront=wheelsFront;
@@ -9154,6 +9165,7 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
     var eyeLocal=useModel?new THREE.Vector3(36,118,-8):new THREE.Vector3(0,SIM_EYE_H,20);
     var eyeWorld=eyeLocal.applyMatrix4(P.carGroup.matrixWorld);
 
+    if(P.hands)P.hands.visible=(SIM.camMode==="cockpit"&&useModel);
     if(SIM.camMode==="cockpit"){
       if(useModel){
         // sit inside the modeled cabin — real dashboard/wheel/windscreen.
