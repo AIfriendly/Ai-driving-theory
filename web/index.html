@@ -8898,7 +8898,7 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
     treeLoader.parse(simB64ToBuf(TREE_GLB_B64),'',function(gltf){
       var treeMesh=null;
       gltf.scene.traverse(function(o){ if(o.isMesh&&!treeMesh)treeMesh=o; });
-      if(treeMesh)scene.add(simBuildTrees(SIM.track,S.simSet+1,treeMesh.geometry,treeMesh.material));
+      if(treeMesh){scene.add(simBuildTrees(SIM.track,S.simSet+1,treeMesh.geometry,treeMesh.material));scene.add(simBuildOpenTrees(treeMesh.geometry,treeMesh.material,S.simSet+1));}
     },function(err){ console.error("tree model failed to load",err); });
 
     // Real modeled city buildings (CC-BY, smooth998) scattered along the
@@ -8917,7 +8917,7 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
         // would scale to a world-covering plane.
         if(hy>0.18 && hy>foot*0.12) protos.push(o);
       });
-      if(protos.length)scene.add(simBuildScatteredBuildings(SIM.track,S.simSet+1,protos));
+      if(protos.length){scene.add(simBuildScatteredBuildings(SIM.track,S.simSet+1,protos));scene.add(simBuildOpenBuildings(protos,S.simSet+1));}
       else scene.add(simBuildDistantScenery(SIM.track,S.simSet+1,mat));
     },undefined,function(err){ console.warn("buildings load failed; using boxes",err); scene.add(simBuildDistantScenery(SIM.track,S.simSet+1,mat)); });
 
@@ -9008,6 +9008,45 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
     }
     inst.instanceMatrix.needsUpdate=true;
     return inst;
+  }
+
+  // Open-world filler: a random tree field scattered across the whole terrain
+  // (one instanced draw call), so there's scenery wherever you roam — not just
+  // lining the road. Keeps a clear corridor over the main road itself.
+  function simBuildOpenTrees(geo,mat,seed){
+    var rnd=mulberry32(seed*769+53), count=620, TREE_SCALE=32;
+    var inst=new THREE.InstancedMesh(geo,mat,count), m=new THREE.Matrix4(), placed=0;
+    var HALF=44000, ZLEN=(SIM.roadLen||140000), V=new THREE.Vector3();
+    for(var i=0;i<count;i++){
+      var x=(rnd()*2-1)*HALF, z=-4000+rnd()*(ZLEN+8000);
+      if(Math.abs(x)<720)x+=(x<0?-720:720); // keep off the road
+      var s=TREE_SCALE*(0.65+rnd()*1.0);
+      m.makeRotationY(rnd()*Math.PI*2); m.scale(V.set(s,s,s)); m.setPosition(x,0,z);
+      inst.setMatrixAt(placed++,m);
+    }
+    inst.count=placed; inst.instanceMatrix.needsUpdate=true;
+    return inst;
+  }
+
+  // Open-world filler: real buildings clustered randomly out across the map,
+  // set back from the road, so the distance has skylines to drive toward.
+  function simBuildOpenBuildings(protos,seed){
+    var rnd=mulberry32(seed*911+17), group=new THREE.Group(), n=26;
+    var HALF=40000, ZLEN=(SIM.roadLen||140000);
+    for(var i=0;i<n;i++){
+      var proto=protos[Math.floor(rnd()*protos.length)];
+      var b=proto.clone(); b.geometry.computeBoundingBox();
+      var bb=b.geometry.boundingBox, hy=Math.max(0.001,bb.max.y-bb.min.y);
+      b.position.set(-(bb.min.x+bb.max.x)/2,-bb.min.y,-(bb.min.z+bb.max.z)/2);
+      var wrap=new THREE.Group(); wrap.add(b);
+      wrap.scale.setScalar((300+rnd()*860)/hy);
+      wrap.rotation.y=rnd()*Math.PI*2;
+      var x=(rnd()*2-1)*HALF, z=-3000+rnd()*(ZLEN+6000);
+      if(Math.abs(x)<1700)x+=(x<0?-1700:1700); // set back from the main road
+      wrap.position.set(x,0,z);
+      group.add(wrap);
+    }
+    return group;
   }
   function simBuildLamps(track,mat){
     var spacing=1400, count=Math.max(2,Math.floor(track.curves.length*SIM_SEG/spacing));
