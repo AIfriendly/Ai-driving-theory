@@ -100,6 +100,30 @@ owner — most of all anything that assumes the TikTok app is on their phone.
 
 ## Done
 
+- [x] **Driving-sim: number-button speed control + brighter modeled cockpit.**
+      Two owner asks. (1) **Speed by numbers, not a pedal.** The owner changed
+      their mind about the hold-to-accelerate gas pedal — replaced it (and the
+      brake pedal) with a **cruise-control row: 0 / 20 / 40 / 60 / 80 / 100**
+      km/h. Tap a number and the car eases to that speed (accelerates up to it,
+      brakes down to it); tapping a non-zero speed auto-engages Drive, so the
+      numbers alone drive the car; 0 brings it to a stop (for stop signs, red
+      lights, crossings). `SIM.targetSpeed` (internal units) is set from km/h via
+      `speed*MAXSPD/180` to match the HUD scale; the D-gear physics now eases
+      `car.speed` toward it instead of the old gas/coast model. Steering is the
+      remaining two-button row (◀ ▶). Number keys 0–5 also work (0=stop,
+      1–5 = 20–100). (2) **Modeled cockpit was too dark.** The interior fill
+      light was parented to the *procedural* interior group (`intr`), which is
+      hidden in modeled-cockpit view — so the real Corolla cabin got no interior
+      light and looked black. Added a dedicated `cabinFill` PointLight parented
+      to the car group, toggled on only in the modeled cockpit (like the hands),
+      lifting the dash/wheel/hands out of shadow. Verified headless: tapping 60
+      engages D + highlights the button + eases speed up, tapping 0 stops the
+      car; all 8 pass/fail branches and the speed-limit over/under/in-band checks
+      still pass; cockpit screenshot now clearly shows the lit dashboard, Toyota
+      wheel, both hands and the road (was black before); 0 page errors.
+      **Gotcha:** the old `SIM.input.g`/`.b` (gas/brake pedals) are gone — any
+      verification that pokes them is now a no-op; drive the car via
+      `simSetSpeed(kmh)` / the `#simSpdNN` buttons instead.
 - [x] **Driving-sim: throttle control + speed-limit situation.** Two owner asks.
       (1) **You now control the speed.** Selecting D no longer pins the car to
       the max — there's a **GAS pedal** (green ⛽, between brake and the

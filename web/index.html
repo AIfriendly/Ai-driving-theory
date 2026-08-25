@@ -316,6 +316,14 @@
   .simbtn.brake.on{background:var(--bad);color:#fff;border-color:var(--bad)}
   .simbtn.gas{background:var(--good-bg);color:var(--good)}
   .simbtn.gas.on{background:var(--good);color:#fff;border-color:var(--good)}
+  .simctrls.two{grid-template-columns:1fr 1fr}
+  /* Speed selector: tap a number to set the target speed (cruise-control
+     style). LTR-pinned like the gear/steer rows so 0..100 never mirrors. */
+  .simspeed{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;direction:ltr;margin-top:8px}
+  .simspeedbtn{border:1.5px solid var(--line);border-radius:12px;font:inherit;font-weight:800;font-size:16px;
+    padding:14px 0;cursor:pointer;background:var(--surface);color:var(--ink);box-shadow:var(--shadow);
+    user-select:none;-webkit-user-select:none;touch-action:none}
+  .simspeedbtn.on{background:var(--brand);color:var(--on-brand);border-color:var(--brand)}
   /* Gear selector: a real P/N/D shifter you must move out of Park to drive.
      Same LTR pin as the steer row — P/N/D order is a physical shift pattern,
      not text, and must not mirror under Kurdish RTL. */
@@ -8349,10 +8357,11 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
         '<button class="simgearbtn" id="simGearN" onclick="simSetGear(\'N\')" aria-label="'+esc(t("simGear"))+' N">N</button>'+
         '<button class="simgearbtn" id="simGearD" onclick="simSetGear(\'D\')" aria-label="'+esc(t("simGear"))+' D">D</button>'+
       '</div>'+
-      '<div class="simctrls">'+
+      '<div class="simspeed" role="group" aria-label="'+esc(L({en:"Set speed",ku:"دانانی خێرایی"}))+'">'+
+        [0,20,40,60,80,100].map(function(v){return '<button class="simspeedbtn'+(v===0?" on":"")+'" id="simSpd'+v+'" onclick="simSetSpeed('+v+')">'+v+'</button>';}).join("")+
+      '</div>'+
+      '<div class="simctrls two">'+
         '<button class="simbtn" id="simLeftBtn" aria-label="'+esc(t("simLeft"))+'">◀</button>'+
-        '<button class="simbtn brake" id="simBrakeBtn" aria-label="'+esc(t("simBrake"))+'">⛔</button>'+
-        '<button class="simbtn gas" id="simGasBtn" aria-label="'+esc(L({en:"Accelerate",ku:"خێراکردن"}))+'">⛽</button>'+
         '<button class="simbtn" id="simRightBtn" aria-label="'+esc(t("simRight"))+'">▶</button>'+
       '</div>'+
       '<button class="simbtn simcammode" id="simCamBtn" aria-label="'+esc(t("simCamToggle"))+'">🎥 '+esc(t("simCamCockpit"))+'</button>'+
@@ -8374,7 +8383,10 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
     // Practical driving test: a sequence of enforceable situations down the
     // +z main road. roadLen must reach past the last one so scenery fills in.
     SIM.roadLen=SIM_TASK_Z0+SIM_TASK_SEQ.length*SIM_TASK_STEP+4000;
-    SIM.paused=false; SIM.input={l:false,r:false,b:false,g:false}; SIM.perm={};
+    SIM.paused=false; SIM.input={l:false,r:false}; SIM.perm={};
+    // Cruise-style speed control: you tap a target speed (km/h) and the car
+    // eases to it. targetSpeed is in the internal 0..SIM_MAXSPD units.
+    SIM.targetSpeedKmh=0; SIM.targetSpeed=0;
     SIM.gear="P"; SIM.wasBraking=false; SIM.audio=null;
     SIM.camMode="cockpit"; SIM.lookYaw=0; SIM.lookPitch=0; SIM.orbitYaw=Math.PI; SIM.orbitPitch=0.22;
     SIM.wheelSpin=0; SIM.gearLever=0; SIM.drag=null;
@@ -8413,8 +8425,6 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
     }
     bind(document.getElementById("simLeftBtn"),"l");
     bind(document.getElementById("simRightBtn"),"r");
-    bind(document.getElementById("simBrakeBtn"),"b");
-    bind(document.getElementById("simGasBtn"),"g");
 
     // Wake the audio on the very first interaction anywhere — iOS only unlocks
     // WebAudio inside a real touch/click, and only the first one counts, so
@@ -8467,15 +8477,14 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
       var k=e.key;
       if(k==="ArrowLeft"||k==="a"||k==="A"){SIM.input.l=true;e.preventDefault();}
       else if(k==="ArrowRight"||k==="d"||k==="D"){SIM.input.r=true;e.preventDefault();}
-      else if(k==="ArrowUp"||k==="w"||k==="W"){SIM.input.g=true;e.preventDefault();}
-      else if(k==="ArrowDown"||k==="s"||k==="S"||k===" "){SIM.input.b=true;e.preventDefault();}
+      // Number keys set the target speed: 0=stop, 1..5 = 20..100 km/h.
+      else if(k==="0"){simSetSpeed(0);e.preventDefault();}
+      else if(k>="1"&&k<="5"){simSetSpeed(parseInt(k,10)*20);e.preventDefault();}
     };
     SIM.keyup=function(e){
       var k=e.key;
       if(k==="ArrowLeft"||k==="a"||k==="A")SIM.input.l=false;
       else if(k==="ArrowRight"||k==="d"||k==="D")SIM.input.r=false;
-      else if(k==="ArrowUp"||k==="w"||k==="W")SIM.input.g=false;
-      else if(k==="ArrowDown"||k==="s"||k==="S"||k===" ")SIM.input.b=false;
     };
     window.addEventListener("keydown",SIM.keydown);
     window.addEventListener("keyup",SIM.keyup);
@@ -8493,6 +8502,19 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
     });
   };
 
+  // Tap a target speed in km/h (0,20,40,60,80,100). The car eases to it. Any
+  // non-zero speed auto-engages Drive so the numbers alone are enough to drive.
+  window.simSetSpeed=function(v){
+    SIM.targetSpeedKmh=v;
+    SIM.targetSpeed=v*SIM_MAXSPD/180; // km/h → internal units (HUD reads speed/MAXSPD*180)
+    if(v>0&&SIM.gear!=="D")window.simSetGear("D");
+    simAudioInit(); simPlayClick();
+    [0,20,40,60,80,100].forEach(function(x){
+      var el=document.getElementById("simSpd"+x);
+      if(el)el.classList.toggle("on",x===v);
+    });
+  };
+
   function simTick(ts){
     if(!SIM.running)return;
     if(SIM.last==null)SIM.last=ts;
@@ -8501,12 +8523,11 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
       var car=SIM.car;
       var braking=false;
       if(SIM.gear==="D"){
-        // Real throttle control: hold GAS to speed up, BRAKE to slow, and roll
-        // down gently when off the gas — so YOU set the speed, it no longer
-        // pins itself to the maximum the moment you select D.
-        if(SIM.input.b){car.speed=Math.max(0,car.speed-SIM_BRAKE*dt);braking=car.speed>50;}
-        else if(SIM.input.g){car.speed=Math.min(SIM_MAXSPD,car.speed+SIM_ACCEL*dt);}
-        else car.speed=Math.max(0,car.speed-SIM_COAST*dt);
+        // Cruise-style speed control: the car eases toward the target speed you
+        // set with the number buttons — accelerates up to it, brakes down to it.
+        var tgt=SIM.targetSpeed||0;
+        if(car.speed<tgt) car.speed=Math.min(tgt,car.speed+SIM_ACCEL*dt);
+        else if(car.speed>tgt){ car.speed=Math.max(tgt,car.speed-SIM_BRAKE*dt); braking=car.speed>50; }
       }else if(SIM.gear==="N"){
         car.speed=Math.max(0,car.speed-SIM_COAST*dt);
       }else{ // P — parked: sheds speed fast, cannot be driven off
@@ -8657,6 +8678,15 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
     // under one group so positioning/orienting the car moves everything. ----
     var carGroup=new THREE.Group(); scene.add(carGroup);
     P.carGroup=carGroup;
+    // Cabin fill light for the MODELED interior. The procedural interior has its
+    // own light (cabinLight, added to `intr`), but that group is hidden in model
+    // cockpit view, so the real modeled cabin got no interior light and looked
+    // dark. This one is parented to the car itself and toggled on only in the
+    // modeled cockpit (see simDraw), lifting the dashboard/wheel out of shadow.
+    var cabinFill=new THREE.PointLight(0xfff4e6,2.2,900,1.15);
+    cabinFill.position.set(6,140,-24);
+    carGroup.add(cabinFill);
+    P.cabinFill=cabinFill; cabinFill.visible=false;
 
     // Real modeled exterior (Kenney "Starter Kit: Racing", CC0) instead of
     // procedural boxes — asked for by name after the procedural low-poly
@@ -9443,6 +9473,7 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
     var def=SIM.tasks[SIM.taskIdx];
     simDisposeTask();
     if(def){ SIM.car.px=0; SIM.car.pz=def.z-1300; SIM.car.heading=0; SIM.car.speed=0; }
+    if(window.simSetSpeed)simSetSpeed(0); // start the retry stopped; you set the speed again
     SIM.paused=false; SIM.last=null; // next frame rebuilds this task fresh
   };
 
@@ -9599,6 +9630,7 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
     var eyeWorld=eyeLocal.applyMatrix4(P.carGroup.matrixWorld);
 
     if(P.hands)P.hands.visible=(SIM.camMode==="cockpit"&&useModel);
+    if(P.cabinFill)P.cabinFill.visible=(SIM.camMode==="cockpit"&&useModel);
     if(SIM.camMode==="cockpit"){
       if(useModel){
         // sit inside the modeled cabin — real dashboard/wheel/windscreen.
