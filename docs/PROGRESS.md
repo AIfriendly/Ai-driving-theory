@@ -20,6 +20,7 @@ single self-contained file, no build step, no network calls.
 | Active questions | 745 (749 defined, 4 filtered out via `ARCHIVED_Q`) |
 | Sign icons | 110 inline SVG |
 | Scene / concept illustrations | 134 |
+| Driving-sim scenarios | 745 of 745 questions — 45 templates, 12 judging kernels |
 | Questions with no visual | 0 |
 | Study-guide tips with no picture | 0 (587 of 587) |
 | Ad clips rendered | 10 voiced Kurdish (15-24s), delivered · earlier silent 8x2 batch at `292a68e` |
@@ -99,6 +100,67 @@ owner — most of all anything that assumes the TikTok app is on their phone.
 ---
 
 ## Done
+
+- [x] **Driving-sim: EVERY question in the bank now drives its own scripted
+      scenario** — not five situation types cycled ten times. The owner's ask
+      was coverage: all **745** active questions, each staged as a real
+      situation and judged on what the driver does.
+      **How a question becomes a situation** (`simScenFor`, same shape as the
+      illustration classifier that already covers the bank): its **sign key**
+      first (107 keys → 114 questions), then **keywords in its own English
+      text** (→ 535), then a per-category rotation for what is left (→ 96),
+      picked by a stable hash of the question id so a question always drives
+      the same situation. Numbers come out of the question itself — the limit
+      it names becomes the zone's limit, the side it names becomes the side the
+      turn goes. Audited from outside: `window.simScenAudit()` reports
+      **745 questions, 0 missing, 44 of 45 templates used**, biggest bucket 72
+      (9.7%).
+      **45 templates over 12 kernels.** Kernels are what the driver must
+      actually DO: `stop`, `hold` (stop *and* wait — barrier, officer, train,
+      crash scene), `signal` (red / changing amber), `yield` (a conflict zone
+      occupied until it clears), `zone` (speed band), `keep` (lane corridor —
+      and with `cross`, a full overtake out and back), `gap` (following
+      distance behind a braking lead), `pullover`, `turn`, `uturn`, `park`,
+      `nostop` (the offence is stopping). Staging is data on top: level
+      crossing with barrier and train, police checkpoint with booth and
+      officer, crash scene with casualty and warning triangle, fog/night/rain
+      (`scene.fog`), tunnel, roundabout island, cones, herds, trams, buses
+      pulling out, a cyclist to pass wide, a yellow box junction.
+      **The world shows the question's OWN sign** — the app's 110 inline SVG
+      icons are painted into the sign board through a data: URI `<img>` onto
+      the same canvas the material samples (alphaTest cutout, drawn fallback
+      stays if the decode ever fails).
+      **The drive is the set.** One situation per question in the set's 50, so
+      driving all 15 sets covers the bank; `simSpreadQueue` round-robins the
+      set across its templates (the bank is topic-ordered, so without it a set
+      staged the same template ten times running) — one drive now stages **20
+      distinct templates with 2 back-to-back repeats**. Failing shows the
+      mistake, then that question's own correct answer and explanation;
+      passing flashes the correct answer as the teachable half. Finishing
+      writes to the **same store as the quizzes** — mistakes, Leitner boxes,
+      per-category counts, `simBest` — so a clean drive counts as answering
+      those questions right.
+      **Verified headless:** 49 scripted pass/fail branch checks (both branches
+      of every kernel) all pass; all 44 used templates stage with actors and an
+      instruction and no build warnings; all 50 situations of a set build; quiz,
+      exam and practice modes still work; 0 page errors. Dead quiz-on-wheels
+      code (`simTriggerCheckpoint`/`simRenderCard`/`simAnswer`/`simContinue`)
+      removed — it had been unreachable since the practical-test rework.
+      **Gotchas logged:**
+      - `hashStr` returns a **base-36 string**, not a number — `Math.abs(q.id)`
+        is `NaN`. Fold the id back into an integer before using it to rotate.
+      - Regexes over question text need **word boundaries**: "l*ice*nce" hit
+        `/ice/` and sent every licence question into the icy-road scenario;
+        "e*merg*ency" hits `/merg/`, "s*park* plug" hits `/park/`.
+      - A car body here (176 wide) is **wider than a lane** (130), so a
+        collision box of half-width 150 makes a legal pass in the next lane
+        count as a crash. Adjacent-lane vehicles use 115–120.
+      - A lead car that brakes to **zero** walls the road off and makes its own
+        task impossible — brake to a floor speed instead.
+      - Verification needs `window.simTest` (`state/put/step/load/goto/plan`):
+        headless rAF is throttled, so stepping the world by hand is the only
+        way to reach every branch. `simTest.load` also resets the car, or the
+        next case starts wherever the last one left off and auto-passes.
 
 - [x] **Driving-sim: number-button speed control + brighter modeled cockpit.**
       Two owner asks. (1) **Speed by numbers, not a pedal.** The owner changed

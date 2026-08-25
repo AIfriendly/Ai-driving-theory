@@ -7179,7 +7179,7 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
     rdd_ready:"You're consistently passing the mock exam. Keep it up and clear anything still due for review.", rdd_almost:"You're close to the 80% pass mark. Fix your weakest topic and take a few more mock exams.", rdd_practise:"You're below the 80% pass mark. Focus on your weakest topic and use Smart Review daily.", rdd_start:"Take a mock exam to measure how ready you are to pass.",
     guideB:"Study Guide", guideD:"Read & revise every sign and rule by topic", expandAll:"Expand all", collapseAll:"Collapse all",
     achvB:"Achievements", achvD:"Badges you have earned so far", achvEarned:"earned", achvSub:"Keep practising to unlock them all.", achvNew:"New badge unlocked!", achvNewN:"New badges unlocked!",
-    simB:"Driving Simulation", simD:"Apply every set's 50 questions from behind the wheel — steer, brake, and answer as each hazard appears.",
+    simB:"Driving Simulation", simD:"Every question in the set becomes a real situation on the road — drive it right or fail it, exactly like the road test.",
     simPlayHint:"Steer ◀ ▶ to stay on the road, ⛔ to slow down. A hazard sign means a question is coming — answer it to keep driving.",
     simLeft:"Steer left", simRight:"Steer right", simBrake:"Brake", simDrive:"Keep driving",
     simExitConfirm:"Leave this drive? Your progress in this set won't be saved.",
@@ -7221,7 +7221,7 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
     rdd_ready:"بەردەوام لە تاقیکردنەوەی نمونەییدا سەردەکەویت. بەردەوام بە و ئەوەی ماوە پێداچوونەوەی بۆ بکە.", rdd_almost:"نزیکیت لە سنووری دەرچوونی ٨٠٪. لاوازترین بابەتت چاک بکە و چەند تاقیکردنەوەیەکی تر بکە.", rdd_practise:"لە خوار سنووری دەرچوونی ٨٠٪دایت. سەرنج بخەرە سەر لاوازترین بابەت و ڕۆژانە پێداچوونەوەی زیرەک بەکاربهێنە.", rdd_start:"تاقیکردنەوەیەکی نمونەیی بکە بۆ پێوانەکردنی ئامادەیی سەرکەوتنت.",
     guideB:"ڕێبەری خوێندن", guideD:"هەموو هێما و یاسایەک بەپێی بابەت بخوێنەرەوە و پێداچوونەوەی بۆ بکە", expandAll:"کردنەوەی هەموو", collapseAll:"داخستنی هەموو",
     achvB:"دەستکەوتەکان", achvD:"ئەو نیشانانەی تا ئێستا بەدەستت هێناون", achvEarned:"بەدەستهێنراو", achvSub:"بەردەوام بە لە ڕاهێنان بۆ کردنەوەی هەموویان.", achvNew:"نیشانەیەکی نوێ کرایەوە!", achvNewN:"نیشانەی نوێ کرانەوە!",
-    simB:"سیمولەیشنی لێخوڕین", simD:"٥٠ پرسیارەکەی هەر کۆمەڵە بخەرە کار لە پشتەوەی سکانەوە — بەرەو بکە، ترمز بگرە، و لە کاتی دەرکەوتنی هەر مەترسییەک وەڵامی پرسیارەکە بدەرەوە.",
+    simB:"سیمولەیشنی لێخوڕین", simD:"هەر پرسیارێکی کۆمەڵەکە دەبێتە بارودۆخێکی ڕاستەقینە لەسەر ڕێگا — بە دروستی لێیبخوڕە یان تێیدا دەکەویت، وەک تاقیکردنەوەی سەر ڕێگا.",
     simPlayHint:"بۆ مانەوە لەسەر ڕێگا بەرەو بکە ◀ ▶، بۆ کەمکردنەوەی خێرایی ⛔ بگرە. هێمای مەترسی واتای ئەوەیە پرسیارێک دێت — وەڵامی بدەرەوە بۆ بەردەوامبوونی لێخوڕین.",
     simLeft:"بەرەوی چەپ", simRight:"بەرەوی ڕاست", simBrake:"ترمز", simDrive:"بەردەوامبە لە لێخوڕین",
     simExitConfirm:"ئەم لێخوڕینە بەجێبهێڵیت؟ پێشکەوتنت لەم کۆمەڵەیەدا پاشەکەوت ناکرێت.",
@@ -8382,8 +8382,8 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
     SIM.car={px:0,pz:200,heading:0,speed:0};
     // Practical driving test: a sequence of enforceable situations down the
     // +z main road. roadLen must reach past the last one so scenery fills in.
-    SIM.roadLen=SIM_TASK_Z0+SIM_TASK_SEQ.length*SIM_TASK_STEP+4000;
-    SIM.paused=false; SIM.input={l:false,r:false}; SIM.perm={};
+    SIM.roadLen=SIM_TASK_Z0+Math.max(4,(S.queue&&S.queue.length)||10)*SIM_TASK_STEP+4000;
+    SIM.paused=false; SIM.input={l:false,r:false};
     // Cruise-style speed control: you tap a target speed (km/h) and the car
     // eases to it. targetSpeed is in the internal 0..SIM_MAXSPD units.
     SIM.targetSpeedKmh=0; SIM.targetSpeed=0;
@@ -9074,8 +9074,12 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
   // Open-world filler: a random tree field scattered across the whole terrain
   // (one instanced draw call), so there's scenery wherever you roam — not just
   // lining the road. Keeps a clear corridor over the main road itself.
+  // Scenery density: the road grew with the question set, so the fixed
+  // instance counts have to grow with it (one draw call either way).
+  function simDens(){ return Math.max(1,Math.min(4,(SIM.roadLen||40000)/40000)); }
+  function simDensObj(){ return Math.max(1,Math.min(2,simDens())); }
   function simBuildOpenTrees(geo,mat,seed){
-    var rnd=mulberry32(seed*769+53), count=620, TREE_SCALE=32;
+    var rnd=mulberry32(seed*769+53), count=Math.round(620*simDens()), TREE_SCALE=32;
     var inst=new THREE.InstancedMesh(geo,mat,count), m=new THREE.Matrix4(), placed=0;
     var HALF=44000, ZLEN=(SIM.roadLen||140000), V=new THREE.Vector3();
     for(var i=0;i<count;i++){
@@ -9092,7 +9096,7 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
   // Open-world filler: real buildings clustered randomly out across the map,
   // set back from the road, so the distance has skylines to drive toward.
   function simBuildOpenBuildings(protos,seed){
-    var rnd=mulberry32(seed*911+17), group=new THREE.Group(), n=40;
+    var rnd=mulberry32(seed*911+17), group=new THREE.Group(), n=Math.round(40*simDensObj());
     var HALF=40000, ZLEN=(SIM.roadLen||140000);
     for(var i=0;i<n;i++){
       var proto=protos[Math.floor(rnd()*protos.length)];
@@ -9165,8 +9169,9 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
       }
       inst.count=placed; inst.instanceMatrix.needsUpdate=true; return inst;
     }
-    group.add(field(bushGeo,bushMat,540,0.7));
-    group.add(field(rockGeo,rockMat,300,0.55));
+    var d=simDens();
+    group.add(field(bushGeo,bushMat,Math.round(540*d),0.7));
+    group.add(field(rockGeo,rockMat,Math.round(300*d),0.55));
     return group;
   }
 
@@ -9226,55 +9231,103 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
   var SIM_TRAF_COLORS=[0xffffff,0x1b2733,0xb5221f,0x2b4a7a,0x8a8f96,0x14532d,0xd9a520,0x30343a];
 
   /* ==========================================================================
-     PRACTICAL DRIVING TEST — enforceable situations, pass or FAIL.
-     The sim is no longer a quiz on wheels and there is no random ambient
-     traffic. Instead the world puts a real driving situation in front of you,
-     drawn from the theory syllabus, and judges whether you DO the right thing.
-     Roll through a STOP sign, a red light, a pedestrian on a crossing, or a
-     car with priority at a junction, and you fail — then retry that situation,
-     exactly like the on-road test. Only the cars a situation actually needs
-     are spawned.
+     PRACTICAL DRIVING TEST — one scripted scenario per question.
+
+     Every question in the bank drives a situation of its own. A question is
+     turned into a scenario in three steps:
+
+       1. simScenFor(q) reads the question's own content — its sign key first,
+          then keywords in its English text, then its category — and picks one
+          of the SCEN templates plus parameters taken from the question (the
+          speed limit it names, which side it talks about, who is crossing).
+          A stable hash of the question id varies the staging so two questions
+          on the same template are still two different situations.
+       2. The template stages the world: real signage (the question's OWN sign
+          artwork, painted from the app's SVG icon set), road markings, and
+          only the actors that situation needs — a train, a herd, a police
+          checkpoint, a broken-down car, fog.
+       3. A kernel judges what the driver actually DOES: stop, hold, obey the
+          signal, give way, hold a speed band, hold a lane, keep a gap, pull
+          over, take the turn, park, or keep moving. Fail and the overlay
+          names the mistake and teaches the rule with that question's own
+          explanation — the question and the situation are the same object.
+
+     The drive's sequence is the set's queue, so driving all the sets covers
+     the whole bank. Nothing here opens a quiz card while you drive.
      ========================================================================== */
 
-  var SIM_TASK_SEQ=["stop","speedlimit","pedestrian","giveway","redlight","stop","speedlimit","pedestrian","giveway","redlight"];
   var SIM_TASK_Z0=3200;    // z of the first situation
   var SIM_TASK_STEP=3000;  // spacing between situations down the road
   var SIM_STOP_EPS=55;     // speed at/below which the car counts as "stopped"
+  var SIM_KMH=180/SIM_MAXSPD;            // internal speed units -> km/h
+  function simKmh(v){return v*SIM_KMH;}
+  function simUnits(kmh){return kmh/SIM_KMH;}
+
+  function TT(en,ku){return {en:en,ku:ku};}
 
   // Bilingual copy, rendered with L() so the UI table stays untouched.
   var TASK_TXT={
-    task:{en:"Task",ku:"ئەرک"},
-    fail:{en:"TEST FAILED",ku:"لە تاقیکردنەوە کەوتیت"},
-    tryagain:{en:"Try again",ku:"دووبارە هەوڵبدەوە"},
-    done:{en:"Test complete",ku:"تاقیکردنەوە تەواو بوو"},
-    passedN:{en:"You passed %P of %T situations.",ku:"%P لە %T بارودۆخ سەرکەوتوو بوویت."},
-    driveagain:{en:"Drive again",ku:"دووبارە لێبخوڕە"},
-    passed:{en:"Good — passed",ku:"باشە — تێپەڕی"},
-    stop_i:{en:"STOP sign ahead — come to a full stop",ku:"هێمای وەستان لەپێشتە — بە تەواوی بوەستە"},
-    ped_i:{en:"Pedestrian crossing — give way and wait",ku:"پەڕینەوەی پیادە — ڕێگا بدە و چاوەڕێ بکە"},
-    give_i:{en:"Give way — let the other car pass",ku:"ڕێگا بدە — با ئۆتۆمبێلەکەی تر تێپەڕێت"},
-    red_i:{en:"Red light — stop at the line",ku:"چرای سوور — لەسەر هێڵ بوەستە"},
-    stop_f:{en:"You did not stop at the STOP sign.",ku:"لە هێمای وەستاندا نەوەستایت."},
-    ped_f:{en:"You did not stop for the pedestrian.",ku:"بۆ پیادەکە نەوەستایت."},
-    give_f:{en:"You failed to give way.",ku:"ڕێگات نەدا."},
-    red_f:{en:"You went through a red light.",ku:"بە چرای سووردا ڕۆیشتیت."},
-    stop_r:{en:"At a STOP sign you must come to a complete stop, even when the road looks clear.",ku:"لە هێمای وەستاندا دەبێت بە تەواوی بوەستیت، تەنانەت ئەگەر ڕێگاکە بەتاڵ دیار بێت."},
-    ped_r:{en:"Pedestrians on a crossing have priority. Always stop and let them cross.",ku:"پیادە لەسەر شوێنی پەڕینەوە ئەولەویەتیان هەیە. هەمیشە بوەستە و لێیان گەڕێ بپەڕنەوە."},
-    give_r:{en:"Give way means letting traffic with priority pass before you move off.",ku:"ڕێگادان واتە با ئەو هاتووچۆیەی ئەولەویەتی هەیە تێپەڕێت پێش ئەوەی تۆ بڕۆیت."},
-    red_r:{en:"A red light means stop. Wait for green before you move off.",ku:"چرای سوور واتە بوەستە. چاوەڕێی چرای سەوز بکە پێش ئەوەی بڕۆیت."},
-    spd_over:{en:"You went over the speed limit.",ku:"لە سنووری خێرایی تێپەڕیت."},
-    spd_under:{en:"You drove too slowly — below the limit.",ku:"زۆر بەهێواشی لێخوڕی — خوار سنوورەکە."},
-    spd_r:{en:"Keep your speed within the posted limit — not over it, and not so slow that you obstruct traffic.",ku:"خێراییەکەت لە سنووری دیاریکراودا بهێڵەوە — نە زیاتری، نە ئەوەندە هێواش کە ببیتە ڕێگر بۆ هاتووچۆ."}
+    task:TT("Task","ئەرک"),
+    fail:TT("TEST FAILED","لە تاقیکردنەوە کەوتیت"),
+    tryagain:TT("Try again","دووبارە هەوڵبدەوە"),
+    done:TT("Test complete","تاقیکردنەوە تەواو بوو"),
+    passedN:TT("You passed %P of %T situations.","%P لە %T بارودۆخ سەرکەوتوو بوویت."),
+    driveagain:TT("Drive again","دووبارە لێبخوڕە"),
+    passed:TT("Good — passed","باشە — تێپەڕی"),
+    theRule:TT("The rule","یاساکە"),
+    // generic failures reused by several kernels
+    f_stop:TT("You did not come to a full stop.","بە تەواوی نەوەستایت."),
+    f_early:TT("You moved off before you were allowed to.","پێش ئەوەی ڕێگەت پێبدرێت ڕۆیشتیت."),
+    f_red:TT("You went through a red light.","بە چرای سووردا ڕۆیشتیت."),
+    f_yield:TT("You failed to give way.","ڕێگات نەدا."),
+    f_over:TT("You went over the speed limit.","لە سنووری خێرایی تێپەڕیت."),
+    f_under:TT("You drove too slowly — below the limit.","زۆر بەهێواشی لێخوڕی — خوار سنوورەکە."),
+    f_lane:TT("You left your lane.","لە ڕێڕەوەکەت لاتدا."),
+    f_gap:TT("You got too close to the vehicle in front.","زۆر لە ئۆتۆمبێلی پێشەوە نزیک بوویتەوە."),
+    f_hit:TT("You hit something on the road.","بەر شتێک کەوتیت لەسەر ڕێگا."),
+    f_miss:TT("You missed the manoeuvre.","کارەکەت جێبەجێ نەکرد."),
+    f_fast:TT("You took it far too fast.","زۆر بە خێرایی ڕۆیشتیت."),
+    f_stopped:TT("You stopped where stopping is not allowed.","لە شوێنێک وەستایت کە وەستان ڕێگەپێدراو نییە."),
+    i_wait:TT("Wait until you are allowed to go","چاوەڕێ بکە هەتا ڕێگەت پێدەدرێت"),
+    ok_go:TT("Clear — go","ڕێگا خاڵییە — بڕۆ")
   };
+
+  /* ---------- signage ---------- */
 
   // A canvas-texture sign board using alphaTest (hard cutout) — the same
   // mobile-GPU-safe approach as the old "?" sign, so the artwork renders and
   // depth-sorts reliably on phones.
   function simSignTex(draw){
     var cv=document.createElement("canvas"); cv.width=cv.height=256;
-    var g=cv.getContext("2d"); g.clearRect(0,0,256,256); draw(g,128);
+    var g=cv.getContext("2d"); g.clearRect(0,0,256,256); if(draw)draw(g,128);
     var tex=new THREE.CanvasTexture(cv); tex.anisotropy=8;
     return new THREE.MeshBasicMaterial({map:tex,transparent:true,alphaTest:0.5,side:THREE.DoubleSide});
+  }
+  /* Paint one of the app's own 110 sign icons onto a sign board. The icons are
+     inline SVG strings, so they go through an <img> with a data: URI and land
+     on the same canvas the material already samples — the board is drawn (and
+     stays usable) before the image resolves, and if the decode ever fails the
+     fallback artwork simply stays. This is what makes a sign question's
+     scenario show THAT question's sign. */
+  function simSignPaint(mat,svgStr){
+    try{
+      var s=svgStr.replace("<svg ","<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"256\" height=\"256\" ");
+      var img=new Image();
+      img.onload=function(){
+        try{
+          var cv=mat.map.image, g=cv.getContext("2d");
+          g.clearRect(0,0,256,256); g.drawImage(img,10,10,236,236); mat.map.needsUpdate=true;
+        }catch(e){}
+      };
+      img.src="data:image/svg+xml;charset=utf-8,"+encodeURIComponent(s);
+    }catch(e){}
+  }
+  // The board material for a task: the question's own sign when it has one,
+  // otherwise the template's drawn fallback.
+  function simSignMat(tk,fallback){
+    var key=tk&&tk.q&&tk.q.sign, mat=simSignTex(fallback||drawWarn);
+    if(key&&SIGNS[key]&&SIGNS[key].svg)simSignPaint(mat,SIGNS[key].svg);
+    return mat;
   }
   function simMakeSign(mat,size,poleH){
     var g=new THREE.Group();
@@ -9308,11 +9361,23 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
   function drawSpeed(g,C,n){
     g.fillStyle="#fff"; g.beginPath(); g.arc(C,C,116,0,7); g.fill();
     g.lineWidth=26; g.strokeStyle="#c0161c"; g.beginPath(); g.arc(C,C,103,0,7); g.stroke();
-    g.fillStyle="#14181c"; g.font="bold 118px system-ui,Arial,sans-serif"; g.textAlign="center"; g.textBaseline="middle"; g.fillText(String(n),C,C+6);
+    g.fillStyle="#14181c"; g.font="bold "+(n>99?96:118)+"px system-ui,Arial,sans-serif"; g.textAlign="center"; g.textBaseline="middle"; g.fillText(String(n),C,C+6);
   }
-  // A flat white road marking (stop line / zebra stripe), sitting just above
-  // the road so it doesn't z-fight the asphalt.
-  function simRoadLine(w,d){ return new THREE.Mesh(new THREE.BoxGeometry(w,3,d),new THREE.MeshBasicMaterial({color:0xffffff})); }
+  // Generic warning triangle — the fallback board for any question that has no
+  // sign icon of its own.
+  function drawWarn(g,C){
+    g.fillStyle="#fff"; g.strokeStyle="#c0161c"; g.lineWidth=22; g.lineJoin="round";
+    g.beginPath(); g.moveTo(C,26); g.lineTo(232,214); g.lineTo(24,214); g.closePath(); g.fill(); g.stroke();
+    g.fillStyle="#14181c"; g.font="bold 96px system-ui,Arial,sans-serif"; g.textAlign="center"; g.textBaseline="middle"; g.fillText("!",C,C+38);
+  }
+  function drawNoEntry(g,C){
+    g.fillStyle="#c0161c"; g.beginPath(); g.arc(C,C,116,0,7); g.fill();
+    g.fillStyle="#fff"; g.fillRect(38,C-20,180,40);
+  }
+
+  // A flat white road marking (stop line / zebra stripe / lane line), sitting
+  // just above the road so it doesn't z-fight the asphalt.
+  function simRoadLine(w,d,color){ return new THREE.Mesh(new THREE.BoxGeometry(w,3,d),new THREE.MeshBasicMaterial({color:color==null?0xffffff:color})); }
   // A 3-lamp traffic light on a pole.
   function simMakeTrafficLight(){
     var g=new THREE.Group();
@@ -9327,6 +9392,7 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
     return g;
   }
   function simSetLamp(tl,which){
+    if(!tl||!tl.userData||!tl.userData.lamps)return;
     var L=tl.userData.lamps, on={red:0xff2a2a,amber:0xffa500,green:0x22dd44}, off={red:0x400000,amber:0x403000,green:0x003000};
     ["red","amber","green"].forEach(function(k){
       var lit=(k===which);
@@ -9334,136 +9400,905 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
     });
   }
 
+  /* ---------- props the scenarios stage ---------- */
+
+  // Red/white striped barrier that pivots up from its post — level crossings,
+  // police checkpoints, closed roads.
+  function simMakeBarrier(w){
+    var outer=new THREE.Group(), arm=new THREE.Group(), n=Math.max(2,Math.round(w/110));
+    for(var i=0;i<n;i++){
+      var m=new THREE.Mesh(new THREE.BoxGeometry(w/n,24,14),new THREE.MeshStandardMaterial({color:(i%2)?0xffffff:0xc0161c,roughness:0.6}));
+      m.position.x=w/n*(i+0.5); arm.add(m);
+    }
+    var post=new THREE.Mesh(new THREE.CylinderGeometry(9,9,150,8),SIM.gl.mat.pole); post.position.y=-75; outer.add(post);
+    outer.add(arm); outer.userData={arm:arm};
+    return outer;
+  }
+  function simLiftBarrier(b){ if(b&&b.userData&&b.userData.arm)b.userData.arm.rotation.z=1.25; }
+  function simMakeCone(){
+    var g=new THREE.Group();
+    var c=new THREE.Mesh(new THREE.ConeGeometry(22,62,10),new THREE.MeshStandardMaterial({color:0xff7a18,roughness:0.85})); c.position.y=31;
+    var b=new THREE.Mesh(new THREE.BoxGeometry(48,8,48),new THREE.MeshStandardMaterial({color:0x2a2a2e,roughness:0.9})); b.position.y=4;
+    g.add(c,b); return g;
+  }
+  // A person with one arm held straight out — the police signal to stop.
+  function simMakeOfficer(){
+    var p=simBuildPerson(0x1d2b4a);
+    var arm=p.children[5]; if(arm){arm.rotation.z=Math.PI/2; arm.position.set(48,150,0);}
+    var cap=new THREE.Mesh(new THREE.CylinderGeometry(16,16,9,10),new THREE.MeshStandardMaterial({color:0x11182c,roughness:0.8})); cap.position.y=178; p.add(cap);
+    return p;
+  }
+  // A casualty lying on the ground at a crash scene.
+  function simMakeCasualty(){
+    var p=simBuildPerson(0xb5221f); p.rotation.x=-Math.PI/2; p.position.y=22; return p;
+  }
+  function simMakeTriangle(){
+    var g=new THREE.Group();
+    var m=simSignTex(function(c,C){
+      c.fillStyle="#c0161c"; c.beginPath(); c.moveTo(C,30); c.lineTo(226,214); c.lineTo(30,214); c.closePath(); c.fill();
+      c.globalCompositeOperation="destination-out"; c.beginPath(); c.moveTo(C,86); c.lineTo(186,196); c.lineTo(70,196); c.closePath(); c.fill();
+    });
+    var pl=new THREE.Mesh(new THREE.PlaneGeometry(70,70),m); pl.position.y=38; pl.rotation.y=Math.PI; g.add(pl);
+    return g;
+  }
+  // A long rail vehicle: train (level crossing) or tram (street rails).
+  function simMakeRailVehicle(len,color){
+    var g=new THREE.Group();
+    var body=new THREE.Mesh(new THREE.BoxGeometry(len,210,180),new THREE.MeshStandardMaterial({color:color,roughness:0.5,metalness:0.3})); body.position.y=170;
+    var glass=new THREE.Mesh(new THREE.BoxGeometry(len*0.92,70,186),new THREE.MeshStandardMaterial({color:0x1b2733,roughness:0.2,metalness:0.2})); glass.position.y=225;
+    var skirt=new THREE.Mesh(new THREE.BoxGeometry(len,60,150),new THREE.MeshStandardMaterial({color:0x22262b,roughness:0.8})); skirt.position.y=45;
+    g.add(body,glass,skirt);
+    return g;
+  }
+  function simMakeBus(color){
+    var g=new THREE.Group();
+    var body=new THREE.Mesh(new THREE.BoxGeometry(190,190,760),new THREE.MeshStandardMaterial({color:color||0xf0b429,roughness:0.55})); body.position.y=150;
+    var glass=new THREE.Mesh(new THREE.BoxGeometry(196,64,700),new THREE.MeshStandardMaterial({color:0x1b2733,roughness:0.2})); glass.position.y=205;
+    var skirt=new THREE.Mesh(new THREE.BoxGeometry(180,60,740),new THREE.MeshStandardMaterial({color:0x30343a,roughness:0.85})); skirt.position.y=52;
+    g.add(body,glass,skirt);
+    var wgeo=new THREE.CylinderGeometry(48,48,30,12), wmat=new THREE.MeshStandardMaterial({color:0x0d0d0f,roughness:0.85});
+    [[-96,250],[96,250],[-96,-250],[96,-250]].forEach(function(p){var w=new THREE.Mesh(wgeo,wmat);w.rotation.z=Math.PI/2;w.position.set(p[0],48,p[1]);g.add(w);});
+    var ind=new THREE.Mesh(new THREE.BoxGeometry(26,20,8),new THREE.MeshBasicMaterial({color:0x5a3b00})); ind.position.set(-92,120,370); g.add(ind);
+    g.userData={ind:ind};
+    return g;
+  }
+  // A four-legged animal — livestock or a stray on the road.
+  function simMakeAnimal(color){
+    var g=new THREE.Group(), m=new THREE.MeshStandardMaterial({color:color||0x8a6a44,roughness:0.9});
+    var body=new THREE.Mesh(new THREE.BoxGeometry(60,66,150),m); body.position.y=112;
+    var head=new THREE.Mesh(new THREE.BoxGeometry(46,46,60),m); head.position.set(0,140,96);
+    g.add(body,head);
+    [[-22,58],[22,58],[-22,-58],[22,-58]].forEach(function(p){
+      var l=new THREE.Mesh(new THREE.BoxGeometry(16,84,16),m); l.position.set(p[0],42,p[1]); g.add(l);
+    });
+    return g;
+  }
+  function simMakeCyclist(color){
+    var g=new THREE.Group();
+    var p=simBuildPerson(color||0xd9a520); p.scale.set(0.9,0.9,0.9); p.position.y=34; g.add(p);
+    var wmat=new THREE.MeshStandardMaterial({color:0x14181c,roughness:0.8});
+    [46,-46].forEach(function(z){
+      var w=new THREE.Mesh(new THREE.TorusGeometry(30,5,6,14),wmat); w.position.set(0,30,z); g.add(w);
+    });
+    var frame=new THREE.Mesh(new THREE.BoxGeometry(8,8,96),new THREE.MeshStandardMaterial({color:0xb5221f,roughness:0.5})); frame.position.y=54; g.add(frame);
+    return g;
+  }
+  // A tunnel you drive through: two walls and a roof over the road.
+  function simMakeTunnel(len){
+    var g=new THREE.Group(), RW=SIM_ROADW;
+    var mat=new THREE.MeshStandardMaterial({color:0x6a6f76,roughness:0.9});
+    [-1,1].forEach(function(s){
+      var w=new THREE.Mesh(new THREE.BoxGeometry(60,460,len),mat); w.position.set(s*(RW+90),230,0); g.add(w);
+    });
+    var roof=new THREE.Mesh(new THREE.BoxGeometry((RW+120)*2,50,len),mat); roof.position.y=470; g.add(roof);
+    return g;
+  }
+  // Grass island at the centre of a roundabout.
+  function simMakeIsland(r){
+    var g=new THREE.Group();
+    var d=new THREE.Mesh(new THREE.CylinderGeometry(r,r,26,22),new THREE.MeshStandardMaterial({color:0x2c6b31,roughness:0.95})); d.position.y=13;
+    var kerb=new THREE.Mesh(new THREE.CylinderGeometry(r+14,r+14,18,22),new THREE.MeshStandardMaterial({color:0xd6d8db,roughness:0.9})); kerb.position.y=9;
+    g.add(kerb,d); return g;
+  }
+  // Yellow criss-cross box junction painted on the road.
+  function simMakeBoxJunction(w,d){
+    var cv=document.createElement("canvas"); cv.width=cv.height=256;
+    var g=cv.getContext("2d"); g.strokeStyle="#f0c419"; g.lineWidth=7;
+    g.strokeRect(6,6,244,244);
+    for(var i=-256;i<256;i+=42){ g.beginPath(); g.moveTo(i,0); g.lineTo(i+256,256); g.stroke(); g.beginPath(); g.moveTo(i+256,0); g.lineTo(i,256); g.stroke(); }
+    var tex=new THREE.CanvasTexture(cv);
+    return new THREE.Mesh(new THREE.PlaneGeometry(w,d),new THREE.MeshBasicMaterial({map:tex,transparent:true,alphaTest:0.35}));
+  }
+
+  /* ---------- staging: the pieces every scenario is assembled from ---------- */
+
+  function simAdd(tk,o,x,y,z){
+    if(!SIM.gl)return o;
+    SIM.gl.taskGroup.add(o); tk.actors.push(o);
+    if(x!=null)o.position.set(x,y||0,z);
+    return o;
+  }
+  // Anything the car must not drive into. Judged centrally in simUpdateTasks.
+  function simSolid(tk,obj,hw,hl,msg){ tk.solids.push({o:obj,hw:hw||140,hl:hl||260,m:msg||TASK_TXT.f_hit}); }
+
+  function stgSign(tk,o){
+    o=o||{};
+    var RW=SIM_ROADW, side=(o.side==="left"?-1:1);
+    simAdd(tk,simMakeSign(simSignMat(tk,o.fb),o.size||110,150),side*(RW+55),0,tk.z+(o.dz||0));
+    if(o.line)simAdd(tk,simRoadLine(RW*2,18),0,4,tk.z-30);
+    if(o.zebra)for(var s=-2;s<=2;s++)simAdd(tk,simRoadLine(36,150),s*52,4,tk.z);
+  }
+  // A second board (a drawn one, not the question's icon) — zone limits, ends.
+  function stgBoard(tk,draw,dz,side){
+    simAdd(tk,simMakeSign(simSignTex(draw),96,150),(side==="left"?-1:1)*(SIM_ROADW+55),0,tk.z+(dz||0));
+  }
+  function stgLight(tk,lamp){
+    var tl=simMakeTrafficLight(); simAdd(tk,tl,SIM_ROADW+45,0,tk.z); simSetLamp(tl,lamp||"red");
+    simAdd(tk,simRoadLine(SIM_ROADW*2,18),0,4,tk.z-30);
+    tk.s.tl=tl;
+  }
+  /* An actor that crosses the road in front of you and clears after a while:
+     pedestrians, cyclists, livestock, a car with priority, a tram. Until it is
+     clear the conflict zone is occupied — that is what "give way" means here. */
+  function stgCrosser(tk,o){
+    o=o||{};
+    var side=(o.side==="left"?-1:1), s=tk.s, obj=o.make();
+    simAdd(tk,obj,side*(o.from||400),0,tk.z+(o.dz||40));
+    obj.rotation.y=side>0?-Math.PI/2:Math.PI/2;
+    s.actor=obj;
+    if(o.solid!==false)simSolid(tk,obj,o.hw||120,o.hl||120,o.hit);
+    tk.anims.push(function(dt){
+      if(s.cleared)return;
+      if(!tk.active)return;
+      s.started=true;
+      obj.position.x-=side*(o.v||150)*dt;
+      var lg=obj.userData&&obj.userData.legs;
+      if(lg){var sw=Math.sin((s.wt=(s.wt||0)+dt)*8)*0.5; lg[0].rotation.x=sw; lg[1].rotation.x=-sw;}
+      if(side*obj.position.x<-(o.to||400))s.cleared=true;
+    });
+  }
+  // A vehicle ahead in your own lane, travelling at leadKmh and braking hard
+  // once you are close — the setup for every following-distance situation.
+  function stgLead(tk,o){
+    o=o||{};
+    var s=tk.s, car=simBuildTrafficCar(o.color||SIM_TRAF_COLORS[(tk.p.v||0)%SIM_TRAF_COLORS.length]);
+    simAdd(tk,car,o.x==null?66:o.x,0,tk.z+(o.dz||900));
+    s.lead=car; s.leadV=simUnits(o.kmh||40);
+    if(o.solid!==false)simSolid(tk,car,150,300,o.hit||TASK_TXT.f_gap);
+    tk.anims.push(function(dt){
+      if(!tk.active)return;
+      if(o.brakeAt!=null&&SIM.car.pz>tk.z+o.brakeAt){
+        s.leadV=Math.max(simUnits(o.floor==null?20:o.floor),s.leadV-simUnits(o.brake||55)*dt);
+        simSetTail(car,0xff2a2a);
+      }
+      car.position.z+=s.leadV*dt;
+    });
+  }
+  function stgOncoming(tk,o){
+    o=o||{};
+    var s=tk.s, car=simBuildTrafficCar(o.color||0xffffff);
+    simAdd(tk,car,o.x==null?-66:o.x,0,tk.z+(o.dz||3000));
+    car.rotation.y=Math.PI; simSetHead(car,0xfff2c4);
+    s.onc=car; simSolid(tk,car,115,300,o.hit);
+    tk.anims.push(function(dt){ if(tk.active)car.position.z-=simUnits(o.kmh||60)*dt; });
+  }
+  // Something standing still in a lane: a broken-down car, a barrier board, a
+  // line of cones. You have to get round it.
+  function stgBlock(tk,o){
+    o=o||{};
+    var x=(o.x==null?70:o.x);
+    if(o.kind==="cones"){
+      var n=o.n||6;
+      for(var i=0;i<n;i++)simAdd(tk,simMakeCone(),x,0,tk.z+i*((o.len||900)/n));
+    }else if(o.kind==="barrier"){
+      var b=simMakeBarrier(o.w||260); simAdd(tk,b,x-(o.w||260)/2,118,tk.z); simSolid(tk,b,(o.w||260)/2,60);
+    }else{
+      var c=simBuildTrafficCar(o.color||0xb5221f); simAdd(tk,c,x,0,tk.z+(o.dz||300));
+      simSolid(tk,c,120,300);
+      if(o.hazard)tk.anims.push(function(dt){ tk.s.ht=(tk.s.ht||0)+dt; simSetTail(c,(tk.s.ht%0.8)<0.4?0xffa500:0x5a0f0f); });
+    }
+  }
+  function stgCheckpoint(tk,o){
+    o=o||{};
+    var RW=SIM_ROADW;
+    var booth=new THREE.Mesh(new THREE.BoxGeometry(150,220,150),new THREE.MeshStandardMaterial({color:0xdfe3e8,roughness:0.85}));
+    simAdd(tk,booth,RW+140,110,tk.z+40);
+    var b=simMakeBarrier(RW*2+40); simAdd(tk,b,-RW-20,118,tk.z); tk.s.bar=b;
+    var off=simMakeOfficer(); simAdd(tk,off,RW-40,0,tk.z-90); off.rotation.y=Math.PI;
+    simAdd(tk,simRoadLine(RW*2,18),0,4,tk.z-190);
+  }
+  // A crash on the shoulder: stopped car, casualty, warning triangle. Used by
+  // the first-aid syllabus — the duty to stop is itself the rule under test.
+  function stgCrash(tk){
+    var RW=SIM_ROADW;
+    var wreck=simBuildTrafficCar(0x8a8f96); simAdd(tk,wreck,RW+150,0,tk.z+120); wreck.rotation.y=0.7;
+    simAdd(tk,simMakeCasualty(),RW+40,0,tk.z-20);
+    simAdd(tk,simMakeTriangle(),RW-30,0,tk.z-460);
+    var helper=simBuildPerson(0x2b5b8a); simAdd(tk,helper,RW+230,0,tk.z-60); helper.rotation.y=-Math.PI/2;
+    simAdd(tk,simRoadLine(SIM_ROADW*2,18),0,4,tk.z-30);
+  }
+  // A side road joining at the situation line, so a turn has somewhere to go.
+  function stgSide(tk,side){
+    var s=(side==="left"?-1:1), RW=SIM_ROADW;
+    var road=new THREE.Mesh(new THREE.BoxGeometry(1400,4,RW*2),new THREE.MeshStandardMaterial({color:0x2f3237,roughness:0.95}));
+    simAdd(tk,road,s*(700+RW),3,tk.z);
+    simAdd(tk,simRoadLine(RW*2,16),0,5,tk.z-RW-20);
+  }
+  function stgBay(tk){
+    var x0=SIM_ROADW+30, w=210;
+    simAdd(tk,simRoadLine(6,420),x0,4,tk.z);
+    simAdd(tk,simRoadLine(6,420),x0+w,4,tk.z);
+    simAdd(tk,simRoadLine(w,6),x0+w/2,4,tk.z-210);
+    simAdd(tk,simRoadLine(w,6),x0+w/2,4,tk.z+210);
+    tk.p.x0=x0; tk.p.x1=x0+w;
+  }
+  /* A measured zone: the board that opens it, the board that lifts it, and
+     optionally the weather or the tunnel that makes it what it is. */
+  function stgZone(tk,o){
+    o=o||{};
+    var p=tk.p, len=p.len||1700;
+    stgSign(tk,{fb:o.fb||function(g,C){drawSpeed(g,C,p.vmax||60);}});
+    stgBoard(tk,o.endFb||function(g,C){drawSpeed(g,C,p.vmax||60);},len);
+    if(o.fog&&SIM.gl&&SIM.gl.scene){
+      tk.s.oldFog=SIM.gl.scene.fog||null;
+      SIM.gl.scene.fog=new THREE.Fog(o.fog,60,o.fogFar||1500);
+    }
+    if(o.tunnel){ var tu=simMakeTunnel(len); simAdd(tk,tu,0,0,tk.z+len/2); }
+    if(o.cones){ var n=Math.max(4,Math.round(len/220)); for(var i=0;i<n;i++)simAdd(tk,simMakeCone(),SIM_ROADW-30,0,tk.z+i*(len/n)); }
+    if(o.people){ for(var j=0;j<3;j++){ var pp=simBuildPerson(j%2?0xd9a520:0x2b5b8a); pp.scale.setScalar(0.72); simAdd(tk,pp,-(SIM_ROADW+70+j*40),0,tk.z+300+j*260); } }
+  }
+  // Rails across the road with barriers and a train coming through.
+  function stgRails(tk){
+    var RW=SIM_ROADW, s=tk.s;
+    [-1,1].forEach(function(d){ simAdd(tk,simRoadLine(2600,26,0x6b6f75),0,6,tk.z+d*40); });
+    var b=simMakeBarrier(RW+30); simAdd(tk,b,-RW-20,118,tk.z-150); s.bar=b;
+    var train=simMakeRailVehicle(1500,0x2b4a7a); simAdd(tk,train,1900,0,tk.z);
+    s.actor=train; simSolid(tk,train,760,120);
+    simAdd(tk,simRoadLine(RW*2,18),0,4,tk.z-260);
+    tk.anims.push(function(dt){
+      if(!tk.active||s.cleared)return;
+      s.started=true; train.position.x-=1500*dt;
+      if(train.position.x<-2400)s.cleared=true;
+    });
+  }
+  function stgBusStop(tk,o){
+    o=o||{};
+    var bus=simMakeBus(0xf0b429), s=tk.s;
+    simAdd(tk,bus,SIM_ROADW+70,0,tk.z+(o.dz||500));
+    s.bus=bus; simSolid(tk,bus,160,420);
+    var shelter=new THREE.Mesh(new THREE.BoxGeometry(240,150,40),new THREE.MeshStandardMaterial({color:0x394049,roughness:0.8}));
+    simAdd(tk,shelter,SIM_ROADW+220,75,tk.z+(o.dz||500));
+    if(o.pullout){
+      tk.anims.push(function(dt){
+        if(!tk.active||s.cleared)return;
+        s.started=true; s.bt=(s.bt||0)+dt;
+        if(bus.userData&&bus.userData.ind)bus.userData.ind.material.color.setHex((s.bt%0.7)<0.35?0xffa500:0x5a3b00);
+        if(s.bt>0.6){ bus.position.x-=90*dt; bus.position.z+=simUnits(28)*dt; }
+        if(s.bt>4.2)s.cleared=true;
+      });
+    }else if(o.children){
+      for(var i=0;i<3;i++){ var c=simBuildPerson(i%2?0xd9a520:0xb5221f); c.scale.setScalar(0.66); simAdd(tk,c,SIM_ROADW+180+i*70,0,tk.z+(o.dz||500)-120); }
+      tk.anims.push(function(dt){ if(!tk.active)return; s.started=true; s.bt=(s.bt||0)+dt; if(s.bt>3.0)s.cleared=true; });
+    }
+  }
+
+  /* ---------- the scenario templates ----------
+     k = the kernel that judges the driver, b = how the world is staged,
+     i = the instruction banner, f = the line shown when you get it wrong.
+     Anything the question itself supplies (its sign, the limit it names, the
+     side it talks about) arrives in tk.p. ------------------------------- */
+
+  var SCEN={
+    /* --- come to a stop --- */
+    stop_sign:{k:"stop",b:function(tk){stgSign(tk,{fb:drawStop,line:1});},
+      i:TT("STOP sign — come to a full stop at the line","هێمای وەستان — لەسەر هێڵەکە بە تەواوی بوەستە"),f:TASK_TXT.f_stop},
+    stop_cross:{k:"stop",b:function(tk){stgSign(tk,{fb:drawStop,line:1});stgSide(tk,"right");
+        stgCrosser(tk,{make:function(){return simBuildTrafficCar(0x8a8f96);},v:470,from:900,to:800,dz:90,hw:200,hl:130});},
+      i:TT("STOP, then give way at the junction","بوەستە، پاشان لە تێکەڵگاکەدا ڕێگا بدە"),f:TASK_TXT.f_stop},
+    police_stop:{k:"hold",b:function(tk){tk.p.hold=1.6;stgSign(tk,{fb:drawStop,line:1});
+        var o=simMakeOfficer();simAdd(tk,o,SIM_ROADW-30,0,tk.z-120);o.rotation.y=Math.PI;},
+      i:TT("A police officer is signalling you to stop","پۆلیسێک هێمات بۆ دەکات بۆ وەستان"),f:TASK_TXT.f_stop},
+    officer_signal:{k:"hold",b:function(tk){tk.p.hold=1.8;
+        var o=simMakeOfficer();simAdd(tk,o,0,0,tk.z+60);o.rotation.y=Math.PI;
+        simAdd(tk,simRoadLine(SIM_ROADW*2,18),0,4,tk.z-30);},
+      i:TT("Traffic officer directing — obey the officer","پۆلیسی هاتووچۆ ڕێنمایی دەکات — گوێڕایەڵی پۆلیس بە"),f:TASK_TXT.f_stop},
+    checkpoint:{k:"hold",b:function(tk){tk.p.hold=1.8;tk.p.line=190;stgCheckpoint(tk);
+        tk.s.lift=function(){simLiftBarrier(tk.s.bar);};},
+      i:TT("Checkpoint — stop and wait to be waved through","خاڵی پشکنین — بوەستە و چاوەڕێ بکە هەتا ڕێگەت پێدەدەن"),f:TASK_TXT.f_stop},
+    rail_cross:{k:"hold",b:function(tk){tk.p.hold=0.6;tk.p.line=260;stgSign(tk,{dz:-360});stgRails(tk);
+        tk.s.lift=function(){simLiftBarrier(tk.s.bar);};},
+      i:TT("Level crossing — stop, a train is coming","پەڕینگەی شەمەندەفەر — بوەستە، شەمەندەفەر دێت"),
+      f:TT("You crossed the railway before the train had passed.","پێش تێپەڕینی شەمەندەفەر بە هێڵەکەدا پەڕیتەوە.")},
+    crash_scene:{k:"hold",b:function(tk){tk.p.hold=2.0;stgCrash(tk);},
+      i:TT("A crash ahead — stop and help","ڕووداوێک لە پێشتە — بوەستە و یارمەتی بدە"),
+      f:TT("You drove past a crash without stopping.","بێ وەستان بەلای ڕووداوەکەدا تێپەڕیت.")},
+    school_bus:{k:"hold",b:function(tk){tk.p.hold=0.8;stgSign(tk,{line:1});stgBusStop(tk,{children:1,dz:420});},
+      i:TT("School bus with children — stop until they are clear","پاسی قوتابخانە و منداڵ — بوەستە هەتا دوور دەکەونەوە"),
+      f:TT("You passed a stopped school bus while children were around it.","بەلای پاسی قوتابخانەی ڕاوەستاودا تێپەڕیت لە کاتێکدا منداڵ لە دەوریدا بوون.")},
+
+    /* --- traffic signals --- */
+    red_light:{k:"signal",b:function(tk){stgLight(tk,"red");tk.s.phase="red";},
+      i:TT("Red light — stop at the line","چرای سوور — لەسەر هێڵ بوەستە"),f:TASK_TXT.f_red},
+    amber_light:{k:"signal",b:function(tk){stgLight(tk,"green");tk.s.phase="go";},
+      i:TT("Signals ahead — the light is about to change","چرا لە پێشتە — خەریکە دەگۆڕێت"),
+      f:TT("The light changed and you kept going.","چراکە گۆڕا و تۆ بەردەوام بوویت.")},
+    flash_amber:{k:"zone",b:function(tk){tk.p.vmax=30;tk.p.len=900;stgLight(tk,"amber");
+        var s=tk.s;tk.anims.push(function(dt){s.ft=(s.ft||0)+dt;simSetLamp(s.tl,(s.ft%0.9)<0.45?"amber":"off");});},
+      i:TT("Flashing amber — slow right down and pass with care","زەردی چەقەچەق — خێرایی زۆر کەم بکەرەوە و بە وریاییەوە تێپەڕە"),f:TASK_TXT.f_fast},
+
+    /* --- give way --- */
+    ped_crossing:{k:"yield",b:function(tk){
+        var who=tk.p.who||"adult", col={adult:0x2b5b8a,child:0xd9a520,elderly:0x6b7280,blind:0x2f855a,wheelchair:0x8a4b9a}[who]||0x2b5b8a;
+        stgSign(tk,{fb:drawPed,zebra:1,dz:-60});
+        stgCrosser(tk,{v:who==="child"?230:(who==="elderly"||who==="wheelchair"?95:150),from:330,to:330,dz:0,
+          make:function(){var p=simBuildPerson(col);
+            if(who==="child")p.scale.setScalar(0.66);
+            if(who==="blind"){var cane=new THREE.Mesh(new THREE.BoxGeometry(6,6,120),new THREE.MeshBasicMaterial({color:0xffffff}));cane.position.set(-26,60,40);cane.rotation.x=0.5;p.add(cane);}
+            if(who==="wheelchair"){var w=new THREE.Mesh(new THREE.TorusGeometry(34,6,6,14),new THREE.MeshStandardMaterial({color:0x30343a}));w.position.set(0,34,0);p.add(w);p.scale.setScalar(0.86);}
+            return p;}});},
+      i:function(tk){var who=tk.p.who;
+        return who==="child"?TT("A child is crossing — stop and let them cross","منداڵێک دەپەڕێتەوە — بوەستە و لێگەڕێ بپەڕێتەوە"):
+               who==="blind"?TT("A blind pedestrian with a white cane — give way","پیادەیەکی نابینا بە گۆچانی سپی — ڕێگا بدە"):
+               who==="elderly"?TT("An elderly pedestrian is crossing slowly — wait","پیادەیەکی بەتەمەن بەهێواشی دەپەڕێتەوە — چاوەڕێ بکە"):
+               who==="wheelchair"?TT("A wheelchair user is crossing — wait for them","بەکارهێنەری کورسی چەرخدار دەپەڕێتەوە — چاوەڕێیان بکە"):
+               TT("Pedestrian crossing — give way and wait","پەڕینەوەی پیادە — ڕێگا بدە و چاوەڕێ بکە");},
+      f:TT("You did not stop for the person crossing.","بۆ ئەو کەسەی دەپەڕییەوە نەوەستایت.")},
+    cyclist_yield:{k:"yield",b:function(tk){stgSign(tk,{dz:-60});
+        stgCrosser(tk,{make:function(){return simMakeCyclist(0xd9a520);},v:210,from:360,to:360});},
+      i:TT("A cyclist is crossing — give way","پاسکیلسوارێک دەپەڕێتەوە — ڕێگا بدە"),f:TASK_TXT.f_yield},
+    give_way:{k:"yield",b:function(tk){stgSign(tk,{fb:drawGive,line:1,dz:-40});stgSide(tk,tk.p.side||"right");
+        stgCrosser(tk,{side:tk.p.side||"right",v:470,from:820,to:760,dz:60,hw:200,hl:130,
+          make:function(){return simBuildTrafficCar(SIM_TRAF_COLORS[(tk.p.v||0)%SIM_TRAF_COLORS.length]);}});},
+      i:TT("Give way — let the other vehicle pass","ڕێگا بدە — با سواررۆکەی تر تێپەڕێت"),f:TASK_TXT.f_yield},
+    roundabout:{k:"yield",b:function(tk){stgSign(tk,{fb:drawGive,line:1,dz:-40});
+        simAdd(tk,simMakeIsland(300),0,0,tk.z+520);
+        stgCrosser(tk,{side:"right",v:430,from:900,to:820,dz:520,hw:200,hl:130,
+          make:function(){return simBuildTrafficCar(SIM_TRAF_COLORS[((tk.p.v||0)+3)%SIM_TRAF_COLORS.length]);}});},
+      i:TT("Roundabout — give way to traffic already on it","بازنە — ڕێگا بدە بەو هاتووچۆیەی پێشتر لە بازنەکەدایە"),f:TASK_TXT.f_yield},
+    tram_cross:{k:"yield",b:function(tk){stgSign(tk,{dz:-60});
+        [-1,1].forEach(function(d){simAdd(tk,simRoadLine(2400,22,0x6b6f75),0,6,tk.z+d*36);});
+        stgCrosser(tk,{v:700,from:1500,to:1500,hw:560,hl:110,make:function(){return simMakeRailVehicle(900,0xd9a520);}});},
+      i:TT("A tram is crossing — rail vehicles go first","تراموایەک دەپەڕێتەوە — سواررۆی سەر هێڵ یەکەم دەڕوات"),f:TASK_TXT.f_yield},
+    animals_cross:{k:"yield",b:function(tk){stgSign(tk,{dz:-80});
+        var made=0;
+        stgCrosser(tk,{v:110,from:420,to:420,make:function(){
+          var g=new THREE.Group();
+          for(var i=0;i<3;i++){var a=simMakeAnimal(i?0x8a6a44:0x5b4630);a.position.set(i*90,0,(i%2)*120-60);g.add(a);}
+          made++;return g;},hw:200,hl:150});},
+      i:TT("Animals on the road — slow down and wait for them","ئاژەڵ لەسەر ڕێگان — خێرایی کەم بکەرەوە و چاوەڕێیان بکە"),f:TASK_TXT.f_yield},
+    bus_pullout:{k:"yield",b:function(tk){stgSign(tk,{dz:-120});stgBusStop(tk,{pullout:1,dz:520});},
+      i:TT("A bus is signalling to pull out — let it go","پاسێک هێما دەکات بۆ چوونە ناو ڕێگا — ڕێگای بدە"),f:TASK_TXT.f_yield},
+    emergency_cross:{k:"yield",b:function(tk){stgSign(tk,{dz:-80});
+        stgCrosser(tk,{v:560,from:1000,to:900,hw:200,hl:130,make:function(){
+          var c=simBuildTrafficCar(0xffffff);
+          var bar=new THREE.Mesh(new THREE.BoxGeometry(120,18,26),new THREE.MeshBasicMaterial({color:0x2a6bff}));bar.position.set(0,160,-10);c.add(bar);
+          c.userData.bar=bar;return c;}});
+        var s=tk.s;tk.anims.push(function(dt){var a=s.actor;if(!a||!a.userData.bar)return;s.et=(s.et||0)+dt;a.userData.bar.material.color.setHex((s.et%0.5)<0.25?0x2a6bff:0xff2a2a);});},
+      i:TT("Emergency vehicle crossing — give way","سواررۆی فریاگوزاری دەپەڕێتەوە — ڕێگا بدە"),f:TASK_TXT.f_yield},
+
+    /* --- speed --- */
+    speed_zone:{k:"zone",b:function(tk){tk.p.vmax=tk.p.vmax||60;tk.p.vmin=tk.p.vmin||Math.max(20,tk.p.vmax-25);tk.p.len=1700;stgZone(tk,{});},
+      i:function(tk){return TT("Speed-limit zone "+tk.p.vmax+" — keep between "+tk.p.vmin+" and "+tk.p.vmax,
+        "ناوچەی سنووری خێرایی "+tk.p.vmax+" — لەنێوان "+tk.p.vmin+" و "+tk.p.vmax+" بمێنەوە");},f:TASK_TXT.f_over},
+    school_zone:{k:"zone",b:function(tk){tk.p.vmax=tk.p.vmax||30;tk.p.vmin=0;tk.p.len=1500;stgZone(tk,{people:1});},
+      i:function(tk){return TT("School zone — no more than "+tk.p.vmax+" km/h","ناوچەی قوتابخانە — زیاتر لە "+tk.p.vmax+" کم/کاتژمێر نا");},f:TASK_TXT.f_over},
+    works_zone:{k:"zone",b:function(tk){tk.p.vmax=tk.p.vmax||40;tk.p.vmin=0;tk.p.len=1500;stgZone(tk,{cones:1});},
+      i:function(tk){return TT("Roadworks — no more than "+tk.p.vmax+" km/h","کاری ڕێگا — زیاتر لە "+tk.p.vmax+" کم/کاتژمێر نا");},f:TASK_TXT.f_over},
+    low_vis:{k:"zone",b:function(tk){var kind=tk.p.kind||"fog";
+        tk.p.vmax=tk.p.vmax||(kind==="night"?50:40);tk.p.vmin=0;tk.p.len=1700;
+        stgZone(tk,{fog:kind==="night"?0x0d1017:(kind==="rain"?0x5b6570:0xc8ccd0),fogFar:kind==="fog"?900:1500});},
+      i:function(tk){var k=tk.p.kind;
+        return k==="night"?TT("Night driving — slow to a speed you can stop within","لێخوڕین بە شەو — خێرایی بگەڕێنەوە بۆ ئەوەی بتوانیت بوەستیت"):
+               k==="rain"?TT("Wet road — slow down, braking takes longer","ڕێگای تەڕ — خێرایی کەم بکەرەوە، بریک زیاتری دەوێت"):
+               TT("Fog — slow down, you cannot see far enough","تەم — خێرایی کەم بکەرەوە، بەقەدەر پێویست نابینیت");},f:TASK_TXT.f_over},
+    tunnel_zone:{k:"zone",b:function(tk){tk.p.vmax=tk.p.vmax||60;tk.p.vmin=0;tk.p.len=1600;stgZone(tk,{tunnel:1,fog:0x11151b,fogFar:1400});},
+      i:TT("Tunnel — dipped headlights and a safe distance","تونێل — لایتی نزم و مەودای سەلامەت"),f:TASK_TXT.f_over},
+    bend_zone:{k:"zone",b:function(tk){tk.p.vmax=tk.p.vmax||40;tk.p.vmin=0;tk.p.len=1400;stgZone(tk,{});
+        for(var i=0;i<5;i++)simAdd(tk,simMakeSign(simSignTex(function(g,C){g.fillStyle="#c0161c";g.fillRect(20,90,216,76);g.fillStyle="#fff";g.beginPath();g.moveTo(90,100);g.lineTo(160,128);g.lineTo(90,156);g.closePath();g.fill();}),80,110),SIM_ROADW+50,0,tk.z+200+i*260);},
+      i:function(tk){return TT("Bend ahead — slow to "+tk.p.vmax+" before you turn in","پێچ لە پێشتە — پێش چوونە ناوی خێرایی بکەرەوە "+tk.p.vmax);},f:TASK_TXT.f_fast},
+    hill_zone:{k:"zone",b:function(tk){tk.p.vmax=tk.p.vmax||40;tk.p.vmin=0;tk.p.len=1500;stgZone(tk,{});},
+      i:TT("Steep gradient — hold a low steady speed","لێژایی توند — خێراییەکی نزمی جێگیر بگرە"),f:TASK_TXT.f_fast},
+    min_speed:{k:"zone",b:function(tk){tk.p.vmin=tk.p.vmin||60;tk.p.vmax=110;tk.p.len=1700;
+        stgZone(tk,{fb:function(g,C){g.fillStyle="#1667c0";g.beginPath();g.arc(C,C,116,0,7);g.fill();g.fillStyle="#fff";g.font="bold 110px system-ui,Arial,sans-serif";g.textAlign="center";g.textBaseline="middle";g.fillText(String(tk.p.vmin),C,C+6);}});},
+      i:function(tk){return TT("Minimum speed "+tk.p.vmin+" — do not obstruct traffic","کەمترین خێرایی "+tk.p.vmin+" — مەبە بە ڕێگر بۆ هاتووچۆ");},f:TASK_TXT.f_under},
+    motorway_zone:{k:"zone",b:function(tk){tk.p.vmax=tk.p.vmax||100;tk.p.vmin=tk.p.vmin||60;tk.p.len=2000;stgZone(tk,{});},
+      i:function(tk){return TT("Expressway — between "+tk.p.vmin+" and "+tk.p.vmax+" km/h","ڕێگای خێرا — لەنێوان "+tk.p.vmin+" و "+tk.p.vmax+" کم/کاتژمێر");},f:TASK_TXT.f_over},
+
+    /* --- lane and position --- */
+    no_overtake:{k:"keep",b:function(tk){tk.p.len=2000;tk.p.x0=-10;tk.p.x1=1400;
+        stgSign(tk,{});simAdd(tk,simRoadLine(10,tk.p.len,0xf0c419),0,4,tk.z+tk.p.len/2);
+        stgLead(tk,{kmh:35,dz:700});stgOncoming(tk,{kmh:70,dz:2600});},
+      i:TT("No overtaking — stay behind and do not cross the line","تێپەڕاندن قەدەغەیە — لە پشتەوە بمێنەوە و هێڵەکە مەبڕە"),
+      f:TT("You crossed the centre line where overtaking is banned.","لە شوێنێکدا هێڵی ناوەڕاستت بڕی کە تێپەڕاندن قەدەغەیە.")},
+    overtake:{k:"keep",b:function(tk){tk.p.len=2400;tk.p.cross=1;tk.p.x0=-40;tk.p.back=10;
+        stgSign(tk,{});stgLead(tk,{kmh:22,dz:800});
+        for(var i=0;i<8;i++)simAdd(tk,simRoadLine(10,90,0xffffff),0,4,tk.z+i*300);},
+      i:TT("Overtake the slow vehicle, then return to your lane","سواررۆ هێواشەکە تێپەڕێنە، پاشان بگەڕێوە ڕێڕەوی خۆت"),
+      f:TT("The overtake was not completed safely.","تێپەڕاندنەکە بە سەلامەتی تەواو نەبوو.")},
+    hazard_pass:{k:"keep",b:function(tk){tk.p.len=1400;tk.p.x0=-125;tk.p.x1=-8;
+        stgSign(tk,{dz:-200});stgBlock(tk,{x:70,dz:500,hazard:1,color:0x8a8f96});
+        simAdd(tk,simMakeTriangle(),70,0,tk.z+60);},
+      i:TT("Broken-down vehicle ahead — pass it wide on the left","سواررۆیەکی خراپبوو لە پێشتە — بە دووریی گونجاو لەلای چەپیەوە تێپەڕە"),
+      f:TT("You did not leave enough room for the obstruction.","بەقەدەر پێویست جێگات نەهێشتەوە بۆ کۆسپەکە.")},
+    cyclist_clear:{k:"keep",b:function(tk){tk.p.len=1600;tk.p.x0=-125;tk.p.x1=-8;
+        stgSign(tk,{dz:-200});
+        var c=simMakeCyclist(0xd9a520);simAdd(tk,c,72,0,tk.z+700);simSolid(tk,c,110,90);
+        tk.anims.push(function(dt){if(tk.active)c.position.z+=simUnits(18)*dt;});},
+      i:TT("Cyclist ahead — pass wide and slow","پاسکیلسوار لە پێشتە — بە دووری و بەهێواشی تێپەڕە"),
+      f:TT("You passed the cyclist far too close.","زۆر بە نزیکی بەلای پاسکیلسوارەکەدا تێپەڕیت.")},
+    lane_keep:{k:"keep",b:function(tk){var right=(tk.p.lane!=="left");
+        tk.p.len=1800;tk.p.x0=right?8:-125;tk.p.x1=right?125:-8;
+        stgSign(tk,{});simAdd(tk,simRoadLine(10,tk.p.len,0xffffff),0,4,tk.z+tk.p.len/2);
+        stgOncoming(tk,{kmh:60,dz:2400});},
+      i:function(tk){return tk.p.lane==="left"?TT("Keep to the left lane through this stretch","لە درێژایی ئەم بەشەدا لە ڕێڕەوی چەپ بمێنەوە"):
+        TT("Keep to your own lane — oncoming traffic","لە ڕێڕەوی خۆت بمێنەوە — هاتووچۆی ڕووبەڕوو هەیە");},f:TASK_TXT.f_lane},
+    no_entry:{k:"keep",b:function(tk){tk.p.len=1300;tk.p.x0=-125;tk.p.x1=125;
+        stgSign(tk,{fb:drawNoEntry,side:"right",dz:120});stgSide(tk,"right");
+        var b=simMakeBarrier(420);simAdd(tk,b,SIM_ROADW+20,118,tk.z);simSolid(tk,b,210,60);},
+      i:TT("That road is closed to you — stay on the through road","ئەو ڕێگایە بۆ تۆ داخراوە — لەسەر ڕێگا سەرەکییەکە بمێنەوە"),
+      f:TT("You entered a road you are not allowed to use.","چوویتە ناو ڕێگایەک کە بۆت نییە بەکاری بهێنیت.")},
+    narrow_gap:{k:"keep",b:function(tk){tk.p.len=1200;tk.p.x0=-70;tk.p.x1=70;
+        stgSign(tk,{});
+        for(var i=0;i<7;i++){simAdd(tk,simMakeCone(),-110,0,tk.z+i*(1200/7));simAdd(tk,simMakeCone(),110,0,tk.z+i*(1200/7));}},
+      i:TT("The road narrows — hold the middle and go slowly","ڕێگاکە تەسک دەبێتەوە — ناوەڕاست بگرە و بەهێواشی بڕۆ"),f:TASK_TXT.f_lane},
+
+    /* --- distance --- */
+    follow_gap:{k:"gap",b:function(tk){tk.p.len=2200;tk.p.min=480;
+        stgSign(tk,{dz:-200});stgLead(tk,{kmh:55,dz:1100,brakeAt:400,brake:70,floor:20});},
+      i:TT("Keep a safe distance — the car ahead is braking","مەودای سەلامەت بپارێزە — ئۆتۆمبێلی پێشەوە بریک دەگرێت"),f:TASK_TXT.f_gap},
+    queue:{k:"gap",b:function(tk){tk.p.len=2200;tk.p.min=460;
+        stgSign(tk,{dz:-200});stgLead(tk,{kmh:30,dz:1100,brakeAt:200,brake:45,floor:18});
+        var q=[simAdd(tk,simBuildTrafficCar(0x1b2733),66,0,tk.z+1700),
+               simAdd(tk,simBuildTrafficCar(0x2b4a7a),66,0,tk.z+2300)];
+        tk.anims.push(function(dt){ if(tk.active)q.forEach(function(c){c.position.z+=simUnits(18)*dt;}); });},
+      i:TT("Queue ahead — slow early and keep your distance","ڕیزی هاتووچۆ لە پێشتە — زوو خێرایی کەم بکەرەوە و مەودا بپارێزە"),f:TASK_TXT.f_gap},
+
+    /* --- make room --- */
+    emergency_behind:{k:"pullover",b:function(tk){tk.p.len=1800;
+        stgSign(tk,{dz:-200});
+        var ev=simBuildTrafficCar(0xffffff);
+        var bar=new THREE.Mesh(new THREE.BoxGeometry(120,18,26),new THREE.MeshBasicMaterial({color:0x2a6bff}));bar.position.set(0,160,-10);ev.add(bar);
+        simAdd(tk,ev,66,0,tk.z-3200);tk.s.ev=ev;
+        tk.anims.push(function(dt){
+          if(!tk.active)return;
+          tk.s.et=(tk.s.et||0)+dt;bar.material.color.setHex((tk.s.et%0.5)<0.25?0x2a6bff:0xff2a2a);
+          ev.position.z+=simUnits(90)*dt;
+        });},
+      i:TT("Emergency vehicle behind — pull to the right and stop","سواررۆی فریاگوزاری لە پشتتەوەیە — لای ڕاست بگرە و بوەستە"),
+      f:TT("You did not pull over and stop for the emergency vehicle.","بۆ سواررۆی فریاگوزاری لا نەدایت و نەوەستایت.")},
+
+    /* --- manoeuvres --- */
+    junction_turn:{k:"turn",b:function(tk){var side=tk.p.side||"right";tk.p.len=900;tk.p.vmax=tk.p.vmax||40;
+        stgSign(tk,{});stgSide(tk,side);},
+      i:function(tk){return tk.p.side==="left"?TT("Turn left here — slow down first","لێرە بۆ لای چەپ بپێچەوە — سەرەتا خێرایی کەم بکەرەوە"):
+        TT("Turn right here — slow down first","لێرە بۆ لای ڕاست بپێچەوە — سەرەتا خێرایی کەم بکەرەوە");},
+      f:TT("You missed the turn or took it far too fast.","پێچەکەت لەدەستدا یان زۆر بە خێرایی گرتت.")},
+    u_turn:{k:"uturn",b:function(tk){tk.p.len=1400;tk.p.vmax=40;stgSign(tk,{});
+        tk.onPass=function(){SIM.car.heading=0;};},
+      i:TT("Turn around here and drive back","لێرە بسووڕێوە و بگەڕێوە"),
+      f:TT("You did not turn around where you were meant to.","لەو شوێنەی پێویست بوو نەسووڕایتەوە.")},
+    park_bay:{k:"park",b:function(tk){stgSign(tk,{});stgBay(tk);},
+      i:TT("Park inside the marked bay and stop","لە ناو شوێنی دیاریکراوی پارکیندا ڕابگرە و بوەستە"),
+      f:TT("You did not park inside the bay.","لە ناو شوێنی پارکینەکەدا پارکت نەکرد.")},
+    no_stopping:{k:"nostop",b:function(tk){tk.p.len=1500;stgSign(tk,{});
+        simAdd(tk,simRoadLine(10,1500,0xf0c419),SIM_ROADW-14,4,tk.z+750);},
+      i:TT("No stopping along here — keep moving","لێرەدا وەستان قەدەغەیە — بەردەوام بە"),f:TASK_TXT.f_stopped},
+    box_junction:{k:"nostop",b:function(tk){tk.p.len=700;stgSign(tk,{dz:-200});
+        var b=simMakeBoxJunction(SIM_ROADW*2,700);b.rotation.x=-Math.PI/2;simAdd(tk,b,0,5,tk.z+350);},
+      i:TT("Yellow box — never stop inside it","بۆکسی زەرد — هەرگیز لە ناویدا مەوەستە"),f:TASK_TXT.f_stopped}
+    ,
+    no_uturn:{k:"keep",b:function(tk){tk.p.len=1400;tk.p.x0=-128;tk.p.x1=128;stgSign(tk,{});stgOncoming(tk,{kmh:60,dz:2200});},
+      i:TT("No U-turn here — carry on and turn where it is allowed","لێرە سووڕانەوە قەدەغەیە — بەردەوام بە و لە شوێنی ڕێگەپێدراودا بسووڕێوە"),
+      f:TT("You turned back where turning is banned.","لە شوێنێکدا گەڕایتەوە کە سووڕانەوەی تێدا قەدەغەیە.")},
+    no_turn:{k:"keep",b:function(tk){tk.p.len=1200;tk.p.x0=-128;tk.p.x1=128;stgSign(tk,{});stgSide(tk,tk.p.side||"right");},
+      i:function(tk){return tk.p.side==="left"?TT("No left turn — carry straight on","پێچانەوە بۆ چەپ قەدەغەیە — ڕاست بەردەوام بە"):
+        TT("No right turn — carry straight on","پێچانەوە بۆ ڕاست قەدەغەیە — ڕاست بەردەوام بە");},
+      f:TT("You turned where that turn is banned.","لە شوێنێکدا پێچایتەوە کە قەدەغەیە.")}
+  };
+
+  /* ---------- turning a question into a situation ----------
+     Ordered, most specific first — the same shape as the illustration
+     classifier above, and for the same reason: EVERY question must come out
+     with a scenario, so the tables narrow and the category rotation catches
+     whatever is left. A rule is [test, template id, extra params]. ------- */
+
+  var SCEN_SIGN=[
+    [/^stop$/,"stop_sign"],
+    [/^stop_control$/,"stop_cross"],
+    [/^officer_/,"officer_signal"],
+    [/^signals$/,"red_light"],
+    [/^(yield|give_way_oncoming|priority_oncoming|priority|priority_crossroads|end_priority|crossroads|side_road_left|merge)$/,"give_way"],
+    [/^roundabout/,"roundabout"],
+    [/^level_crossing/,"rail_cross"],
+    [/^tram$/,"tram_cross"],
+    [/^(ped|ped_route|ped_cycle_segregated|no_pedestrians)$/,"ped_crossing"],
+    [/^children$/,"school_zone"],
+    [/^(cyclists|cycle_route|no_bicycles)$/,"cyclist_clear"],
+    [/^(horse_riders|farm_animals|wild_animals)$/,"animals_cross"],
+    [/^tractor$/,"follow_gap"],
+    [/^traffic_queue$/,"queue"],
+    [/^(bus_stop|taxi)$/,"bus_pullout"],
+    [/^(min_speed|end_min_speed)$/,"min_speed"],
+    [/^(motorway|end_motorway|motor_road)$/,"motorway_zone"],
+    [/^tunnel$/,"tunnel_zone"],
+    [/^(bend_left|bend_right|bends)$/,"bend_zone"],
+    [/^(steep_ascent|steep_descent)$/,"hill_zone"],
+    [/^roadworks$/,"works_zone"],
+    [/^(narrows|narrows_left|narrows_right)$/,"narrow_gap"],
+    [/^(no_overtake|no_overtake_truck|end_no_overtake|end_no_overtake_truck|solid_line|double_line)$/,"no_overtake"],
+    [/^(broken_line|pass_either_side)$/,"overtake"],
+    [/^(no_parking|no_stopping)$/,"no_stopping"],
+    [/^(parking|parking_disc)$/,"park_bay"],
+    [/^no_uturn$/,"no_uturn"],
+    [/^no_left$/,"no_turn",{side:"left"}],
+    [/^no_right$/,"no_turn",{side:"right"}],
+    [/^(no_entry|no_vehicles|no_vehicles_both|no_motor_vehicles|no_lorries|no_motorcycles|no_handcart|no_animal_cart|no_car_trailer|no_dangerous_goods|dead_end|quayside)$/,"no_entry"],
+    [/^(height_limit|width_limit|weight_limit|length_limit)$/,"no_entry"],
+    [/^keep_left$/,"lane_keep",{lane:"left"}],
+    [/^(keep_right|lane_route|oneway|ahead_only|two_way|road_edge)$/,"lane_keep"],
+    [/^(turn_left|ahead_or_left)$/,"junction_turn",{side:"left"}],
+    [/^(turn_right|ahead_or_right)$/,"junction_turn",{side:"right"}],
+    [/^(bump|uneven_road|loose_chippings|falling_rocks|slippery|side_wind|aircraft|other_danger)$/,"speed_zone",{vmax:40}],
+    [/^speed_camera$/,"speed_zone",{vmax:60}],
+    [/^speed50$/,"speed_zone",{vmax:50}],
+    [/^(speed_kurdistan|end_speed|end_all_restrictions)$/,"speed_zone"]
+  ];
+
+  var SCEN_KW=[
+    // first aid and crash scenes — gated first so medical words never leak out
+    [/first aid|casualty|casualties|bleeding|CPR|compression|choking|fracture|recovery position|unconscious|burn|snake|scorpion|nosebleed|tourniquet|spinal|shock|resuscitat|crash scene|at a crash|after a crash|injured/i,"crash_scene"],
+    // signals
+    [/red (light|traffic light)|steady RED|red and amber|green (light|arrow)|traffic light|counting down|countdown|lamps/i,"red_light"],
+    [/steady AMBER|amber (light|is showing)|light changes to amber|yellow light/i,"amber_light"],
+    [/flashing amber|amber flashes|two red lamps flash/i,"flash_amber"],
+    // stopping and control
+    [/STOP sign|sign marked STOP|complete stop/i,"stop_sign"],
+    [/police officer|policeman|officer'?s|directing traffic|hand signal|traffic officer/i,"officer_signal"],
+    [/level crossing|railway|\btrains?\b|shunting|rail vehicle/i,"rail_cross"],
+    [/\btram\b/i,"tram_cross"],
+    [/school bus|bus carrying children|children (get|getting) (on|off)|dropping off children/i,"school_bus"],
+    // people and other road users
+    [/white cane|blind pedestrian/i,"ped_crossing",{who:"blind"}],
+    [/wheelchair/i,"ped_crossing",{who:"wheelchair"}],
+    [/elderly|old(er)? person/i,"ped_crossing",{who:"elderly"}],
+    [/child|children|pupil|school/i,"school_zone"],
+    [/pedestrian|zebra|on the crossing|crossing the road|person crossing|on foot\b/i,"ped_crossing"],
+    [/cyclist.*(cross|junction)|cycle.*crossing|cyclists? (are )?crossing/i,"cyclist_yield"],
+    [/cyclist|bicycle|cycle lane|motorcyclist|moped|scooter/i,"cyclist_clear"],
+    [/animal|livestock|herd|sheep|goat|cattle|horse|stray dog/i,"animals_cross"],
+    [/\bbus(es)?\b|minibus|coach/i,"bus_pullout"],
+    [/(behind you|approach(es|ing) from behind).*(siren|emergency)|emergency vehicle.*behind/i,"emergency_behind"],
+    [/emergency vehicle|ambulance is approaching|siren|fire brigade|blue light/i,["emergency_behind","emergency_cross"]],
+    // priority
+    [/give way|gives way|priority|right of way|unmarked (intersection|junction|crossroads)|who (must give|has priority|goes first)|yield/i,"give_way"],
+    [/roundabout/i,"roundabout"],
+    // speed
+    [/minimum speed/i,"min_speed"],
+    [/motorway|expressway|hard shoulder|dual carriageway/i,"motorway_zone"],
+    [/school zone|past a school|crowded market/i,"school_zone",{vmax:30}],
+    [/roadworks|road works|works zone|cones/i,"works_zone"],
+    [/\bfog\b|misty|dust storm/i,"low_vis",{kind:"fog"}],
+    [/\brain(y|ing)?\b|wet road|standing water|aquaplan|\bflood|slipper|\bice\b|\bsnow/i,"low_vis",{kind:"rain"}],
+    [/night|dark|full beam|dipped (head)?light|headlight|main beam|dazzl/i,"low_vis",{kind:"night"}],
+    [/tunnel/i,"tunnel_zone"],
+    [/bend|curve|winding|hairpin/i,"bend_zone"],
+    [/\bhill|slope|gradient|descent|ascent|crest/i,"hill_zone"],
+    [/speed limit|km\/h|maximum speed|how fast|too fast|excessive speed|speeding/i,"speed_zone"],
+    // distance and following
+    [/following distance|safe distance|two-second|stopping distance|braking distance|gap behind|too closely|tailgat|distance from the vehicle in front/i,"follow_gap"],
+    [/queue|traffic jam|stopped traffic|held in traffic|slow-moving traffic/i,"queue"],
+    // position on the road
+    [/overtak|passing a|pass the vehicle|pull out to pass/i,"no_overtake"],
+    [/broken white line|dashed line|may you cross/i,"overtake"],
+    [/broken down|broken-down|breakdown|warning triangle|obstruction|hazard (warning )?lights|obstacle/i,"hazard_pass"],
+    [/narrow/i,"narrow_gap"],
+    [/box junction|criss-cross|yellow box/i,"box_junction"],
+    [/no stopping|must not stop|stopping is (not )?(allowed|prohibited)|no waiting/i,"no_stopping"],
+    [/\bpark|kerb|revers|\bbay\b/i,"park_bay"],
+    [/U-turn|turn around|three-point turn|turning back/i,"u_turn"],
+    [/turning (right|left)|turn (right|left)|which lane.*turn|junction|intersection|crossroads/i,"junction_turn"],
+    [/\blane|carriageway|keep to the|change lane|\bmerg|move over|position (your|the) car|side of the road/i,"lane_keep"],
+    [/no entry|closed to|banned|prohibited|not allowed to (enter|drive)|one-?way/i,"no_entry"],
+    // paperwork, law, vehicle condition — the roadside check, split by topic
+    // so a tyre question and a licence question are not the same situation
+    [/alcohol|drink|drunk|drug|medicine|medication|impair|tired|sleep|fatigue|anaesthetic/i,"police_stop"],
+    [/seat ?belt|child seat|child lock|helmet|passengers|mobile phone|\bhorn\b|\bpet\b|rubbish|smoking|arm out/i,["police_stop","checkpoint"]],
+    [/licen[cs]e|permit|documents|registration|insurance|log ?book|number plate|category [ABCDT]\b|minimum age|inspection|roadworth|annual test|pass mark|driving test/i,["checkpoint","police_stop"]],
+    [/\bfined?\b|dinar|penalty|penalis|penaliz|imprison|court|offence|traffic law|\blaws?\b|disqualif|withdraw|revoke|suspend/i,["police_stop","checkpoint"]],
+    [/\bload|cargo|trailer|\btow(ing|ed|s)?\b|weight|lorry|truck|heavy vehicle|caravan/i,["checkpoint","follow_gap"]],
+    [/pollution|fuel (use|consumption)|emission|environment|economy|idl(e|ing)/i,["checkpoint","queue"]],
+    [/brake|braking|\bABS\b/i,"follow_gap"],
+    [/overheat|smoke|\bfire\b|warning light|break ?down|broke down|\bjack\b|puncture|blow ?out|flat tyre|spare wheel/i,"hazard_pass"],
+    [/head ?light|\blamp|bulb|wiper|windscreen|visib|mirror/i,"low_vis"],
+    [/tyre|\btires?\b|tread|wheel|\boil\b|battery|alternator|coolant|radiator|\bgear|clutch|dashboard|spark|piston|fan belt|\bfuse|steering|suspension|exhaust|extinguisher|engine|jump-start|service/i,["checkpoint","hazard_pass"]],
+    [/police|checkpoint|officer/i,"police_stop"]
+  ];
+
+  // Whatever the tables did not claim. Rotated by the question's own id hash,
+  // so the choice is stable per question and spread across the set.
+  var SCEN_FALL={
+    signs:["speed_zone","give_way","lane_keep","no_overtake","stop_sign","ped_crossing"],
+    rules:["give_way","ped_crossing","red_light","speed_zone","follow_gap","lane_keep","junction_turn","no_overtake"],
+    mech:["checkpoint","hazard_pass","follow_gap","low_vis"],
+    firstaid:["crash_scene"]
+  };
+
+  /* The scenario for one question: template id + the parameters the question
+     itself dictates. Deterministic — the same question always drives the same
+     situation, which is what makes a set repeatable. */
+  function simScenFor(q){
+    var e=(q.q&&q.q.en)||"", sk=q.sign||"", id=null, extra=null, i;
+    // q.id is a base-36 string, so fold it back into a number for the
+    // per-question staging variation.
+    var sid=String(q.id||hashStr(e)), h=1;
+    for(i=0;i<sid.length;i++)h=(h*33+sid.charCodeAt(i))>>>0;
+    var p={v:h};
+    // parameters read straight out of the question text
+    var m=e.match(/(\d{2,3})\s*km\s*\/?\s*h/i);
+    if(m){var lim=parseInt(m[1],10); if(lim>=20&&lim<=120)p.vmax=lim;}
+    if(/\bleft\b/i.test(e)&&!/\bright\b/i.test(e))p.side="left";
+    else if(/\bright\b/i.test(e)&&!/\bleft\b/i.test(e))p.side="right";
+    for(i=0;i<SCEN_SIGN.length;i++){ if(sk&&SCEN_SIGN[i][0].test(sk)){id=SCEN_SIGN[i][1];extra=SCEN_SIGN[i][2];break;} }
+    if(!id)for(i=0;i<SCEN_KW.length;i++){ if(SCEN_KW[i][0].test(e)){id=SCEN_KW[i][1];extra=SCEN_KW[i][2];break;} }
+    if(id&&id.length&&typeof id!=="string")id=id[h%id.length];
+    if(!id){ var rot=SCEN_FALL[q.cat]||SCEN_FALL.rules; id=rot[h%rot.length]; }
+    if(extra)for(var k in extra){ if(p[k]==null)p[k]=extra[k]; }
+    if(!SCEN[id])id="give_way";
+    return {id:id,p:p};
+  }
+  function simScenOf(q){ if(!q.scen)q.scen=simScenFor(q); return q.scen; }
+
+  /* Coverage audit — every question, its scenario, and how the bank spreads
+     across the templates. Exposed because "every question has one" is a claim
+     that should be checkable from outside, not a comment. */
+  window.simScenAudit=function(){
+    var by={}, src={sign:0,text:0,cat:0}, miss=0;
+    QUESTIONS.forEach(function(q){
+      var s=simScenOf(q);
+      if(!s||!SCEN[s.id]){miss++;return;}
+      by[s.id]=(by[s.id]||0)+1;
+      var e=(q.q&&q.q.en)||"", hit=false, i;
+      for(i=0;i<SCEN_SIGN.length;i++)if(q.sign&&SCEN_SIGN[i][0].test(q.sign)){src.sign++;hit=true;break;}
+      if(!hit){for(i=0;i<SCEN_KW.length;i++)if(SCEN_KW[i][0].test(e)){src.text++;hit=true;break;}}
+      if(!hit)src.cat++;
+    });
+    return {questions:QUESTIONS.length,templates:Object.keys(SCEN).length,used:Object.keys(by).length,missing:miss,bySource:src,byTemplate:by};
+  };
+
+  /* ---------- the kernels: what the driver actually has to DO ---------- */
+
+  var SIM_KERN={
+    // Come to a full stop before the line, then go.
+    stop:function(tk,dt,car){
+      var z=tk.z,s=tk.s;
+      if(car.pz>z-380&&car.pz<z+20&&car.speed<SIM_STOP_EPS)s.ok=true;
+      if(car.pz>z)return s.ok?simPassTask():simFailTask(tk);
+    },
+    // Stop AND wait — for a barrier, an officer, a train, a crash scene.
+    hold:function(tk,dt,car){
+      var z=tk.z,s=tk.s,p=tk.p,line=p.line||0;
+      var blocked=(s.started&&!s.cleared);
+      if(car.pz>z-line-380&&car.pz<z-line+20&&car.speed<SIM_STOP_EPS)s.t=(s.t||0)+dt;
+      if(!s.rel&&(s.t||0)>=(p.hold==null?1.5:p.hold)&&!blocked){
+        s.rel=true; if(s.lift)s.lift(); simSetBanner(L(TASK_TXT.ok_go),true);
+      }
+      if(car.pz>z-line&&!s.rel)return simFailTask(tk,s.t?TASK_TXT.f_early:tk.fail);
+      if(car.pz>z+60&&s.rel)return simPassTask();
+    },
+    // Obey the lights. mode "go" starts green and changes as you approach.
+    signal:function(tk,dt,car){
+      var z=tk.z,s=tk.s;
+      if(s.phase==="green"){ if(car.pz>z)return simPassTask(); return; }
+      if(s.phase==="go"){
+        if(car.pz>z-950){ s.phase="amber"; s.at=0; simSetLamp(s.tl,"amber"); }
+        else if(car.pz>z)return simPassTask();
+        return;
+      }
+      if(s.phase==="amber"){
+        s.at+=dt; if(s.at>0.9){ s.phase="red"; simSetLamp(s.tl,"red"); }
+        if(car.pz>z)return simFailTask(tk);
+        return;
+      }
+      if(car.pz>z-380&&car.pz<z+20&&car.speed<SIM_STOP_EPS){
+        s.st=(s.st||0)+dt;
+        if(s.st>1.0){ s.phase="green"; simSetLamp(s.tl,"green"); simSetBanner(L(TASK_TXT.ok_go),true); }
+      }
+      if(car.pz>z)return simFailTask(tk);
+    },
+    // Do not enter while somebody with priority is still in the way.
+    yield:function(tk,dt,car){
+      var s=tk.s,p=tk.p;
+      var occ=s.started&&!s.cleared;
+      if(car.pz>tk.z-(p.margin||90))return occ?simFailTask(tk):simPassTask();
+    },
+    // Hold a speed band through a measured stretch.
+    zone:function(tk,dt,car){
+      var p=tk.p,kmh=simKmh(car.speed),len=p.len||1700;
+      if(car.pz>tk.z+160&&car.pz<tk.z+len){
+        if(p.vmax&&kmh>p.vmax*1.05)return simFailTask(tk,TASK_TXT.f_over);
+        if(p.vmin&&kmh<p.vmin)return simFailTask(tk,TASK_TXT.f_under);
+      }
+      if(car.pz>tk.z+len)return simPassTask();
+    },
+    // Hold a lane corridor — or, with p.cross, leave it and come back (an
+    // overtake is the one manoeuvre where staying put is the failure).
+    keep:function(tk,dt,car){
+      var p=tk.p,s=tk.s,len=p.len||1500;
+      if(car.pz>tk.z&&car.pz<tk.z+len){
+        if(p.cross){ if(car.px<p.x0)s.crossed=true; }
+        else if(car.px<p.x0||car.px>p.x1)return simFailTask(tk);
+      }
+      if(car.pz>tk.z+len){
+        if(p.cross&&!s.crossed)return simFailTask(tk,TASK_TXT.f_miss);
+        if(p.cross&&car.px<(p.back==null?10:p.back))return simFailTask(tk);
+        return simPassTask();
+      }
+    },
+    // Keep a distance from the vehicle in front while it slows.
+    gap:function(tk,dt,car){
+      var p=tk.p,s=tk.s,len=p.len||2200;
+      if(s.lead){
+        var d=s.lead.position.z-car.pz;
+        if(d<(p.min||560)&&d>-300&&Math.abs(car.px-s.lead.position.x)<220)return simFailTask(tk,TASK_TXT.f_gap);
+      }
+      if(car.pz>tk.z+len)return simPassTask();
+    },
+    // Make room: right, and stopped, before it draws level.
+    pullover:function(tk,dt,car){
+      var s=tk.s,p=tk.p,ev=s.ev; if(!ev)return;
+      if(!s.judged&&ev.position.z>car.pz-520){
+        s.judged=true;
+        if(car.px>90&&car.speed<SIM_STOP_EPS*2)s.ok=true;
+        else return simFailTask(tk);
+      }
+      if(s.judged&&s.ok&&ev.position.z>car.pz+700)return simPassTask();
+      if(car.pz>tk.z+(p.len||1800))return simFailTask(tk);
+    },
+    // Slow down and actually take the turn.
+    turn:function(tk,dt,car){
+      var p=tk.p,z=tk.z,want=(p.side==="left")?-1:1,kmh=simKmh(car.speed);
+      if(car.pz>z-200&&car.pz<z+260&&kmh>(p.vmax||40)+5)return simFailTask(tk,TASK_TXT.f_fast);
+      if(car.pz>z-260&&want*car.px>300)return simPassTask();
+      if(car.pz>z+(p.len||900))return simFailTask(tk,TASK_TXT.f_miss);
+    },
+    // Turn the car right round and head back.
+    uturn:function(tk,dt,car){
+      var p=tk.p,s=tk.s,len=p.len||1400;
+      if(car.pz>tk.z-200)s.reached=true;
+      if(s.reached&&Math.abs(simWrapAngle(car.heading-Math.PI))<0.7)return simPassTask();
+      if(car.pz>tk.z+len)return simFailTask(tk,TASK_TXT.f_miss);
+    },
+    // Stop inside the marked bay.
+    park:function(tk,dt,car){
+      var p=tk.p,s=tk.s;
+      var inBay=Math.abs(car.pz-tk.z)<230&&car.px>p.x0-40&&car.px<p.x1+40;
+      if(inBay&&car.speed<SIM_STOP_EPS){ s.t=(s.t||0)+dt; if(s.t>0.7)return simPassTask(); }
+      if(car.pz>tk.z+560)return simFailTask(tk);
+    },
+    // The opposite: stopping here is the offence.
+    nostop:function(tk,dt,car){
+      var p=tk.p,s=tk.s,len=p.len||1500;
+      if(car.pz>tk.z&&car.pz<tk.z+len&&car.speed<SIM_STOP_EPS){
+        s.t=(s.t||0)+dt; if(s.t>1.2)return simFailTask(tk);
+      }
+      if(car.pz>tk.z+len)return simPassTask();
+    }
+  };
+
+  /* ---------- running the test ---------- */
+
   // Instruction banner over the 3D view — tells you what's being tested next.
   function simSetBanner(text,transient){
     var b=document.getElementById("simBanner"); if(!b)return;
     b.textContent=text||""; b.style.opacity=text?"1":"0";
     if(SIM._banT){clearTimeout(SIM._banT);SIM._banT=null;}
-    if(text&&transient){ SIM._banT=setTimeout(function(){var bb=document.getElementById("simBanner"); if(bb)bb.style.opacity="0";},1500); }
+    if(text&&transient){ SIM._banT=setTimeout(function(){var bb=document.getElementById("simBanner"); if(bb)bb.style.opacity="0";},1600); }
+  }
+
+  /* One situation per question in the set, in the set's own order, spaced out
+     down the main road. Driving every set therefore drives every question in
+     the bank. */
+  function simSpreadQueue(qs){
+    var buckets={}, order=[], out=[], pass=0, any=true, i;
+    qs.forEach(function(q){
+      var id=simScenOf(q).id;
+      if(!buckets[id]){buckets[id]=[];order.push(id);}
+      buckets[id].push(q);
+    });
+    order.sort(function(a,b){return buckets[b].length-buckets[a].length;});
+    while(any){
+      any=false;
+      var seq=(pass++%2)?order.slice().reverse():order; // alternate, so the
+      for(i=0;i<seq.length;i++){                        // biggest bucket does
+        var b=buckets[seq[i]];                          // not wrap onto itself
+        if(b.length){out.push(b.shift());any=true;}
+      }
+    }
+    return out;
   }
 
   function simInitTasks(P){
     P.taskGroup=new THREE.Group(); P.scene.add(P.taskGroup);
     SIM.tasks=[];
-    for(var i=0;i<SIM_TASK_SEQ.length;i++) SIM.tasks.push({type:SIM_TASK_SEQ[i], z:SIM_TASK_Z0+i*SIM_TASK_STEP});
+    var qs=simSpreadQueue((S.queue&&S.queue.length)?S.queue:QUESTIONS.slice(0,10));
+    for(var i=0;i<qs.length;i++){
+      var q=qs[i];
+      SIM.tasks.push({q:q,scen:simScenOf(q),z:SIM_TASK_Z0+i*SIM_TASK_STEP,passed:false});
+    }
     SIM.taskIdx=0; SIM.task=null; SIM.tasksPassed=0;
   }
 
   function simDisposeTask(){
     var tk=SIM.task; if(!tk||!SIM.gl)return;
+    if(tk.s.oldFog!==undefined)SIM.gl.scene.fog=tk.s.oldFog;
     (tk.actors||[]).forEach(function(a){
       SIM.gl.taskGroup.remove(a);
-      a.traverse(function(o){ if(o.geometry)o.geometry.dispose(); if(o.material){ (Array.isArray(o.material)?o.material:[o.material]).forEach(function(m){m.dispose&&m.dispose();}); } });
+      a.traverse(function(o){
+        if(o.geometry)o.geometry.dispose();
+        if(o.material){(Array.isArray(o.material)?o.material:[o.material]).forEach(function(m){m.dispose&&m.dispose();});}
+      });
     });
     SIM.task=null;
   }
 
-  // Build the current situation's signage + actors around its line at z.
+  // Stage the situation this question asks for, around its line at z.
   function simBuildTask(idx){
     simDisposeTask();
     if(!SIM.gl||!SIM.tasks[idx])return;
-    var def=SIM.tasks[idx], z=def.z, G=SIM.gl.taskGroup, actors=[];
-    function add(o){ G.add(o); actors.push(o); return o; }
-    var tk={type:def.type, z:z, actors:actors, active:false, s:{}};
-    var RW=SIM_ROADW;
-    if(def.type==="stop"){
-      add(simMakeSign(simSignTex(drawStop),110,150)).position.set(RW+55,0,z);
-      add(simRoadLine(RW*2,18)).position.set(0,4,z-30);
-      tk.instr=TASK_TXT.stop_i; tk.failMsg=TASK_TXT.stop_f; tk.rule=TASK_TXT.stop_r;
-    }else if(def.type==="pedestrian"){
-      add(simMakeSign(simSignTex(drawPed),110,150)).position.set(RW+55,0,z-60);
-      for(var s=-2;s<=2;s++){ add(simRoadLine(36,150)).position.set(s*52,4,z); }
-      var ped=simBuildPerson(0x2b5b8a); add(ped); ped.position.set(330,0,z); ped.rotation.y=-Math.PI/2; tk.s.ped=ped;
-      tk.instr=TASK_TXT.ped_i; tk.failMsg=TASK_TXT.ped_f; tk.rule=TASK_TXT.ped_r;
-    }else if(def.type==="giveway"){
-      add(simMakeSign(simSignTex(drawGive),110,150)).position.set(RW+55,0,z-40);
-      add(simRoadLine(RW*2,18)).position.set(0,4,z-30);
-      // a car crossing the junction ahead with priority
-      var pc=simBuildTrafficCar(0x8a8f96); pc.rotation.y=-Math.PI/2; pc.position.set(540,0,z+50); add(pc); tk.s.pc=pc;
-      tk.instr=TASK_TXT.give_i; tk.failMsg=TASK_TXT.give_f; tk.rule=TASK_TXT.give_r;
-    }else if(def.type==="redlight"){
-      var tl=simMakeTrafficLight(); add(tl).position.set(RW+45,0,z); simSetLamp(tl,"red"); tk.s.tl=tl; tk.s.phase="red"; tk.s.stopT=0;
-      add(simRoadLine(RW*2,18)).position.set(0,4,z-30);
-      tk.instr=TASK_TXT.red_i; tk.failMsg=TASK_TXT.red_f; tk.rule=TASK_TXT.red_r;
-    }else if(def.type==="speedlimit"){
-      // A measured zone you must drive through within a speed band — over the
-      // limit fails, but so does crawling below it. Sign shows the max.
-      var vmax=60, vmin=35, zlen=1700;
-      add(simMakeSign(simSignTex(function(g,C){drawSpeed(g,C,vmax);}),110,150)).position.set(RW+55,0,z);
-      // a second sign at the end of the zone marks where it lifts
-      add(simMakeSign(simSignTex(function(g,C){drawSpeed(g,C,vmax);}),96,150)).position.set(RW+55,0,z+zlen);
-      tk.vmax=vmax; tk.vmin=vmin; tk.zlen=zlen;
-      tk.instr={en:"Speed-limit zone "+vmax+" — keep between "+vmin+" and "+vmax,ku:"ناوچەی سنووری خێرایی "+vmax+" — لەنێوان "+vmin+" و "+vmax+" بمێنەوە"};
-      tk.rule=TASK_TXT.spd_r;
-    }
-    SIM.task=tk;
+    var def=SIM.tasks[idx], sc=def.scen, tpl=SCEN[sc.id]||SCEN.give_way;
+    var p={}; for(var k in sc.p)p[k]=sc.p[k];   // templates fill in defaults, so copy
+    var tk={q:def.q,id:sc.id,k:tpl.k,z:def.z,p:p,actors:[],solids:[],anims:[],s:{},active:false};
+    SIM.task=tk;                                 // set first: the stagers reach it
+    try{ tpl.b(tk); }catch(e){ if(window.console)console.warn("scenario build failed: "+sc.id,e); }
+    tk.instr=(typeof tpl.i==="function")?tpl.i(tk):tpl.i;
+    tk.fail=(typeof tpl.f==="function")?tpl.f(tk):tpl.f;
     simSetBanner(L(tk.instr));
   }
 
-  // Per-frame: animate the actors and judge the driver's action.
+  // Per-frame: run the situation, then judge the driver.
   function simUpdateTasks(dt){
     if(!SIM.gl||SIM.paused)return;
     if(!SIM.tasks||SIM.taskIdx>=SIM.tasks.length)return; // test finished
-    if(!SIM.task) simBuildTask(SIM.taskIdx);
+    if(!SIM.task)simBuildTask(SIM.taskIdx);
     var tk=SIM.task; if(!tk)return;
-    var car=SIM.car, z=tk.z, s=tk.s;
-    if(car.pz>z-1100) tk.active=true;
-
-    if(tk.type==="stop"){
-      if(car.pz>z-360 && car.pz<z+20 && car.speed<SIM_STOP_EPS) s.stopped=true;
-      if(car.pz>z){ return s.stopped?simPassTask():simFailTask(tk); }
-    }else if(tk.type==="pedestrian"){
-      if(tk.active && !s.started){ s.started=true; s.walking=true; }
-      if(s.walking && s.ped){
-        s.ped.position.x-=150*dt;
-        var lg=s.ped.userData.legs, sw=Math.sin((s.pt=(s.pt||0)+dt)*8)*0.5;
-        if(lg){ lg[0].rotation.x=sw; lg[1].rotation.x=-sw; }
-        if(s.ped.position.x<-330){ s.walking=false; s.cleared=true; }
-      }
-      var occupied=s.started && !s.cleared;
-      if(car.pz>z-80){ return occupied?simFailTask(tk):simPassTask(); }
-    }else if(tk.type==="giveway"){
-      if(tk.active) s.started=true;
-      if(s.started && s.pc){
-        s.pc.position.x-=470*dt; simSetTail(s.pc,0xff2a2a);
-        if(s.pc.position.x<-470) s.cleared=true;
-      }
-      var occ=s.started && !s.cleared;
-      if(car.pz>z-60){ return occ?simFailTask(tk):simPassTask(); }
-    }else if(tk.type==="redlight"){
-      if(s.phase==="red"){
-        if(car.pz>z-360 && car.pz<z+20 && car.speed<SIM_STOP_EPS){ s.stopT+=dt; if(s.stopT>1.0){ s.phase="green"; if(s.tl)simSetLamp(s.tl,"green"); } }
-        if(car.pz>z) return simFailTask(tk);
-      }else{
-        if(car.pz>z) return simPassTask();
-      }
-    }else if(tk.type==="speedlimit"){
-      var disp=car.speed/SIM_MAXSPD*180;
-      if(car.pz>z+160 && car.pz<z+tk.zlen){ // inside the measured zone (small grace at entry)
-        if(disp>tk.vmax*1.05) return simFailTask(tk,TASK_TXT.spd_over);
-        if(disp<tk.vmin)      return simFailTask(tk,TASK_TXT.spd_under);
-      }
-      if(car.pz>z+tk.zlen) return simPassTask();
+    var car=SIM.car, i;
+    if(car.pz>tk.z-1400)tk.active=true;
+    for(i=0;i<tk.anims.length;i++)tk.anims[i](dt);
+    for(i=0;i<tk.solids.length;i++){
+      var so=tk.solids[i], o=so.o;
+      if(o&&Math.abs(car.px-o.position.x)<so.hw&&Math.abs(car.pz-o.position.z)<so.hl)return simFailTask(tk,so.m);
     }
+    var K=SIM_KERN[tk.k]; if(K)K(tk,dt,car);
   }
 
   function simPassTask(){
+    var tk=SIM.task, def=SIM.tasks[SIM.taskIdx];
+    if(def)def.passed=true;
     SIM.tasksPassed++;
-    simSetBanner("✓ "+L(TASK_TXT.passed),true);
+    if(tk&&tk.onPass)tk.onPass();
+    // the teachable half of a pass: the answer this situation just proved
+    var ans=(tk&&tk.q&&tk.q.opts&&tk.q.opts[tk.q.a])?L(tk.q.opts[tk.q.a]):"";
+    if(ans.length>78)ans=ans.slice(0,76)+"…";
+    simSetBanner("✓ "+(ans||L(TASK_TXT.passed)),true);
     simPlayTone(880,0.14,"sine"); simPlayTone(1180,0.18,"sine",0.08);
     simDisposeTask();
     SIM.taskIdx++;
     simUpdateHud();
-    if(SIM.taskIdx>=SIM.tasks.length) simFinishTest();
+    if(SIM.taskIdx>=SIM.tasks.length)simFinishTest();
   }
 
   function simFailTask(tk,msgObj){
+    if(SIM.paused)return;
     SIM.paused=true; SIM.car.speed=0;
     simPlayTone(150,0.4,"sawtooth");
+    var q=tk.q||{}, why=msgObj||tk.fail||TASK_TXT.f_stop;
     var html='<p class="qtext" style="font-size:22px;color:#ff6b6b">❌ '+esc(L(TASK_TXT.fail))+'</p>'+
-      '<div class="explain no">'+esc(L(msgObj||tk.failMsg))+'</div>'+
-      '<div class="explain ok">'+esc(L(tk.rule))+'</div>'+
-      '<button class="btn" onclick="simRetryTask()">'+esc(L(TASK_TXT.tryagain))+'</button>';
+      '<div class="explain no">'+esc(L(why))+'</div>';
+    if(q.q)html+='<p class="qtext" style="font-size:16px;opacity:.9">'+esc(L(q.q))+'</p>';
+    if(q.opts&&q.opts[q.a])html+='<div class="explain ok"><b>✓ '+esc(L(q.opts[q.a]))+'</b>'+
+      (q.ex?' — '+esc(L(q.ex)):'')+'</div>';
+    else if(q.ex)html+='<div class="explain ok">'+esc(L(q.ex))+'</div>';
+    html+='<button class="btn" onclick="simRetryTask()">'+esc(L(TASK_TXT.tryagain))+'</button>';
     var card=document.getElementById("simCard"); if(card)card.innerHTML=html;
     var ov=document.getElementById("simOverlay"); if(ov)ov.classList.remove("hidden");
   }
@@ -9472,13 +10307,36 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
     var ov=document.getElementById("simOverlay"); if(ov)ov.classList.add("hidden");
     var def=SIM.tasks[SIM.taskIdx];
     simDisposeTask();
-    if(def){ SIM.car.px=0; SIM.car.pz=def.z-1300; SIM.car.heading=0; SIM.car.speed=0; }
+    if(def){ SIM.car.px=0; SIM.car.pz=def.z-1500; SIM.car.heading=0; SIM.car.speed=0; }
     if(window.simSetSpeed)simSetSpeed(0); // start the retry stopped; you set the speed again
     SIM.paused=false; SIM.last=null; // next frame rebuilds this task fresh
   };
 
+  /* A drive is a run through the set, so it scores the set: every situation
+     you drove correctly counts as that question answered right — same store,
+     same Leitner boxes, same mistake list as the quiz modes. */
+  function simCommitResults(){
+    try{
+      var st=loadStore();
+      st.mistakes=st.mistakes||{}; st.srs=st.srs||{}; st.cat=st.cat||{};
+      SIM.tasks.forEach(function(d){
+        var q=d.q; if(!q||q.id==null)return;
+        var ok=!!d.passed;
+        if(ok)delete st.mistakes[q.id]; else st.mistakes[q.id]=1;
+        var rec=st.srs[q.id]||{b:1,w:0,r:0,t:0};
+        if(ok){rec.r++;rec.b=Math.min(5,rec.b+1);}else{rec.w++;rec.b=1;}
+        rec.t=Date.now(); st.srs[q.id]=rec;
+        st.cat[q.cat]=st.cat[q.cat]||{c:0,n:0}; st.cat[q.cat].n++; if(ok)st.cat[q.cat].c++;
+      });
+      var pct=Math.round(SIM.tasksPassed/Math.max(1,SIM.tasks.length)*100);
+      st.simBest=st.simBest||{}; st.simBest[S.simSet]=Math.max(st.simBest[S.simSet]||0,pct);
+      saveStore(st); markActivity(); syncAchv();
+    }catch(e){}
+  }
+
   function simFinishTest(){
     SIM.paused=true; simSetBanner("",false);
+    simCommitResults();
     var msg=L(TASK_TXT.passedN).replace("%P",SIM.tasksPassed).replace("%T",SIM.tasks.length);
     var html='<p class="qtext" style="font-size:22px">✓ '+esc(L(TASK_TXT.done))+'</p>'+
       '<div class="explain ok">'+esc(msg)+'</div>'+
@@ -9488,6 +10346,49 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
     var ov=document.getElementById("simOverlay"); if(ov)ov.classList.remove("hidden");
   }
   window.simRestart=function(){ simStop(); startSim(S.simSet); };
+
+  /* Test hook. A headless browser throttles requestAnimationFrame hard, so the
+     only way to check every pass/fail branch of every kernel is to step the
+     world by hand: step() integrates the car exactly the way simTick does and
+     then runs one judging pass. load() stands a drive up out of named
+     templates so a verification run can reach situations the current set does
+     not contain. Nothing here is wired to the UI. */
+  window.simTest={
+    state:function(){
+      var tk=SIM.task;
+      return {idx:SIM.taskIdx,passed:SIM.tasksPassed,total:SIM.tasks?SIM.tasks.length:0,
+        paused:!!SIM.paused,id:tk&&tk.id,k:tk&&tk.k,z:tk&&tk.z,p:tk&&tk.p,
+        actors:tk?tk.actors.length:0,instr:tk?L(tk.instr):null,
+        car:{px:SIM.car.px,pz:SIM.car.pz,kmh:simKmh(SIM.car.speed)}};
+    },
+    put:function(px,pz,kmh,heading){
+      SIM.car.px=px; SIM.car.pz=pz;
+      if(kmh!=null)SIM.car.speed=simUnits(kmh);
+      if(heading!=null)SIM.car.heading=heading;
+    },
+    step:function(dt,n){
+      dt=dt||0.05;
+      for(var i=0;i<(n||1);i++){
+        if(SIM.paused)break;
+        SIM.car.px+=Math.sin(SIM.car.heading)*SIM.car.speed*dt;
+        SIM.car.pz+=Math.cos(SIM.car.heading)*SIM.car.speed*dt;
+        simUpdateTasks(dt);
+      }
+    },
+    plan:function(){ return (SIM.tasks||[]).map(function(d){return d.scen.id;}); },
+    goto:function(i){ simDisposeTask(); SIM.taskIdx=i; SIM.paused=false; SIM.car.px=0; SIM.car.pz=SIM.tasks[i].z-2000; SIM.car.heading=0; SIM.car.speed=0; },
+    load:function(ids){
+      simDisposeTask();
+      SIM.tasks=ids.map(function(id,i){
+        var q=null;
+        for(var j=0;j<QUESTIONS.length&&!q;j++)if(simScenOf(QUESTIONS[j]).id===id)q=QUESTIONS[j];
+        return {q:q||QUESTIONS[0],scen:{id:id,p:{v:7}},z:SIM_TASK_Z0+i*SIM_TASK_STEP,passed:false};
+      });
+      SIM.taskIdx=0; SIM.tasksPassed=0; SIM.paused=false;
+      SIM.car.px=0; SIM.car.pz=SIM_TASK_Z0-2000; SIM.car.heading=0; SIM.car.speed=0;
+      return SIM.tasks.length;
+    }
+  };
 
   function simBuildLamps(track,mat){
     var spacing=1400, count=Math.max(2,Math.floor(track.curves.length*SIM_SEG/spacing));
@@ -9789,64 +10690,8 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
     s.textContent="✓ "+(SIM.tasksPassed||0);
   }
 
-  function simTriggerCheckpoint(){
-    SIM.paused=true;
-    simPlayTone(520,0.15,"triangle");
-    var q=S.queue[S.i];
-    if(!SIM.perm[S.i])SIM.perm[S.i]=shuffle(q.opts.map(function(_,idx){return idx;}));
-    simRenderCard();
-    var ov=document.getElementById("simOverlay");
-    if(ov)ov.classList.remove("hidden");
-  }
-
-  function simRenderCard(){
-    var q=S.queue[S.i], keys=["A","B","C","D"];
-    var html='<p class="qcount" style="margin:0 0 8px">'+esc(t("q"))+' '+(S.i+1)+' '+esc(t("of"))+' '+S.queue.length+'</p>';
-    if(q.scene&&SCENES[q.scene])html+='<div class="scenewrap">'+SCENES[q.scene]+'</div>';
-    else if(q.sign&&SIGNS[q.sign])html+='<div class="signwrap">'+SIGNS[q.sign].svg+'</div>';
-    html+='<p class="qtext">'+esc(L(q.q))+'</p><div class="opts">';
-    var answered=S.ans[S.i]!=null;
-    SIM.perm[S.i].forEach(function(actual,dpos){
-      var o=q.opts[actual], cls="opt";
-      if(answered){if(actual===q.a)cls+=" correct";else if(actual===S.ans[S.i])cls+=" wrong";}
-      html+='<button class="'+cls+'" '+(answered?"disabled":"")+' onclick="simAnswer('+actual+')">'+
-        '<span class="key">'+keys[dpos]+'</span><span>'+esc(L(o))+'</span></button>';
-    });
-    html+='</div>';
-    if(answered){
-      if(S.ans[S.i]===q.a){
-        html+='<div class="explain ok"><b>✓ '+esc(t("correct"))+'.</b> '+esc(L(q.ex))+'</div>';
-      }else{
-        var wr=(q.w&&q.w[S.ans[S.i]])?' — '+esc(L(q.w[S.ans[S.i]])):'';
-        html+='<div class="explain no"><b>✗ '+esc(t("wrong"))+'.</b> '+esc(t("youPicked"))+': '+esc(L(q.opts[S.ans[S.i]]))+wr+'</div>'+
-          '<div class="explain ok"><b>✓ '+esc(t("right"))+':</b> '+esc(L(q.opts[q.a]))+' — '+esc(L(q.ex))+'</div>';
-      }
-      var last=S.i===S.queue.length-1;
-      html+='<button class="btn" onclick="simContinue()">'+esc(last?t("finish"):t("simDrive"))+'</button>';
-    }
-    var card=document.getElementById("simCard");
-    if(card)card.innerHTML=html;
-  }
-
-  window.simAnswer=function(idx){
-    if(S.ans[S.i]!=null)return;
-    S.ans[S.i]=idx; markActivity();
-    if(idx===S.queue[S.i].a){simPlayTone(880,0.16,"sine");simPlayTone(1180,0.2,"sine",0.09);}
-    else simPlayTone(150,0.32,"sawtooth");
-    simRenderCard();
-    simUpdateHud();
-  };
-  window.simContinue=function(){
-    var ov=document.getElementById("simOverlay");
-    if(ov)ov.classList.add("hidden");
-    if(S.i<S.queue.length-1){
-      S.i++; SIM.paused=false; SIM.last=null; simUpdateHud();
-    }else{
-      simStop(); finish(false);
-    }
-  };
   window.simExit=function(){
-    if(S.i>0&&!window.confirm(t("simExitConfirm")))return;
+    if(SIM.taskIdx>0&&!window.confirm(t("simExitConfirm")))return;
     simStop(); Go("sim");
   };
   function simStop(){
