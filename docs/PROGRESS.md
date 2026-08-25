@@ -459,6 +459,39 @@ owner — most of all anything that assumes the TikTok app is on their phone.
 
 ## Next
 
+**OWNER ASK (2026-08-25) — the driving test must cover the ENTIRE question
+bank, one scenario per question.** As it stands the practical-test sim has
+only a handful of enforceable situation *types* (STOP, pedestrian crossing,
+give way, red light, speed limit) cycled a fixed number of times — the owner
+counted "only 3 scripted scenarios" in a drive and wants **every question in
+the bank turned into its own scripted scenario.** They said 795; the bank is
+actually **745 active** (749 defined, 4 archived — see the coverage table),
+so the real target is ~745 scenarios, one per question.
+
+This is a large, open-ended build, not a quick edit. Notes for whoever picks
+it up:
+- **The blocker is authoring, not wiring.** The task engine
+  (`simBuildTask`/`simUpdateTasks`/pass-fail) already exists and is easy to
+  extend; what's missing is a *scenario per question*. Most of the 745 are
+  pure-knowledge questions ("what does this sign mean", "what's the fine
+  for X") with no physical pass/fail action — so "one scenario each" needs a
+  design decision: either (a) enforceable driving scenarios only where the
+  question maps to an action, and a *shown-in-world* non-enforced scenario
+  (drive past the relevant sign / situation, then it's just scenery) for the
+  knowledge ones, or (b) map each question to the closest of a growing library
+  of situation templates. Confirm this framing with the owner before building
+  745 of anything.
+- **Needs many more situation types** than today's five (roundabouts,
+  overtaking, lane discipline, level crossings, school zones, parking, merging,
+  hazard/breakdown, weather, night, emergency vehicles, …). Build the template
+  library first, then a classifier from each question's text (an earlier
+  `simClassifyScenario` did keyword→type and can be revived/expanded) so every
+  question routes to a template.
+- **Do it data-driven:** a per-question scenario descriptor (type + params +
+  the teachable rule text, bilingual) generated from the bank, not 745
+  hand-written branches. Watch performance/length — 745 situations is a very
+  long single drive; probably chunk by set (50) or by topic.
+
 **The source sweep is DONE.** All four PDFs are accounted for: the exam read
 completely (50/50, all 431 questions machine-verified against the printed key),
 the book read completely (234/234), and Part 1 + Part 2 proven page-for-page to
