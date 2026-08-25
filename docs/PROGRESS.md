@@ -100,6 +100,29 @@ owner — most of all anything that assumes the TikTok app is on their phone.
 
 ## Done
 
+- [x] **Driving-sim: scripted traffic + per-question SCENARIOS (other cars).**
+      The world now has other cars. (1) **Ambient traffic** — a pool of 8
+      lightweight procedural cars (not the 3.4 MB Corolla clone — box body,
+      glass cabin, 4 wheels, head/tail lights) cruise the main road both
+      directions, wrapping around a moving window on the player so the road
+      always looks alive at bounded cost. (2) **Per-question scenarios** —
+      every question sign gets a themed "situation" chosen from the question's
+      own English text by `simClassifyScenario` (6 templates: `lead` car that
+      brakes, `oncoming` car sweeping past, `junction` car pulling out of a
+      side road, `hazard` broken-down car with blinking amber lights,
+      `pedestrian` crossing, `parked` row of cars). The situation is set up as
+      you approach; reaching the sign starts its **climax** (the teachable
+      moment — lead brakes hard, junction car pulls out, pedestrian steps into
+      the road), and the question card opens once that has played out
+      (~1.3 s), per the owner's "let it play out" choice. Full coverage: the
+      classifier falls back via a stable text hash across 4 types so no
+      question is left without a scenario, and variety is structural (sign 0
+      classifies as `oncoming`, not a default `lead`). Wired into `simTick`
+      (`simUpdateTraffic`) and torn down/rebuilt as the active question
+      advances (`simBuildScenario`/`simDisposeScenario`, keyed to `S.i`).
+      Verified headless: 8 ambient cars + scenario built, 0 page errors, and
+      the **12-checkpoint loop still passes** — the play-out delay doesn't
+      block the question from opening or completing.
 - [x] **Driving-sim → OPEN WORLD free-roam, populated terrain, engine sound —
       ALL LIVE on both hosts.** Replaced the on-rails "car slides along a fixed
       road between questions" with real heading-based physics: steering rotates
