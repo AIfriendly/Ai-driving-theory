@@ -8336,6 +8336,7 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
           '<span class="pill" id="simSpeedEl" style="margin-inline-start:8px">0</span>'+
           '<span class="pill simscore" id="simScoreEl">✓ 0</span>'+
           '<button class="simexit" id="simMuteBtn" onclick="simToggleMute()" aria-label="'+esc(t("simMute"))+'">'+(simMuted()?"🔇":"🔊")+'</button></div>'+
+        '<div id="simBanner" style="position:absolute;left:50%;top:54px;transform:translateX(-50%);max-width:88%;background:rgba(10,14,20,.82);color:#fff;padding:8px 14px;border-radius:10px;font-weight:700;font-size:14px;line-height:1.3;text-align:center;pointer-events:none;opacity:0;transition:opacity .25s;z-index:5"></div>'+
         '<div class="simoverlay hidden" id="simOverlay"><div class="simcard" id="simCard"></div></div>'+
       '</div>'+
       '<p class="simhint">'+esc(t("simDragHint"))+'</p>'+
@@ -8366,15 +8367,15 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
     // Free-roam car: world position (px,pz), heading (0 = +z), speed. Starts a
     // little behind the first sign, facing down the main road.
     SIM.car={px:0,pz:200,heading:0,speed:0};
-    // One question sign per question, spaced down the straight +z main road.
-    SIM.signZ=[]; for(var qi=0;qi<S.queue.length;qi++)SIM.signZ.push((qi+1)*SIM_SIGNSTEP);
-    SIM.roadLen=(S.queue.length+2)*SIM_SIGNSTEP;
+    // Practical driving test: a sequence of enforceable situations down the
+    // +z main road. roadLen must reach past the last one so scenery fills in.
+    SIM.roadLen=SIM_TASK_Z0+SIM_TASK_SEQ.length*SIM_TASK_STEP+4000;
     SIM.paused=false; SIM.input={l:false,r:false,b:false}; SIM.perm={};
     SIM.gear="P"; SIM.wasBraking=false; SIM.audio=null;
     SIM.camMode="cockpit"; SIM.lookYaw=0; SIM.lookPitch=0; SIM.orbitYaw=Math.PI; SIM.orbitPitch=0.22;
     SIM.wheelSpin=0; SIM.gearLever=0; SIM.drag=null;
-    // Scripted traffic + per-question scenarios (built once the scene exists).
-    SIM.traffic=[]; SIM.scenario=null; SIM.scenarioIdx=-1;
+    // Enforceable driving tasks (built once the scene exists).
+    SIM.tasks=[]; SIM.task=null; SIM.taskIdx=0; SIM.tasksPassed=0;
 
     SIM.gl=simBuildScene(canvas);
     if(!SIM.gl){
@@ -8387,7 +8388,7 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
       // Trees and roadside buildings are added from inside simBuildScene()
       // once their models finish loading (async) — see the comments there.
       SIM.gl.scene.add(simBuildLamps(SIM.track,SIM.gl.mat));
-      simInitTraffic(SIM.gl);
+      simInitTasks(SIM.gl);
     }
 
     simBindControls();
@@ -8511,20 +8512,10 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
       // Move along the heading. Free roam: go anywhere on the open ground.
       car.px+=Math.sin(car.heading)*car.speed*dt;
       car.pz+=Math.cos(car.heading)*car.speed*dt;
-      // Reaching the active sign starts the scenario's climax (the scripted
-      // action — lead car brakes, junction car pulls out, etc.); the question
-      // card opens once that has played out (see simUpdateScenario). Signs with
-      // no scenario (or if traffic failed to build) open the card immediately.
-      var sz=SIM.signZ[S.i];
-      if(sz!=null){
-        var dx=car.px, dz=car.pz-sz;
-        if(dx*dx+dz*dz < SIM_TRIGR*SIM_TRIGR){
-          car.speed=0;
-          if(SIM.scenario&&SIM.scenario.type){ if(!SIM.scenario.climax){SIM.scenario.climax=true;SIM.scenario.climaxT=0;} }
-          else simTriggerCheckpoint();
-        }
-      }
-      simUpdateTraffic(dt);
+      // Enforceable driving test: the world puts a real situation in front of
+      // you (stop sign, pedestrian crossing, give way, red light) and judges
+      // whether you drive it correctly. Fail → retry that situation.
+      simUpdateTasks(dt);
     }
     simUpdateAudio();
     simDraw();
@@ -9193,118 +9184,243 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
 
   var SIM_TRAF_COLORS=[0xffffff,0x1b2733,0xb5221f,0x2b4a7a,0x8a8f96,0x14532d,0xd9a520,0x30343a];
 
-  // Ambient cars cruising the road both ways, wrapping around a window that
-  // follows the player so the road always looks alive without an unbounded
-  // spawn count.
-  function simInitTraffic(P){
-    var grp=new THREE.Group(); P.scene.add(grp); P.trafficGroup=grp;
-    P.scenarioGroup=new THREE.Group(); P.scene.add(P.scenarioGroup);
-    SIM.traffic=[];
-    var N=8, base=SIM.car?SIM.car.pz:0;
-    for(var i=0;i<N;i++){
-      var dir=(i%2===0)?1:-1;
-      var car=simBuildTrafficCar(SIM_TRAF_COLORS[i%SIM_TRAF_COLORS.length]);
-      car.rotation.y=dir>0?0:Math.PI;
-      var lane=dir>0?96:-98;
-      var z=base + (i-N/2)*1700 + dir*400;
-      car.position.set(lane,0,z);
-      grp.add(car);
-      SIM.traffic.push({g:car,dir:dir,lane:lane,speed:900+Math.random()*700,z:z});
-    }
+  /* ==========================================================================
+     PRACTICAL DRIVING TEST — enforceable situations, pass or FAIL.
+     The sim is no longer a quiz on wheels and there is no random ambient
+     traffic. Instead the world puts a real driving situation in front of you,
+     drawn from the theory syllabus, and judges whether you DO the right thing.
+     Roll through a STOP sign, a red light, a pedestrian on a crossing, or a
+     car with priority at a junction, and you fail — then retry that situation,
+     exactly like the on-road test. Only the cars a situation actually needs
+     are spawned.
+     ========================================================================== */
+
+  var SIM_TASK_SEQ=["stop","pedestrian","giveway","redlight","stop","pedestrian","giveway","redlight"];
+  var SIM_TASK_Z0=3200;    // z of the first situation
+  var SIM_TASK_STEP=3000;  // spacing between situations down the road
+  var SIM_STOP_EPS=55;     // speed at/below which the car counts as "stopped"
+
+  // Bilingual copy, rendered with L() so the UI table stays untouched.
+  var TASK_TXT={
+    task:{en:"Task",ku:"ئەرک"},
+    fail:{en:"TEST FAILED",ku:"لە تاقیکردنەوە کەوتیت"},
+    tryagain:{en:"Try again",ku:"دووبارە هەوڵبدەوە"},
+    done:{en:"Test complete",ku:"تاقیکردنەوە تەواو بوو"},
+    passedN:{en:"You passed %P of %T situations.",ku:"%P لە %T بارودۆخ سەرکەوتوو بوویت."},
+    driveagain:{en:"Drive again",ku:"دووبارە لێبخوڕە"},
+    passed:{en:"Good — passed",ku:"باشە — تێپەڕی"},
+    stop_i:{en:"STOP sign ahead — come to a full stop",ku:"هێمای وەستان لەپێشتە — بە تەواوی بوەستە"},
+    ped_i:{en:"Pedestrian crossing — give way and wait",ku:"پەڕینەوەی پیادە — ڕێگا بدە و چاوەڕێ بکە"},
+    give_i:{en:"Give way — let the other car pass",ku:"ڕێگا بدە — با ئۆتۆمبێلەکەی تر تێپەڕێت"},
+    red_i:{en:"Red light — stop at the line",ku:"چرای سوور — لەسەر هێڵ بوەستە"},
+    stop_f:{en:"You did not stop at the STOP sign.",ku:"لە هێمای وەستاندا نەوەستایت."},
+    ped_f:{en:"You did not stop for the pedestrian.",ku:"بۆ پیادەکە نەوەستایت."},
+    give_f:{en:"You failed to give way.",ku:"ڕێگات نەدا."},
+    red_f:{en:"You went through a red light.",ku:"بە چرای سووردا ڕۆیشتیت."},
+    stop_r:{en:"At a STOP sign you must come to a complete stop, even when the road looks clear.",ku:"لە هێمای وەستاندا دەبێت بە تەواوی بوەستیت، تەنانەت ئەگەر ڕێگاکە بەتاڵ دیار بێت."},
+    ped_r:{en:"Pedestrians on a crossing have priority. Always stop and let them cross.",ku:"پیادە لەسەر شوێنی پەڕینەوە ئەولەویەتیان هەیە. هەمیشە بوەستە و لێیان گەڕێ بپەڕنەوە."},
+    give_r:{en:"Give way means letting traffic with priority pass before you move off.",ku:"ڕێگادان واتە با ئەو هاتووچۆیەی ئەولەویەتی هەیە تێپەڕێت پێش ئەوەی تۆ بڕۆیت."},
+    red_r:{en:"A red light means stop. Wait for green before you move off.",ku:"چرای سوور واتە بوەستە. چاوەڕێی چرای سەوز بکە پێش ئەوەی بڕۆیت."}
+  };
+
+  // A canvas-texture sign board using alphaTest (hard cutout) — the same
+  // mobile-GPU-safe approach as the old "?" sign, so the artwork renders and
+  // depth-sorts reliably on phones.
+  function simSignTex(draw){
+    var cv=document.createElement("canvas"); cv.width=cv.height=256;
+    var g=cv.getContext("2d"); g.clearRect(0,0,256,256); draw(g,128);
+    var tex=new THREE.CanvasTexture(cv); tex.anisotropy=8;
+    return new THREE.MeshBasicMaterial({map:tex,transparent:true,alphaTest:0.5,side:THREE.DoubleSide});
+  }
+  function simMakeSign(mat,size,poleH){
+    var g=new THREE.Group();
+    var pole=new THREE.Mesh(new THREE.CylinderGeometry(5,5,poleH,8),SIM.gl.mat.pole); pole.position.y=poleH/2;
+    var board=new THREE.Mesh(new THREE.PlaneGeometry(size,size),mat); board.position.y=poleH+size/2;
+    board.rotation.y=Math.PI; // face the approaching driver (coming up +z)
+    g.add(pole,board);
+    return g;
+  }
+  function drawStop(g,C){
+    g.fillStyle="#c0161c"; g.beginPath();
+    var r=118, a0=Math.PI/8; for(var i=0;i<8;i++){var a=a0+i*Math.PI/4,x=C+r*Math.cos(a),y=C+r*Math.sin(a); i?g.lineTo(x,y):g.moveTo(x,y);} g.closePath(); g.fill();
+    g.lineWidth=12; g.strokeStyle="#fff"; g.stroke();
+    g.fillStyle="#fff"; g.font="bold 74px system-ui,Arial,sans-serif"; g.textAlign="center"; g.textBaseline="middle"; g.fillText("STOP",C,C+4);
+  }
+  function drawPed(g,C){
+    g.fillStyle="#1667c0"; g.fillRect(24,24,208,208);
+    g.strokeStyle="#fff"; g.fillStyle="#fff"; g.lineCap="round";
+    g.beginPath(); g.arc(C-4,72,17,0,7); g.fill();
+    g.lineWidth=15;
+    g.beginPath(); g.moveTo(C-4,92); g.lineTo(C,150); g.stroke();
+    g.beginPath(); g.moveTo(C,150); g.lineTo(C-30,196); g.stroke();
+    g.beginPath(); g.moveTo(C,150); g.lineTo(C+28,196); g.stroke();
+    g.beginPath(); g.moveTo(C-4,110); g.lineTo(C-34,132); g.stroke();
+    g.beginPath(); g.moveTo(C-4,110); g.lineTo(C+26,128); g.stroke();
+  }
+  function drawGive(g,C){
+    g.fillStyle="#fff"; g.strokeStyle="#c0161c"; g.lineWidth=22; g.lineJoin="round";
+    g.beginPath(); g.moveTo(30,54); g.lineTo(226,54); g.lineTo(C,214); g.closePath(); g.fill(); g.stroke();
+  }
+  // A flat white road marking (stop line / zebra stripe), sitting just above
+  // the road so it doesn't z-fight the asphalt.
+  function simRoadLine(w,d){ return new THREE.Mesh(new THREE.BoxGeometry(w,3,d),new THREE.MeshBasicMaterial({color:0xffffff})); }
+  // A 3-lamp traffic light on a pole.
+  function simMakeTrafficLight(){
+    var g=new THREE.Group();
+    var pole=new THREE.Mesh(new THREE.CylinderGeometry(6,6,300,8),SIM.gl.mat.pole); pole.position.y=150; g.add(pole);
+    var box=new THREE.Mesh(new THREE.BoxGeometry(46,132,30),new THREE.MeshStandardMaterial({color:0x14181c,roughness:0.6})); box.position.y=340; g.add(box);
+    var lamps={};
+    [["red",378,0x400000],["amber",340,0x403000],["green",302,0x003000]].forEach(function(d){
+      var m=new THREE.MeshStandardMaterial({color:d[2],emissive:d[2],emissiveIntensity:0.25,roughness:0.4});
+      var s=new THREE.Mesh(new THREE.SphereGeometry(15,14,12),m); s.position.set(0,d[1],17); g.add(s); lamps[d[0]]=m;
+    });
+    g.userData={lamps:lamps};
+    return g;
+  }
+  function simSetLamp(tl,which){
+    var L=tl.userData.lamps, on={red:0xff2a2a,amber:0xffa500,green:0x22dd44}, off={red:0x400000,amber:0x403000,green:0x003000};
+    ["red","amber","green"].forEach(function(k){
+      var lit=(k===which);
+      L[k].color.setHex(lit?on[k]:off[k]); L[k].emissive.setHex(lit?on[k]:off[k]); L[k].emissiveIntensity=lit?0.95:0.25;
+    });
   }
 
-  // Choose a scenario template from the question's English text. Falls back to
-  // a lead car (the most generic driving context) so every question gets one.
-  function simClassifyScenario(q){
-    var e=((q&&q.q&&q.q.en)||"").toLowerCase();
-    if(/pedestrian|crossing|zebra|\bchild|school|pavement|footpath/.test(e))return "pedestrian";
-    if(/first aid|injured|casualt|accident|crash|collision|breakdown|broke[n]? down|bleeding|unconscious|ambulance|emergency vehicle/.test(e))return "hazard";
-    if(/overtak|oncoming|head ?light|dipped|passing another|two-way|wrong side/.test(e))return "oncoming";
-    if(/junction|roundabout|give way|yield|priority|right of way|intersection|mini-?roundabout|merg|slip road|joining/.test(e))return "junction";
-    if(/\bpark|kerb|\bcurb|lay-?by|verge/.test(e))return "parked";
-    if(/distance|following|tailgat|stopping distance|two-second|brake|behind the vehicle/.test(e))return "lead";
-    // spread the rest across a few types by a stable hash so it's not all leads
-    var h=0; for(var i=0;i<e.length;i++)h=(h*31+e.charCodeAt(i))>>>0;
-    return ["lead","junction","oncoming","parked"][h%4];
+  // Instruction banner over the 3D view — tells you what's being tested next.
+  function simSetBanner(text,transient){
+    var b=document.getElementById("simBanner"); if(!b)return;
+    b.textContent=text||""; b.style.opacity=text?"1":"0";
+    if(SIM._banT){clearTimeout(SIM._banT);SIM._banT=null;}
+    if(text&&transient){ SIM._banT=setTimeout(function(){var bb=document.getElementById("simBanner"); if(bb)bb.style.opacity="0";},1500); }
   }
 
-  function simDisposeScenario(){
-    var sc=SIM.scenario; if(!sc||!SIM.gl)return;
-    sc.actors.forEach(function(a){
-      SIM.gl.scenarioGroup.remove(a);
+  function simInitTasks(P){
+    P.taskGroup=new THREE.Group(); P.scene.add(P.taskGroup);
+    SIM.tasks=[];
+    for(var i=0;i<SIM_TASK_SEQ.length;i++) SIM.tasks.push({type:SIM_TASK_SEQ[i], z:SIM_TASK_Z0+i*SIM_TASK_STEP});
+    SIM.taskIdx=0; SIM.task=null; SIM.tasksPassed=0;
+  }
+
+  function simDisposeTask(){
+    var tk=SIM.task; if(!tk||!SIM.gl)return;
+    (tk.actors||[]).forEach(function(a){
+      SIM.gl.taskGroup.remove(a);
       a.traverse(function(o){ if(o.geometry)o.geometry.dispose(); if(o.material){ (Array.isArray(o.material)?o.material:[o.material]).forEach(function(m){m.dispose&&m.dispose();}); } });
     });
-    SIM.scenario=null;
+    SIM.task=null;
   }
 
-  // Build the actors for question i's scenario, positioned around its sign.
-  // Player approaches the sign from -z, in the middle of the road (x~0); the
-  // sign itself sits to the right at x = SIM_ROADW+60.
-  function simBuildScenario(i){
-    simDisposeScenario();
-    if(!SIM.gl||SIM.signZ[i]==null)return;
-    var q=S.queue[i], type=simClassifyScenario(q), sz=SIM.signZ[i];
-    var G=SIM.gl.scenarioGroup, actors=[], data={};
-    function car(c){ var g=simBuildTrafficCar(c); G.add(g); actors.push(g); return g; }
-    if(type==="lead"){
-      var lead=car(0x2b4a7a); lead.rotation.y=0; lead.position.set(6,0,sz+240); data.lead=lead;
-    }else if(type==="oncoming"){
-      var onc=car(0xb5221f); onc.rotation.y=Math.PI; onc.position.set(-98,0,sz+2600); simSetHead(onc,0xfff2c4); data.onc=onc;
-    }else if(type==="junction"){
-      // a car waiting to pull out of a side road on the right
-      var j=car(0x14532d); j.rotation.y=-Math.PI/2; j.position.set(360,0,sz+70); data.j=j; data.pulled=0;
-    }else if(type==="hazard"){
-      var h=car(0x8a8f96); h.rotation.y=0.18; h.position.set(250,0,sz); data.hz=h; data.blink=0;
-    }else if(type==="pedestrian"){
-      var p=simBuildPerson(0x2b5b8a); G.add(p); actors.push(p); p.position.set(300,0,sz+30); p.rotation.y=-Math.PI/2; data.ped=p;
-    }else if(type==="parked"){
-      for(var k=0;k<4;k++){ var pc=car(SIM_TRAF_COLORS[(i+k)%SIM_TRAF_COLORS.length]); pc.rotation.y=0; pc.position.set(238,0,sz-360+k*300); }
+  // Build the current situation's signage + actors around its line at z.
+  function simBuildTask(idx){
+    simDisposeTask();
+    if(!SIM.gl||!SIM.tasks[idx])return;
+    var def=SIM.tasks[idx], z=def.z, G=SIM.gl.taskGroup, actors=[];
+    function add(o){ G.add(o); actors.push(o); return o; }
+    var tk={type:def.type, z:z, actors:actors, active:false, s:{}};
+    var RW=SIM_ROADW;
+    if(def.type==="stop"){
+      add(simMakeSign(simSignTex(drawStop),110,150)).position.set(RW+55,0,z);
+      add(simRoadLine(RW*2,18)).position.set(0,4,z-30);
+      tk.instr=TASK_TXT.stop_i; tk.failMsg=TASK_TXT.stop_f; tk.rule=TASK_TXT.stop_r;
+    }else if(def.type==="pedestrian"){
+      add(simMakeSign(simSignTex(drawPed),110,150)).position.set(RW+55,0,z-60);
+      for(var s=-2;s<=2;s++){ add(simRoadLine(36,150)).position.set(s*52,4,z); }
+      var ped=simBuildPerson(0x2b5b8a); add(ped); ped.position.set(330,0,z); ped.rotation.y=-Math.PI/2; tk.s.ped=ped;
+      tk.instr=TASK_TXT.ped_i; tk.failMsg=TASK_TXT.ped_f; tk.rule=TASK_TXT.ped_r;
+    }else if(def.type==="giveway"){
+      add(simMakeSign(simSignTex(drawGive),110,150)).position.set(RW+55,0,z-40);
+      add(simRoadLine(RW*2,18)).position.set(0,4,z-30);
+      // a car crossing the junction ahead with priority
+      var pc=simBuildTrafficCar(0x8a8f96); pc.rotation.y=-Math.PI/2; pc.position.set(540,0,z+50); add(pc); tk.s.pc=pc;
+      tk.instr=TASK_TXT.give_i; tk.failMsg=TASK_TXT.give_f; tk.rule=TASK_TXT.give_r;
+    }else if(def.type==="redlight"){
+      var tl=simMakeTrafficLight(); add(tl).position.set(RW+45,0,z); simSetLamp(tl,"red"); tk.s.tl=tl; tk.s.phase="red"; tk.s.stopT=0;
+      add(simRoadLine(RW*2,18)).position.set(0,4,z-30);
+      tk.instr=TASK_TXT.red_i; tk.failMsg=TASK_TXT.red_f; tk.rule=TASK_TXT.red_r;
     }
-    SIM.scenario={type:type,actors:actors,sz:sz,t:0,climax:false,climaxT:0,climaxDur:1.3,fired:false,data:data};
+    SIM.task=tk;
+    simSetBanner(L(tk.instr));
   }
 
-  // Per-frame motion for the active scenario. Before the climax the actors set
-  // the scene (lead cruises, oncoming approaches, pedestrian waits, hazard
-  // blinks); the climax is the teachable moment (lead brakes hard, junction
-  // car pulls out, pedestrian steps into the road) and after climaxDur the
-  // question opens.
-  function simAnimateScenario(sc,dt){
-    var d=sc.data, climax=sc.climax, cf=Math.min(1,sc.climaxT/sc.climaxDur);
-    if(sc.type==="lead"&&d.lead){
-      if(!climax){ d.lead.position.z+=700*dt; simSetTail(d.lead,0x5a0f0f); }
-      else { simSetTail(d.lead,0xff2a2a); d.lead.position.z+=Math.max(0,220*(1-cf))*dt; }
-    }else if(sc.type==="oncoming"&&d.onc){
-      d.onc.position.z-=1600*dt; // sweeps past you
-    }else if(sc.type==="junction"&&d.j){
-      if(climax){ d.pulled=Math.min(1,d.pulled+dt/sc.climaxDur); d.j.position.x=360-300*d.pulled; }
-      simSetTail(d.j,0xff2a2a);
-    }else if(sc.type==="hazard"&&d.hz){
-      d.blink=(d.blink||0)+dt; var on=(Math.floor(d.blink*3)%2)===0;
-      simSetTail(d.hz,on?0xff9500:0x3a2400); simSetHead(d.hz,on?0xff9500:0x201400);
-    }else if(sc.type==="pedestrian"&&d.ped){
-      if(climax){ d.ped.position.x=300-560*cf; var sw=Math.sin(sc.climaxT*8)*0.5; if(d.ped.userData.legs){d.ped.userData.legs[0].rotation.x=sw;d.ped.userData.legs[1].rotation.x=-sw;} }
-    }
-  }
-
-  function simUpdateTraffic(dt){
+  // Per-frame: animate the actors and judge the driver's action.
+  function simUpdateTasks(dt){
     if(!SIM.gl||SIM.paused)return;
-    var carZ=SIM.car.pz, WIN=9000;
-    for(var i=0;i<SIM.traffic.length;i++){
-      var a=SIM.traffic[i];
-      a.z+=a.dir*a.speed*dt;
-      if(a.z>carZ+WIN)a.z-=2*WIN; else if(a.z<carZ-WIN)a.z+=2*WIN;
-      a.g.position.z=a.z;
-    }
-    // scenario lifecycle keyed to the active question
-    if(SIM.scenarioIdx!==S.i){ simBuildScenario(S.i); SIM.scenarioIdx=S.i; }
-    var sc=SIM.scenario; if(!sc)return;
-    sc.t+=dt;
-    simAnimateScenario(sc,dt);
-    if(sc.climax){
-      sc.climaxT+=dt;
-      if(sc.climaxT>=sc.climaxDur&&!sc.fired){ sc.fired=true; simTriggerCheckpoint(); }
+    if(!SIM.tasks||SIM.taskIdx>=SIM.tasks.length)return; // test finished
+    if(!SIM.task) simBuildTask(SIM.taskIdx);
+    var tk=SIM.task; if(!tk)return;
+    var car=SIM.car, z=tk.z, s=tk.s;
+    if(car.pz>z-1100) tk.active=true;
+
+    if(tk.type==="stop"){
+      if(car.pz>z-360 && car.pz<z+20 && car.speed<SIM_STOP_EPS) s.stopped=true;
+      if(car.pz>z){ return s.stopped?simPassTask():simFailTask(tk); }
+    }else if(tk.type==="pedestrian"){
+      if(tk.active && !s.started){ s.started=true; s.walking=true; }
+      if(s.walking && s.ped){
+        s.ped.position.x-=150*dt;
+        var lg=s.ped.userData.legs, sw=Math.sin((s.pt=(s.pt||0)+dt)*8)*0.5;
+        if(lg){ lg[0].rotation.x=sw; lg[1].rotation.x=-sw; }
+        if(s.ped.position.x<-330){ s.walking=false; s.cleared=true; }
+      }
+      var occupied=s.started && !s.cleared;
+      if(car.pz>z-80){ return occupied?simFailTask(tk):simPassTask(); }
+    }else if(tk.type==="giveway"){
+      if(tk.active) s.started=true;
+      if(s.started && s.pc){
+        s.pc.position.x-=470*dt; simSetTail(s.pc,0xff2a2a);
+        if(s.pc.position.x<-470) s.cleared=true;
+      }
+      var occ=s.started && !s.cleared;
+      if(car.pz>z-60){ return occ?simFailTask(tk):simPassTask(); }
+    }else if(tk.type==="redlight"){
+      if(s.phase==="red"){
+        if(car.pz>z-360 && car.pz<z+20 && car.speed<SIM_STOP_EPS){ s.stopT+=dt; if(s.stopT>1.0){ s.phase="green"; if(s.tl)simSetLamp(s.tl,"green"); } }
+        if(car.pz>z) return simFailTask(tk);
+      }else{
+        if(car.pz>z) return simPassTask();
+      }
     }
   }
+
+  function simPassTask(){
+    SIM.tasksPassed++;
+    simSetBanner("✓ "+L(TASK_TXT.passed),true);
+    simPlayTone(880,0.14,"sine"); simPlayTone(1180,0.18,"sine",0.08);
+    simDisposeTask();
+    SIM.taskIdx++;
+    simUpdateHud();
+    if(SIM.taskIdx>=SIM.tasks.length) simFinishTest();
+  }
+
+  function simFailTask(tk){
+    SIM.paused=true; SIM.car.speed=0;
+    simPlayTone(150,0.4,"sawtooth");
+    var html='<p class="qtext" style="font-size:22px;color:#ff6b6b">❌ '+esc(L(TASK_TXT.fail))+'</p>'+
+      '<div class="explain no">'+esc(L(tk.failMsg))+'</div>'+
+      '<div class="explain ok">'+esc(L(tk.rule))+'</div>'+
+      '<button class="btn" onclick="simRetryTask()">'+esc(L(TASK_TXT.tryagain))+'</button>';
+    var card=document.getElementById("simCard"); if(card)card.innerHTML=html;
+    var ov=document.getElementById("simOverlay"); if(ov)ov.classList.remove("hidden");
+  }
+
+  window.simRetryTask=function(){
+    var ov=document.getElementById("simOverlay"); if(ov)ov.classList.add("hidden");
+    var def=SIM.tasks[SIM.taskIdx];
+    simDisposeTask();
+    if(def){ SIM.car.px=0; SIM.car.pz=def.z-1300; SIM.car.heading=0; SIM.car.speed=0; }
+    SIM.paused=false; SIM.last=null; // next frame rebuilds this task fresh
+  };
+
+  function simFinishTest(){
+    SIM.paused=true; simSetBanner("",false);
+    var msg=L(TASK_TXT.passedN).replace("%P",SIM.tasksPassed).replace("%T",SIM.tasks.length);
+    var html='<p class="qtext" style="font-size:22px">✓ '+esc(L(TASK_TXT.done))+'</p>'+
+      '<div class="explain ok">'+esc(msg)+'</div>'+
+      '<button class="btn" onclick="simRestart()">'+esc(L(TASK_TXT.driveagain))+'</button>'+
+      '<button class="btn ghost" onclick="simExit()">'+esc(t("back"))+'</button>';
+    var card=document.getElementById("simCard"); if(card)card.innerHTML=html;
+    var ov=document.getElementById("simOverlay"); if(ov)ov.classList.remove("hidden");
+  }
+  window.simRestart=function(){ simStop(); startSim(S.simSet); };
 
   function simBuildLamps(track,mat){
     var spacing=1400, count=Math.max(2,Math.floor(track.curves.length*SIM_SEG/spacing));
@@ -9436,12 +9552,9 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
     // The main road + shoulders are static geometry (built once); nothing to
     // rebuild per frame in the open world.
 
-    var sz=SIM.signZ?SIM.signZ[S.i]:null, signVisible=false;
-    if(sz!=null){
-      P.signGroup.position.set(SIM_ROADW+60,0,sz);
-      P.signGroup.rotation.y=0;
-      signVisible=true;
-    }
+    // The old floating "?" sign is gone — each driving task now builds its own
+    // real, correct roadside signage (STOP octagon, give-way triangle, etc.).
+    var signVisible=false;
 
     // Driver eyepoint: inside the real modeled interior when the Corolla is
     // loaded (behind + above its steering wheel), else the procedural seat.
@@ -9602,9 +9715,10 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
   function simUpdateHud(){
     var p=document.getElementById("simProg"), s=document.getElementById("simScoreEl");
     if(!p||!s)return;
-    var correct=0;for(var k=0;k<S.i;k++)if(S.ans[k]===S.queue[k].a)correct++;
-    p.textContent=(S.i+1)+" / "+S.queue.length;
-    s.textContent="✓ "+correct;
+    var n=(SIM.tasks?SIM.tasks.length:0);
+    var idx=Math.min((SIM.taskIdx||0)+1,n||1);
+    p.textContent=L(TASK_TXT.task)+" "+idx+" / "+n;
+    s.textContent="✓ "+(SIM.tasksPassed||0);
   }
 
   function simTriggerCheckpoint(){

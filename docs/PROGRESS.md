@@ -100,7 +100,49 @@ owner — most of all anything that assumes the TikTok app is on their phone.
 
 ## Done
 
+- [x] **Driving-sim → PRACTICAL DRIVING TEST (pass/fail), replacing the quiz-on-wheels.**
+      The owner rejected both the random ambient cars ("remove the random cars
+      on the street") and the multiple-choice card popping at each sign. What
+      they wanted: the questions become *enforceable situations* — "if I don't
+      stop at a stop sign I fail, like the real world." Chosen via AskUserQuestion:
+      **only driving tasks** (no quiz card while driving; knowledge questions
+      stay in the separate quiz modes) and **instant fail + retry**.
+      Rebuilt the sim as a sequence of 8 enforceable situations down the main
+      road, cycling four types, each with real roadside signage and pass/fail
+      detection off the car's own position + speed:
+      - **STOP sign** (red octagon + stop line): must reach ~0 speed in the box
+        before the line, else FAIL "you did not stop".
+      - **Pedestrian crossing** (blue sign + zebra + a person who walks across):
+        must not enter the crossing while the pedestrian is on the road; they
+        clear after ~4 s, then you may go.
+      - **Give way** (inverted-triangle sign): a car crosses the junction ahead
+        with priority; enter before it clears → FAIL "you failed to give way".
+      - **Red light** (3-lamp signal + stop line): cross on red → FAIL; the light
+        turns green once you've held a stop at the line for ~1 s, then go.
+      Fail → a FAIL overlay naming what you did wrong **and the rule** (teachable),
+      with **Try again** (resets you just before that situation). Pass → a brief
+      "✓ passed" toast, advance to the next; the HUD reads **Task X / 8** and
+      **✓ tasksPassed**. Finish → "passed N of 8" with Drive again / back. An
+      instruction banner over the view names each upcoming situation. All copy is
+      bilingual (inline `{en,ku}` via `L()`; the UI table is untouched). The old
+      floating "?" sign, the ambient-traffic pool, and the in-sim quiz card are
+      gone. Reused `simBuildTrafficCar`/`simBuildPerson` as actors. New module:
+      `simInitTasks`/`simBuildTask`/`simUpdateTasks`/`simPassTask`/`simFailTask`/
+      `simFinishTest`/`simRetryTask`/`simRestart` + sign-texture builders.
+      Verified headless: 8 tasks in the right sequence, all four types build with
+      0 page errors, and **all 8 pass/fail branches** judged correctly (each fail
+      pauses + shows the ❌ overlay without advancing; each pass advances the task
+      and increments the count). Screenshot confirms a clean road (no random
+      cars), STOP sign + stop line ahead, Kurdish banner, "Task 1/8" HUD.
+      **Gotcha:** headless rAF is heavily throttled here, so time-based "drive
+      across the line" tests crawl (the car accelerates only a few simulated
+      frames per real second). Verify pass/fail by pre-setting the gate flags and
+      crossing at high speed (few frames needed), not by waiting for the car to
+      accelerate in real time.
 - [x] **Driving-sim: scripted traffic + per-question SCENARIOS (other cars).**
+      **(SUPERSEDED by the practical-test rework above — the owner asked for the
+      ambient cars removed and the quiz card replaced by enforceable pass/fail
+      situations. Kept for history.)**
       The world now has other cars. (1) **Ambient traffic** — a pool of 8
       lightweight procedural cars (not the 3.4 MB Corolla clone — box body,
       glass cabin, 4 wheels, head/tail lights) cruise the main road both
