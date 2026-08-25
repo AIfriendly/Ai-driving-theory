@@ -100,6 +100,21 @@ owner — most of all anything that assumes the TikTok app is on their phone.
 
 ## Done
 
+- [x] **Driving-sim: throttle control + speed-limit situation.** Two owner asks.
+      (1) **You now control the speed.** Selecting D no longer pins the car to
+      the max — there's a **GAS pedal** (green ⛽, between brake and the
+      right-steer button; also ArrowUp/W). Hold gas to accelerate, brake to
+      slow, and off the gas the car **coasts down** (`SIM_COAST=430`), so the
+      driver sets the speed. (2) **Speed-limit zones** woven into the sequence
+      (now 10 situations, 2 of them speed zones): a red-circle limit sign (max
+      **60**) opens a ~1700-unit measured zone. Go **over** the limit *or* crawl
+      **below** the minimum (band 35–60 on the HUD's 0–180 scale) and you FAIL,
+      each with its own reason ("over the limit" / "too slow — below the
+      limit"); hold it in-band through the zone to pass. Verified headless:
+      gas raises speed, release coasts down, brake slows; over/under both fail
+      with the right Kurdish message, in-band passes; the four original task
+      types still judge correctly at their new indices; 0 page errors; screenshot
+      shows the "60" sign, the band banner, "Task 1/10", and the green gas pedal.
 - [x] **Driving-sim → PRACTICAL DRIVING TEST (pass/fail), replacing the quiz-on-wheels.**
       The owner rejected both the random ambient cars ("remove the random cars
       on the street") and the multiple-choice card popping at each sign. What
