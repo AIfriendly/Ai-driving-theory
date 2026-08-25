@@ -114,6 +114,13 @@ owner — most of all anything that assumes the TikTok app is on their phone.
       tree field (one draw call) + ~26 buildings scattered across the map
       (`simBuildOpenTrees`/`simBuildOpenBuildings`), both keeping a clear road
       corridor, so roaming has scenery + distant skylines everywhere.
+      **Density pass:** added a `simBuildCityDistrict` (two grid "downtown"
+      blocks you drive into, taller towers biased to the centre column),
+      raised the open-building count 26→40, and a `simBuildGroundDetail` pass
+      that scatters ~540 bushes + ~300 rocks as InstancedMesh fields (one draw
+      call each) for cheap ground richness everywhere. Verified headless: 354
+      meshes / 6 instanced fields, 0 real page errors, 12-checkpoint loop still
+      clean, cockpit shows a city skyline out the windshield.
       **Steering fix:** `input.r` must map to a heading change that reads as
       screen-right in the chase cam — steer is `(l?1:0)-(r?1:0)`, verified
       visually (right turns right, and you can drive off onto the grass).
