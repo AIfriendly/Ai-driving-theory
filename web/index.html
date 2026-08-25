@@ -8882,20 +8882,28 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
 
     var signGroup=new THREE.Group();
     var pole=new THREE.Mesh(new THREE.CylinderGeometry(5,5,120,8),mat.pole); pole.position.y=60;
-    var board=new THREE.Mesh(new THREE.BoxGeometry(58,58,6),mat.sign); board.position.y=150; board.rotation.z=Math.PI/4;
-    signGroup.add(pole,board);
-    // A bold "?" on the yellow diamond so it reads as a "question ahead"
-    // warning sign, not a blank board. Upright (not rotated with the diamond),
-    // shown on both faces so it's legible from either approach.
-    var qcan=document.createElement("canvas"); qcan.width=qcan.height=128;
-    var qg=qcan.getContext("2d");
-    qg.fillStyle="#14181c"; qg.font="bold 112px system-ui,Arial,sans-serif";
-    qg.textAlign="center"; qg.textBaseline="middle"; qg.fillText("?",64,72);
-    var qtex=new THREE.CanvasTexture(qcan); qtex.anisotropy=4;
-    var qmat=new THREE.MeshBasicMaterial({map:qtex,transparent:true,side:THREE.DoubleSide});
-    var qFront=new THREE.Mesh(new THREE.PlaneGeometry(46,46),qmat); qFront.position.set(0,150,4);
-    var qBack=qFront.clone(); qBack.position.z=-4;
-    signGroup.add(qFront,qBack);
+    signGroup.add(pole);
+    // The whole warning sign — yellow diamond, dark border AND the bold "?" —
+    // is baked into ONE canvas texture with the diamond upright and the "?"
+    // upright inside it. Drawn on a single axis-aligned plane (NOT a rotated
+    // box), so nothing is a separate transparent overlay that a mobile GPU can
+    // drop. The material uses alphaTest (a hard cutout) instead of blended
+    // transparency, which renders and depth-sorts reliably everywhere — this is
+    // what fixes the "sign shows as blank yellow, no question mark" on phones.
+    var scan=document.createElement("canvas"); scan.width=scan.height=256;
+    var sg=scan.getContext("2d"); var C=128;
+    sg.clearRect(0,0,256,256);
+    sg.save(); sg.translate(C,C); sg.rotate(Math.PI/4);
+    var d=80; // half-side of the square; rotated 45° its corners are the diamond points (~±113px, fits the 256 canvas)
+    sg.fillStyle="#f4c400"; sg.fillRect(-d,-d,d*2,d*2);
+    sg.lineJoin="miter"; sg.lineWidth=14; sg.strokeStyle="#14181c"; sg.strokeRect(-d,-d,d*2,d*2);
+    sg.restore();
+    sg.fillStyle="#14181c"; sg.font="bold 150px system-ui,Arial,sans-serif";
+    sg.textAlign="center"; sg.textBaseline="middle"; sg.fillText("?",C,C+4);
+    var stex=new THREE.CanvasTexture(scan); stex.anisotropy=8;
+    var smat=new THREE.MeshBasicMaterial({map:stex,transparent:true,alphaTest:0.5,side:THREE.DoubleSide});
+    var board=new THREE.Mesh(new THREE.PlaneGeometry(96,96),smat); board.position.y=150;
+    signGroup.add(board);
     scene.add(signGroup); signGroup.visible=false;
     P.signGroup=signGroup;
 
@@ -9323,12 +9331,36 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
   // The canonical iOS unlock: resume AND play a 1-sample silent buffer inside
   // the gesture. On iPhone, resume() alone frequently leaves the context
   // suspended — the silent buffer is what actually flips it to running.
+  // iOS-only: a near-silent looping <audio> element, started inside the user
+  // gesture, switches Safari's audio session to the "playback" category — after
+  // which the WebAudio engine tone plays through the MEDIA channel and is no
+  // longer silenced by the ringer/silent switch. This is the one thing that
+  // gets past the hardware mute; the silent WebAudio buffer below only unlocks
+  // a suspended context, it does NOT change the channel. Best-effort, wrapped
+  // so a browser that rejects it (no autoplay, no gesture) just no-ops.
+  function simUnlockMediaEl(){
+    try{
+      if(!SIM._mediaEl){
+        var sr=8000, n=Math.round(sr*0.25), buf=new ArrayBuffer(44+n*2), dv=new DataView(buf);
+        function ws(o,s){for(var i=0;i<s.length;i++)dv.setUint8(o+i,s.charCodeAt(i));}
+        ws(0,"RIFF"); dv.setUint32(4,36+n*2,true); ws(8,"WAVE"); ws(12,"fmt ");
+        dv.setUint32(16,16,true); dv.setUint16(20,1,true); dv.setUint16(22,1,true);
+        dv.setUint32(24,sr,true); dv.setUint32(28,sr*2,true); dv.setUint16(32,2,true); dv.setUint16(34,16,true);
+        ws(36,"data"); dv.setUint32(40,n*2,true); // sample bytes stay zero = silence
+        var el=new Audio(); el.src=URL.createObjectURL(new Blob([buf],{type:"audio/wav"}));
+        el.loop=true; el.volume=0.02; el.setAttribute("playsinline","");
+        SIM._mediaEl=el;
+      }
+      var p=SIM._mediaEl.play(); if(p&&p.catch)p.catch(function(){});
+    }catch(e){}
+  }
   function simAudioKick(ctx){
     try{ if(ctx.state!=="running")ctx.resume(); }catch(e){}
     try{
       var b=ctx.createBuffer(1,1,22050), s=ctx.createBufferSource();
       s.buffer=b; s.connect(ctx.destination); (s.start||s.noteOn).call(s,0);
     }catch(e){}
+    simUnlockMediaEl();
   }
   function simAudioInit(){
     if(SIM.audio){ simAudioKick(SIM.audio.ctx); return SIM.audio; }

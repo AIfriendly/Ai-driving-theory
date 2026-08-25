@@ -121,6 +121,23 @@ owner — most of all anything that assumes the TikTok app is on their phone.
       call each) for cheap ground richness everywhere. Verified headless: 354
       meshes / 6 instanced fields, 0 real page errors, 12-checkpoint loop still
       clean, cockpit shows a city skyline out the windshield.
+      - **Sign "?" hardened for mobile GPUs.** The question sign was a yellow
+        board with the "?" as a SEPARATE blended-transparent overlay plane —
+        which some mobile GPUs drop (z-sort/blend), so on the owner's iPhone it
+        showed as blank yellow, "not a question sign". Rebuilt as ONE canvas
+        texture (yellow diamond + dark border + upright "?") on a single plane
+        using **alphaTest (hard cutout), not blended transparency**, which
+        renders and depth-sorts reliably everywhere. Verified close-up render.
+      - **iOS audio, third lever: HTMLMediaElement unlock.** Added
+        `simUnlockMediaEl` — a near-silent looping `<audio>` (generated WAV
+        blob) played inside the gesture. On iOS this switches Safari's audio
+        session to "playback", after which the WebAudio engine tone routes
+        through the MEDIA channel and is no longer killed by the ringer/silent
+        switch (the silent WebAudio buffer only unlocks a suspended context; it
+        does NOT change the channel). Best-effort, wrapped. **If it's STILL
+        silent, it is the hardware silent switch** (orange toggle on the side of
+        the iPhone) — flip it off — or the in-game 🔊 tapped to 🔇. No website
+        can override the hardware switch beyond this media-session trick.
       **Steering fix:** `input.r` must map to a heading change that reads as
       screen-right in the chase cam — steer is `(l?1:0)-(r?1:0)`, verified
       visually (right turns right, and you can drive off onto the grass).
