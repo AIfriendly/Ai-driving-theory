@@ -8407,6 +8407,15 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
     bind(document.getElementById("simRightBtn"),"r");
     bind(document.getElementById("simBrakeBtn"),"b");
 
+    // Wake the audio on the very first interaction anywhere — iOS only unlocks
+    // WebAudio inside a real touch/click, and only the first one counts, so
+    // don't rely on which control the player happens to tap first.
+    var stage=document.getElementById("simStage")||document;
+    var wake=function(){ simAudioInit(); };
+    ["pointerdown","touchend","mousedown","keydown"].forEach(function(ev){
+      stage.addEventListener(ev,wake,{passive:true});
+    });
+
     var camBtn=document.getElementById("simCamBtn");
     if(camBtn){
       camBtn.addEventListener("click",function(){
@@ -9249,14 +9258,21 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
      which browser autoplay policy requires before audio can actually play.
      Failure (no Web Audio support, or blocked) is silent and non-fatal: the
      game is fully playable without sound. */
+  // The canonical iOS unlock: resume AND play a 1-sample silent buffer inside
+  // the gesture. On iPhone, resume() alone frequently leaves the context
+  // suspended — the silent buffer is what actually flips it to running.
+  function simAudioKick(ctx){
+    try{ if(ctx.state!=="running")ctx.resume(); }catch(e){}
+    try{
+      var b=ctx.createBuffer(1,1,22050), s=ctx.createBufferSource();
+      s.buffer=b; s.connect(ctx.destination); (s.start||s.noteOn).call(s,0);
+    }catch(e){}
+  }
   function simAudioInit(){
-    // Resume on every call: iOS/Safari starts the context SUSPENDED even when
-    // created inside a gesture, so without this the engine is silent.
-    if(SIM.audio){ try{ if(SIM.audio.ctx.state!=="running")SIM.audio.ctx.resume(); }catch(e){} return SIM.audio; }
+    if(SIM.audio){ simAudioKick(SIM.audio.ctx); return SIM.audio; }
     try{
       var Ctx=window.AudioContext||window.webkitAudioContext;
       var ctx=new Ctx();
-      try{ if(ctx.state!=="running")ctx.resume(); }catch(e){}
       var master=ctx.createGain(); master.gain.value=simMuted()?0:0.6; master.connect(ctx.destination);
       // engine = a body sawtooth + a square an octave down for the low rumble,
       // through a gentle lowpass so it's a motor, not a buzzer.
@@ -9268,6 +9284,7 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
       var subOsc=ctx.createOscillator(); subOsc.type="square"; subOsc.frequency.value=30; subOsc.connect(subGain);
       engineOsc.start(); subOsc.start();
       SIM.audio={ctx:ctx,master:master,engineOsc:engineOsc,subOsc:subOsc,engineGain:engineGain};
+      simAudioKick(ctx);
     }catch(e){SIM.audio=null;}
     return SIM.audio;
   }
