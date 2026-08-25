@@ -101,6 +101,42 @@ owner — most of all anything that assumes the TikTok app is on their phone.
 
 ## Done
 
+- [x] **Driving-sim: the cockpit is actually visible now (second, real fix).**
+      The owner reported the interior still too dark to see AFTER the earlier
+      `cabinFill` fix — so that fix was insufficient, and the reason mattered:
+      **the earlier fix only touched the MODELED Corolla cabin.** Rendering the
+      procedural fallback cockpit (what you get when `models/corolla.glb` fails
+      or is slow to fetch — very likely on a phone) showed a near-black wheel and
+      dash: it was lit by a single `PointLight` at intensity **0.55**. Three
+      changes, so both interiors are readable:
+      1. **Cockpit-only AmbientLight** (`P.cockpitAmb`, 0.85 in cockpit, 0
+         otherwise). This is the device-independent lift — it does not depend on
+         the model loading or on where a lamp happens to sit, and switching to
+         chase view drops it to 0 so the outside world is never washed out.
+      2. **Stronger cabin lamps, both paths**: procedural 0.55 → 2.6 plus a
+         second low lamp for the wheel/console/footwell; modeled 2.2 → 3.4 plus
+         its own second low lamp.
+      3. **Lightened the near-black interior materials** — dash `0x191b1f`→
+         `0x4a4f57`, trim `0x2a2f36`→`0x59616b`, seat `0x3a2a22`→`0x6b5043`,
+         wheel leather `0x14100e`→`0x413935`. A 0x14 wheel is essentially black;
+         no amount of light rescues it, which is why lighting alone kept failing.
+      Also added `simSetCabinLit()`, which makes the modeled cabin's materials
+      mildly emissive while you are inside it (reverted on leaving, so exterior
+      paint is untouched).
+      Verified headless in BOTH paths (model loaded, and with the .glb request
+      aborted to force the fallback): wheel, dash, gauges and hands all clearly
+      readable; ambient confirmed 0.85 in cockpit / 0 in chase across toggles;
+      0 page errors.
+      **Gotchas:** (1) fixing "the cockpit" means fixing **two** interiors — the
+      modeled one and the procedural fallback; test with the `.glb` blocked
+      (`page.route('**/corolla.glb', r=>r.abort())`) or the broken path is
+      invisible to you. (2) Playwright `elementHandle.screenshot()` on the sim
+      canvas **times out** ("waiting for element to be stable") because it
+      animates — take a full-page shot with a `clip` from the canvas's bounding
+      box instead. (3) `drawImage`/`readPixels` off the WebGL canvas returns
+      black without `preserveDrawingBuffer`, so measure brightness from a
+      Playwright screenshot, not from in-page pixel readback.
+
 - [x] **Driving-sim: look-around BUTTONS (no more dragging the screen).** Owner
       ask — glance around from the driver's seat with buttons instead of the
       drag-to-look gesture. Added a 4-button row under the camera toggle:

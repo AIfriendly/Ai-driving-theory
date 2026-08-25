@@ -8654,12 +8654,20 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
     }catch(e){ /* IBL is a bonus; scene still renders without it */ }
 
     scene.add(new THREE.HemisphereLight(0xcfe6f5,0x3a5230,0.9));
+    /* Cockpit-only ambient lift. The interior is enclosed, so lamp-based fill
+       alone is fragile — it depends on the model actually loading and on where
+       each lamp happens to sit. This raises every interior surface directly
+       and is switched on only in cockpit view, so the outside world is never
+       washed out. Belt-and-braces with the cabin lamps above. */
+    var cockpitAmb=new THREE.AmbientLight(0xfff4e6,0);
+    scene.add(cockpitAmb);
     var sun=new THREE.DirectionalLight(0xfff3dc,1.0);
     sun.position.set(700,1100,400);
     scene.add(sun);
 
     var camera=new THREE.PerspectiveCamera(60,1,5,8500);
     var P={renderer:renderer,scene:scene,camera:camera};
+    P.cockpitAmb=cockpitAmb;
 
     var mat={
       body:new THREE.MeshStandardMaterial({color:0xb5221f,roughness:0.28,metalness:0.5}),
@@ -8670,12 +8678,12 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
       rim:new THREE.MeshStandardMaterial({color:0xd6dadd,roughness:0.3,metalness:0.75}),
       light:new THREE.MeshBasicMaterial({color:0xfff3c6}),
       tail:new THREE.MeshBasicMaterial({color:0xc21c1c}),
-      dash:new THREE.MeshStandardMaterial(Object.assign({color:0x191b1f,roughness:0.82,metalness:0.0,normalScale:new THREE.Vector2(0.5,0.5)},simMakeLeatherMaps(1.5))),
-      trim:new THREE.MeshStandardMaterial({color:0x2a2f36,roughness:0.55,metalness:0.15}),
-      seat:new THREE.MeshStandardMaterial(Object.assign({color:0x3a2a22,roughness:0.7,normalScale:new THREE.Vector2(0.8,0.8)},simMakeLeatherMaps())),
+      dash:new THREE.MeshStandardMaterial(Object.assign({color:0x4a4f57,roughness:0.82,metalness:0.0,normalScale:new THREE.Vector2(0.5,0.5)},simMakeLeatherMaps(1.5))),
+      trim:new THREE.MeshStandardMaterial({color:0x59616b,roughness:0.55,metalness:0.15}),
+      seat:new THREE.MeshStandardMaterial(Object.assign({color:0x6b5043,roughness:0.7,normalScale:new THREE.Vector2(0.8,0.8)},simMakeLeatherMaps())),
       // Steering wheel and shift-boot: the same photographic leather, tinted
       // near-black and tiled tight so the grain reads at rim scale.
-      wheelLeather:new THREE.MeshStandardMaterial(Object.assign({color:0x14100e,roughness:0.58,metalness:0.0,normalScale:new THREE.Vector2(1.1,1.1)},simMakeLeatherMaps(5))),
+      wheelLeather:new THREE.MeshStandardMaterial(Object.assign({color:0x413935,roughness:0.58,metalness:0.0,normalScale:new THREE.Vector2(1.1,1.1)},simMakeLeatherMaps(5))),
       wheelRim:new THREE.MeshStandardMaterial({color:0xe4e6e8,roughness:0.25,metalness:0.55}),
       // Two skin tones so knuckles/finger edges read as separate forms
       // instead of one flat blob when the hands grip the wheel.
@@ -8725,10 +8733,16 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
     // cockpit view, so the real modeled cabin got no interior light and looked
     // dark. This one is parented to the car itself and toggled on only in the
     // modeled cockpit (see simDraw), lifting the dashboard/wheel out of shadow.
-    var cabinFill=new THREE.PointLight(0xfff4e6,2.2,900,1.15);
+    var cabinFill=new THREE.PointLight(0xfff4e6,3.4,1200,0.9);
     cabinFill.position.set(6,140,-24);
     carGroup.add(cabinFill);
-    P.cabinFill=cabinFill; cabinFill.visible=false;
+    // A second, lower lamp: the single high light left the console, footwell
+    // and lower dash in shadow, which is most of what you look at from the seat.
+    var cabinFill2=new THREE.PointLight(0xffeede,2.0,900,0.9);
+    cabinFill2.position.set(10,70,40);
+    carGroup.add(cabinFill2);
+    P.cabinFill=cabinFill; P.cabinFill2=cabinFill2;
+    cabinFill.visible=false; cabinFill2.visible=false;
 
     // Real modeled exterior (Kenney "Starter Kit: Racing", CC0) instead of
     // procedural boxes — asked for by name after the procedural low-poly
@@ -8766,6 +8780,16 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
       model.rotation.y=0; // nose points +Z, the drive direction
       ext.add(model);
       P.carModel=model;
+      // Keep every material the model uses, so the cabin can be made self-lit
+      // while you are sitting in it — see simSetCabinLit().
+      var seen=[];
+      model.traverse(function(o){
+        if(!o.isMesh||!o.material)return;
+        (Array.isArray(o.material)?o.material:[o.material]).forEach(function(m){
+          if(m&&m.emissive&&seen.indexOf(m)<0)seen.push(m);
+        });
+      });
+      P.carMats=seen;
       // grab the modeled steering wheel so it can turn with the input; store
       // its rest orientation so each frame rotates about the column from rest.
       model.traverse(function(o){
@@ -8926,9 +8950,14 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
     // car's own shadow — parented to the interior, so it only costs anything
     // in cockpit view (the interior group is culled in chase view and in the
     // mirror passes).
-    var cabinLight=new THREE.PointLight(0xfff2e0,0.55,900,1.4);
+    var cabinLight=new THREE.PointLight(0xfff2e0,2.6,1400,0.9);
     cabinLight.position.set(0,150,30);
     intr.add(cabinLight);
+    // Second lamp low and forward, for the wheel rim, console and lower dash —
+    // the parts the single overhead lamp left in shadow.
+    var cabinLight2=new THREE.PointLight(0xffeede,1.8,1100,0.9);
+    cabinLight2.position.set(0,SIM_EYE_H-40,150);
+    intr.add(cabinLight2);
 
     var leverGroup=new THREE.Group();
     // leather shift boot flaring from the console, chromed stalk, leather knob
@@ -10533,6 +10562,36 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
   // World position/heading of the CAR (not just the road centerline): the
   // road's own pose, offset sideways by the player's steering (car.x, ±1 =
   // the edges of the drivable width).
+  /* The modeled Corolla's interior is dark plastic and near-black leather. Any
+     amount of point-light fill still multiplies against those colours, so on a
+     phone the cabin read as "I can't see anything". This makes the interior
+     surfaces SELF-LIT (emissive) while you are sitting inside, which does not
+     depend on light falloff, surface normals or the device's brightness — the
+     one approach that reliably shows the dash, wheel and console.
+     Each material's own colour drives its glow (so dark trim stays darker than
+     pale trim), plus a flat floor so even black surfaces come up off zero.
+     Reverted the moment you leave the cockpit, so the exterior paint in chase
+     view is never washed out. */
+  function simSetCabinLit(P,on){
+    if(!P.carMats||P.cabinLit===on)return;
+    P.cabinLit=on;
+    P.carMats.forEach(function(m){
+      if(!m||!m.emissive)return;
+      if(m.__emiOrig==null){ m.__emiOrig=m.emissive.getHex(); m.__emiIOrig=(m.emissiveIntensity==null?1:m.emissiveIntensity); }
+      if(on){
+        var c=m.color?m.color:new THREE.Color(0x808080);
+        m.emissive.setRGB(
+          Math.min(1,c.r*0.55+0.17),
+          Math.min(1,c.g*0.55+0.17),
+          Math.min(1,c.b*0.55+0.16));
+        m.emissiveIntensity=1;
+      }else{
+        m.emissive.setHex(m.__emiOrig); m.emissiveIntensity=m.__emiIOrig;
+      }
+      m.needsUpdate=true;
+    });
+  }
+
   function simCarWorldPose(){
     var car=SIM.car;
     return {x:car.px, z:car.pz, heading:car.heading};
@@ -10586,7 +10645,12 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
     var eyeWorld=eyeLocal.applyMatrix4(P.carGroup.matrixWorld);
 
     if(P.hands)P.hands.visible=(SIM.camMode==="cockpit"&&useModel);
-    if(P.cabinFill)P.cabinFill.visible=(SIM.camMode==="cockpit"&&useModel);
+    var inCabin=(SIM.camMode==="cockpit"&&useModel);
+    if(P.cabinFill)P.cabinFill.visible=inCabin;
+    if(P.cabinFill2)P.cabinFill2.visible=inCabin;
+    simSetCabinLit(P,inCabin);
+    // Ambient lift for ANY cockpit view — modeled cabin or procedural fallback.
+    if(P.cockpitAmb)P.cockpitAmb.intensity=(SIM.camMode==="cockpit")?0.85:0;
     if(SIM.camMode==="cockpit"){
       if(useModel){
         // sit inside the modeled cabin — real dashboard/wheel/windscreen.
