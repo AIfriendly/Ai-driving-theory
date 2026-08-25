@@ -100,26 +100,39 @@ owner — most of all anything that assumes the TikTok app is on their phone.
 
 ## Done
 
-- [x] **Driving-sim → OPEN WORLD free-roam + engine sound** (on dev branch,
-      NOT yet on live — owner to review first). Replaced the on-rails "car
-      slides along a fixed road between questions" with real heading-based
-      physics: steering rotates the car body (turnrate scales with speed so it
-      can't pivot in place), so you can turn around and drive anywhere on a big
-      open ground. One straight "main road" runs +z and carries all the
-      question signs; questions trigger by proximity to the active sign
-      (`SIM.signZ[S.i]`) instead of a fixed `car.z` checkpoint. `simTrack` now
-      emits a straight (zero-curvature) path so the existing scenery scatter
-      lines the straight road; the road is one static textured strip (no
-      per-frame windowed rebuild) with `polygonOffset` so it doesn't z-fight
-      the huge ground. **Engine sound fixed and shipped to live separately**
-      (`ctx.resume()` for iOS's suspended context + a sub-oscillator/lowpass
-      and higher gains). Verified headless: drives straight down the road and
-      triggers signs in order (12-checkpoint loop clean), steering turns the
-      correct way, can drive off-road onto open grass, road/cockpit/chase all
-      render. **Gotcha:** a thin road only 2u above a 600k ground z-fights
-      green over the asphalt at distance — fix with material `polygonOffset`,
-      not by nudging Y. Open item: the terrain beyond the road is empty green
-      ("open" but not "random detail") — scenery only lines the road so far.
+- [x] **Driving-sim → OPEN WORLD free-roam, populated terrain, engine sound —
+      ALL LIVE on both hosts.** Replaced the on-rails "car slides along a fixed
+      road between questions" with real heading-based physics: steering rotates
+      the car body (turn rate scales with speed so it can't pivot in place), so
+      you can turn around and drive anywhere on a big open ground. One straight
+      "main road" runs +z and carries all the question signs; questions trigger
+      by proximity to the active sign (`SIM.signZ[S.i]`) instead of a fixed
+      `car.z` checkpoint. `simTrack` now emits a straight (zero-curvature) path
+      so scenery lines the road; the road is one static textured strip (no
+      per-frame windowed rebuild) with `polygonOffset` so it doesn't z-fight the
+      huge ground. **Terrain populated** beyond the road: a 620-instance random
+      tree field (one draw call) + ~26 buildings scattered across the map
+      (`simBuildOpenTrees`/`simBuildOpenBuildings`), both keeping a clear road
+      corridor, so roaming has scenery + distant skylines everywhere.
+      **Steering fix:** `input.r` must map to a heading change that reads as
+      screen-right in the chase cam — steer is `(l?1:0)-(r?1:0)`, verified
+      visually (right turns right, and you can drive off onto the grass).
+      Verified headless each step: 12-checkpoint sign-to-sign loop clean,
+      cockpit + chase render, road visible.
+      - **Engine sound, done in two passes (LIVE).** (1) The oscillator existed
+        but was silent — `ctx.resume()` for iOS's suspended context, plus a
+        sub-oscillator + lowpass and higher gains. (2) Owner still heard nothing
+        on iPhone → added the **canonical iOS unlock: play a 1-sample silent
+        buffer inside the gesture** (`simAudioKick`), on create and re-init, and
+        wake audio from the first pointer/touch/key anywhere on the sim stage
+        (not just specific buttons). **If still silent it's the device:** the
+        iPhone physical silent switch mutes Safari WebAudio, or the in-game 🔊
+        toggle is off. Next lever if needed: route through an HTMLMediaElement
+        to bypass the ringer switch (heavier, not yet done).
+      - **Gotchas logged:** a thin road only 2u above a 600k ground z-fights
+        green over the asphalt at distance — fix with `polygonOffset`, not by
+        nudging Y. On iOS, `resume()` alone does NOT unlock WebAudio; the silent
+        buffer is what actually does.
 - [x] **Driving-sim: steering wheel + gear-shifter animation, and real modeled
       buildings in the world.** Wheel: rotate the Corolla's `steering_wheel`
       node with the steering input (re-optimized the GLB with `--flatten false`
