@@ -101,6 +101,26 @@ owner — most of all anything that assumes the TikTok app is on their phone.
 
 ## Done
 
+- [x] **Driving-sim: look-around BUTTONS (no more dragging the screen).** Owner
+      ask — glance around from the driver's seat with buttons instead of the
+      drag-to-look gesture. Added a 4-button row under the camera toggle:
+      **Left ↖ / Ahead ▲ / Behind ↻ / Right ↗** (bilingual). Tapping one eases
+      the view to that direction (±1.3 rad for the mirror/blind-spot glance,
+      π for over-the-shoulder); tapping the active direction again returns you
+      to Ahead, so one thumb covers it. The view **eases** to the target rather
+      than snapping (`SIM.lookYawTarget` + shortest-angle interpolation in
+      `simDraw`), and works in chase view too via `SIM.orbitYawTarget`.
+      Drag-to-look still works and **wins** — any drag clears the button target
+      so the two input schemes never fight; switching camera mode resets the
+      glance to Ahead. Verified headless: all four buttons render bilingually,
+      set the right target, move the active highlight, toggle back to Ahead,
+      and a drag clears the target; cockpit screenshot confirms the view really
+      rotates (driver's window, door frame and side mirror come into view);
+      0 page errors.
+      **Gotcha:** headless rAF is throttled here, so an eased value won't reach
+      its target within a short wall-clock wait — assert on `lookYawTarget`
+      (and direction of travel), not on `lookYaw` having arrived.
+
 - [x] **Driving-sim: EVERY question in the bank now drives its own scripted
       scenario** — not five situation types cycled ten times. The owner's ask
       was coverage: all **745** active questions, each staged as a real
