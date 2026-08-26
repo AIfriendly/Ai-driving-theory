@@ -1,13 +1,15 @@
 # Iraq / Kurdistan Driving Theory Test — فێربوونی تیۆری شۆفێری
 
 A bilingual (Kurdish Sorani · English, with partial Arabic) driving theory
-practice app for the Kurdistan Region of Iraq. Built as a **single
-self-contained HTML file** — no build step, no dependencies, no network calls.
+practice app for the Kurdistan Region of Iraq. Built as **one HTML file** — no
+build step, no dependencies. The quiz, artwork and study guide are entirely
+inline and work offline; the 3D driving sim additionally fetches two model
+files from `models/`, each with a fallback if they don't load.
 
 Open `index.html` in any browser, or use the published site (see
 [Deployment](#deployment)).
 
-**Current content: 736 questions · 110 hand-drawn sign icons · 132 scene/concept illustrations · 14 achievements. Every question now carries a visual.**
+**Current content: 745 questions · 110 hand-drawn sign icons · 134 scene/concept illustrations · 14 achievements. Every question carries a visual, and every question has a scripted driving-sim scenario.**
 
 | Category | Questions |
 |---|---:|
@@ -27,13 +29,15 @@ from them:
 1. **Kurdistan-primary.** Kurdish (Sorani) is the default language and the
    layout is RTL by default. English is the secondary language; Arabic is
    present for UI strings and older questions.
-2. **Single self-contained file.** The app is published as a Claude Artifact,
-   which enforces a strict CSP blocking *every* external host — no CDN
-   scripts, no web fonts, no remote images, no `fetch`. All CSS, JS and
-   artwork is inline. **Every sign icon is hand-written inline SVG**; there
-   is not a single image file in the project.
-3. **Offline-capable.** Once loaded the app never touches the network.
-   Progress lives in `localStorage`.
+2. **One file for the app itself.** All CSS, JS and artwork is inline — no CDN
+   scripts, no web fonts, no remote images. **Every sign icon is hand-written
+   inline SVG.** The one deliberate exception is the driving sim's 3D models
+   (`models/corolla.glb`, `models/buildings.glb`), added once the owner agreed
+   to relax the rule so the sim could have a real car; both fall back to
+   procedural geometry if the fetch fails, so the app never breaks without them.
+3. **Offline-capable.** The quiz, guide, exam and all artwork work with the
+   network blocked; only the sim's 3D models are fetched, and it degrades to a
+   procedural car without them. Progress lives in `localStorage`.
 4. **Jurisdiction-honest.** Content is sourced from Kurdish study material.
    Where source screenshots carried figures from another country's law
    (alcohol limits, vehicle dimensions, national speed limits), those items

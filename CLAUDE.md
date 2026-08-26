@@ -42,6 +42,7 @@ one-line rationale from the K-line data · final qty and dollar risk.
 
 ## Also in this repo
 
-`web/` — bilingual (Kurdish Sorani · English) driving theory app: a single
-self-contained `index.html`, no build step, no dependencies, no network calls.
-See `web/README.md`.
+`web/` — bilingual (Kurdish Sorani · English) driving theory app: `index.html`
+plus `web/models/*.glb` for the driving sim, no build step, no dependencies.
+The app is offline-capable; only the sim's 3D models are fetched, each with a
+fallback. See `web/README.md` and `docs/PROGRESS.md`.

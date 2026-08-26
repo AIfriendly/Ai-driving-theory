@@ -13,7 +13,11 @@ SHA. Add anything you had to re-derive, or got wrong, to *Decisions & gotchas*
 ## Current state
 
 `web/index.html` — bilingual (Kurdish Sorani · English) driving theory app,
-single self-contained file, no build step, no network calls.
+one HTML file, no build step. **The "no network calls" rule no longer holds**
+and has not for a while: the driving sim fetches `web/models/corolla.glb`
+(2.15 MB) and `web/models/buildings.glb` (0.66 MB), each with a graceful
+fallback if the fetch fails. Everything else — questions, artwork, the whole
+quiz — is still inline and works offline.
 
 | | |
 |---|---|
@@ -676,39 +680,11 @@ owner — most of all anything that assumes the TikTok app is on their phone.
 
 ## Next
 
-**[DONE — shipped in `40c516e`, see Done. Kept for the reasoning.]**
-**OWNER ASK (2026-08-25) — the driving test must cover the ENTIRE question
-bank, one scenario per question.** As it stands the practical-test sim has
-only a handful of enforceable situation *types* (STOP, pedestrian crossing,
-give way, red light, speed limit) cycled a fixed number of times — the owner
-counted "only 3 scripted scenarios" in a drive and wants **every question in
-the bank turned into its own scripted scenario.** They said 795; the bank is
-actually **745 active** (749 defined, 4 archived — see the coverage table),
-so the real target is ~745 scenarios, one per question.
-
-This is a large, open-ended build, not a quick edit. Notes for whoever picks
-it up:
-- **The blocker is authoring, not wiring.** The task engine
-  (`simBuildTask`/`simUpdateTasks`/pass-fail) already exists and is easy to
-  extend; what's missing is a *scenario per question*. Most of the 745 are
-  pure-knowledge questions ("what does this sign mean", "what's the fine
-  for X") with no physical pass/fail action — so "one scenario each" needs a
-  design decision: either (a) enforceable driving scenarios only where the
-  question maps to an action, and a *shown-in-world* non-enforced scenario
-  (drive past the relevant sign / situation, then it's just scenery) for the
-  knowledge ones, or (b) map each question to the closest of a growing library
-  of situation templates. Confirm this framing with the owner before building
-  745 of anything.
-- **Needs many more situation types** than today's five (roundabouts,
-  overtaking, lane discipline, level crossings, school zones, parking, merging,
-  hazard/breakdown, weather, night, emergency vehicles, …). Build the template
-  library first, then a classifier from each question's text (an earlier
-  `simClassifyScenario` did keyword→type and can be revived/expanded) so every
-  question routes to a template.
-- **Do it data-driven:** a per-question scenario descriptor (type + params +
-  the teachable rule text, bilingual) generated from the bank, not 745
-  hand-written branches. Watch performance/length — 745 situations is a very
-  long single drive; probably chunk by set (50) or by topic.
+**Driving-sim scenario coverage is DONE** — all 745 questions carry a scripted
+scenario (45 templates, 12 judging kernels), shipped in `40c516e`. The design
+notes that used to sit here are no longer decisions to make; the reasoning is
+in the *Done* entry. `window.simScenAudit()` in the console re-checks coverage
+at any time (currently 745 questions / 45 templates / 44 used / 0 missing).
 
 **The source sweep is DONE.** All four PDFs are accounted for: the exam read
 completely (50/50, all 431 questions machine-verified against the printed key),
@@ -717,18 +693,28 @@ be book pp 22–229 and therefore already covered.
 
 Nothing in the question bank is currently known to be wrong or missing.
 
-**Open side-thread — driving-sim realism.** The owner keeps asking for the sim
-to look like native App Store driving games (Driving School Simulator: EVO
-etc.). Told them honestly that's a different production category; the real
-blocker is a detailed, redistributable, no-login car-**interior** model, which
-doesn't exist free. Owner agreed to drop the single-file constraint so a model
-can be network-loaded. **Next actionable step is on the owner:** supply a
-car+interior `.glb` (free CC-BY from Sketchfab via their login, or a purchased
-redistributable one); then build the asset-load pipeline around it (graceful
-fallback to the procedural car; verify Cloudflare Worker + Pages both serve the
-new file path). Everything code-only that helps without a new model is now done
-(env reflections, leather, road textures, hands on the wheel). See the *Driving
-simulation* section for the full history.
+**Driving-sim side-thread — the model blocker is RESOLVED and the sim is a real
+feature now.** The old note here said the next step was the owner supplying a
+car+interior `.glb`. They did (CC-BY Corolla, Sketchfab), the load pipeline was
+built around it, and the sim has since become a **pass/fail practical driving
+test**: 745 scripted scenarios, enforceable rules, number-button speed control,
+P·R·N·D with reverse, a free-look wheel, and a loading indicator. See *Done*.
+
+**It is still a side-thread, and that is the point to keep in view.** None of it
+moves the plan below, which is blocked on two things only the owner can do —
+posting the clips and buying the domain. Sim polish is not a substitute for
+either. Remaining known sim gaps, in the order worth doing them, if asked:
+1. **No progress save** — a set is 50 situations (~8-10 min) and closing the app
+   loses it. Either persist progress or cut a session to ~10 situations.
+2. **No way to skip a situation** you keep failing — retry-or-quit is a dead end.
+3. **The sim does not teach.** Failing a task shows one line of rule text, while
+   the actual exam question behind it (with its explanation and artwork) sits
+   unused in the bank. Linking the two is the highest-value sim work left.
+4. A weak-topic report at the end (which situations you fail most).
+
+**Two owner checks never came back:** whether the engine sound works on their
+iPhone, and whether the car model actually loads there (the loading panel now
+says "Using the simple car" when it does not — that answer is one glance away).
 
 The plan is ordered deliberately: **ship free, prove people want it, then
 charge.** Building payments before step 2 is the expensive way to find out
