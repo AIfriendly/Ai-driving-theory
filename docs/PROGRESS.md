@@ -101,6 +101,28 @@ owner — most of all anything that assumes the TikTok app is on their phone.
 
 ## Done
 
+- [x] **Driving-sim: free-look WHEEL on the left of the 3D view.** Owner ask —
+      a wheel on screen, left side, to look anywhere from inside the car, and
+      also to look behind/sides from outside it. Added a circular joystick
+      overlaid on the bottom-left of the sim stage (`#simLookPad` +
+      `#simLookKnob`, 104px / 88px under 360px wide, translucent with an 👁
+      knob). **Rate-based, not absolute**: how far you push the knob is how fast
+      the view turns (`SIM_LOOK_RATE=2.4` rad/s yaw, `1.5` pitch), so there is
+      no limit on how far round you can look — a full circle in ~2.6 s. Works in
+      **both** camera modes: cockpit drives `lookYaw`/`lookPitch` (head turn),
+      chase drives `orbitYaw`/`orbitPitch` (swings the camera round the car).
+      Pitch clamped to the same limits the screen-drag uses. Releasing springs
+      the knob back to centre and leaves the view where you put it. A wheel drag
+      clears any Left/Ahead/Behind/Right button target so the two never fight;
+      `.simoverlay` got `z-index:20` so the question card still covers the wheel.
+      Verified headless: pad renders at the expected box, all four directions
+      move the right value in cockpit AND chase, knob springs back on release,
+      0 page errors; screenshots confirm the wheel over the cockpit view and the
+      camera orbited round the car in chase.
+      **Gotcha:** the joystick must `stopPropagation()` on its pointer events —
+      the canvas underneath has its own drag-to-look handler, and without it a
+      wheel drag drives the view twice.
+
 - [x] **Driving-sim: the cockpit is actually visible now (second, real fix).**
       The owner reported the interior still too dark to see AFTER the earlier
       `cabinFill` fix — so that fix was insufficient, and the reason mattered:
