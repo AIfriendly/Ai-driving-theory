@@ -12,6 +12,23 @@ SHA. Add anything you had to re-derive, or got wrong, to *Decisions & gotchas*
 
 ## Current state
 
+> **BLOCKER, found 2026-08-26 and NOT yet fixed by the owner: the TikTok bio
+> link is a dead URL.** The bio reads `driving-theory.tareeq.workers.dev`.
+> The site is `ai-driving-theory.tareeq.workers.dev`. The `ai-` prefix is
+> missing, and the wrong host is not a redirect — it is a hard Cloudflare
+> 404:
+>
+> ```
+> driving-theory.tareeq.workers.dev      404  17 bytes  "error code: 1042"
+> ai-driving-theory.tareeq.workers.dev   200  2,156,216 bytes
+> ```
+>
+> Re-verified 2026-08-26. Ten clips were posted against that bio. Every
+> viewer who followed the call to action landed on an error string.
+> **Nothing else in the funnel matters until the bio text is corrected** —
+> not hooks, not watch time, not batch two.
+
+
 `web/index.html` — bilingual (Kurdish Sorani · English) driving theory app,
 one HTML file, no build step. **The "no network calls" rule no longer holds**
 and has not for a while: the driving sim fetches `web/models/corolla.glb`
@@ -85,17 +102,26 @@ preview of the ad clips, `video/` the Remotion project that renders them
 
 **Picking this up cold.** Three things are finished and should not be redone:
 the question bank (do not re-sweep the PDFs), the site (live), and the ad
-creative (10 voiced clips delivered, gofile link in *Ad creative*).
+creative (10 voiced clips delivered and posted; 10 more written and checked
+but unvoiced — see the top Done entry).
 
 What is actually left, in order:
-1. The owner posts the 10 clips. Nothing else moves until traffic exists.
-2. Buy a domain — the last Phase 0 item, and the only one with a deadline,
-   since the github.io URL cannot be migrated once it is in a TikTok bio.
-3. Phase 3, the paywall, **only if step 1 shows demand**. The split is decided
-   and exact — see P2, and build the P6 manual gate, not the FIB API.
+1. **The owner fixes the bio link.** One line of text. Everything below is
+   pointless until it is done, and it has already cost ~1,400 views. See the
+   blocker at the top of this file.
+2. Buy a domain — no longer "the last Phase 0 item" but **the second thing on
+   the list**, because the account has no clickable bio field at all, so the
+   link has to be short enough to retype from memory. `tareeq.krd` matches the
+   `tareeqkrd` handle. The github.io URL still cannot be migrated once it is
+   in a bio, which was the original reason and is still true.
+3. Read the retention data before posting batch two. Ten clips are a finite
+   asset and the first ten bought no information, because the destination was
+   broken the whole time.
+4. Phase 3, the paywall, **only if real traffic shows demand**. The split is
+   decided and exact — see P2, and build the P6 manual gate, not the FIB API.
 
-**Steps 2 and 3 are independent — do not treat the domain as a prerequisite
-for payments.** The domain needs an international card; the FIB backend needs
+**The domain and the paywall are independent — do not treat the domain as a
+prerequisite for payments.** The domain needs an international card; the FIB backend needs
 an Iraqi company. FIB's callback URL can be any free host subdomain. See P7.
 
 **Read *Distribution* before advising on posting, ads or automation.** That
@@ -105,6 +131,34 @@ owner — most of all anything that assumes the TikTok app is on their phone.
 ---
 
 ## Done
+
+- [x] **Diagnosed why ten posted clips produced no traffic: the bio link is
+      dead.** Owner reported low views on ~12 posts averaging ~138 views, and
+      sent profile screenshots. The views are unremarkable for a cold start;
+      what was not is that the bio reads
+      `driving-theory.tareeq.workers.dev`, missing the `ai-` prefix. Verified
+      twice, 2026-08-26: that host returns **HTTP 404, 17 bytes, `error code:
+      1042`**, with no redirect, while the real host returns 200 and 2.15 MB.
+      **~1,400 views were sent to a Cloudflare error string.** Not fixed here
+      — it is a text field on the owner's phone. See the blocker banner at the
+      top and the gotcha in *Decisions & gotchas*.
+      - **There is no Website field in the owner's Edit profile at all**, so
+        even the correct URL is plain text a viewer must retype. That is what
+        makes the short domain urgent rather than a Phase 3 nicety —
+        `tareeq.krd` would match the `tareeqkrd` handle and the logo.
+      - **The Business-account switch is not available in the owner's app**,
+        and what they found instead was business *verification*, which was
+        rejected because it wants real company registration documents.
+        Advised against resubmitting an invented registration number: a
+        knowingly false submission risks the one asset with an audience on it.
+      - **Buffer's free tier is sufficient**, verified against
+        buffer.com/pricing: 3 channels, 10 scheduled posts per channel
+        ("refill anytime"), 30-day analytics history. Ten days of queue at one
+        post a day. Relevant because the owner keeps no TikTok app on their
+        phone, so any plan ending "finish it in the app" is disqualified.
+      - Still unanswered by the owner: watch-time and retention curves,
+        traffic sources, whether the clips play with audio on their phone,
+        whether captions went out in Kurdish, whether there are comments.
 
 - [x] **Second batch of ten TikTok clips, plus a countdown that reads as a
       timer.** Owner asked for ten more videos "with timer effect and stuff
@@ -1240,22 +1294,60 @@ Nothing below has been started.
    API reachable from this environment, verified 2026-08-18
    (`https://api.gofile.io/servers` returns ok).
 
-**The creative is built and verified — 16 clips are ready to post.** See
-*Ad creative* below. What is left here is the posting itself.
+**Superseded 2026-08-26 — the owner has already posted.** Ten voiced Kurdish
+clips went out over roughly two weeks, averaging ~138 views each (~1,400
+total, read off the owner's profile grid). The plan below was written before
+any of that; what it got wrong is recorded under each item rather than
+deleted, because the wrong parts are the useful parts.
 
-- [ ] **Switch the account to BUSINESS before posting the first clip.** Not a
-      preference — **a personal account has no clickable bio link until 1,000
-      followers**, and a Business account gets one at zero. Every clip ends on
-      *لینک لە بایۆ* (link in bio), so posting from a personal account means
-      ten videos pointing at a link that does not exist. This would have
-      broken the whole funnel silently.
-      The usual objection — Business loses the trending-sound library — is
-      already void here, because the voice is baked in and there is no
-      trending sound to lose. Business also unlocks third-party schedulers and
-      real analytics. The only loss is Creator Rewards eligibility, i.e.
-      TikTok paying for views, which is irrelevant when the product is the
-      app. Set the bio link to
-      **https://ai-driving-theory.tareeq.workers.dev/** in the same sitting.
+**The single finding that explains the result: the bio link is dead.** See the
+blocker at the top of this file. ~1,400 views were sent to a Cloudflare error
+string. Do not spend another session tuning hooks, captions or watch time
+until that one line of text is corrected — the funnel has never actually been
+tested.
+
+- [ ] **The account still has no clickable link, and switching to Business
+      did not work.** The reasoning below still holds; the execution did not.
+      Recorded 2026-08-26 from the owner's own screenshots.
+      - **There is no Website field in Edit profile.** So the URL in the bio
+        is plain text. A viewer has to *read it off the screen and type it*:
+        36 characters, a hyphen, a subdomain and a `.dev` TLD most people will
+        not guess. Even spelled correctly that converts terribly.
+      - **There is no account-type toggle in Settings either** — the
+        "switch to Business" control simply is not in the owner's app.
+      - **What the owner found instead was business *verification*, which is
+        a different thing** and was rejected ("Business registration — Not
+        approved"). It wants real company registration documents. Do not
+        resubmit an invented registration number; a knowingly false submission
+        risks the account, which is the one asset with any audience on it.
+      - **Therefore the short domain is not a Phase 3 nicety — it is the
+        fix, and it is urgent.** The username is already `tareeqkrd`, so
+        something like `tareeq.krd` matches the handle and the logo and is
+        typeable in one go from memory. That is what makes a bio with no
+        clickable field survivable.
+      - The original reasoning, still correct: a personal account has no
+        clickable bio link until 1,000 followers; Business gets one at zero.
+        The usual objection (Business loses the trending-sound library) is
+        void here because the voice is baked in. The only real loss is
+        Creator Rewards, irrelevant when the product is the app.
+      - Whatever route ends up working, the bio must read exactly
+        **ai-driving-theory.tareeq.workers.dev** until a domain exists.
+
+- [ ] **Re-render the end cards to put the URL on screen.** Every clip closes
+      on *لینک لە بایۆ* — "link in bio" — which asks the viewer to do work in
+      a bio that has no clickable field. Once a short domain exists, the CTA
+      line in `video/src/data.ts` (`CTA.ku.b`) should show the domain itself
+      instead. Twenty clips would need re-rendering, which is cheap: no new
+      TTS characters are spent, because the CTA line is baked into `sayB`
+      audio that does not change.
+
+- [ ] **Scheduling: Buffer free tier is enough, verified 2026-08-26 against
+      buffer.com/pricing.** 3 channels, **10 scheduled posts per channel**
+      ("refill anytime"), 1 user, 30-day analytics history. At one post a day
+      that is ten days of queue, which is more than the 2-3-then-stop cadence
+      below wants anyway. This matters because the owner deliberately keeps no
+      TikTok app on their phone (ADHD — see the constraint below), so any plan
+      that ends "finish it in the app" is disqualified.
 
 - [ ] Post to TikTok and watch what happens. This is the cheap experiment and
       the whole reason the free tier exists. Suggested order, strongest hook
@@ -1285,16 +1377,32 @@ Nothing below has been started.
       ability to react. Lead with the strongest hooks (night speed,
       unlicensed penalty, ambulance number) because a new account's first
       posts calibrate who TikTok shows it to.
-- [ ] Add a trending sound in-app to each one. The clips ship silent on
-      purpose — see the music note below.
+- [x] ~~Add a trending sound in-app to each one.~~ **Void since the voiced
+      batch.** The clips carry a Kurdish voiceover now, so there is no silence
+      to fill and nothing to gain from a trending sound — and baking the voice
+      in is exactly what makes scheduled/API posting possible at all.
 - [ ] Use the comments to settle the KRG fee question (see *open questions*) —
       asking what people actually paid gets a real figure and engagement in the
       same move.
-- [ ] Optional: record the voiceovers. Scripts are written and timed in
-      `video/VOICEOVER.md`; drop the mp3s in and re-render.
+- [x] ~~Optional: record the voiceovers.~~ Done for batch one via
+      kurdishtts.com. **Batch two is written but unvoiced** — see the Done
+      entry at the top: `KURDISH_TTS_KEY` was not available in that session.
 
-**Do not post before Phase 0 is done.** Every clip ends on "link in bio" and
-there is currently no link — Pages has never deployed.
+**~~Do not post before Phase 0 is done.~~** Stale on both halves: Pages *and*
+the Cloudflare Worker are both live, and the owner has already posted. What
+survives is the warning underneath it, which turned out to be exactly right in
+a way nobody checked: **every clip ends on "link in bio", so the bio is part
+of the product.** A typo there costs the entire funnel and produces no error
+anyone will see — the videos look fine, the views arrive, and the traffic
+simply never lands.
+
+**Still needed from the owner before the next posting decision** (asked
+2026-08-26, not yet answered): TikTok Studio watch-time and retention curves,
+traffic-source breakdown, whether the posted clips play with audio on their
+phone, whether captions and hashtags went out in Kurdish, and whether there
+are any comments. Without retention data, "low views" cannot be told apart
+from "good views, broken destination" — though the dead bio URL now explains
+the second half on its own.
 
 ### Phase 3 — monetize (only after Phase 2 says yes)
 
@@ -1925,6 +2033,26 @@ a $12 domain is a cheap way to find out.
 ---
 
 ## Decisions & gotchas
+
+**The bio is part of the product, and it is the only part with no test.**
+Ten clips were rendered, safe-zone-checked pixel by pixel, bitrate-verified
+and duration-verified — and then pointed at a URL with a typo in it that
+nobody ever opened. `driving-theory.tareeq.workers.dev` instead of
+`ai-driving-theory.tareeq.workers.dev`; a hard 404, not a redirect. Every
+automated check in this repo passed while the funnel was completely broken,
+because **the failure lives in a text field on someone's phone, outside
+everything the repo can see.** The general shape: when a pipeline's last hop
+is a human retyping a string into a third-party UI, that hop is where the
+whole thing breaks, and it is the one hop with no CI. Read the destination
+back and `curl` it — every time it changes, and before the first post, not
+after fourteen of them.
+
+Two things follow. **Never leave the published link long or exotic** — this
+one is 36 characters with a hyphen, a subdomain and a `.dev` TLD, so a typo
+was close to inevitable. And **a "link in bio" CTA silently assumes there is
+a clickable bio field**; on a personal TikTok account there is not one, which
+turns the same string into something a viewer must retype from memory.
+
 
 **A "save on exit" path must know whether the session was ever picked up.**
 The sim's resume prompt is shown while `taskIdx` is still 0, because the saved
