@@ -1393,6 +1393,27 @@ tested.
         guess at the shape because developers.buffer.com/guides/channels.html
         404s, so `npm run channels` prints the whole raw response — the first
         real run is what settles it.
+      - **TikTok has ONE caption field — there is no title, description or
+        tags field to fill in.** Buffer's `TikTokPostMetadataInput` carries
+        exactly two things: `isAiGenerated`, and a `title` that applies to
+        *photo* posts only. So the caption is the whole surface, and only its
+        **first ~125 characters** show in the feed before "more". (Contrast
+        YouTube, if Shorts is ever added: `title` is *required* there, along
+        with `categoryId` — but there is still no description or tags field.)
+      - **The clips disclose AI-generated content.** The voiceover is
+        synthetic, TikTok requires AIGC disclosure, and the script sets
+        `metadata.tiktok.isAiGenerated` true by default. Over-disclosing costs
+        nothing; under-disclosing risks the account.
+      - **Fixed a real defect in the captions already written.** Since August
+        2025 TikTok counts only the **first five** hashtags — anything past
+        the fifth is ignored for categorisation and distribution. Every block
+        in POSTING.md carried 12-13, which meant all twenty clips spent their
+        five counted slots on the topic plus two city names, and
+        `#مۆڵەتی_شۆفێری` and `#تیۆری` — what someone studying for the test
+        actually searches — **never registered on a single clip, including
+        the ten already posted.** Rewritten to exactly five each: two topical,
+        two intent, one locale. `#کوردستان` covers Erbil, Sulaymaniyah and
+        Duhok without spending three slots.
       - Buffer free tier, verified against buffer.com/pricing: 3 channels,
         **10 scheduled posts per channel** ("refill anytime"), 1 user, 30-day
         analytics, 1 API key at 3,000 requests/month. Ten days of queue at one

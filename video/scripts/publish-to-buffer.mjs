@@ -71,10 +71,18 @@ const channelId = flag("channel");
 const mediaBase = flag("media-base");
 if (!channelId || !mediaBase) {
   console.error("usage: --channel <id> --media-base <public-url-prefix> [--ids a,b] " +
-                "[--start <ISO8601>] [--every <hours>] [--go]\n" +
+                "[--start <ISO8601>] [--every <hours>] [--no-ai-disclosure] [--go]\n" +
                 "       (run `channels` first to find the id)");
   process.exit(2);
 }
+
+/* TikTok requires AI-generated content to be disclosed, and the voiceover on
+   every one of these clips is synthetic (kurdishtts.com). Buffer surfaces
+   that as metadata.tiktok.isAiGenerated, so it defaults to true here.
+   Over-disclosing costs nothing; under-disclosing risks the account, which is
+   the only asset with an audience on it. --no-ai-disclosure overrides it, but
+   do that only on a clip whose audio is a real human voice. */
+const AI_DISCLOSURE = !argv.includes("--no-ai-disclosure");
 
 const only = flag("ids") ? new Set(flag("ids").split(",").map((s) => s.trim())) : null;
 /* Default: start tomorrow evening in Kurdistan (UTC+3), one clip a day. The
@@ -113,6 +121,10 @@ for (const p of posts) {
     schedulingType: "automatic",
     mode: "customScheduled",
     dueAt,
+    /* TikTok has ONE caption field, so there is no title or description to
+       fill in: metadata.tiktok carries only the AI flag and a title that
+       applies to photo posts, which these are not. */
+    metadata: {tiktok: {isAiGenerated: AI_DISCLOSURE}},
     assets: [{
       video: {
         url: `${mediaBase.replace(/\/$/, "")}/${p.nn}-${p.id}.mp4`,
@@ -129,6 +141,7 @@ for (const p of posts) {
     console.log(`[dry-run] ${p.nn} ${p.id}  ->  ${dueAt}`);
     console.log(`          ${input.assets[0].video.url}`);
     console.log(`          ${input.text.split("\n")[0]}`);
+    console.log(`          tags: ${p.tags}  |  AI disclosed: ${AI_DISCLOSURE}`);
     continue;
   }
   try {

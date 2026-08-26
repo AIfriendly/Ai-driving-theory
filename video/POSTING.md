@@ -3,6 +3,16 @@
 Copy one block per video. Kurdish caption first: caption language is a real
 distribution signal, not decoration.
 
+**Five hashtags, and the order matters.** Since August 2025 TikTok counts only
+the **first five** hashtags in a caption — you can type more, but nothing past
+the fifth is read for categorisation or distribution. These blocks used to
+carry 12-13 each, which meant every clip spent its five slots on the topic
+plus two city names, and `#مۆڵەتی_شۆفێری` and `#تیۆری` — the two things
+someone actually searches when they are studying for the test — never
+registered on a single one of the twenty. Each block is now exactly five:
+two topical, two intent, one locale. `#کوردستان` covers Erbil, Sulaymaniyah
+and Duhok without spending three slots on them.
+
 **Do not put the answer in the caption.** The whole clip is built so people
 watch to the end to find out. Giving it away in the caption throws that away.
 
@@ -24,7 +34,7 @@ clickable.
 
 **Tags**
 ```
-#شەو #خێرایی #کوردستان #هەولێر #سلێمانی #دهۆک #مۆڵەتی_شۆفێری #تیۆری #فێربوونی_شۆفێری #kurdistan #erbil #drivingtest
+#شەو #خێرایی #مۆڵەتی_شۆفێری #تیۆری #کوردستان
 ```
 
 **Description / bio link**
@@ -51,7 +61,7 @@ clickable.
 
 **Tags**
 ```
-#وانەی_شۆفێری #مامۆستا #کوردستان #هەولێر #سلێمانی #دهۆک #مۆڵەتی_شۆفێری #تیۆری #فێربوونی_شۆفێری #kurdistan #erbil #drivingtest
+#وانەی_شۆفێری #مامۆستا #مۆڵەتی_شۆفێری #تیۆری #کوردستان
 ```
 
 **Description / bio link**
@@ -78,7 +88,7 @@ clickable.
 
 **Tags**
 ```
-#فریاگوزاری #١٢٢ #کوردستان #هەولێر #سلێمانی #دهۆک #مۆڵەتی_شۆفێری #تیۆری #فێربوونی_شۆفێری #kurdistan #erbil #drivingtest
+#فریاگوزاری #١٢٢ #مۆڵەتی_شۆفێری #تیۆری #کوردستان
 ```
 
 **Description / bio link**
@@ -105,7 +115,7 @@ clickable.
 
 **Tags**
 ```
-#ڕاکێشان #گوریس #کوردستان #هەولێر #سلێمانی #دهۆک #مۆڵەتی_شۆفێری #تیۆری #فێربوونی_شۆفێری #kurdistan #erbil #drivingtest
+#ڕاکێشان #گوریس #مۆڵەتی_شۆفێری #تیۆری #کوردستان
 ```
 
 **Description / bio link**
@@ -132,7 +142,7 @@ clickable.
 
 **Tags**
 ```
-#پشتێن #سەلامەتی #کوردستان #هەولێر #سلێمانی #دهۆک #مۆڵەتی_شۆفێری #تیۆری #فێربوونی_شۆفێری #kurdistan #erbil #drivingtest
+#پشتێن #سەلامەتی #مۆڵەتی_شۆفێری #تیۆری #کوردستان
 ```
 
 **Description / bio link**
@@ -159,7 +169,7 @@ clickable.
 
 **Tags**
 ```
-#چرای_هاتووچۆ #تیری_سەوز #کوردستان #هەولێر #سلێمانی #دهۆک #مۆڵەتی_شۆفێری #تیۆری #فێربوونی_شۆفێری #kurdistan #erbil #drivingtest
+#چرای_هاتووچۆ #تیری_سەوز #مۆڵەتی_شۆفێری #تیۆری #کوردستان
 ```
 
 **Description / bio link**
@@ -186,7 +196,7 @@ clickable.
 
 **Tags**
 ```
-#پێشینە #یەکتربڕ #کوردستان #هەولێر #سلێمانی #دهۆک #مۆڵەتی_شۆفێری #تیۆری #فێربوونی_شۆفێری #kurdistan #erbil #drivingtest
+#پێشینە #یەکتربڕ #مۆڵەتی_شۆفێری #تیۆری #کوردستان
 ```
 
 **Description / bio link**
@@ -213,7 +223,7 @@ clickable.
 
 **Tags**
 ```
-#مەودا #سەلامەتی #کوردستان #هەولێر #سلێمانی #دهۆک #مۆڵەتی_شۆفێری #تیۆری #فێربوونی_شۆفێری #kurdistan #erbil #drivingtest
+#مەودا #سەلامەتی #مۆڵەتی_شۆفێری #تیۆری #کوردستان
 ```
 
 **Description / bio link**
@@ -240,7 +250,7 @@ clickable.
 
 **Tags**
 ```
-#پارککردن #هێڵی_زەرد #کوردستان #هەولێر #سلێمانی #دهۆک #مۆڵەتی_شۆفێری #تیۆری #فێربوونی_شۆفێری #kurdistan #erbil #drivingtest
+#پارککردن #هێڵی_زەرد #مۆڵەتی_شۆفێری #تیۆری #کوردستان
 ```
 
 **Description / bio link**
@@ -267,7 +277,7 @@ clickable.
 
 **Tags**
 ```
-#یاسا #سزا #کوردستان #هەولێر #سلێمانی #دهۆک #مۆڵەتی_شۆفێری #تیۆری #فێربوونی_شۆفێری #kurdistan #erbil #drivingtest
+#یاسا #سزا #مۆڵەتی_شۆفێری #تیۆری #کوردستان
 ```
 
 **Description / bio link**
@@ -294,7 +304,7 @@ clickable.
 
 **Tags**
 ```
-#مەی #خواردنەوە #سەلامەتی #کوردستان #هەولێر #سلێمانی #دهۆک #مۆڵەتی_شۆفێری #تیۆری #فێربوونی_شۆفێری #kurdistan #erbil #drivingtest
+#مەی #خواردنەوە #مۆڵەتی_شۆفێری #تیۆری #کوردستان
 ```
 
 **Description / bio link**
@@ -321,7 +331,7 @@ clickable.
 
 **Tags**
 ```
-#فریاگوزاری #کڵاوی_پاراستن #مۆتۆڕ #کوردستان #هەولێر #سلێمانی #دهۆک #مۆڵەتی_شۆفێری #تیۆری #فێربوونی_شۆفێری #kurdistan #erbil #drivingtest
+#فریاگوزاری #کڵاوی_پاراستن #مۆڵەتی_شۆفێری #تیۆری #کوردستان
 ```
 
 **Description / bio link**
@@ -348,7 +358,7 @@ clickable.
 
 **Tags**
 ```
-#منداڵ #کورسی_منداڵ #سەلامەتی #کوردستان #هەولێر #سلێمانی #دهۆک #مۆڵەتی_شۆفێری #تیۆری #فێربوونی_شۆفێری #kurdistan #erbil #drivingtest
+#منداڵ #کورسی_منداڵ #مۆڵەتی_شۆفێری #تیۆری #کوردستان
 ```
 
 **Description / bio link**
@@ -375,7 +385,7 @@ clickable.
 
 **Tags**
 ```
-#فریاگوزاری #برین #یارمەتیی_یەکەم #کوردستان #هەولێر #سلێمانی #دهۆک #مۆڵەتی_شۆفێری #تیۆری #فێربوونی_شۆفێری #kurdistan #erbil #drivingtest
+#فریاگوزاری #برین #مۆڵەتی_شۆفێری #تیۆری #کوردستان
 ```
 
 **Description / bio link**
@@ -402,7 +412,7 @@ clickable.
 
 **Tags**
 ```
-#تەم #لایت #باران #کوردستان #هەولێر #سلێمانی #دهۆک #مۆڵەتی_شۆفێری #تیۆری #فێربوونی_شۆفێری #kurdistan #erbil #drivingtest
+#تەم #لایت #مۆڵەتی_شۆفێری #تیۆری #کوردستان
 ```
 
 **Description / bio link**
@@ -429,7 +439,7 @@ clickable.
 
 **Tags**
 ```
-#بازنە #ئاماژە #دەوار #کوردستان #هەولێر #سلێمانی #دهۆک #مۆڵەتی_شۆفێری #تیۆری #فێربوونی_شۆفێری #kurdistan #erbil #drivingtest
+#بازنە #ئاماژە #مۆڵەتی_شۆفێری #تیۆری #کوردستان
 ```
 
 **Description / bio link**
@@ -456,7 +466,7 @@ clickable.
 
 **Tags**
 ```
-#هێماکان #خێرایی #پێچ #کوردستان #هەولێر #سلێمانی #دهۆک #مۆڵەتی_شۆفێری #تیۆری #فێربوونی_شۆفێری #kurdistan #erbil #drivingtest
+#هێماکان #خێرایی #مۆڵەتی_شۆفێری #تیۆری #کوردستان
 ```
 
 **Description / bio link**
@@ -483,7 +493,7 @@ clickable.
 
 **Tags**
 ```
-#کۆڵان #خێرایی #شار #کوردستان #هەولێر #سلێمانی #دهۆک #مۆڵەتی_شۆفێری #تیۆری #فێربوونی_شۆفێری #kurdistan #erbil #drivingtest
+#کۆڵان #خێرایی #مۆڵەتی_شۆفێری #تیۆری #کوردستان
 ```
 
 **Description / bio link**
@@ -510,7 +520,7 @@ clickable.
 
 **Tags**
 ```
-#شەو #لایت #خەڵەتان #کوردستان #هەولێر #سلێمانی #دهۆک #مۆڵەتی_شۆفێری #تیۆری #فێربوونی_شۆفێری #kurdistan #erbil #drivingtest
+#شەو #لایت #مۆڵەتی_شۆفێری #تیۆری #کوردستان
 ```
 
 **Description / bio link**
@@ -537,7 +547,7 @@ clickable.
 
 **Tags**
 ```
-#تایە #ئۆتۆمبیل #پشکنین #کوردستان #هەولێر #سلێمانی #دهۆک #مۆڵەتی_شۆفێری #تیۆری #فێربوونی_شۆفێری #kurdistan #erbil #drivingtest
+#تایە #ئۆتۆمبیل #مۆڵەتی_شۆفێری #تیۆری #کوردستان
 ```
 
 **Description / bio link**
