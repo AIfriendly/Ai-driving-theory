@@ -142,6 +142,11 @@ owner — most of all anything that assumes the TikTok app is on their phone.
       the last situation finishes the drive and clears the save; backing out of
       the offer leaves the save intact. Regression clean: 745/45/0 missing,
       50 tasks, first 15 situations build, all controls present, 0 page errors.
+      **Verify through `window.simTest`, not the `window.SIM` debug patch** —
+      everything new here is reachable from it. One trap: `simTest.goto(i)`
+      leaves `SIM.task` null (the next frame builds it), so reading `state().k`
+      or `state().z` straight after a `goto` returns null and looks like a
+      build failure. Call `simTest.step(0.001,1)` first.
 
 - [x] **Driving-sim: REVERSE gear (a button to back up).** The shifter was P/N/D
       with no R, so the car could not move backwards at all — if you overshot a
@@ -1676,6 +1681,24 @@ a $12 domain is a cheap way to find out.
 
 ## Decisions & gotchas
 
+**A "save on exit" path must know whether the session was ever picked up.**
+The sim's resume prompt is shown while `taskIdx` is still 0, because the saved
+drive has not been restored yet. So tapping ✕ instead of choosing ran
+`simSaveProgress()`, which treats `taskIdx<=0` as "nothing to save" and
+deletes — **destroying the exact save it was offering**. Guarded with
+`SIM.resumePending`. The general shape: any persist-on-exit hook that also
+prunes empty state will eat a not-yet-restored session unless it can tell
+"fresh and empty" from "loaded but not yet resumed".
+
+**The sim's overlay card is ~218px tall on a 390px phone, and its fail card is
+~377px.** Measured, not guessed (`scrollHeight` vs `clientHeight`). This means
+**buttons at the bottom of that card were already below the fold** before
+anything was added to it — a player had to scroll an overlay they had no
+reason to think was scrollable just to press *Try again*. Fixed by making the
+action row `position:sticky` (`.simcardacts`). Before adding anything to that
+card, check what it does to the visible region; the stage is only `w*0.72`
+tall, so the card cannot simply grow.
+
 **`web/index.html` is an Artifact body AND a raw-served page, and those want
 different things.** It was written for the Artifact publisher, which wraps the
 file in `<!doctype html><html><head>…</head><body>`. GitHub Pages serves it
@@ -1969,6 +1992,36 @@ Two things this cost, both worth not repeating:
 ---
 
 ## Driving simulation
+
+> **READ THIS BOX BEFORE THE REST OF THE SECTION.** Everything below the box is
+> a **chronological build log**, kept for its bug post-mortems and for the
+> reasoning behind choices that were later reversed. **It is not a description
+> of the current sim, and several passes describe designs that no longer
+> exist** — the 2D scanline cockpit, the hand-written WebGL renderer, and above
+> all the original "quiz on wheels" (drive to a checkpoint, answer a question
+> card, continue). All three were replaced. Do not implement against them.
+>
+> **What the sim actually is today** — a **pass/fail practical driving test**,
+> rendered with inlined Three.js r128:
+> - Each of the 50 questions in a set becomes a **scripted road situation** you
+>   must physically drive correctly (45 templates, 12 judging kernels, 745/745
+>   questions covered). **No question cards appear while driving** — that was
+>   removed on the owner's explicit instruction.
+> - Break the rule and you **fail instantly**: the drive pauses and the card
+>   shows what you did wrong plus the correct answer. Retry, or **skip** it
+>   (offered from the second failure of the same situation; scores as wrong).
+> - **Progress is saved** after every verdict; reopening a part-finished set
+>   offers *Continue* / *Start over*, and the set list shows a resume badge.
+> - Controls: **number buttons set the speed** (0·20·40·60·80·100 km/h, cruise
+>   style — there is no gas pedal), **P·R·N·D** shifter with a real reverse
+>   (inverted steering, ~20 km/h cap), ◀ ▶ steering, a **free-look wheel** plus
+>   Left/Ahead/Behind/Right preset buttons, and a cockpit/chase camera toggle.
+> - The car is a fetched `.glb` (CC-BY Corolla) with a **loading panel** and a
+>   procedural fallback car if it fails.
+>
+> The authoritative record of current behaviour is the ***Done*** section at the
+> top of this file, newest first. When this box and the log below disagree, the
+> box and *Done* win.
 
 Built this session, in `web/index.html` — a new "Driving Simulation" screen,
 placed on Home right next to Mock Exam (the "final test" framing the owner
