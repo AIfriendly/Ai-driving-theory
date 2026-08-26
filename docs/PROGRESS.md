@@ -45,7 +45,7 @@ quiz — is still inline and works offline.
 | Sim scene cost | 613,740 tris/frame · 142 draw calls (≈112 of them the car model) · 4,585 instanced objects in 30 meshes |
 | Questions with no visual | 0 |
 | Study-guide tips with no picture | 0 (587 of 587) |
-| Ad clips rendered | **20 voiced Kurdish**, all delivered · batch one (15-24s) posted · batch two (18.9-26.4s, 1,378-1,865 kbps) at https://gofile.io/d/Hh4MyzwF · earlier silent 8x2 batch at `292a68e` |
+| Ad clips rendered | **20 voiced Kurdish**, all delivered · batch one (15-24s) posted · batch two (18.9-26.4s, 1,378-1,865 kbps) at https://gofile.io/d/4Dmqf00J · earlier silent 8x2 batch at `292a68e` |
 
 Branch: `claude/trading-agent-bybit-mcp-ao56dp` — this is also the repo's
 **default branch**. There is no `main`/`master`.
@@ -217,7 +217,7 @@ owner — most of all anything that assumes the TikTok app is on their phone.
         speech, on every clip checked. Note for next time: Remotion's bundled
         ffmpeg is a minimal build with **no `volumedetect` filter**, so RMS
         has to be computed off a decoded WAV.
-      - **Handoff: https://gofile.io/d/Hh4MyzwF** — 21 files, verified HTTP
+      - **Handoff: https://gofile.io/d/4Dmqf00J** — 21 files, verified HTTP
         200. Gofile expires unclaimed guest content, so re-run
         `npm run upload:bundle` to mint a fresh link.
       - `bundle-posts` now skips a clip with no MP4 instead of dying, and
