@@ -1011,6 +1011,61 @@ owner — most of all anything that assumes the TikTok app is on their phone.
 
 ## Next
 
+### Right now, in order (updated 2026-08-26)
+
+**Everything below the first item is downstream of it.** Batch two is finished
+and sitting in a folder; the reason not to post it yet is that the destination
+is still broken.
+
+**Owner only — nothing in this repo can do these:**
+
+1. **Fix the TikTok bio text.** Two minutes. It reads
+   `driving-theory.tareeq.workers.dev`; it must read
+   `ai-driving-theory.tareeq.workers.dev`. Still 404 as of 2026-08-26. See the
+   blocker at the top of this file.
+2. **Change the account type**, at `tiktok.com/tiktokstudio` in a desktop
+   browser — free, keeps your content, no documents, reversible. **This is not
+   business verification**, which wants company papers and is what got
+   rejected. Which type depends on what you want first:
+   - **Business** — the only thing that gives a clickable Website field below
+     1,000 followers, *and* unlocks scheduling. Solves both problems.
+   - **Creator** — unlocks scheduling only, but keeps the full music library
+     and Creator Rewards. Take this if the Business toggle genuinely is not
+     there.
+3. **Store `KURDISH_TTS_KEY` on the environment**, not in a session. A
+   container is reclaimed after inactivity and the key goes with it. Rotate it
+   too — it was pasted into a chat transcript.
+4. **Buy the short domain.** `tareeq.krd` matches the `tareeqkrd` handle. With
+   no clickable bio field the link has to be typeable from memory, so this
+   stopped being a Phase 3 nicety.
+5. **Send the TikTok Studio numbers** — watch time, retention curves, traffic
+   sources, whether there are comments. Ten posted clips bought no information
+   because the destination was broken; the next ten should not repeat that.
+6. *Optional, only for full automation:* a Buffer account and an API token
+   (free plan). Then `BUFFER_ACCESS_TOKEN=... npm run channels`.
+
+**Next session can pick up, unblocked:**
+
+- **Host the MP4s somewhere permanent.** A GitHub Release on this public repo.
+  Needed before any scheduled post, because Buffer fetches the media *when the
+  post publishes* and gofile expires. **Not done: it publishes the clips at a
+  public URL under the owner's GitHub identity, so ask first.**
+- **Test `publish-to-buffer.mjs` against a live token.** It dry-runs correctly
+  but has never spoken to Buffer. The channel query is a guess — the guide for
+  it 404s — so `npm run channels` printing a real response is the first thing
+  to check.
+- **Re-render the end cards** once a domain exists: `CTA.ku.b` in
+  `video/src/data.ts` should show the domain instead of *لینک لە بایۆ*. Costs
+  no TTS characters — the CTA line is baked into `sayB` audio that does not
+  change.
+- **Make the sim teach** (item 2 in the sim list below) — the highest-value
+  work left that is not blocked on anyone.
+
+**Do not:** render batch three, polish the sim, or tune hooks. There are
+twenty finished clips and no working funnel. More creative does not fix a
+destination that 404s.
+
+
 **Driving-sim scenario coverage is DONE** — all 745 questions carry a scripted
 scenario (45 templates, 12 judging kernels), shipped in `40c516e`. The design
 notes that used to sit here are no longer decisions to make; the reasoning is
@@ -1032,9 +1087,8 @@ test**: 745 scripted scenarios, enforceable rules, number-button speed control,
 P·R·N·D with reverse, a free-look wheel, and a loading indicator. See *Done*.
 
 **It is still a side-thread, and that is the point to keep in view.** None of it
-moves the plan below, which is blocked on two things only the owner can do —
-posting the clips and buying the domain. Sim polish is not a substitute for
-either. Remaining known sim gaps, in the order worth doing them, if asked:
+moves the plan below, which is blocked on the owner fixing the bio link and
+changing the TikTok account type. Sim polish is not a substitute for either. Remaining known sim gaps, in the order worth doing them, if asked:
 1. ~~No progress save~~ and ~~no way to skip~~ — **both done**, see *Done* below.
 2. **The sim does not teach.** Failing a task shows one line of rule text, while
    the actual exam question behind it (with its explanation and artwork) sits
@@ -1126,7 +1180,14 @@ nobody came. Do not reorder without a reason.
       repo name this project has already changed once. Free to fix now,
       expensive once it is in a bio. Ask before publishing anything.
 
-- [ ] Buy a domain and point it at Pages (Settings → Pages → Custom domain).
+- [ ] Buy a domain. **Point it at the Cloudflare Worker, not Pages** — the
+      Worker is the advertised host, and a custom domain attaches to it in one
+      click. **Reprioritised 2026-08-26: this is no longer the last Phase 0
+      item, it is second on the list.** The account has no clickable Website
+      field, so the bio link is plain text a viewer must retype from what they
+      remember of a video. 36 characters with a hyphen, a subdomain and a
+      `.dev` TLD does not survive that. `tareeq.krd` matches the `tareeqkrd`
+      handle and the steering-wheel logo.
       `aifriendly.github.io/Ai-driving-theory/` converts badly from social,
       depends on the repo name (**this repo was already renamed once**), and
       cannot be moved when Phase 3 needs a host that runs code. ~$12/yr for a
