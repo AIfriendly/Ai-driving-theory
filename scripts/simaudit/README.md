@@ -62,6 +62,11 @@ node scripts/simaudit/solve.mjs bad.json
 - **Never conclude "converged" from wall-clock polling.** Headless rAF runs a
   handful of frames, so a value that stops changing between polls may just mean
   no frame ran. Count frames alongside the value.
+- **Don't let Playwright wait on rAF.** `waitForFunction` polls on
+  requestAnimationFrame by default. The sim runs at roughly 1 fps under
+  software rendering, so those waits starve and time out while the state they
+  are waiting for is already correct — a failure that looks like a broken app
+  and isn't. Every wait here passes `{polling: 250}`.
 - **The speed pad only offers 0/20/40/60/80/100.** A zone band narrower than
   20 km/h that misses every button is unwinnable however well it is driven —
   `audit.mjs` reports that as `no selectable speed inside the band` rather than

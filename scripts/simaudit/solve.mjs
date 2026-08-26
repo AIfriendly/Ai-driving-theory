@@ -6,7 +6,7 @@ const browser = await chromium.launch({ args:['--use-gl=swiftshader','--enable-u
 const page = await browser.newPage();
 page.on('pageerror',e=>console.error('PAGEERROR',e.message));
 await page.goto('http://127.0.0.1:8899/index.html',{waitUntil:'load'});
-await page.waitForFunction(()=>window.simScenAudit,null,{timeout:20000});
+await page.waitForFunction(()=>window.simScenAudit,null,{polling:250,timeout:60000});
 
 await page.evaluate(()=>{
   const S=()=>simTest.state();
@@ -32,7 +32,7 @@ let curSet=-1;
 for(const [set,i,id,k] of cases){
   if(set!==curSet){
     await page.evaluate(n=>window.startSim(n),set);
-    await page.waitForFunction(()=>{try{return simTest.state().total>0;}catch(e){return false;}},null,{timeout:30000});
+    await page.waitForFunction(()=>{try{return simTest.state().total>0;}catch(e){return false;}},null,{polling:250,timeout:90000});
     curSet=set;
   }
   const r = await page.evaluate(([i,k])=>{

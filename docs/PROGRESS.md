@@ -25,6 +25,7 @@ quiz — is still inline and works offline.
 | Sign icons | 110 inline SVG |
 | Scene / concept illustrations | 134 |
 | Driving-sim scenarios | 745 of 745 questions — 45 templates (44 reachable), 12 judging kernels · all 745 verified passable, see `scripts/simaudit/` |
+| Sim scene cost | 613,740 tris/frame · 142 draw calls (≈112 of them the car model) · 4,585 instanced objects in 30 meshes |
 | Questions with no visual | 0 |
 | Study-guide tips with no picture | 0 (587 of 587) |
 | Ad clips rendered | 10 voiced Kurdish (15-24s), delivered · earlier silent 8x2 batch at `292a68e` |
@@ -104,6 +105,74 @@ owner — most of all anything that assumes the TikTok app is on their phone.
 ---
 
 ## Done
+
+- [x] **Driving-sim: regional trees, instanced buildings, and a sky that
+      follows you.** Owner asked for more realistic, higher-poly buildings and
+      trees. Measured the scene first, which changed what the right answer was:
+      **5,348,102 triangles a frame, 123 draw calls** — and nearly all of those
+      triangles were trees nobody could see.
+      - **The tree scatter was the whole problem.** ~2,437 instances of a
+        3,664-vertex conifer *clump* spread uniformly over 88,000 x 165,000
+        units, while the fog closes at 6,200. About 3% could ever be on screen
+        and an InstancedMesh submits every instance every frame regardless.
+        Replaced with a fixed field held in a square of side `2*SIM_SCAT_R`
+        (7,200) centred on the car, **wrapped** as you drive: each tree keeps a
+        home offset and `simMoveScatter` shifts it by whole multiples of the
+        square, so it reappears on the far side. Trees only ever jump beyond
+        the fog, so the wrap is invisible, and every instance drawn counts.
+      - **Trees are now generated, not downloaded** (`simMakeTreeGeo`): leaning
+        tapered trunk, forking branches, overlapping canopy masses, dusty olive
+        greens, three species. Bright green conifers on dry dirt was the single
+        most jarring thing in the frame. The palette rides in vertex colours so
+        a whole tree is one material and one instanced draw call.
+      - **`detail` is the LOD dial and the reason higher poly is affordable.**
+        The trees you drive past are built at detail 2; the ones filling the
+        distance at detail 1. Higher detail where it is seen, less where it is
+        not.
+      - **Buildings instanced.** Each of ~188 placements was a `proto.clone()`
+        in its own Group. Now bucketed by prototype into InstancedMesh: **30
+        instanced meshes carrying 4,585 objects**, with a per-instance tint
+        (`SIM_BLD_TINT`, sun-bleached concrete and plaster) so the same two
+        dozen shapes stop reading as one repeated building.
+      - **The sky dome sat at the world origin.** It is 8,000 units across and
+        the road runs to 157,000, so a few situations in you had driven out of
+        your own sky and everything above the fog went to clear-colour black —
+        the band visible in every chase-camera shot to date. It rides with the
+        car now.
+      - **`startSim` never tore down a running drive.** `simRestart` did it by
+        hand; every other route in leaked a WebGL context and a renderer.
+        Mobile caps concurrent contexts low, and heavier scenes reach the cap
+        faster. Guarded.
+      **Measured after: 613,740 triangles a frame, down 8.7x.** Draw calls went
+      123 -> 142 and that is not a regression to chase: instanced meshes span
+      the map so they cannot be frustum-culled, whereas 188 small clones mostly
+      were. `simTest.stats()` breaks it down — **the car model is 218 meshes and
+      about 112 of those calls.** That is where the draw calls live, and always
+      did; the scenery is now 30 calls for 4,585 objects.
+      Software-renderer frame rate went **0.5 -> 1.3 fps**. That number is
+      meaningless for a phone (swiftshader is CPU rasterisation) — the 2.6x
+      *ratio* is the part worth keeping.
+      `web/index.html` also lost **265 KB**: the inline conifer clump
+      (`TREE_GLB_B64`) has no reader now trees are generated. 2,415,981 ->
+      2,156,216 bytes.
+      **Harness gotcha, cost a failed run:** `page.waitForFunction` polls on
+      rAF by default. At ~1 fps under software rendering that starves and times
+      out while the state it is waiting for is already correct. `simaudit` now
+      polls on a timer. Do not read those timeouts as app failures.
+      **Still not measured: frame rate on a real phone.** Unchanged caveat from
+      the shadows work, and the reason the LOD dial and `SIM_SCAT_R` exist as
+      named constants.
+      **What was NOT done and why:** the owner asked for high-poly artist
+      models. Poly Haven's trees are photogrammetry — 39-199 MB of geometry
+      each, hopeless at 700+ instances and not decimatable without destroying
+      the leaf cards. Quaternius ships FBX/OBJ through Google Drive, and
+      poly.pizza returns 403 from this container. So the realism here comes
+      from generated geometry and placement, not from a better tree asset. If
+      the owner can drop a game-ready GLB tree (a few thousand triangles) into
+      `web/models/`, `simBuildTrees` takes it with a one-line change.
+      No new facade texture either: `buildings.glb` already carries baked
+      facade/window maps and a Poly Haven concrete map would have fought them —
+      the per-instance tint does the varying instead.
 
 - [x] **Driving-sim: audited all 15 sets, then fixed what the audit found.**
       The claim was "every question has a scenario", which `simScenAudit()`

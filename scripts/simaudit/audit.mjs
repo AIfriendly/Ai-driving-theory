@@ -7,7 +7,7 @@ page.on('pageerror',e=>pageErrors.push(e.message));
 page.on('console',m=>{ const t=m.text(); if(/scenario build failed/.test(t))buildFails.push(t); });
 
 await page.goto('http://127.0.0.1:8899/index.html',{waitUntil:'load'});
-await page.waitForFunction(()=>window.simScenAudit,null,{timeout:20000});
+await page.waitForFunction(()=>window.simScenAudit,null,{polling:250,timeout:60000});
 const audit = await page.evaluate(()=>window.simScenAudit());
 
 await page.evaluate(()=>{
@@ -119,11 +119,11 @@ const sets=[];
 for(let n=0;n<15;n++){
   await page.evaluate(()=>window.setLang('en'));
   await page.evaluate(n=>window.startSim(n),n);
-  await page.waitForFunction(()=>{try{return simTest.state().total>0;}catch(e){return false;}},null,{timeout:30000});
+  await page.waitForFunction(()=>{try{return simTest.state().total>0;}catch(e){return false;}},null,{polling:250,timeout:90000});
   const rows = await page.evaluate(()=>window.__sweep());
   await page.evaluate(()=>window.setLang('ku'));
   await page.evaluate(n=>window.startSim(n),n);
-  await page.waitForFunction(()=>{try{return simTest.state().total>0;}catch(e){return false;}},null,{timeout:30000});
+  await page.waitForFunction(()=>{try{return simTest.state().total>0;}catch(e){return false;}},null,{polling:250,timeout:90000});
   const ku = await page.evaluate(()=>window.__instrOnly());
   const kuCards = await page.evaluate(()=>{ const n=simTest.state().total,o=[];
     for(let i=0;i<n;i++)o.push(window.__wrong(i).card||""); return o; });

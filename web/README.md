@@ -12,6 +12,10 @@ Open `index.html` in any browser, or use the published site (see
 
 **Current content: 745 questions · 110 hand-drawn sign icons · 134 scene/concept illustrations · 14 achievements. Every question carries a visual, and every question has a scripted driving-sim scenario.**
 
+The sim's roadside scenery — trees, bushes, rocks — is generated at load rather
+than downloaded, with a near/far LOD split and an instanced field that wraps
+around the car as it drives. See `docs/PROGRESS.md` for the measurements.
+
 | Category | Questions |
 |---|---:|
 | Traffic signs (`signs`) | 155 |
