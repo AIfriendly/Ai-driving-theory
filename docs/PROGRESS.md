@@ -1333,6 +1333,19 @@ tested.
         approved"). It wants real company registration documents. Do not
         resubmit an invented registration number; a knowingly false submission
         risks the account, which is the one asset with any audience on it.
+      - **The account-type switch is free and needs no documents at all**, and
+        conflating it with verification is what cost this attempt. Researched
+        2026-08-26: switching between Personal, Creator and Business keeps
+        your content, asks only for a category, and is reversible. Verification
+        is a separate, optional thing that wants papers.
+      - **Creator is very likely the right target here, not Business.** It is
+        the individual-creator type, it keeps the full music library and
+        Creator Rewards eligibility that Business gives up, and — the part
+        that matters — **TikTok's scheduler is available to Creator and
+        Business accounts, not personal ones.** Business was only ever
+        recommended here for the zero-follower bio link; Creator does not
+        solve that, so if the bio link is the goal Business is still the
+        target, and if automation is the goal Creator is enough.
       - **Therefore the short domain is not a Phase 3 nicety — it is the
         fix, and it is urgent.** The username is already `tareeqkrd`, so
         something like `tareeq.krd` matches the handle and the logo and is
@@ -1354,13 +1367,40 @@ tested.
       TTS characters are spent, because the CTA line is baked into `sayB`
       audio that does not change.
 
-- [ ] **Scheduling: Buffer free tier is enough, verified 2026-08-26 against
-      buffer.com/pricing.** 3 channels, **10 scheduled posts per channel**
-      ("refill anytime"), 1 user, 30-day analytics history. At one post a day
-      that is ten days of queue, which is more than the 2-3-then-stop cadence
-      below wants anyway. This matters because the owner deliberately keeps no
-      TikTok app on their phone (ADHD — see the constraint below), so any plan
-      that ends "finish it in the app" is disqualified.
+- [ ] **Full automation: built, and gated on exactly one free setting.**
+      Owner has asked for this three times. Researched properly 2026-08-26
+      against primary sources, and `video/scripts/publish-to-buffer.mjs`
+      now schedules the rendered clips to TikTok end to end. What each rung
+      actually costs:
+
+      | Route | What it needs | Verdict |
+      |---|---|---|
+      | **Own TikTok API app** | App audit; unaudited clients are capped at `SELF_ONLY` viewership and 5 users/24h. 2-4 weeks, consent/disclosure UX built to spec, "likely bounced once or twice" | **No.** Weeks of work and an approval process to publish one account |
+      | **Buffer API** | Buffer account (API is on the **free** plan), a Creator/Business TikTok account, publicly hosted media | **Yes — this is the built path.** Buffer is an audited TikTok partner, so it inherits the approval |
+      | **TikTok's own scheduler** | Creator/Business account, a desktop browser at tiktok.com/tiktokstudio | **Good fallback.** Free, 30 days ahead, no third party, but one manual sitting per batch |
+      | Personal account | — | **Nothing works.** TikTok gates scheduling to Creator/Business; no tool can route around it |
+
+      - **The gate is the account type, and it is free.** Not verification,
+        not a company, not a fee. Every automated route dies on a personal
+        account and every one of them opens on a Creator account.
+      - **Buffer's API takes a URL, never a file**, and fetches it *when the
+        post publishes* — days later. **Gofile is therefore the wrong host for
+        this**: `upload:bundle` is a handoff for a human and gofile expires
+        unclaimed guest content. A GitHub Release on this public repo is the
+        obvious permanent home; nothing has been published there yet.
+      - **Untested against a live token.** The script dry-runs by default and
+        only calls Buffer with `--go`. The channel-listing query is a best
+        guess at the shape because developers.buffer.com/guides/channels.html
+        404s, so `npm run channels` prints the whole raw response — the first
+        real run is what settles it.
+      - Buffer free tier, verified against buffer.com/pricing: 3 channels,
+        **10 scheduled posts per channel** ("refill anytime"), 1 user, 30-day
+        analytics, 1 API key at 3,000 requests/month. Ten days of queue at one
+        post a day — more than the 2-3-then-stop cadence below wants anyway.
+      - All of this matters because the owner deliberately keeps no TikTok app
+        on their phone (ADHD — see the constraint below), so any plan that
+        ends "finish it in the app" is disqualified. Every route above is
+        drivable from a desktop browser or a shell.
 
 - [ ] Post to TikTok and watch what happens. This is the cheap experiment and
       the whole reason the free tier exists. Suggested order, strongest hook

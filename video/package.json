@@ -11,7 +11,9 @@
     "voice": "node --experimental-strip-types scripts/gen-voice.mjs",
     "upload": "node scripts/upload-gofile.mjs",
     "bundle": "node scripts/bundle-posts.mjs",
-    "upload:bundle": "node scripts/bundle-posts.mjs && node scripts/upload-bundle.mjs"
+    "upload:bundle": "node scripts/bundle-posts.mjs && node scripts/upload-bundle.mjs",
+    "channels": "node scripts/publish-to-buffer.mjs channels",
+    "schedule": "node scripts/publish-to-buffer.mjs"
   },
   "dependencies": {
     "@fontsource/noto-kufi-arabic": "^5.1.0",

@@ -145,6 +145,50 @@ which is exactly how the call to action first ended up under the caption.
 content height: a longer question pushes the column past the safe box and the
 overflow lands in both the top and bottom zones at once.
 
+## Automated posting
+
+The whole chain from question bank to a scheduled TikTok post:
+
+```bash
+KURDISH_TTS_KEY=... npm run voice      # audio + measured durations
+npm run check && npm run render:all    # safe zones, then MP4s
+# host out/*.mp4 somewhere public and permanent (see below)
+BUFFER_ACCESS_TOKEN=... npm run channels               # find the TikTok channel id
+BUFFER_ACCESS_TOKEN=... npm run schedule -- \
+  --channel <id> --media-base https://host/path --start 2026-09-01T17:00Z
+#   ^ prints what it would send; add --go to actually schedule
+```
+
+**Why Buffer rather than TikTok directly.** TikTok's Content Posting API
+restricts every *unaudited* client to `SELF_ONLY` viewership — posts land
+private and nobody sees them. Lifting that means submitting an app for audit,
+building a consent/disclosure UX to their spec, and waiting weeks, to publish
+one account's videos. Buffer is already an audited TikTok partner, and its API
+is on the free plan, so going through them inherits that approval instead of
+re-earning it.
+
+**The one thing no script can do for you.** TikTok gates scheduling to
+**Creator or Business** accounts. A personal account cannot be scheduled to by
+anyone — not Buffer, not TikTok's own scheduler. Switching is free and needs
+no documents; it is *not* the same thing as business **verification**, which
+does want company registration papers. Getting that distinction wrong costs
+weeks. See `docs/PROGRESS.md`.
+
+**Media must be publicly hosted and must stay up.** Buffer's API takes a URL,
+never a file upload, and it fetches that URL *when the post publishes* — days
+later for a scheduled post. A link that dies in the meantime is a post that
+fails quietly. **Gofile is the wrong host for this**: `npm run upload:bundle`
+is a handoff for a human, and gofile expires unclaimed guest content. Use a
+GitHub Release on this public repo, or any other permanent unauthenticated
+URL, and point `--media-base` at it.
+
+`--start` defaults to tomorrow 17:00 UTC (20:00 in Kurdistan) and `--every` to
+24 hours, which is the cadence in `docs/PROGRESS.md` rather than an arbitrary
+default: a burst from a young account reads as spam. **Do not schedule more
+than 2–3 ahead of what you have read the results of** — the video files are
+fixed but captions are not, so a hook that lands should change how the rest
+are written, and a full queue hands away the ability to react.
+
 ## Posting
 
 The clips carry a Kurdish voiceover, so they are **not** silent and do not need

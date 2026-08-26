@@ -4,42 +4,21 @@
 
    POSTING.md stays the single source of truth; this only reshapes it. Re-run
    after editing POSTING.md or the pairs drift out of sync with it. */
-import {readFileSync, writeFileSync, mkdirSync, copyFileSync, rmSync, existsSync} from "node:fs";
+import {writeFileSync, mkdirSync, copyFileSync, rmSync, existsSync} from "node:fs";
+import {parsePosts} from "./posting-md.mjs";
 
-// Trailing sentinel: the block regex ends each match by looking ahead to the
-// next "## ". JS has no \z, so without this the final clip never terminates
-// and the parse silently returns 9 of 10.
-const md = readFileSync("POSTING.md", "utf8") + "\n## \n";
 const OUT = "bundle";
 rmSync(OUT, {recursive: true, force: true});
 mkdirSync(OUT, {recursive: true});
 
-// Blocks look like:  ## 3. `ambulance-ku.mp4`   … up to the next "## " or EOF.
-const blocks = [...md.matchAll(/^## (\d+)\.\s*`([^`]+)`\s*\n([\s\S]*?)(?=^## |\z)/gm)];
-/* Count comes from POSTING.md rather than a constant. It was pinned at 10 and
-   the second batch of ten made the whole script throw — a hard number here
-   just means the next batch breaks it again. A floor still catches a parse
-   that has silently fallen apart. */
-if (blocks.length < 5) throw new Error(`only ${blocks.length} clip blocks parsed out of POSTING.md`);
-const TOTAL = blocks.length;
-
-const field = (body, label) => {
-  const m = body.match(new RegExp(`\\*\\*${label}[^*]*\\*\\*\\s*\\n\`\`\`\\n([\\s\\S]*?)\\n\`\`\``));
-  return m ? m[1].trim() : "";
-};
+const posts = parsePosts();
+const TOTAL = posts.length;
 
 const order = [];
 
 let paired = 0;
 const missing = [];
-for (const [, n, file, body] of blocks) {
-  const id = file.replace(/\.mp4$/, "");
-  const nn = String(n).padStart(2, "0");
-  const caption = field(body, "Title / caption");
-  const tags = field(body, "Tags");
-  const desc = field(body, "Description / bio link");
-  if (!caption || !tags || !desc) throw new Error(`${id}: missing a field`);
-
+for (const {nn, file, id, caption, tags, desc} of posts) {
   /* A clip with no MP4 is skipped rather than fatal, and skipped *before* its
      .txt is written — a caption file with no video beside it is worse than
      nothing in a handoff folder. Rendering one batch at a time is the normal
