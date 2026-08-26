@@ -293,6 +293,7 @@
 
   /* ---------- driving simulation ---------- */
   .simsetbest{color:var(--good);font-weight:800}
+  .simsetresume{color:var(--accent);font-weight:800}
   .simstage{position:relative;border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);
     border:1px solid var(--line);background:#0a1a12;touch-action:none}
   .simcanvas{display:block;width:100%;height:auto}
@@ -390,6 +391,13 @@
   .simcard{background:var(--surface);border-radius:var(--radius);box-shadow:var(--shadow);padding:16px;
     width:100%;max-height:94%;overflow:auto}
   .simcard .qtext{font-size:16.5px}
+  /* The card scrolls when a question carries a long explanation, so its
+     buttons ride along the bottom instead of hiding below the fold. */
+  .simcardacts{position:sticky;bottom:-16px;background:var(--surface);margin-top:6px;
+    padding:8px 0 0;display:flex;flex-wrap:wrap;gap:8px;
+    box-shadow:0 -12px 14px -10px rgba(0,0,0,.22)}
+  .simcardacts .btn{flex:1 1 140px;width:auto}
+  .simcardacts .simhint{flex:1 1 100%;margin:0}
   .simcard .signwrap,.simcard .scenewrap{padding:10px;margin-bottom:8px}
   .simcard .signwrap svg{width:96px;height:96px}
   @media (max-width:360px){.simbtn{padding:15px 0;font-size:19px}}
@@ -7230,7 +7238,7 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
     simB:"Driving Simulation", simD:"Every question in the set becomes a real situation on the road — drive it right or fail it, exactly like the road test.",
     simPlayHint:"Steer ◀ ▶ to stay on the road, ⛔ to slow down. A hazard sign means a question is coming — answer it to keep driving.",
     simLeft:"Steer left", simRight:"Steer right", simBrake:"Brake", simDrive:"Keep driving",
-    simExitConfirm:"Leave this drive? Your progress in this set won't be saved.",
+    simExitConfirm:"Leave this drive? Your progress is saved — you can pick it up where you left off.",
     simGear:"Gear", simLookBack:"Look back", simMute:"Sound on/off",
     simDragHint:"Drag on the view to look around — the mirrors and the road behind are real, not painted on.",
     simCamToggle:"Switch camera", simCamCockpit:"Cockpit", simCamChase:"Chase cam",
@@ -7272,7 +7280,7 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
     simB:"سیمولەیشنی لێخوڕین", simD:"هەر پرسیارێکی کۆمەڵەکە دەبێتە بارودۆخێکی ڕاستەقینە لەسەر ڕێگا — بە دروستی لێیبخوڕە یان تێیدا دەکەویت، وەک تاقیکردنەوەی سەر ڕێگا.",
     simPlayHint:"بۆ مانەوە لەسەر ڕێگا بەرەو بکە ◀ ▶، بۆ کەمکردنەوەی خێرایی ⛔ بگرە. هێمای مەترسی واتای ئەوەیە پرسیارێک دێت — وەڵامی بدەرەوە بۆ بەردەوامبوونی لێخوڕین.",
     simLeft:"بەرەوی چەپ", simRight:"بەرەوی ڕاست", simBrake:"ترمز", simDrive:"بەردەوامبە لە لێخوڕین",
-    simExitConfirm:"ئەم لێخوڕینە بەجێبهێڵیت؟ پێشکەوتنت لەم کۆمەڵەیەدا پاشەکەوت ناکرێت.",
+    simExitConfirm:"ئەم لێخوڕینە بەجێبهێڵیت؟ پێشکەوتنت پاشەکەوت دەکرێت — دەتوانیت لە هەمان شوێن بەردەوام بیت.",
     simGear:"گیر", simLookBack:"سەیری پشتەوە", simMute:"دەنگ لادان/کردنەوە",
     simDragHint:"بۆ ئاوڕدانەوە بەسەر شاشەکەدا خامۆشە بگرە — ئاوێنەکان و ڕێگای پشتەوە ڕاستەقینەن، وێنە نین.",
     simCamToggle:"گۆڕینی کامێرا", simCamCockpit:"ناوەوە", simCamChase:"کامێرای دوورەوە",
@@ -8364,14 +8372,18 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
 
   function renderSimSets(){
     var per=SET_SIZE, total=QUESTIONS.length, real=Math.ceil(total/per);
-    var best=(loadStore().simBest)||{};
+    var _st=loadStore(), best=_st.simBest||{}, saved=_st.simSave||{};
     var html='<div><h1>'+esc(t("simB"))+'</h1><p class="sub">'+esc(t("simD"))+'</p></div><div class="menu">';
     for(var n=0;n<real;n++){
-      var count=Math.min(per,total-n*per), b=best[n];
+      var count=Math.min(per,total-n*per), b=best[n], sv=saved[n];
+      // A part-finished drive is worth seeing before you tap in.
+      var rs=(sv&&sv.ids&&sv.idx>0&&sv.idx<sv.ids.length)
+        ? ' · <span class="simsetresume">▸ '+esc(L(TASK_TXT.resumeBadge).replace("%N",sv.idx+1).replace("%T",sv.ids.length))+'</span>'
+        : '';
       html+='<button class="tile" onclick="startSim('+n+')">'+
         '<span class="ic" style="font-weight:800;font-size:18px">'+(n+1)+'</span>'+
         '<span><b>'+esc(t("setWord"))+' '+(n+1)+'</b><span>'+count+' '+esc(t("questions"))+
-          (b!=null?' · <span class="simsetbest">'+esc(t("best"))+' '+b+'%</span>':'')+'</span></span>'+
+          (b!=null?' · <span class="simsetbest">'+esc(t("best"))+' '+b+'%</span>':'')+rs+'</span></span>'+
         '<span class="arw">'+(S.lang!=="en"?"‹":"›")+'</span></button>';
     }
     html+='</div><button class="btn ghost" onclick="Go(\'home\')">'+esc(t("back"))+'</button>';
@@ -8458,7 +8470,7 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
     SIM.lookStick=null; // {x,y} in -1..1 while the look wheel is held
     SIM.wheelSpin=0; SIM.gearLever=0; SIM.drag=null;
     // Enforceable driving tasks (built once the scene exists).
-    SIM.tasks=[]; SIM.task=null; SIM.taskIdx=0; SIM.tasksPassed=0;
+    SIM.tasks=[]; SIM.task=null; SIM.taskIdx=0; SIM.tasksPassed=0; SIM.resumePending=false;
 
     SIM.gl=simBuildScene(canvas);
     if(!SIM.gl){
@@ -8472,6 +8484,9 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
       // once their models finish loading (async) — see the comments there.
       SIM.gl.scene.add(simBuildLamps(SIM.track,SIM.gl.mat));
       simInitTasks(SIM.gl);
+      // Left this set part-way through before? Offer to pick it up.
+      var _sv=simReadProgress(S.simSet);
+      if(_sv)simOfferResume(_sv);
     }
 
     simBindControls();
@@ -9455,7 +9470,18 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
     f_fast:TT("You took it far too fast.","زۆر بە خێرایی ڕۆیشتیت."),
     f_stopped:TT("You stopped where stopping is not allowed.","لە شوێنێک وەستایت کە وەستان ڕێگەپێدراو نییە."),
     i_wait:TT("Wait until you are allowed to go","چاوەڕێ بکە هەتا ڕێگەت پێدەدرێت"),
-    ok_go:TT("Clear — go","ڕێگا خاڵییە — بڕۆ")
+    ok_go:TT("Clear — go","ڕێگا خاڵییە — بڕۆ"),
+    // resuming a saved drive
+    resumeT:TT("Continue this drive?","بەردەوام بیت لەم لێخوڕینە؟"),
+    resumeB:TT("You left off at situation %N of %T, with %P passed.",
+               "لە بارودۆخی %N لە %T وازت هێنا، %P سەرکەوتوو بوویت."),
+    resume:TT("Continue","بەردەوامبوون"),
+    startover:TT("Start over","لە سەرەتاوە"),
+    // skipping a situation you keep failing
+    skip:TT("Skip this one","ئەمە تێپەڕێنە"),
+    skipNote:TT("Skipping counts as a wrong answer.","تێپەڕاندن وەک وەڵامی هەڵە دەژمێردرێت."),
+    skippedN:TT("Skipped: %S","تێپەڕێنراو: %S"),
+    resumeBadge:TT("resume %N/%T","بەردەوامبوون %N/%T")
   };
 
   /* ---------- signage ---------- */
@@ -10383,6 +10409,98 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
     return out;
   }
 
+  /* ---------- progress save ----------
+     A 50-situation drive is 8-10 minutes. Closing the tab, a phone call, or a
+     backgrounded browser tab used to throw all of it away. So after every
+     verdict the drive writes where it got to into the same localStorage store
+     the quiz modes use, and starting that set again offers to pick it up.
+
+     Questions are keyed by q.id, a content hash — stable across releases
+     unless the question text itself changes. If any saved id no longer
+     resolves (edited question bank), the save is discarded rather than
+     restored half-right. */
+  var _simQIdx=null;
+  function simQById(id){
+    if(!_simQIdx){ _simQIdx={}; QUESTIONS.forEach(function(q){ if(q.id!=null)_simQIdx[q.id]=q; }); }
+    return _simQIdx[id];
+  }
+  // A save is only meaningful mid-drive: not at the start, not past the end.
+  function simReadProgress(set){
+    try{
+      var sv=((loadStore().simSave)||{})[set];
+      if(!sv||!sv.ids||!sv.ids.length)return null;
+      if(!(sv.idx>0)||sv.idx>=sv.ids.length)return null;
+      return sv;
+    }catch(e){ return null; }
+  }
+  function simSaveProgress(){
+    try{
+      if(!SIM.tasks||!SIM.tasks.length)return;
+      // While the resume offer is up the drive has not been picked up yet and
+      // taskIdx is still 0 — writing now would erase the save being offered.
+      if(SIM.resumePending)return;
+      var st=loadStore(); st.simSave=st.simSave||{};
+      if(SIM.taskIdx<=0||SIM.taskIdx>=SIM.tasks.length)delete st.simSave[S.simSet];
+      else st.simSave[S.simSet]={
+        ids:SIM.tasks.map(function(d){return d.q?d.q.id:null;}),
+        passed:SIM.tasks.map(function(d){return d.passed?1:0;}),
+        skipped:SIM.tasks.map(function(d){return d.skipped?1:0;}),
+        idx:SIM.taskIdx, p:SIM.tasksPassed, t:Date.now()
+      };
+      saveStore(st);
+    }catch(e){}
+  }
+  function simClearProgress(set){
+    try{ var st=loadStore(); if(st.simSave&&st.simSave[set]!=null){ delete st.simSave[set]; saveStore(st); } }catch(e){}
+  }
+
+  // Offered once, at the start of a set that has a save. Declining clears it.
+  function simOfferResume(sv){
+    SIM.paused=true; SIM.resumePending=true;
+    var n=SIM.tasks.length;
+    var body=L(TASK_TXT.resumeB).replace("%N",sv.idx+1).replace("%T",n).replace("%P",sv.p||0);
+    var html='<p class="qtext" style="font-size:20px">'+esc(L(TASK_TXT.resumeT))+'</p>'+
+      '<div class="explain ok">'+esc(body)+'</div>'+
+      '<div class="simcardacts">'+
+        '<button class="btn" onclick="simResumeSaved()">'+esc(L(TASK_TXT.resume))+'</button>'+
+        '<button class="btn ghost" onclick="simStartOver()">'+esc(L(TASK_TXT.startover))+'</button>'+
+      '</div>';
+    var card=document.getElementById("simCard"); if(card)card.innerHTML=html;
+    localizeDigits();
+    var ov=document.getElementById("simOverlay"); if(ov)ov.classList.remove("hidden");
+  }
+  // Drop the car in behind the situation it is about to face, stopped.
+  function simGoToTask(){
+    simDisposeTask();
+    var def=SIM.tasks[SIM.taskIdx];
+    if(def){ SIM.car.px=0; SIM.car.pz=def.z-1500; SIM.car.heading=0; SIM.car.speed=0; }
+    if(window.simSetSpeed)simSetSpeed(0);   // you set the speed again yourself
+    SIM.paused=false; SIM.last=null;        // next frame builds this task fresh
+  }
+  window.simResumeSaved=function(){
+    var sv=simReadProgress(S.simSet);
+    SIM.resumePending=false;
+    if(sv){
+      var qs=sv.ids.map(simQById);
+      if(qs.every(function(q){return !!q;})){
+        SIM.tasks=qs.map(function(q,i){
+          return {q:q,scen:simScenOf(q),z:SIM_TASK_Z0+i*SIM_TASK_STEP,
+                  passed:!!(sv.passed&&sv.passed[i]),skipped:!!(sv.skipped&&sv.skipped[i])};
+        });
+        SIM.taskIdx=Math.min(sv.idx,SIM.tasks.length-1);
+        SIM.tasksPassed=sv.p||0;
+      }else simClearProgress(S.simSet);     // question bank moved under the save
+    }
+    var ov=document.getElementById("simOverlay"); if(ov)ov.classList.add("hidden");
+    simGoToTask(); simUpdateHud();
+  };
+  window.simStartOver=function(){
+    SIM.resumePending=false;
+    simClearProgress(S.simSet);
+    var ov=document.getElementById("simOverlay"); if(ov)ov.classList.add("hidden");
+    SIM.paused=false; SIM.last=null;
+  };
+
   function simInitTasks(P){
     P.taskGroup=new THREE.Group(); P.scene.add(P.taskGroup);
     SIM.tasks=[];
@@ -10449,6 +10567,7 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
     simPlayTone(880,0.14,"sine"); simPlayTone(1180,0.18,"sine",0.08);
     simDisposeTask();
     SIM.taskIdx++;
+    simSaveProgress();
     simUpdateHud();
     if(SIM.taskIdx>=SIM.tasks.length)simFinishTest();
   }
@@ -10457,6 +10576,11 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
     if(SIM.paused)return;
     SIM.paused=true; SIM.car.speed=0;
     simPlayTone(150,0.4,"sawtooth");
+    // Failing the same situation twice is a wall, not a lesson — from the
+    // second failure on, the card also offers a way past it.
+    var def=SIM.tasks[SIM.taskIdx];
+    if(def)def.fails=(def.fails||0)+1;
+    var stuck=!!(def&&def.fails>=2);
     var q=tk.q||{}, why=msgObj||tk.fail||TASK_TXT.f_stop;
     var html='<p class="qtext" style="font-size:22px;color:#ff6b6b">❌ '+esc(L(TASK_TXT.fail))+'</p>'+
       '<div class="explain no">'+esc(L(why))+'</div>';
@@ -10464,18 +10588,35 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
     if(q.opts&&q.opts[q.a])html+='<div class="explain ok"><b>✓ '+esc(L(q.opts[q.a]))+'</b>'+
       (q.ex?' — '+esc(L(q.ex)):'')+'</div>';
     else if(q.ex)html+='<div class="explain ok">'+esc(L(q.ex))+'</div>';
-    html+='<button class="btn" onclick="simRetryTask()">'+esc(L(TASK_TXT.tryagain))+'</button>';
+    html+='<div class="simcardacts">'+
+      '<button class="btn" onclick="simRetryTask()">'+esc(L(TASK_TXT.tryagain))+'</button>'+
+      (stuck?'<button class="btn ghost" onclick="simSkipTask()">'+esc(L(TASK_TXT.skip))+'</button>'+
+             '<p class="simhint">'+esc(L(TASK_TXT.skipNote))+'</p>':'')+
+      '</div>';
     var card=document.getElementById("simCard"); if(card)card.innerHTML=html;
     var ov=document.getElementById("simOverlay"); if(ov)ov.classList.remove("hidden");
+    simSaveProgress();
   }
+
+  /* Move past a situation without passing it. It scores exactly as a wrong
+     answer would — the point is that one situation you cannot beat should not
+     cost you the other forty-nine. */
+  window.simSkipTask=function(){
+    var ov=document.getElementById("simOverlay"); if(ov)ov.classList.add("hidden");
+    var def=SIM.tasks[SIM.taskIdx];
+    if(def){ def.passed=false; def.skipped=true; }
+    simDisposeTask();
+    SIM.taskIdx++;
+    simSaveProgress();
+    simUpdateHud();
+    if(SIM.taskIdx>=SIM.tasks.length){ SIM.paused=true; simFinishTest(); return; }
+    simSetBanner("");
+    simGoToTask();
+  };
 
   window.simRetryTask=function(){
     var ov=document.getElementById("simOverlay"); if(ov)ov.classList.add("hidden");
-    var def=SIM.tasks[SIM.taskIdx];
-    simDisposeTask();
-    if(def){ SIM.car.px=0; SIM.car.pz=def.z-1500; SIM.car.heading=0; SIM.car.speed=0; }
-    if(window.simSetSpeed)simSetSpeed(0); // start the retry stopped; you set the speed again
-    SIM.paused=false; SIM.last=null; // next frame rebuilds this task fresh
+    simGoToTask();
   };
 
   /* A drive is a run through the set, so it scores the set: every situation
@@ -10503,12 +10644,18 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
   function simFinishTest(){
     SIM.paused=true; simSetBanner("",false);
     simCommitResults();
+    simClearProgress(S.simSet);   // finished: nothing left to resume
     var msg=L(TASK_TXT.passedN).replace("%P",SIM.tasksPassed).replace("%T",SIM.tasks.length);
+    var sk=SIM.tasks.filter(function(d){return d.skipped;}).length;
     var html='<p class="qtext" style="font-size:22px">✓ '+esc(L(TASK_TXT.done))+'</p>'+
       '<div class="explain ok">'+esc(msg)+'</div>'+
-      '<button class="btn" onclick="simRestart()">'+esc(L(TASK_TXT.driveagain))+'</button>'+
-      '<button class="btn ghost" onclick="simExit()">'+esc(t("back"))+'</button>';
+      (sk?'<div class="explain no">'+esc(L(TASK_TXT.skippedN).replace("%S",sk))+'</div>':'')+
+      '<div class="simcardacts">'+
+        '<button class="btn" onclick="simRestart()">'+esc(L(TASK_TXT.driveagain))+'</button>'+
+        '<button class="btn ghost" onclick="simExit()">'+esc(t("back"))+'</button>'+
+      '</div>';
     var card=document.getElementById("simCard"); if(card)card.innerHTML=html;
+    localizeDigits();
     var ov=document.getElementById("simOverlay"); if(ov)ov.classList.remove("hidden");
   }
   window.simRestart=function(){ simStop(); startSim(S.simSet); };
@@ -10945,6 +11092,7 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
 
   window.simExit=function(){
     if(SIM.taskIdx>0&&!window.confirm(t("simExitConfirm")))return;
+    simSaveProgress();   // so this set offers to resume next time
     simStop(); Go("sim");
   };
   function simStop(){

@@ -105,6 +105,44 @@ owner — most of all anything that assumes the TikTok app is on their phone.
 
 ## Done
 
+- [x] **Driving-sim: progress SAVE and a way to SKIP a situation.** The two gaps
+      that made a 50-situation drive punishing: closing the app threw away 8-10
+      minutes of work, and a situation you could not beat was a dead end
+      (retry-or-quit).
+      - **Save.** After every verdict — pass, fail or skip — the drive writes
+        `{ids, passed, skipped, idx, p}` into the existing `tareeq_v1` store
+        under `simSave[set]`. Questions are keyed by `q.id`, the content hash
+        already used by the Leitner boxes, so a save survives a redeploy. If any
+        saved id no longer resolves (an edited question), the save is **discarded
+        rather than restored half-right**.
+      - **Resume.** Reopening a part-finished set offers *Continue* / *Start
+        over* before the drive begins; the set list carries a `▸ resume 16/50`
+        badge so you can see it without tapping in. Continuing rebuilds the task
+        list in the saved order and drops the car in behind the situation it left
+        off at, stopped.
+      - **Skip** appears on the fail card **from the second failure of the same
+        situation** — a wall, not a lesson. It scores exactly as a wrong answer
+        (`passed:false`), so it cannot be used to inflate a result, and the
+        finish card reports `Skipped: N`.
+      - `simExitConfirm` said "your progress won't be saved" in both languages.
+        It is now true in neither, so both strings were rewritten.
+      - **Card actions are now sticky** (`.simcardacts`). The overlay card is
+        capped at ~218px on a 390px phone while a fail card with its explanation
+        runs to ~377px — so *Try again* was already below the fold before any of
+        this. The buttons now ride the bottom of the card and the explanation
+        scrolls behind them.
+      **Bug found in this change, worth remembering:** the resume offer is shown
+      while `taskIdx` is still 0, so tapping ✕ instead of choosing ran
+      `simSaveProgress()` → `taskIdx<=0` → **delete the very save being
+      offered**. Guarded with `SIM.resumePending`. Any "save on exit" path needs
+      to know whether the drive was ever actually picked up.
+      Verified end to end: fresh start shows no offer; fail #1 has no Skip and
+      fail #2 does; skip advances and persists; badge appears after reload;
+      Continue restores idx/score/car position; Start over clears it; skipping
+      the last situation finishes the drive and clears the save; backing out of
+      the offer leaves the save intact. Regression clean: 745/45/0 missing,
+      50 tasks, first 15 situations build, all controls present, 0 page errors.
+
 - [x] **Driving-sim: REVERSE gear (a button to back up).** The shifter was P/N/D
       with no R, so the car could not move backwards at all — if you overshot a
       situation or drove off the road there was no way out but to restart.
@@ -704,13 +742,11 @@ P·R·N·D with reverse, a free-look wheel, and a loading indicator. See *Done*.
 moves the plan below, which is blocked on two things only the owner can do —
 posting the clips and buying the domain. Sim polish is not a substitute for
 either. Remaining known sim gaps, in the order worth doing them, if asked:
-1. **No progress save** — a set is 50 situations (~8-10 min) and closing the app
-   loses it. Either persist progress or cut a session to ~10 situations.
-2. **No way to skip a situation** you keep failing — retry-or-quit is a dead end.
-3. **The sim does not teach.** Failing a task shows one line of rule text, while
+1. ~~No progress save~~ and ~~no way to skip~~ — **both done**, see *Done* below.
+2. **The sim does not teach.** Failing a task shows one line of rule text, while
    the actual exam question behind it (with its explanation and artwork) sits
    unused in the bank. Linking the two is the highest-value sim work left.
-4. A weak-topic report at the end (which situations you fail most).
+3. A weak-topic report at the end (which situations you fail most).
 
 **Two owner checks never came back:** whether the engine sound works on their
 iPhone, and whether the car model actually loads there (the loading panel now
