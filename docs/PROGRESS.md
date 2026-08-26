@@ -101,6 +101,41 @@ owner — most of all anything that assumes the TikTok app is on their phone.
 
 ## Done
 
+- [x] **Driving-sim: loading indicator + car model 3.3 MB → 2.15 MB (−34%).**
+      The model is a multi-megabyte download with **no loading UI at all**, so on
+      a phone you either stared at a half-built world or silently dropped to the
+      procedural car — which is exactly how the "cockpit is too dark" bug stayed
+      invisible for so long. Both halves fixed:
+      - **Loading panel** (`#simLoad`) centred over the 3D view: "Loading the
+        car…" with a progress bar fed by GLTFLoader's `onProgress`. Fades out
+        when the real car arrives. On failure it says so plainly — *"Using the
+        simple car (model didn't load)"* — then fades, so a silent fallback can
+        never again be mistaken for a broken or dark game. Bilingual.
+        **The bar goes indeterminate (a sliding stripe) when the host reports no
+        `Content-Length`** — a bar frozen at 0% reads as broken, which is the
+        very problem the panel exists to solve. Reduced-motion respected.
+      - **Model shrunk 3.43 → 2.26 MB on disk (3.27 → 2.15 MiB)** with
+        `gltf-transform`: `resize 256` + `dedup` + `prune` + **`quantize`**.
+        Quantize is the big win (3.09 → 2.26 MB); textures were NOT the bulk —
+        the geometry was (253k vertices at f32). **`quantize` is safe here
+        because the inlined GLTFLoader supports `KHR_mesh_quantization` natively
+        — no external decoder**, unlike Draco/meshopt which would need extra
+        runtime files. Verified: no visible artifacts in cockpit or chase, and
+        the `corolla_e180_steering_wheel` node survives (still steers).
+      Regression re-run against the CURRENT task system: 745 questions / 45
+      templates / 0 missing, 50 tasks per set, first 15 situations all build with
+      their kernels (crash_scene/hold, follow_gap/gap, give_way/yield,
+      speed_zone/zone, red_light/signal, stop_sign/stop …), all controls present,
+      0 page errors.
+      **Gotchas:** (1) the scratchpad scripts `verify_branches.js` and
+      `verify_speed3.js` are **stale** — they target the pre-`40c516e` fixed
+      `stop/speedlimit/pedestrian/...` sequence that no longer exists, so their
+      output is meaningless now; use `regress.js` instead. (2) A built task
+      (`SIM.task`) has keys `{q,id,k,z,p,actors,solids,anims,s,active,instr,fail}`
+      — `id` and `k` (kernel), **not** `.scen`; only the *definition* in
+      `SIM.tasks[i]` carries `.scen`. Probing the wrong one silently reports
+      `undefined` and looks like a build failure.
+
 - [x] **Driving-sim: free-look WHEEL on the left of the 3D view.** Owner ask —
       a wheel on screen, left side, to look anywhere from inside the car, and
       also to look behind/sides from outside it. Added a circular joystick
@@ -599,6 +634,7 @@ owner — most of all anything that assumes the TikTok app is on their phone.
 
 ## Next
 
+**[DONE — shipped in `40c516e`, see Done. Kept for the reasoning.]**
 **OWNER ASK (2026-08-25) — the driving test must cover the ENTIRE question
 bank, one scenario per question.** As it stands the practical-test sim has
 only a handful of enforceable situation *types* (STOP, pedestrian crossing,
