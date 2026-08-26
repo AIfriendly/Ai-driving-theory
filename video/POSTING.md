@@ -1,4 +1,4 @@
-# Posting metadata — 10 voiced clips
+# Posting metadata — 20 voiced clips
 
 Copy one block per video. Kurdish caption first: caption language is a real
 distribution signal, not decoration.
@@ -278,5 +278,275 @@ clickable.
 ```
 
 *(EN, if posting the English cut: You get punished too — The penalty for letting someone without a licence drive your vehicle is:)*
+
+---
+
+## 11. `hangover-ku.mp4`
+
+**Title / caption (Kurdish)**
+```
+خەوتن مەی دەرناکات 🤔
+
+دوێنێ شەو زۆرت خواردەوە. بەیانی دەتوانیت بۆ کار لێبخوڕیت؟
+
+وەڵامەکە لە ڤیدیۆکەدا 👇
+```
+
+**Tags**
+```
+#مەی #خواردنەوە #سەلامەتی #کوردستان #هەولێر #سلێمانی #دهۆک #مۆڵەتی_شۆفێری #تیۆری #فێربوونی_شۆفێری #kurdistan #erbil #drivingtest
+```
+
+**Description / bio link**
+```
+دوێنێ شەو زۆرت خواردەوە. بەیانی دەتوانیت بۆ کار لێبخوڕیت؟
+٧٤٥ پرسیاری تیۆری بەخۆڕایی: https://ai-driving-theory.tareeq.workers.dev/
+نافەرمی — بۆ ڕاهێنان تەنها.
+```
+
+*(EN, if posting the English cut: Sleeping it off is a myth — You drank a lot last night. Can you drive to work in the morning?)*
+
+---
+
+## 12. `helmet-ku.mp4`
+
+**Title / caption (Kurdish)**
+```
+لابردنی دەتوانێت بیکوژێت 🤔
+
+پاسکیلسوارێکی مۆتۆڕ بریندار و بێهۆش بووە. کڵاوی پاراستنەکەی دەبێت چی لێبکرێت؟
+
+وەڵامەکە لە ڤیدیۆکەدا 👇
+```
+
+**Tags**
+```
+#فریاگوزاری #کڵاوی_پاراستن #مۆتۆڕ #کوردستان #هەولێر #سلێمانی #دهۆک #مۆڵەتی_شۆفێری #تیۆری #فێربوونی_شۆفێری #kurdistan #erbil #drivingtest
+```
+
+**Description / bio link**
+```
+پاسکیلسوارێکی مۆتۆڕ بریندار و بێهۆش بووە. کڵاوی پاراستنەکەی دەبێت چی لێبکرێت؟
+٧٤٥ پرسیاری تیۆری بەخۆڕایی: https://ai-driving-theory.tareeq.workers.dev/
+نافەرمی — بۆ ڕاهێنان تەنها.
+```
+
+*(EN, if posting the English cut: Taking it off can kill them — A motorcyclist is injured and unconscious. Their crash helmet should be:)*
+
+---
+
+## 13. `childseat-ku.mp4`
+
+**Title / caption (Kurdish)**
+```
+لە کورسی پێشەوە نا 🤔
+
+منداڵی خوار ١٣ ساڵ دەبێت لە کوێی ئۆتۆمبیلدا دابنیشێت؟
+
+وەڵامەکە لە ڤیدیۆکەدا 👇
+```
+
+**Tags**
+```
+#منداڵ #کورسی_منداڵ #سەلامەتی #کوردستان #هەولێر #سلێمانی #دهۆک #مۆڵەتی_شۆفێری #تیۆری #فێربوونی_شۆفێری #kurdistan #erbil #drivingtest
+```
+
+**Description / bio link**
+```
+منداڵی خوار ١٣ ساڵ دەبێت لە کوێی ئۆتۆمبیلدا دابنیشێت؟
+٧٤٥ پرسیاری تیۆری بەخۆڕایی: https://ai-driving-theory.tareeq.workers.dev/
+نافەرمی — بۆ ڕاهێنان تەنها.
+```
+
+*(EN, if posting the English cut: Not in the front seat — Where must a child under 13 travel in a car?)*
+
+---
+
+## 14. `glass-ku.mp4`
+
+**Title / caption (Kurdish)**
+```
+ڕایمەکێشە دەرەوە 🤔
+
+پارچەیەکی گەورەی شووشە بە قووڵی چووەتە ناو برینێک. چی دەکەیت؟
+
+وەڵامەکە لە ڤیدیۆکەدا 👇
+```
+
+**Tags**
+```
+#فریاگوزاری #برین #یارمەتیی_یەکەم #کوردستان #هەولێر #سلێمانی #دهۆک #مۆڵەتی_شۆفێری #تیۆری #فێربوونی_شۆفێری #kurdistan #erbil #drivingtest
+```
+
+**Description / bio link**
+```
+پارچەیەکی گەورەی شووشە بە قووڵی چووەتە ناو برینێک. چی دەکەیت؟
+٧٤٥ پرسیاری تیۆری بەخۆڕایی: https://ai-driving-theory.tareeq.workers.dev/
+نافەرمی — بۆ ڕاهێنان تەنها.
+```
+
+*(EN, if posting the English cut: Do not pull it out — A large piece of glass is embedded deep in a wound. What do you do?)*
+
+---
+
+## 15. `foglights-ku.mp4`
+
+**Title / caption (Kurdish)**
+```
+لایتی بەرز تەم خراپتر دەکات 🤔
+
+لە تەم یان بارانی بەخوڕدا ڕوونی لە ١٠٠ مەتر کەمتر دەبێتەوە. کام چرا بەکاردەهێنیت؟
+
+وەڵامەکە لە ڤیدیۆکەدا 👇
+```
+
+**Tags**
+```
+#تەم #لایت #باران #کوردستان #هەولێر #سلێمانی #دهۆک #مۆڵەتی_شۆفێری #تیۆری #فێربوونی_شۆفێری #kurdistan #erbil #drivingtest
+```
+
+**Description / bio link**
+```
+لە تەم یان بارانی بەخوڕدا ڕوونی لە ١٠٠ مەتر کەمتر دەبێتەوە. کام چرا بەکاردەهێنیت؟
+٧٤٥ پرسیاری تیۆری بەخۆڕایی: https://ai-driving-theory.tareeq.workers.dev/
+نافەرمی — بۆ ڕاهێنان تەنها.
+```
+
+*(EN, if posting the English cut: Full beam makes fog worse — Visibility drops below 100 metres in fog or heavy rain. Which lights do you use?)*
+
+---
+
+## 16. `roundabout-ku.mp4`
+
+**Title / caption (Kurdish)**
+```
+ئەو ئاماژەیەی زۆر کەس هەڵەی دەکەن 🤔
+
+دەتەوێت دووەم دەرچوون (ڕاست بەرەوپێش) لە بازنەکە وەربگریت. چی دەکەیت؟
+
+وەڵامەکە لە ڤیدیۆکەدا 👇
+```
+
+**Tags**
+```
+#بازنە #ئاماژە #دەوار #کوردستان #هەولێر #سلێمانی #دهۆک #مۆڵەتی_شۆفێری #تیۆری #فێربوونی_شۆفێری #kurdistan #erbil #drivingtest
+```
+
+**Description / bio link**
+```
+دەتەوێت دووەم دەرچوون (ڕاست بەرەوپێش) لە بازنەکە وەربگریت. چی دەکەیت؟
+٧٤٥ پرسیاری تیۆری بەخۆڕایی: https://ai-driving-theory.tareeq.workers.dev/
+نافەرمی — بۆ ڕاهێنان تەنها.
+```
+
+*(EN, if posting the English cut: The signal most people get wrong — You want to take the second exit (straight ahead) at a roundabout. What do you do?)*
+
+---
+
+## 17. `advisory-ku.mp4`
+
+**Title / caption (Kurdish)**
+```
+ئەو ژمارەیە سنووری یاسایی نییە 🤔
+
+هێمای پێچەکان ژمارەی '٤٥'ی لەژێردایە. ژمارەکە واتای چییە؟
+
+وەڵامەکە لە ڤیدیۆکەدا 👇
+```
+
+**Tags**
+```
+#هێماکان #خێرایی #پێچ #کوردستان #هەولێر #سلێمانی #دهۆک #مۆڵەتی_شۆفێری #تیۆری #فێربوونی_شۆفێری #kurdistan #erbil #drivingtest
+```
+
+**Description / bio link**
+```
+هێمای پێچەکان ژمارەی '٤٥'ی لەژێردایە. ژمارەکە واتای چییە؟
+٧٤٥ پرسیاری تیۆری بەخۆڕایی: https://ai-driving-theory.tareeq.workers.dev/
+نافەرمی — بۆ ڕاهێنان تەنها.
+```
+
+*(EN, if posting the English cut: That number is not a limit — A bends sign has '45' beneath it. What does the number mean?)*
+
+---
+
+## 18. `alley-ku.mp4`
+
+**Title / caption (Kurdish)**
+```
+نزمترین سنووری ناو شار 🤔
+
+زۆرترین خێرایی لە کۆڵان یان ڕێگای تەسکی ناو شار چەندە؟
+
+وەڵامەکە لە ڤیدیۆکەدا 👇
+```
+
+**Tags**
+```
+#کۆڵان #خێرایی #شار #کوردستان #هەولێر #سلێمانی #دهۆک #مۆڵەتی_شۆفێری #تیۆری #فێربوونی_شۆفێری #kurdistan #erbil #drivingtest
+```
+
+**Description / bio link**
+```
+زۆرترین خێرایی لە کۆڵان یان ڕێگای تەسکی ناو شار چەندە؟
+٧٤٥ پرسیاری تیۆری بەخۆڕایی: https://ai-driving-theory.tareeq.workers.dev/
+نافەرمی — بۆ ڕاهێنان تەنها.
+```
+
+*(EN, if posting the English cut: The lowest limit in town — What is the maximum speed in an alley or narrow lane inside a town?)*
+
+---
+
+## 19. `dazzle-ku.mp4`
+
+**Title / caption (Kurdish)**
+```
+هەرگیز سەیری لایتەکان مەکە 🤔
+
+بە شەو ئۆتۆمبیلێکی ڕووبەڕوو لایتی بەرزی هێشتووەتەوە و چاوت خەڵەتان دەکات. چی دەکەیت؟
+
+وەڵامەکە لە ڤیدیۆکەدا 👇
+```
+
+**Tags**
+```
+#شەو #لایت #خەڵەتان #کوردستان #هەولێر #سلێمانی #دهۆک #مۆڵەتی_شۆفێری #تیۆری #فێربوونی_شۆفێری #kurdistan #erbil #drivingtest
+```
+
+**Description / bio link**
+```
+بە شەو ئۆتۆمبیلێکی ڕووبەڕوو لایتی بەرزی هێشتووەتەوە و چاوت خەڵەتان دەکات. چی دەکەیت؟
+٧٤٥ پرسیاری تیۆری بەخۆڕایی: https://ai-driving-theory.tareeq.workers.dev/
+نافەرمی — بۆ ڕاهێنان تەنها.
+```
+
+*(EN, if posting the English cut: Never look at the lights — At night an oncoming car keeps its high beam on and dazzles you. What do you do?)*
+
+---
+
+## 20. `tyredate-ku.mp4`
+
+**Title / caption (Kurdish)**
+```
+تایەکانت ڕێکەوتیان لەسەرە 🤔
+
+تایەیەک بە "DOT … 0321" نیشانە کراوە. ٠٣٢١ چیت پێدەڵێت؟
+
+وەڵامەکە لە ڤیدیۆکەدا 👇
+```
+
+**Tags**
+```
+#تایە #ئۆتۆمبیل #پشکنین #کوردستان #هەولێر #سلێمانی #دهۆک #مۆڵەتی_شۆفێری #تیۆری #فێربوونی_شۆفێری #kurdistan #erbil #drivingtest
+```
+
+**Description / bio link**
+```
+تایەیەک بە "DOT … 0321" نیشانە کراوە. ٠٣٢١ چیت پێدەڵێت؟
+٧٤٥ پرسیاری تیۆری بەخۆڕایی: https://ai-driving-theory.tareeq.workers.dev/
+نافەرمی — بۆ ڕاهێنان تەنها.
+```
+
+*(EN, if posting the English cut: Your tyres have a date on them — A tyre is marked "DOT … 0321". What does 0321 tell you?)*
 
 ---

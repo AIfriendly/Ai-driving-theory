@@ -1,23 +1,37 @@
 # Tareeq video — Remotion
 
-Renders the TikTok quiz clips to real MP4 files. 1080×1920, 30fps, **10 hooks,
-Kurdish, with a spoken voiceover**. Clip length is not fixed — it follows the
-voice, and currently runs 15–24s.
+Renders the TikTok quiz clips to real MP4 files. 1080×1920, 30fps, **20 hooks
+in two batches, Kurdish, with a spoken voiceover**. Clip length is not fixed —
+it follows the voice, and currently runs 15–24s.
 
-This is the render path. `../web/ad.html` is the same eight clips as a page you
-screen-record — useful for a quick preview or a phone-only workflow, but the
-MP4s from here are what you upload.
+This is the render path. `../web/ad.html` is an older set of clips as a page
+you screen-record — useful for a quick preview or a phone-only workflow, but
+the MP4s from here are what you upload.
 
 ## Render
 
 ```bash
 npm install
 KURDISH_TTS_KEY=... npm run voice   # generate the voiceover (do this first)
-npm run check                       # safe zones, all 10
+npm run check                       # safe zones, all 20, two frames each
 npm run render:all                  # render
 npm run upload                      # push everything to gofile, one link
 npx remotion studio                 # preview and scrub in the browser
 ```
+
+Both `voice` and `render:all` take a subset, which is what you want after
+adding a hook rather than re-spending quota and CPU on the nineteen that have
+not changed:
+
+```bash
+KURDISH_TTS_KEY=... npm run voice -- --only helmet,glass
+node render-all.mjs --ids helmet,glass
+```
+
+`npm run voice` skips any clip that already has both parts in the manifest
+*and* both `.wav` files on disk. `--force` regenerates anyway. The `.wav`
+files are gitignored, so a fresh clone has the manifest but no audio and the
+first `voice` run re-fetches everything.
 
 **`npm run voice` must run before rendering.** It writes the audio *and* the
 measured durations that every later timing depends on.
@@ -45,10 +59,18 @@ is why `Root.tsx` slugifies underscores out.
 
 ## Editing the clips
 
-`src/data.ts` holds the eight hooks, both languages, copied verbatim from the
+`src/data.ts` holds the twenty hooks, both languages, copied verbatim from the
 question bank in `../web/index.html`. They are the items where the answer most
 people give is the wrong one — that is what drives the comments that carry
 reach. `bait` marks the wrong option to show in red on the reveal.
+
+Set `sign` on a clip and it draws the traffic sign on a white card between the
+question and the options; the artwork lives in `src/signs.ts`, copied from the
+same HTML file. Only do that when the question is *about* the sign — the card
+costs 250px of a column that is already the binding constraint, and it is
+charged to the type weight below so a sign clip automatically runs a size
+down. Without that charge the first sign clip overflowed the top and bottom
+safe zones at once.
 
 `src/timing.ts` holds the timeline, and it is **derived, not fixed**.
 
@@ -64,6 +86,13 @@ clip, so the video now fits the audio rather than the other way round:
 | reason | reveal + 1.4s |
 | CTA | 2.4s before the end |
 | end | reveal + sayB + 1.4s tail |
+
+The countdown is a ring, not just a digit. A thin r=300 outline through the
+centre of the frame drains over the three seconds, with the big ghost digit
+washing behind it and popping on each tick. It is centred rather than tucked
+into a corner because there is no free corner on this layout — the first
+attempt put a badge at the top opposite the wordmark and it landed straight on
+the hook line, which in Kurdish starts at the right edge and runs full width.
 
 Two things stay fixed because they *are* the design: the question is on screen
 in frame one, and the answer never arrives before a countdown and a beat of
@@ -97,8 +126,14 @@ the four margins:
 
 ```bash
 node scripts/check-safe-zones.mjs arrow-ku kerb-ku    # a few
-npm run check                                        # or all 10
+npm run check                                        # or all 20
 ```
+
+It renders **two** frames per clip. `@reason` is the busiest one — answer,
+reason and CTA all on screen — which catches a column grown too tall.
+`@count` is half a second into the countdown, because the timer is absolutely
+positioned and therefore ignores the padding entirely. Checking only the
+reason frame would never render the timer at all.
 
 Type also **scales to content weight** now (`k` in `Ad.tsx`), because the
 binding constraint is column height and hand-tuning each new hook had already
@@ -147,8 +182,11 @@ kurdishtts.com. `POST /api/tts-proxy`, header `x-api-key`, body
 `{speaker_id: "sorani_1", model_version: "v4", text}`, returns WAV.
 
 The key is read from `KURDISH_TTS_KEY` and **must never be committed**.
-Free tier is 20,000 characters/month via the API; a full batch of ten clips,
-both parts each, costs about 2,100. There is no reason to pay for this.
+Free tier is 20,000 characters/month via the API. Batch one cost about 2,100
+characters and batch two about 2,700, so all twenty clips come to roughly
+4,800 — a quarter of one month's free allowance. There is no reason to pay for
+this. `--only` and the skip-if-already-voiced check exist so a re-run does not
+spend the other nineteen clips' quota rewriting files that were correct.
 
 The generated `.wav` files are gitignored — they are reproducible and large.
 

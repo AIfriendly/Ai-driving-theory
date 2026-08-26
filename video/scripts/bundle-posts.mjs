@@ -16,20 +16,25 @@ mkdirSync(OUT, {recursive: true});
 
 // Blocks look like:  ## 3. `ambulance-ku.mp4`   … up to the next "## " or EOF.
 const blocks = [...md.matchAll(/^## (\d+)\.\s*`([^`]+)`\s*\n([\s\S]*?)(?=^## |\z)/gm)];
-if (blocks.length !== 10) throw new Error(`expected 10 clip blocks, found ${blocks.length}`);
+/* Count comes from POSTING.md rather than a constant. It was pinned at 10 and
+   the second batch of ten made the whole script throw — a hard number here
+   just means the next batch breaks it again. A floor still catches a parse
+   that has silently fallen apart. */
+if (blocks.length < 5) throw new Error(`only ${blocks.length} clip blocks parsed out of POSTING.md`);
+const TOTAL = blocks.length;
 
 const field = (body, label) => {
   const m = body.match(new RegExp(`\\*\\*${label}[^*]*\\*\\*\\s*\\n\`\`\`\\n([\\s\\S]*?)\\n\`\`\``));
   return m ? m[1].trim() : "";
 };
 
-const index = ["TAREEQ — 10 clips, each paired with its own caption/tags/description.", "",
+const index = [`TAREEQ — ${TOTAL} clips, each paired with its own caption/tags/description.`, "",
   "Each NN-name.mp4 has a matching NN-name.txt. Open the .txt, copy the three",
   "blocks into TikTok's caption, tags and description fields.", "",
   "POST 2-3, THEN STOP for 48h and read the result before posting the rest.",
   "The video files are fixed but captions are not, so a hook that lands should",
   "change how the remaining clips are written.", "",
-  "Strongest openers: 01 night speed, 10 unlicensed penalty, 03 ambulance.",
+  "Strongest openers: 01 night speed, 10 unlicensed penalty, 12 helmet, 11 hangover.",
   "Do NOT put the answer in the caption — the clip depends on people watching", "to find out.", "",
   "Bio link: https://ai-driving-theory.tareeq.workers.dev/", "",
   "Order:"];
@@ -43,7 +48,7 @@ for (const [, n, file, body] of blocks) {
   if (!caption || !tags || !desc) throw new Error(`${id}: missing a field`);
 
   writeFileSync(`${OUT}/${nn}-${id}.txt`,
-`${nn} of 10 — ${id}.mp4
+`${nn} of ${TOTAL} — ${id}.mp4
 ${"=".repeat(46)}
 
 [1] CAPTION  → paste into TikTok's caption field
@@ -67,4 +72,4 @@ Link goes in the BIO, not the caption — TikTok captions are not clickable.
 }
 
 writeFileSync(`${OUT}/00-START-HERE.txt`, index.join("\n") + "\n");
-console.log(`bundle/ built — ${blocks.length} clips paired, plus 00-START-HERE.txt`);
+console.log(`bundle/ built — ${TOTAL} clips paired, plus 00-START-HERE.txt`);

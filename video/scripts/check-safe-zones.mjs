@@ -11,17 +11,29 @@ const SAFE = {top: 130, bottom: 320, right: 120, left: 60};
 const BG = [11, 16, 24];          // C.bg #0b1018
 const TOL = 10;                    // jpeg/ffmpeg noise around the flat fill
 
-/* Aim at the busiest frame of each clip: just after the reason appears, when
-   the answer, the reason and the CTA can all be on screen at once. Durations
-   differ per clip now, so a fixed frame number would miss or overshoot. */
+/* Two frames per clip, because there are two different ways to overflow.
+
+   "reason" is the busiest frame: just after the reason appears, when the
+   answer, the reason and the CTA can all be on screen at once. That is the
+   one that catches a column grown too tall.
+
+   "count" is half a second into the countdown. The timer badge is absolutely
+   positioned in a top corner, so it ignores the padding entirely — exactly
+   the class of mistake that put the CTA under the caption the first time.
+   Checking only the reason frame would never render it.
+
+   Durations differ per clip, so fixed frame numbers would miss or overshoot. */
 import {beatsFor, FPS} from "../src/timing.ts";
 import {ADS} from "../src/data.ts";
-const frameFor = (compId) => {
+const framesFor = (compId) => {
   const ad = ADS.find((a) => compId.startsWith(a.id.replace(/_/g, "-")));
-  if (!ad) return 390;
+  if (!ad) return [{name: "reason", frame: 390}];
   const lang = compId.endsWith("-en") ? "en" : "ku";
   const b = beatsFor(ad, lang);
-  return Math.round(Math.min(b.cta + 0.6, b.end - 0.4) * FPS);
+  return [
+    {name: "reason", frame: Math.round(Math.min(b.cta + 0.6, b.end - 0.4) * FPS)},
+    {name: "count", frame: Math.round((b.countStart + 0.5) * FPS)},
+  ];
 };
 
 const ids = process.argv.slice(2);
@@ -72,20 +84,22 @@ const painted = (d, w, bpp, x, y) => {
 
 let bad = 0;
 for (const id of ids) {
-  const png = `out/zones/${id}.png`;
-  execFileSync("npx", ["remotion", "still", "src/index.ts", id, png,
-    `--frame=${frameFor(id)}`, `--browser-executable=${SHELL}`, "--log=error"], {stdio: ["ignore", "ignore", "inherit"]});
-  const {w, h, bpp, data} = readPng(png);
-  const hits = {top: 0, bottom: 0, right: 0, left: 0};
-  for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) {
-    if (!painted(data, w, bpp, x, y)) continue;
-    if (y < SAFE.top) hits.top++;
-    if (y >= h - SAFE.bottom) hits.bottom++;
-    if (x >= w - SAFE.right) hits.right++;
-    if (x < SAFE.left) hits.left++;
+  for (const {name, frame} of framesFor(id)) {
+    const png = `out/zones/${id}-${name}.png`;
+    execFileSync("npx", ["remotion", "still", "src/index.ts", id, png,
+      `--frame=${frame}`, `--browser-executable=${SHELL}`, "--log=error"], {stdio: ["ignore", "ignore", "inherit"]});
+    const {w, h, bpp, data} = readPng(png);
+    const hits = {top: 0, bottom: 0, right: 0, left: 0};
+    for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) {
+      if (!painted(data, w, bpp, x, y)) continue;
+      if (y < SAFE.top) hits.top++;
+      if (y >= h - SAFE.bottom) hits.bottom++;
+      if (x >= w - SAFE.right) hits.right++;
+      if (x < SAFE.left) hits.left++;
+    }
+    const fail = Object.entries(hits).filter(([, n]) => n > 0);
+    if (fail.length) { bad++; console.log(`✗ ${id} @${name}: ${fail.map(([k, n]) => `${k}=${n}px`).join(" ")}`); }
+    else console.log(`✓ ${id} @${name}: clear of all four zones`);
   }
-  const fail = Object.entries(hits).filter(([, n]) => n > 0);
-  if (fail.length) { bad++; console.log(`✗ ${id}: ${fail.map(([k, n]) => `${k}=${n}px`).join(" ")}`); }
-  else console.log(`✓ ${id}: clear of all four zones`);
 }
 process.exit(bad ? 1 : 0);

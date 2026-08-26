@@ -28,7 +28,7 @@ quiz — is still inline and works offline.
 | Sim scene cost | 613,740 tris/frame · 142 draw calls (≈112 of them the car model) · 4,585 instanced objects in 30 meshes |
 | Questions with no visual | 0 |
 | Study-guide tips with no picture | 0 (587 of 587) |
-| Ad clips rendered | 10 voiced Kurdish (15-24s), delivered · earlier silent 8x2 batch at `292a68e` |
+| Ad clips rendered | 10 voiced Kurdish (15-24s), delivered · **batch two: 10 more written, checked and ready — blocked on `KURDISH_TTS_KEY`, no audio and no MP4s yet** · earlier silent 8x2 batch at `292a68e` |
 
 Branch: `claude/trading-agent-bybit-mcp-ao56dp` — this is also the repo's
 **default branch**. There is no `main`/`master`.
@@ -105,6 +105,60 @@ owner — most of all anything that assumes the TikTok app is on their phone.
 ---
 
 ## Done
+
+- [x] **Second batch of ten TikTok clips, plus a countdown that reads as a
+      timer.** Owner asked for ten more videos "with timer effect and stuff
+      with voice". Twenty hooks now exist in `video/src/data.ts`; batch two is
+      hangover, motorcyclist's helmet, child seat, embedded glass, fog lights,
+      roundabout signalling, advisory-speed plate, alley limit, being dazzled,
+      and the DOT date on a tyre. Picked from a different corner of the bank on
+      purpose — first aid, the vehicle itself and the two rules people argue
+      about — because ten more speed-limit questions would have competed with
+      the ten already posted.
+      - **The countdown was never legible.** It was one digit at 8% white
+        behind the options, which reads as a rendering artefact, not a clock.
+        Replaced with a thin r=300 ring through the centre of the frame that
+        drains over the three seconds, the ghost digit washing behind it and
+        popping on each tick, red on the last second.
+      - **There is no free corner on this layout.** The first attempt was a
+        132px badge at the top opposite the wordmark; it landed straight on the
+        hook line, which in Kurdish starts at the right edge and runs the full
+        width. Every margin is already spent on TikTok's own UI. A centred,
+        symmetric outline is the only shape that cannot collide.
+      - **`npm run check` now renders two frames per clip, not one.** The
+        busiest frame catches a column grown too tall; a frame half a second
+        into the countdown catches the timer, which is absolutely positioned
+        and therefore ignores the padding entirely — the exact class of bug
+        that once put the CTA under the caption. All 20 clips × 2 frames clear
+        all four zones.
+      - **The sign path in `Ad.tsx` was dead code.** It referenced a `SIGNS`
+        map that did not exist anywhere in `video/`; `d.sign` was always
+        undefined so the branch never ran and never failed. Wired it to a real
+        `video/src/signs.ts` copied from the bank's SVG table, and the first
+        sign clip immediately overflowed the top *and* bottom zones — the
+        comment promising "sign clips run a size down" had nothing
+        implementing it. The 250px card is now charged to the type weight and
+        scales with it.
+      - **The wordmark was being overprinted.** Pinned at y=142 while the
+        vertically-centred column starts at y=150, so any clip tall enough to
+        fill the box printed the yellow hook straight through TAREEQ. Moved
+        into the flow, where it travels with the content.
+      - `gen-voice` and `render-all` both take a subset now, and `gen-voice`
+        skips a clip that already has both parts in the manifest *and* both
+        `.wav` files on disk. Without that, adding one hook spent the other
+        nineteen clips' quota rewriting files that were already correct.
+        `render-all` reads its id list from `data.ts` instead of a hand-kept
+        copy, and `bundle-posts` no longer hard-asserts exactly ten.
+      - **NOT DONE: the voice, and therefore the MP4s.** `KURDISH_TTS_KEY` is
+        not in this container and kurdishtts.com rejects an unauthenticated
+        request outright (`Invalid API key`, HTTP 401 with no key at all), so
+        batch two has no audio and no final render. Everything else is in
+        place: `KURDISH_TTS_KEY=... npm run voice -- --only hangover,helmet,\
+        childseat,glass,foglights,roundabout,advisory,alley,dazzle,tyredate`
+        then `node render-all.mjs --ids ...` finishes it. Cost is ~2,700
+        characters of the 20,000/month free tier. One silent preview of
+        `advisory-ku` was rendered to prove the timer and the sign card work
+        end to end.
 
 - [x] **Driving-sim: regional trees, instanced buildings, and a sky that
       follows you.** Owner asked for more realistic, higher-poly buildings and
@@ -1599,12 +1653,14 @@ for a phone-only workflow or a quick preview. Shares no code with
 `index.html`, deliberately, so editing one cannot break the other.
 
 `video/` — Remotion project, renders real MP4s. **This is the one to upload.**
-1080×1920, 30fps, **10 voiced Kurdish clips, 15-24s**. Order is
+1080×1920, 30fps, **20 voiced Kurdish clips in two batches, 15-24s**. Order is
 `npm run voice` → `npm run check` → `npm run render:all` → `npm run upload`.
+Both `voice` and `render:all` take a subset (`--only ids` / `--ids ids`), which
+is what you want after adding a hook.
 The earlier silent 8-hooks-×-2-languages batch is at `292a68e` if wanted.
 `video/README.md` carries the full mechanics; read it before editing timing.
 
-**The hooks are the eight questions where the answer most people give is the
+**The hooks are the questions where the answer most people give is the
 wrong one** — that is what drives the comments that carry reach. Source of
 truth is `video/src/data.ts`, copied verbatim from the bank. `bait` marks the
 wrong option to light up red on the reveal.
@@ -1944,8 +2000,11 @@ correct in English silently buries the Kurdish clips under the share column.
 The first render also put the call to action at `bottom: 90`, i.e. underneath
 the caption: the single most important element of an ad, invisible.
 
-`npm run check` in `video/` renders the busiest frame of every composition and
-asserts no non-background pixel lands in any of the four margins. **Padding is
+`npm run check` in `video/` renders **two** frames of every composition — the
+busiest one (answer + reason + CTA), and half a second into the countdown —
+and asserts no non-background pixel lands in any of the four margins. The
+countdown frame exists because the timer is absolutely positioned; checking
+only the busy frame would never render it. **Padding is
 not proof** — an absolutely positioned element ignores it, which is how the CTA
 got buried. Re-run it after any copy or type change: the binding constraint is
 content height, and a longer question pushes the column past the safe box,

@@ -33,12 +33,21 @@ const SHELL = "/opt/pw-browsers/chromium_headless_shell-1194/chrome-linux/headle
    without banding, and banding needs gradients. This background is one flat
    colour. */
 const BITRATE = "6M";
-/* Kept in sync with src/data.ts by hand — ten hooks, Kurdish only. */
-const IDS = [
-  "night", "instructor", "ambulance", "towing", "pregnant",
-  "arrow", "priority", "gap", "kerb", "unlicensed",
-];
-const LANGS = process.argv.slice(2).length ? process.argv.slice(2) : ["ku"];
+/* Read straight from src/data.ts rather than kept in sync by hand: the list
+   was already duplicated in three places, and adding batch two meant getting
+   the same ten ids right in all of them. Pass ids on the command line to
+   render a subset (`node render-all.mjs --ids helmet,glass`). */
+import {ADS} from "./src/data.ts";
+const ALL = ADS.map((a) => a.id.replace(/_/g, "-"));
+const args = process.argv.slice(2);
+const pick = args.indexOf("--ids");
+const IDS = pick === -1 ? ALL : args[pick + 1].split(",").map((s) => s.trim());
+const unknown = IDS.filter((id) => !ALL.includes(id));
+if (unknown.length) { console.error(`unknown id(s): ${unknown.join(", ")}`); process.exit(2); }
+/* Kurdish only by default — that is where the voice and the audience are.
+   `node render-all.mjs ku en` renders both. */
+const langArgs = args.filter((a, i) => a !== "--ids" && args[i - 1] !== "--ids");
+const LANGS = langArgs.length ? langArgs : ["ku"];
 
 mkdirSync("out", {recursive: true});
 let n = 0;
