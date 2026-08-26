@@ -4,7 +4,8 @@ A bilingual (Kurdish Sorani · English, with partial Arabic) driving theory
 practice app for the Kurdistan Region of Iraq. Built as **one HTML file** — no
 build step, no dependencies. The quiz, artwork and study guide are entirely
 inline and work offline; the 3D driving sim additionally fetches two model
-files from `models/`, each with a fallback if they don't load.
+files from `models/` and a ground texture from `tex/`, each with a fallback if
+they don't load.
 
 Open `index.html` in any browser, or use the published site (see
 [Deployment](#deployment)).
@@ -31,13 +32,15 @@ from them:
    present for UI strings and older questions.
 2. **One file for the app itself.** All CSS, JS and artwork is inline — no CDN
    scripts, no web fonts, no remote images. **Every sign icon is hand-written
-   inline SVG.** The one deliberate exception is the driving sim's 3D models
-   (`models/corolla.glb`, `models/buildings.glb`), added once the owner agreed
-   to relax the rule so the sim could have a real car; both fall back to
-   procedural geometry if the fetch fails, so the app never breaks without them.
+   inline SVG.** The one deliberate exception is the driving sim's world assets
+   (`models/corolla.glb`, `models/buildings.glb`, `tex/ground.jpg`), added once
+   the owner agreed to relax the rule so the sim could have a real car; each
+   falls back to procedural geometry or a flat colour if the fetch fails, so the
+   app never breaks without them.
 3. **Offline-capable.** The quiz, guide, exam and all artwork work with the
-   network blocked; only the sim's 3D models are fetched, and it degrades to a
-   procedural car without them. Progress lives in `localStorage`.
+   network blocked; only the sim's models and ground texture are fetched, and it
+   degrades to a procedural car on flat-coloured ground without them. Progress
+   lives in `localStorage`.
 4. **Jurisdiction-honest.** Content is sourced from Kurdish study material.
    Where source screenshots carried figures from another country's law
    (alcohol limits, vehicle dimensions, national speed limits), those items
@@ -239,6 +242,11 @@ publish. The checks are:
 - every `q.sign` key resolves to a real entry in `SIGNS`,
 - newly added icons render, and the signs gallery card count matches
   `Object.keys(SIGNS).length`.
+
+The driving sim has its own harness, `scripts/simaudit/`, which drives **all
+745 situations across all 15 sets** and checks that each one builds, is
+bilingual, fails when driven wrong, and — the part a static check cannot answer
+— can actually be passed when driven right. See that directory's README.
 
 ---
 

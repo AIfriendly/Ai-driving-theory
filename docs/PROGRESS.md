@@ -15,8 +15,8 @@ SHA. Add anything you had to re-derive, or got wrong, to *Decisions & gotchas*
 `web/index.html` — bilingual (Kurdish Sorani · English) driving theory app,
 one HTML file, no build step. **The "no network calls" rule no longer holds**
 and has not for a while: the driving sim fetches `web/models/corolla.glb`
-(2.15 MB) and `web/models/buildings.glb` (0.66 MB), each with a graceful
-fallback if the fetch fails. Everything else — questions, artwork, the whole
+(2.15 MB), `web/models/buildings.glb` (0.66 MB) and `web/tex/ground.jpg`
+(53 KB), each with a graceful fallback if the fetch fails. Everything else — questions, artwork, the whole
 quiz — is still inline and works offline.
 
 | | |
@@ -24,7 +24,7 @@ quiz — is still inline and works offline.
 | Active questions | 745 (749 defined, 4 filtered out via `ARCHIVED_Q`) |
 | Sign icons | 110 inline SVG |
 | Scene / concept illustrations | 134 |
-| Driving-sim scenarios | 745 of 745 questions — 45 templates, 12 judging kernels |
+| Driving-sim scenarios | 745 of 745 questions — 45 templates (44 reachable), 12 judging kernels · all 745 verified passable, see `scripts/simaudit/` |
 | Questions with no visual | 0 |
 | Study-guide tips with no picture | 0 (587 of 587) |
 | Ad clips rendered | 10 voiced Kurdish (15-24s), delivered · earlier silent 8x2 batch at `292a68e` |
@@ -104,6 +104,104 @@ owner — most of all anything that assumes the TikTok app is on their phone.
 ---
 
 ## Done
+
+- [x] **Driving-sim: audited all 15 sets, then fixed what the audit found.**
+      The claim was "every question has a scenario", which `simScenAudit()`
+      already proved. The question nobody had asked was whether a learner can
+      *beat* them. New harness in `scripts/simaudit/` drives all 745 situations
+      headlessly — per-kernel autopilot for the right line, a deliberate wrong
+      line for the fail card, both languages. First run: **four situations
+      could not be passed by any line or speed the UI allows**, and eighteen
+      more punished the correct line.
+      - **`no_entry`'s barrier blocked your own lane — 18 situations.**
+        `simMakeBarrier(w)` hangs its arm from local x 0..w so `simLiftBarrier`
+        pivots it at the post like a real gate, which means the group origin is
+        at *one end* of the arm. `simSolid` centred the box on that origin, so a
+        420-wide barrier drawn over the side road (x 150→570) had its hit box at
+        x −60→360 — over the through lane. Sweeping laterally, every position
+        from x≈−50 rightwards failed "You hit something on the road"; the only
+        way past was the oncoming lane. **The correct line failed and the
+        wrong-side line passed.** `simSolid` now takes a `dx`; `no_entry` and
+        `stgBlock`'s barrier branch pass half the arm width.
+      - **Holding exactly the minimum speed failed as "too slow".**
+        `SIM_KMH` was `180/SIM_MAXSPD` folded into a constant, so
+        `simKmh(simUnits(20))` came back **19.999999999999996** — under a
+        `vmin` of 20 while the HUD read 20. Same for 40 and 80; 60 and 100 were
+        exact, which is why it hid for so long. `simKmh`/`simUnits` now divide
+        last (exact for every button on the pad) *and* the zone kernel allows
+        `SIM_ZONE_EPS` under the floor, because a driving test should not judge
+        to fifteen decimal places.
+      - **A speed band with no legal speed in it.** "On the slip road joining an
+        expressway **at 50 km/h**…" — `simScenFor` lifts any `NN km/h` out of the
+        question text into `p.vmax`, then `motorway_zone` set `vmin=60`. Band
+        `[60, 52.5]`: 20/40 failed as too slow, 60/80/100 as too fast. A ceiling
+        under the template's own floor is now taken as *not this road* and the
+        default 100 is used instead.
+      - **Keep-left put the oncoming car in the lane you must hold.**
+        `lane_keep` with `lane:"left"` sets the corridor to x −125…−8 and
+        `stgOncoming` defaults to x=−66 — dead centre of it, with a ±115 hit
+        box. All eleven positions across the corridor collided. Oncoming traffic
+        now runs down whichever lane you are *not* being asked to hold.
+      - Also: the level-crossing boom only spanned x −150→10, leaving half the
+        road open, and `overtake`'s lead car reported "too close to the vehicle
+        in front" when the real error was pulling back in early. Both corrected.
+      **Re-run after the fixes: 745/745 build, 0 page errors, 0 build failures,
+      0 zone bands without a selectable speed, 745/745 bilingual in both the
+      banner and the fail card, 0 situations with no working fail path.**
+      **Two known false positives in the harness, documented rather than
+      papered over:** the last situation of a set reports `fail` because passing
+      it calls `simFinishTest()` → `SIM.paused`, and the verdict check reads
+      `paused` before `idx`; and `audit.mjs`'s crude overtake line fails where
+      14 of 20 real lines pass.
+      **Still open, deliberately:** `overtake` has a dead spot at exactly
+      60 km/h (you catch the 22 km/h lead but cannot clear it inside the 2400-unit
+      zone) — passable at 20/40/80/100, and tuning the geometry blind risked
+      breaking the lines that work. And **`school_bus` is a complete, bilingual
+      template that 0 of 745 questions reach** — the words "school bus",
+      "bus carrying children" and "children getting on/off" appear nowhere in
+      the bank, so the school-bus rule is simply not in the syllabus coverage.
+      Adding a question needs source material; deleting working content is
+      worse than leaving it. Owner's call.
+
+- [x] **Driving-sim: real ground and real shadows.** The two biggest realism
+      gaps, both confirmed by reading the scene builder rather than guessing.
+      - **The ground was one flat green Lambert colour** across a 600,000-unit
+        plane — a billiard table. Now Poly Haven's **"Dry Ground Rocks"** (CC0,
+        public domain, no attribution required — credited anyway, as the repo
+        credits its other sources), 1K → 512px q75 → **53 KB**, served from
+        `web/tex/ground.jpg` and network-loaded like the models, with the flat
+        colour as the fallback. Semi-arid tan dirt with scattered stones, which
+        is what a Kurdish roadside verge actually looks like — the temperate
+        green was wrong for the audience, not just low-fidelity.
+      - **Nothing cast a shadow.** Zero uses of `castShadow`, `receiveShadow` or
+        `shadowMap` in the app's own code — the only hit in the file was inside
+        the bundled three.js. The car, signs and pedestrians read as cut-outs
+        floating over the road. Now: `PCFSoftShadowMap`, the sun casts at
+        1024², the road and ground receive.
+      **The trap here is the shadow camera.** A directional light's shadow is an
+      orthographic slab, not the world — sized to cover a 140,000-unit road it
+      would give the car about one texel. So the slab is `SHADOW_REACH` (1500)
+      around the car and **`simMoveSun()` drags it along every frame**, holding
+      the light at a fixed offset from its target so the sun angle — and every
+      shadow's direction — stays constant. Shadows are sharp near you and simply
+      stop past the fog at 6200, where nobody can tell.
+      `simAdd` decides what casts from the object's own bounding-box height
+      (>30 units), so lane lines and zebra bars — 3-unit-thick boxes — fall out
+      on their own and no caller has to remember which it is.
+      Verified with a before/after render from the chase camera: flat green with
+      a car floating on it, versus textured dirt with a soft shadow under the car
+      and the sign's pole shadow beside it.
+      **Next on this thread, in order:** the pine trees are still bright green
+      against arid dirt, which now reads worse than it did on the green plane;
+      the road is a `MeshLambertMaterial` with a colour map only, so it has no
+      normal or roughness map and sun angle does nothing to it; there is still
+      no verge or kerb (`P.shoulderMesh` is `null`) so the asphalt ends abruptly;
+      and there is a black band above the horizon in the chase view that
+      predates all of this and has not been chased down.
+      **Not measured: frame rate on a real phone.** Shadow maps are the one
+      change here with a per-frame cost, and swiftshader in a headless container
+      cannot tell you what an actual handset does. Check it on a phone before
+      advertising this.
 
 - [x] **Driving-sim: progress SAVE and a way to SKIP a situation.** The two gaps
       that made a 50-situation drive punishing: closing the app threw away 8-10

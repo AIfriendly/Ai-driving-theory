@@ -43,6 +43,8 @@ one-line rationale from the K-line data · final qty and dollar risk.
 ## Also in this repo
 
 `web/` — bilingual (Kurdish Sorani · English) driving theory app: `index.html`
-plus `web/models/*.glb` for the driving sim, no build step, no dependencies.
-The app is offline-capable; only the sim's 3D models are fetched, each with a
-fallback. See `web/README.md` and `docs/PROGRESS.md`.
+plus `web/models/*.glb` and `web/tex/*.jpg` for the driving sim, no build step,
+no dependencies. The app is offline-capable; only the sim's models and ground
+texture are fetched, each with a fallback. `scripts/simaudit/` drives all 745
+situations headlessly — run it after touching a scenario template or a judging
+kernel. See `web/README.md` and `docs/PROGRESS.md`.

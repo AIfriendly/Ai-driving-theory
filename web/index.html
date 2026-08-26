@@ -8311,6 +8311,12 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
   // by speed so you can't spin in place); SIM_SIGNSTEP = spacing of signs down
   // the road; SIM_TRIGR = how close you must get to a sign to trigger it.
   var SIM_TURNRATE=2.1, SIM_SIGNSTEP=2600, SIM_TRIGR=380;
+  // Open terrain, and how wide one tile of its photo texture is in world units
+  // (~40 m at 1 unit ≈ 1/30 m) — big enough that the repeat is not obvious.
+  var GROUND_SIZE=600000, GROUND_TILE=1200;
+  // Half-width of the sun's shadow slab. Shadows are sharp inside it and
+  // absent outside; the fog ends at 6200, so nobody sees the edge.
+  var SHADOW_REACH=1500;
 
   function mulberry32(seed){
     var a=seed|0;
@@ -8414,7 +8420,7 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
       '</div>'+
       '<div class="simbanner" id="simBanner"></div>'+
       '<p class="simhint">'+esc(t("simDragHint"))+'</p>'+
-      '<p class="simcredit">3D car: <a href="https://sketchfab.com/3d-models/2014-toyota-corolla-e180-eu-with-interior-36f95efb0585464cae43a25a3b3392e8" target="_blank" rel="noopener">“2014 Toyota Corolla E180”</a> by Armored Wave · buildings: <a href="https://sketchfab.com/3d-models/low-poly-city-buildings-e0209ac5bb684d2d85e5ade96c92d2ff" target="_blank" rel="noopener">“Low-poly City Buildings”</a> by smooth998 · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a></p>'+
+      '<p class="simcredit">3D car: <a href="https://sketchfab.com/3d-models/2014-toyota-corolla-e180-eu-with-interior-36f95efb0585464cae43a25a3b3392e8" target="_blank" rel="noopener">“2014 Toyota Corolla E180”</a> by Armored Wave · buildings: <a href="https://sketchfab.com/3d-models/low-poly-city-buildings-e0209ac5bb684d2d85e5ade96c92d2ff" target="_blank" rel="noopener">“Low-poly City Buildings”</a> by smooth998 · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a> · ground: <a href="https://polyhaven.com/a/dry_ground_rocks" target="_blank" rel="noopener">“Dry Ground Rocks”</a> from Poly Haven (CC0)</p>'+
       '<div class="simgear" role="group" aria-label="'+esc(t("simGear"))+'">'+
         '<button class="simgearbtn on" id="simGearP" onclick="simSetGear(\'P\')" aria-label="'+esc(t("simGear"))+' P">P</button>'+
         '<button class="simgearbtn rev" id="simGearR" onclick="simSetGear(\'R\')" aria-label="'+esc(L({en:"Reverse",ku:"دواکەوتنەوە"}))+'">R</button>'+
@@ -8645,7 +8651,7 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
   // non-zero speed auto-engages Drive so the numbers alone are enough to drive.
   window.simSetSpeed=function(v){
     SIM.targetSpeedKmh=v;
-    SIM.targetSpeed=v*SIM_MAXSPD/180; // km/h → internal units (HUD reads speed/MAXSPD*180)
+    SIM.targetSpeed=simUnits(v); // km/h → internal units (HUD reads speed/MAXSPD*180)
     // Choosing a speed engages Drive from Park/Neutral, but never overrides a
     // deliberate Reverse — in R the numbers set how fast you back up.
     if(v>0&&SIM.gear!=="D"&&SIM.gear!=="R")window.simSetGear("D");
@@ -8695,10 +8701,23 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
       // whether you drive it correctly. Fail → retry that situation.
       simUpdateTasks(dt);
     }
+    simMoveSun();
     simApplyLookStick(dt);
     simUpdateAudio();
     simDraw();
     SIM.raf=requestAnimationFrame(simTick);
+  }
+
+  /* The sun's shadow slab only covers SHADOW_REACH around its target, so it
+     has to travel with the car or the shadows vanish the moment you drive off.
+     Light position stays a fixed offset from the target, which keeps the sun
+     angle — and therefore every shadow's direction — constant. */
+  function simMoveSun(){
+    var P=SIM.gl; if(!P||!P.sun)return;
+    var c=SIM.car;
+    P.sun.target.position.set(c.px,0,c.pz);
+    P.sun.target.updateMatrixWorld();
+    P.sun.position.set(c.px+900,1400,c.pz+520);
   }
 
   /* ==========================================================================
@@ -8727,6 +8746,11 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
     catch(e){ return null; }
     if(!renderer||!renderer.getContext())return null;
     renderer.setPixelRatio(1); // canvas.width/height are already DPR-scaled by hand
+    // Contact shadows are what stop the car, the signs and the pedestrians
+    // reading as cut-outs floating above the road. One shadow-casting light,
+    // a modest map, and only things that stand up cast into it.
+    renderer.shadowMap.enabled=true;
+    renderer.shadowMap.type=THREE.PCFSoftShadowMap;
 
     var scene=new THREE.Scene();
     scene.fog=new THREE.Fog(0x9fc3d9,1100,6200);
@@ -8768,10 +8792,20 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
     scene.add(cockpitAmb);
     var sun=new THREE.DirectionalLight(0xfff3dc,1.0);
     sun.position.set(700,1100,400);
-    scene.add(sun);
+    /* A directional light's shadow camera is an orthographic slab, not the
+       whole world — a slab big enough for a 140,000-unit road would give the
+       car about one texel. So keep it tight and move it with the car every
+       frame (simMoveSun): sharp shadows near you, none past the fog. */
+    sun.castShadow=true;
+    sun.shadow.mapSize.set(1024,1024);
+    var sc=sun.shadow.camera;
+    sc.left=-SHADOW_REACH; sc.right=SHADOW_REACH; sc.top=SHADOW_REACH; sc.bottom=-SHADOW_REACH;
+    sc.near=200; sc.far=5200; sc.updateProjectionMatrix();
+    sun.shadow.bias=-0.0005; sun.shadow.normalBias=4;
+    scene.add(sun); scene.add(sun.target);
 
     var camera=new THREE.PerspectiveCamera(60,1,5,8500);
-    var P={renderer:renderer,scene:scene,camera:camera};
+    var P={renderer:renderer,scene:scene,camera:camera,sun:sun};
     P.cockpitAmb=cockpitAmb;
 
     var mat={
@@ -8794,7 +8828,9 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
       // instead of one flat blob when the hands grip the wheel.
       skin:new THREE.MeshStandardMaterial({color:0xc98f6b,roughness:0.66,metalness:0.0}),
       skinDark:new THREE.MeshStandardMaterial({color:0xb0754f,roughness:0.68,metalness:0.0}),
-      ground:new THREE.MeshLambertMaterial({color:0x2e4c27}),
+      // Semi-arid roadside, not a lawn. This colour is what the world wears
+      // if tex/ground.jpg never arrives; the photo replaces it below.
+      ground:new THREE.MeshLambertMaterial({color:0x9c8a6d}),
       trunk:new THREE.MeshLambertMaterial({color:0x5c4630}),
       leaf:new THREE.MeshLambertMaterial({color:0x3d6e32}),
       leaf2:new THREE.MeshLambertMaterial({color:0x4a7d3c}),
@@ -8807,9 +8843,19 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
     P.mat=mat;
 
     // Big open ground you can freely drive across in any direction.
-    var ground=new THREE.Mesh(new THREE.PlaneGeometry(600000,600000),mat.ground);
+    var ground=new THREE.Mesh(new THREE.PlaneGeometry(GROUND_SIZE,GROUND_SIZE),mat.ground);
     ground.rotation.x=-Math.PI/2; ground.position.y=-2;
+    ground.receiveShadow=true;
     scene.add(ground);
+    /* Real CC0 dirt (Poly Haven "Dry Ground Rocks", public domain) over the
+       flat colour — network-loaded like the car and the buildings, so a failed
+       fetch leaves the fallback tone rather than a broken world. */
+    new THREE.TextureLoader().load("tex/ground.jpg",function(tex){
+      tex.wrapS=tex.wrapT=THREE.RepeatWrapping;
+      tex.repeat.set(GROUND_SIZE/GROUND_TILE,GROUND_SIZE/GROUND_TILE);
+      tex.anisotropy=Math.min(8,renderer.capabilities.getMaxAnisotropy());
+      mat.ground.map=tex; mat.ground.color.setHex(0xffffff); mat.ground.needsUpdate=true;
+    },undefined,function(err){ if(window.console)console.warn("ground texture failed; using flat colour",err); });
 
     // The single straight "main road" running +z, carrying all the question
     // signs. One static textured strip (the CC0 asphalt+lane-marking photo,
@@ -8826,6 +8872,7 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
     // polygonOffset keeps the thin road drawn ON TOP of the huge ground plane
     // just below it, instead of z-fighting green over it at distance.
     var roadMesh=new THREE.Mesh(roadGeo,new THREE.MeshLambertMaterial({map:roadTex,side:THREE.DoubleSide,polygonOffset:true,polygonOffsetFactor:-2,polygonOffsetUnits:-2}));
+    roadMesh.receiveShadow=true;
     scene.add(roadMesh);
     P.roadMesh=roadMesh; P.shoulderMesh=null;
 
@@ -8884,6 +8931,7 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
       model.scale.set(CAR_SCALE,CAR_SCALE,CAR_SCALE);
       model.rotation.y=0; // nose points +Z, the drive direction
       ext.add(model);
+      model.traverse(function(o){ if(o.isMesh)o.castShadow=true; });
       P.carModel=model;
       // Keep every material the model uses, so the cabin can be made self-lit
       // while you are sitting in it — see simSetCabinLit().
@@ -9440,9 +9488,15 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
   var SIM_TASK_Z0=3200;    // z of the first situation
   var SIM_TASK_STEP=3000;  // spacing between situations down the road
   var SIM_STOP_EPS=55;     // speed at/below which the car counts as "stopped"
-  var SIM_KMH=180/SIM_MAXSPD;            // internal speed units -> km/h
-  function simKmh(v){return v*SIM_KMH;}
-  function simUnits(kmh){return kmh/SIM_KMH;}
+  /* Internal speed units <-> km/h. Divide LAST rather than folding 180/MAXSPD
+     into a constant first: with the constant, simKmh(simUnits(20)) came back as
+     19.999999999999996, so a driver holding exactly the 20 on the speed pad
+     failed a 20 km/h minimum while the HUD read 20. This ordering round-trips
+     every button on the pad exactly. */
+  function simKmh(v){return v*180/SIM_MAXSPD;}
+  function simUnits(kmh){return kmh*SIM_MAXSPD/180;}
+  var SIM_ZONE_TOL=1.05;   // how far over a limit counts as still within it
+  var SIM_ZONE_EPS=0.5;    // km/h of slack under a minimum, for the same reason
 
   function TT(en,ku){return {en:en,ku:ku};}
 
@@ -9594,8 +9648,11 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
 
   /* ---------- props the scenarios stage ---------- */
 
-  // Red/white striped barrier that pivots up from its post — level crossings,
-  // police checkpoints, closed roads.
+  /* Red/white striped barrier that pivots up from its post — level crossings,
+     police checkpoints, closed roads. The arm hangs from the post in +x (local
+     x 0..w) so simLiftBarrier pivots it about the post like a real gate. That
+     means the group's origin is at ONE END of the arm, not its middle: any hit
+     box for it has to be offset by w/2 (see simSolid's dx). */
   function simMakeBarrier(w){
     var outer=new THREE.Group(), arm=new THREE.Group(), n=Math.max(2,Math.round(w/110));
     for(var i=0;i<n;i++){
@@ -9708,10 +9765,18 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
     if(!SIM.gl)return o;
     SIM.gl.taskGroup.add(o); tk.actors.push(o);
     if(x!=null)o.position.set(x,y||0,z);
+    /* Things that stand up cast a shadow; paint on the road does not. Decided
+       from the object's own height so no caller has to remember which it is —
+       lane lines and zebra bars are 3 units thick and fall out on their own. */
+    var bb=new THREE.Box3().setFromObject(o);
+    if(bb.max.y-bb.min.y>30)o.traverse(function(m){ if(m.isMesh)m.castShadow=true; });
     return o;
   }
-  // Anything the car must not drive into. Judged centrally in simUpdateTasks.
-  function simSolid(tk,obj,hw,hl,msg){ tk.solids.push({o:obj,hw:hw||140,hl:hl||260,m:msg||TASK_TXT.f_hit}); }
+  /* Anything the car must not drive into. Judged centrally in simUpdateTasks.
+     dx offsets the box from the object's own origin: a barrier hangs its arm
+     off to one side of its post, so centring the box on the post would put it
+     over the road instead of over the arm. */
+  function simSolid(tk,obj,hw,hl,msg,dx){ tk.solids.push({o:obj,hw:hw||140,hl:hl||260,m:msg||TASK_TXT.f_hit,dx:dx||0}); }
 
   function stgSign(tk,o){
     o=o||{};
@@ -9783,7 +9848,8 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
       var n=o.n||6;
       for(var i=0;i<n;i++)simAdd(tk,simMakeCone(),x,0,tk.z+i*((o.len||900)/n));
     }else if(o.kind==="barrier"){
-      var b=simMakeBarrier(o.w||260); simAdd(tk,b,x-(o.w||260)/2,118,tk.z); simSolid(tk,b,(o.w||260)/2,60);
+      var bw=o.w||260;
+      var b=simMakeBarrier(bw); simAdd(tk,b,x-bw/2,118,tk.z); simSolid(tk,b,bw/2,60,null,bw/2);
     }else{
       var c=simBuildTrafficCar(o.color||0xb5221f); simAdd(tk,c,x,0,tk.z+(o.dz||300));
       simSolid(tk,c,120,300);
@@ -9843,7 +9909,7 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
   function stgRails(tk){
     var RW=SIM_ROADW, s=tk.s;
     [-1,1].forEach(function(d){ simAdd(tk,simRoadLine(2600,26,0x6b6f75),0,6,tk.z+d*40); });
-    var b=simMakeBarrier(RW+30); simAdd(tk,b,-RW-20,118,tk.z-150); s.bar=b;
+    var b=simMakeBarrier(RW*2+40); simAdd(tk,b,-RW-20,118,tk.z-150); s.bar=b;
     var train=simMakeRailVehicle(1500,0x2b4a7a); simAdd(tk,train,1900,0,tk.z);
     s.actor=train; simSolid(tk,train,760,120);
     simAdd(tk,simRoadLine(RW*2,18),0,4,tk.z-260);
@@ -9993,7 +10059,13 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
     min_speed:{k:"zone",b:function(tk){tk.p.vmin=tk.p.vmin||60;tk.p.vmax=110;tk.p.len=1700;
         stgZone(tk,{fb:function(g,C){g.fillStyle="#1667c0";g.beginPath();g.arc(C,C,116,0,7);g.fill();g.fillStyle="#fff";g.font="bold 110px system-ui,Arial,sans-serif";g.textAlign="center";g.textBaseline="middle";g.fillText(String(tk.p.vmin),C,C+6);}});},
       i:function(tk){return TT("Minimum speed "+tk.p.vmin+" — do not obstruct traffic","کەمترین خێرایی "+tk.p.vmin+" — مەبە بە ڕێگر بۆ هاتووچۆ");},f:TASK_TXT.f_under},
-    motorway_zone:{k:"zone",b:function(tk){tk.p.vmax=tk.p.vmax||100;tk.p.vmin=tk.p.vmin||60;tk.p.len=2000;stgZone(tk,{});},
+    motorway_zone:{k:"zone",b:function(tk){tk.p.vmin=tk.p.vmin||60;
+        // A km/h figure read out of the question can be the speed you JOIN at,
+        // not the road's limit ("on the slip road ... at 50 km/h"). A ceiling
+        // below the minimum is not an expressway, so fall back to the default
+        // rather than staging a band no speed can satisfy.
+        if(!tk.p.vmax||tk.p.vmax<tk.p.vmin)tk.p.vmax=100;
+        tk.p.len=2000;stgZone(tk,{});},
       i:function(tk){return TT("Expressway — between "+tk.p.vmin+" and "+tk.p.vmax+" km/h","ڕێگای خێرا — لەنێوان "+tk.p.vmin+" و "+tk.p.vmax+" کم/کاتژمێر");},f:TASK_TXT.f_over},
 
     /* --- lane and position --- */
@@ -10003,7 +10075,10 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
       i:TT("No overtaking — stay behind and do not cross the line","تێپەڕاندن قەدەغەیە — لە پشتەوە بمێنەوە و هێڵەکە مەبڕە"),
       f:TT("You crossed the centre line where overtaking is banned.","لە شوێنێکدا هێڵی ناوەڕاستت بڕی کە تێپەڕاندن قەدەغەیە.")},
     overtake:{k:"keep",b:function(tk){tk.p.len=2400;tk.p.cross=1;tk.p.x0=-40;tk.p.back=10;
-        stgSign(tk,{});stgLead(tk,{kmh:22,dz:800});
+        // Naming the real error: hitting the lead car here is pulling back in
+        // before you are clear of it, not following too closely.
+        stgSign(tk,{});stgLead(tk,{kmh:22,dz:800,
+          hit:TT("You pulled back in before you were clear of the vehicle.","پێش ئەوەی بە تەواوی لە سواررۆکە دوور بکەویتەوە گەڕایتەوە ڕێڕەوەکەت.")});
         for(var i=0;i<8;i++)simAdd(tk,simRoadLine(10,90,0xffffff),0,4,tk.z+i*300);},
       i:TT("Overtake the slow vehicle, then return to your lane","سواررۆ هێواشەکە تێپەڕێنە، پاشان بگەڕێوە ڕێڕەوی خۆت"),
       f:TT("The overtake was not completed safely.","تێپەڕاندنەکە بە سەلامەتی تەواو نەبوو.")},
@@ -10021,12 +10096,15 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
     lane_keep:{k:"keep",b:function(tk){var right=(tk.p.lane!=="left");
         tk.p.len=1800;tk.p.x0=right?8:-125;tk.p.x1=right?125:-8;
         stgSign(tk,{});simAdd(tk,simRoadLine(10,tk.p.len,0xffffff),0,4,tk.z+tk.p.len/2);
-        stgOncoming(tk,{kmh:60,dz:2400});},
+        // Oncoming traffic runs down the lane you are NOT being asked to hold.
+        // Defaulting it to x=-66 put it inside the corridor whenever the sign
+        // said keep LEFT, so every line through that stretch was a collision.
+        stgOncoming(tk,{kmh:60,dz:2400,x:right?-66:66});},
       i:function(tk){return tk.p.lane==="left"?TT("Keep to the left lane through this stretch","لە درێژایی ئەم بەشەدا لە ڕێڕەوی چەپ بمێنەوە"):
         TT("Keep to your own lane — oncoming traffic","لە ڕێڕەوی خۆت بمێنەوە — هاتووچۆی ڕووبەڕوو هەیە");},f:TASK_TXT.f_lane},
     no_entry:{k:"keep",b:function(tk){tk.p.len=1300;tk.p.x0=-125;tk.p.x1=125;
         stgSign(tk,{fb:drawNoEntry,side:"right",dz:120});stgSide(tk,"right");
-        var b=simMakeBarrier(420);simAdd(tk,b,SIM_ROADW+20,118,tk.z);simSolid(tk,b,210,60);},
+        var b=simMakeBarrier(420);simAdd(tk,b,SIM_ROADW+20,118,tk.z);simSolid(tk,b,210,60,null,210);},
       i:TT("That road is closed to you — stay on the through road","ئەو ڕێگایە بۆ تۆ داخراوە — لەسەر ڕێگا سەرەکییەکە بمێنەوە"),
       f:TT("You entered a road you are not allowed to use.","چوویتە ناو ڕێگایەک کە بۆت نییە بەکاری بهێنیت.")},
     narrow_gap:{k:"keep",b:function(tk){tk.p.len=1200;tk.p.x0=-70;tk.p.x1=70;
@@ -10307,8 +10385,8 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
     zone:function(tk,dt,car){
       var p=tk.p,kmh=simKmh(car.speed),len=p.len||1700;
       if(car.pz>tk.z+160&&car.pz<tk.z+len){
-        if(p.vmax&&kmh>p.vmax*1.05)return simFailTask(tk,TASK_TXT.f_over);
-        if(p.vmin&&kmh<p.vmin)return simFailTask(tk,TASK_TXT.f_under);
+        if(p.vmax&&kmh>p.vmax*SIM_ZONE_TOL)return simFailTask(tk,TASK_TXT.f_over);
+        if(p.vmin&&kmh<p.vmin-SIM_ZONE_EPS)return simFailTask(tk,TASK_TXT.f_under);
       }
       if(car.pz>tk.z+len)return simPassTask();
     },
@@ -10550,7 +10628,7 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
     for(i=0;i<tk.anims.length;i++)tk.anims[i](dt);
     for(i=0;i<tk.solids.length;i++){
       var so=tk.solids[i], o=so.o;
-      if(o&&Math.abs(car.px-o.position.x)<so.hw&&Math.abs(car.pz-o.position.z)<so.hl)return simFailTask(tk,so.m);
+      if(o&&Math.abs(car.px-(o.position.x+so.dx))<so.hw&&Math.abs(car.pz-o.position.z)<so.hl)return simFailTask(tk,so.m);
     }
     var K=SIM_KERN[tk.k]; if(K)K(tk,dt,car);
   }
