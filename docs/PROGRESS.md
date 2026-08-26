@@ -101,6 +101,25 @@ owner — most of all anything that assumes the TikTok app is on their phone.
 
 ## Done
 
+- [x] **Driving-sim: got the UI off the 3D view.** Owner: the look wheel and the
+      instruction banner were both floating on top of the game picture and
+      blocking the view of the road. Both moved out of `.simstage` into the page
+      below it:
+      - **Instruction banner** — was a dark panel absolutely positioned over the
+        road (it covered the very situation it was describing). Now a `.simbanner`
+        strip directly under the view, in the app's own surface/border style, with
+        `min-height` so showing/hiding it never jumps the layout.
+      - **Look wheel** — was absolutely positioned bottom-left over the canvas.
+        Now `position:relative` and in-flow inside a new `.simdriverow` flex row,
+        sitting to the left of the ◀ ▶ steering buttons; knob restyled to the
+        brand colour for contrast against the now-light pad.
+      Verified headless by geometry, not eyeball: canvas spans y 224–502, banner
+      525–563, wheel 822–926 — **neither overlaps the canvas** — and a drag on the
+      wheel in its new position still turns the view (yaw 0 → −0.114, stick
+      engaged). Regression clean: 745/45/0 missing, 50 tasks, first 15 situations
+      all build, all controls present, loading panel still works in both the slow
+      and failed cases, 0 page errors.
+
 - [x] **Driving-sim: loading indicator + car model 3.3 MB → 2.15 MB (−34%).**
       The model is a multi-megabyte download with **no loading UI at all**, so on
       a phone you either stared at a half-built world or silently dropped to the
