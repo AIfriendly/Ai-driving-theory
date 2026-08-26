@@ -101,6 +101,29 @@ owner — most of all anything that assumes the TikTok app is on their phone.
 
 ## Done
 
+- [x] **Driving-sim: REVERSE gear (a button to back up).** The shifter was P/N/D
+      with no R, so the car could not move backwards at all — if you overshot a
+      situation or drove off the road there was no way out but to restart.
+      Added **R** to the shifter (now P·R·N·D, four columns, R highlights red).
+      - Travel direction is a `rev` multiplier on the movement step, so R drives
+        the car backwards along its heading.
+      - **Steering inverts in reverse** — the same input swings the nose the
+        other way, as it does backing a real car. Verified: holding LEFT gives
+        heading +0.105 in D and −0.105 in R, opposite signs.
+      - **Reverse is capped at ~20 km/h** (`SIM_REV_MAX`), like a real car,
+        regardless of which speed number is selected.
+      - `simSetSpeed` engages Drive from Park/Neutral as before but **never
+        overrides a deliberate Reverse** — in R the numbers set how fast you back
+        up. Verified: choosing 40 in R stays R; choosing 40 in P engages D.
+      Regression clean: 745/45/0 missing, 50 tasks, first 15 situations build,
+      all controls present, 0 page errors.
+      **Gotcha (cost time twice):** headless rAF here runs only a handful of
+      frames, so a value that stops changing between polls looks "settled" when
+      really no frame ran — a reverse-cap test falsely reported converging at 69
+      and then 34 km/h. **Count frames alongside the value**: the real trajectory
+      was 91@f2 → 78@f4 → 69@f5 → … → 22@f10, i.e. dropping ~10 km/h per frame
+      toward the 20 cap. Never conclude "converged" from wall-clock polling alone.
+
 - [x] **Driving-sim: got the UI off the 3D view.** Owner: the look wheel and the
       instruction banner were both floating on top of the game picture and
       blocking the view of the road. Both moved out of `.simstage` into the page

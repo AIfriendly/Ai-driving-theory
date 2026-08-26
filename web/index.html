@@ -327,7 +327,8 @@
   /* Gear selector: a real P/N/D shifter you must move out of Park to drive.
      Same LTR pin as the steer row — P/N/D order is a physical shift pattern,
      not text, and must not mirror under Kurdish RTL. */
-  .simgear{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;direction:ltr}
+  .simgear{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;direction:ltr}
+  .simgearbtn.rev.on{background:var(--bad);color:#fff;border-color:var(--bad)}
   .simgearbtn{border:1.5px solid var(--line);border-radius:12px;font:inherit;font-weight:800;font-size:15px;
     padding:10px 0;cursor:pointer;background:var(--surface);color:var(--muted);box-shadow:var(--shadow)}
   .simgearbtn.on{background:var(--accent);color:#20170a;border-color:var(--accent)}
@@ -8287,7 +8288,8 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
 
   var SIM={};
   var SIM_SEG=90, SIM_SPACING=5200, SIM_MAXSPD=2500, SIM_ACCEL=1500, SIM_BRAKE=2600, SIM_STEER=1.15;
-  var SIM_COAST=430; // roll-down deceleration when off the gas (drivers hold the throttle to keep speed)
+  var SIM_COAST=430; // roll-down deceleration when off the gas
+  var SIM_REV_MAX=20*2500/180; // reverse is capped at ~20 km/h, as a real car is
   /* 3D world scale: SIM_SEG world-units (~90) is treated as ~3m of road for
      sizing the car/road/camera, i.e. 1 world unit ≈ 1/30 m. SIM_TURN converts
      a track segment's abstract curve value into an actual heading change;
@@ -8403,6 +8405,7 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
       '<p class="simcredit">3D car: <a href="https://sketchfab.com/3d-models/2014-toyota-corolla-e180-eu-with-interior-36f95efb0585464cae43a25a3b3392e8" target="_blank" rel="noopener">“2014 Toyota Corolla E180”</a> by Armored Wave · buildings: <a href="https://sketchfab.com/3d-models/low-poly-city-buildings-e0209ac5bb684d2d85e5ade96c92d2ff" target="_blank" rel="noopener">“Low-poly City Buildings”</a> by smooth998 · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a></p>'+
       '<div class="simgear" role="group" aria-label="'+esc(t("simGear"))+'">'+
         '<button class="simgearbtn on" id="simGearP" onclick="simSetGear(\'P\')" aria-label="'+esc(t("simGear"))+' P">P</button>'+
+        '<button class="simgearbtn rev" id="simGearR" onclick="simSetGear(\'R\')" aria-label="'+esc(L({en:"Reverse",ku:"دواکەوتنەوە"}))+'">R</button>'+
         '<button class="simgearbtn" id="simGearN" onclick="simSetGear(\'N\')" aria-label="'+esc(t("simGear"))+' N">N</button>'+
         '<button class="simgearbtn" id="simGearD" onclick="simSetGear(\'D\')" aria-label="'+esc(t("simGear"))+' D">D</button>'+
       '</div>'+
@@ -8595,7 +8598,7 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
   window.simSetGear=function(g){
     if(SIM.gear===g)return;
     SIM.gear=g; simPlayClick();
-    ["P","N","D"].forEach(function(x){
+    ["P","R","N","D"].forEach(function(x){
       var el=document.getElementById("simGear"+x);
       if(el)el.classList.toggle("on",x===g);
     });
@@ -8628,7 +8631,9 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
   window.simSetSpeed=function(v){
     SIM.targetSpeedKmh=v;
     SIM.targetSpeed=v*SIM_MAXSPD/180; // km/h → internal units (HUD reads speed/MAXSPD*180)
-    if(v>0&&SIM.gear!=="D")window.simSetGear("D");
+    // Choosing a speed engages Drive from Park/Neutral, but never overrides a
+    // deliberate Reverse — in R the numbers set how fast you back up.
+    if(v>0&&SIM.gear!=="D"&&SIM.gear!=="R")window.simSetGear("D");
     simAudioInit(); simPlayClick();
     [0,20,40,60,80,100].forEach(function(x){
       var el=document.getElementById("simSpd"+x);
@@ -8643,10 +8648,12 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
     if(!SIM.paused){
       var car=SIM.car;
       var braking=false;
-      if(SIM.gear==="D"){
+      if(SIM.gear==="D"||SIM.gear==="R"){
         // Cruise-style speed control: the car eases toward the target speed you
         // set with the number buttons — accelerates up to it, brakes down to it.
+        // Reverse uses the same control but is capped, as a real car is.
         var tgt=SIM.targetSpeed||0;
+        if(SIM.gear==="R")tgt=Math.min(tgt,SIM_REV_MAX);
         if(car.speed<tgt) car.speed=Math.min(tgt,car.speed+SIM_ACCEL*dt);
         else if(car.speed>tgt){ car.speed=Math.max(tgt,car.speed-SIM_BRAKE*dt); braking=car.speed>50; }
       }else if(SIM.gear==="N"){
@@ -8660,11 +8667,14 @@ jxCross:_plan("Plan view of a crossroads. Car A approaches from the south. Car B
       // with speed so it can't pivot on the spot; left turns left.
       var steer=(SIM.input.l?1:0)-(SIM.input.r?1:0);
       var turnFactor=Math.min(1,car.speed/500);
-      car.heading+=steer*SIM_TURNRATE*turnFactor*dt;
+      // In reverse the car pivots about its other end, so the same steering
+      // input swings the nose the other way — as it does backing a real car.
+      var rev=(SIM.gear==="R")?-1:1;
+      car.heading+=steer*SIM_TURNRATE*turnFactor*dt*rev;
       SIM.steerVis=steer; // for the wheel/hands tilt in simDraw
       // Move along the heading. Free roam: go anywhere on the open ground.
-      car.px+=Math.sin(car.heading)*car.speed*dt;
-      car.pz+=Math.cos(car.heading)*car.speed*dt;
+      car.px+=Math.sin(car.heading)*car.speed*dt*rev;
+      car.pz+=Math.cos(car.heading)*car.speed*dt*rev;
       // Enforceable driving test: the world puts a real situation in front of
       // you (stop sign, pedestrian crossing, give way, red light) and judges
       // whether you drive it correctly. Fail → retry that situation.
