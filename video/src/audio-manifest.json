@@ -99,6 +99,106 @@
         "file": "unlicensed-ku-b.wav",
         "seconds": 10.31
       }
+    },
+    "hangover-ku": {
+      "a": {
+        "file": "hangover-ku-a.wav",
+        "seconds": 4.87
+      },
+      "b": {
+        "file": "hangover-ku-b.wav",
+        "seconds": 11.67
+      }
+    },
+    "helmet-ku": {
+      "a": {
+        "file": "helmet-ku-a.wav",
+        "seconds": 7.2
+      },
+      "b": {
+        "file": "helmet-ku-b.wav",
+        "seconds": 8.79
+      }
+    },
+    "childseat-ku": {
+      "a": {
+        "file": "childseat-ku-a.wav",
+        "seconds": 5.68
+      },
+      "b": {
+        "file": "childseat-ku-b.wav",
+        "seconds": 12.83
+      }
+    },
+    "glass-ku": {
+      "a": {
+        "file": "glass-ku-a.wav",
+        "seconds": 5.4
+      },
+      "b": {
+        "file": "glass-ku-b.wav",
+        "seconds": 13.72
+      }
+    },
+    "foglights-ku": {
+      "a": {
+        "file": "foglights-ku-a.wav",
+        "seconds": 8.08
+      },
+      "b": {
+        "file": "foglights-ku-b.wav",
+        "seconds": 10.23
+      }
+    },
+    "roundabout-ku": {
+      "a": {
+        "file": "roundabout-ku-a.wav",
+        "seconds": 6.63
+      },
+      "b": {
+        "file": "roundabout-ku-b.wav",
+        "seconds": 10.69
+      }
+    },
+    "advisory-ku": {
+      "a": {
+        "file": "advisory-ku-a.wav",
+        "seconds": 6.54
+      },
+      "b": {
+        "file": "advisory-ku-b.wav",
+        "seconds": 15.49
+      }
+    },
+    "alley-ku": {
+      "a": {
+        "file": "alley-ku-a.wav",
+        "seconds": 6.16
+      },
+      "b": {
+        "file": "alley-ku-b.wav",
+        "seconds": 14.11
+      }
+    },
+    "dazzle-ku": {
+      "a": {
+        "file": "dazzle-ku-a.wav",
+        "seconds": 6.47
+      },
+      "b": {
+        "file": "dazzle-ku-b.wav",
+        "seconds": 10.63
+      }
+    },
+    "tyredate-ku": {
+      "a": {
+        "file": "tyredate-ku-a.wav",
+        "seconds": 7.25
+      },
+      "b": {
+        "file": "tyredate-ku-b.wav",
+        "seconds": 16.27
+      }
     }
   },
   "music": null

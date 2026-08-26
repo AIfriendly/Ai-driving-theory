@@ -45,7 +45,7 @@ quiz — is still inline and works offline.
 | Sim scene cost | 613,740 tris/frame · 142 draw calls (≈112 of them the car model) · 4,585 instanced objects in 30 meshes |
 | Questions with no visual | 0 |
 | Study-guide tips with no picture | 0 (587 of 587) |
-| Ad clips rendered | 10 voiced Kurdish (15-24s), delivered · **batch two: 10 more written, checked and ready — blocked on `KURDISH_TTS_KEY`, no audio and no MP4s yet** · earlier silent 8x2 batch at `292a68e` |
+| Ad clips rendered | **20 voiced Kurdish**, all delivered · batch one (15-24s) posted · batch two (18.9-26.4s, 1,378-1,865 kbps) at https://gofile.io/d/Hh4MyzwF · earlier silent 8x2 batch at `292a68e` |
 
 Branch: `claude/trading-agent-bybit-mcp-ao56dp` — this is also the repo's
 **default branch**. There is no `main`/`master`.
@@ -102,8 +102,8 @@ preview of the ad clips, `video/` the Remotion project that renders them
 
 **Picking this up cold.** Three things are finished and should not be redone:
 the question bank (do not re-sweep the PDFs), the site (live), and the ad
-creative (10 voiced clips delivered and posted; 10 more written and checked
-but unvoiced — see the top Done entry).
+creative (20 voiced clips rendered and delivered; the first 10 are posted,
+the second 10 are waiting on the bio fix — see the top Done entry).
 
 What is actually left, in order:
 1. **The owner fixes the bio link.** One line of text. Everything below is
@@ -203,16 +203,29 @@ owner — most of all anything that assumes the TikTok app is on their phone.
         nineteen clips' quota rewriting files that were already correct.
         `render-all` reads its id list from `data.ts` instead of a hand-kept
         copy, and `bundle-posts` no longer hard-asserts exactly ten.
-      - **NOT DONE: the voice, and therefore the MP4s.** `KURDISH_TTS_KEY` is
-        not in this container and kurdishtts.com rejects an unauthenticated
-        request outright (`Invalid API key`, HTTP 401 with no key at all), so
-        batch two has no audio and no final render. Everything else is in
-        place: `KURDISH_TTS_KEY=... npm run voice -- --only hangover,helmet,\
-        childseat,glass,foglights,roundabout,advisory,alley,dazzle,tyredate`
-        then `node render-all.mjs --ids ...` finishes it. Cost is ~2,700
-        characters of the 20,000/month free tier. One silent preview of
-        `advisory-ku` was rendered to prove the timer and the sign card work
-        end to end.
+      - **Voiced and rendered** once the owner supplied `KURDISH_TTS_KEY`
+        later the same day. 2,673 characters against the 20,000/month free
+        tier, exactly as estimated. Clips run **18.9-26.4s** (`tyredate` is
+        the longest yet, past batch one's 24.6s), **1,378-1,865 kbps**, every
+        one carrying a video and an audio stream, all 20 safe-zone frames
+        clear at the real durations.
+      - **Verified the voice is not clipped, by measurement rather than by
+        trusting the arithmetic.** Remotion pads the audio track to the full
+        composition length, so a matching stream duration proves nothing.
+        Decoded the last 1.2s to PCM and compared it with the 1.2s before it:
+        **-31.9 dB against -21 to -26 dB**, i.e. digital silence after live
+        speech, on every clip checked. Note for next time: Remotion's bundled
+        ffmpeg is a minimal build with **no `volumedetect` filter**, so RMS
+        has to be computed off a decoded WAV.
+      - **Handoff: https://gofile.io/d/Hh4MyzwF** — 21 files, verified HTTP
+        200. Gofile expires unclaimed guest content, so re-run
+        `npm run upload:bundle` to mint a fresh link.
+      - `bundle-posts` now skips a clip with no MP4 instead of dying, and
+        skips it *before* writing its caption file — a `.txt` with no video
+        beside it is worse than nothing in a handoff. Its index counts what is
+        in the folder rather than what POSTING.md lists; it said "20 clips"
+        over a folder holding 10. The index also leads with a check that the
+        bio link resolves, for the reason recorded at the top of this file.
 
 - [x] **Driving-sim: regional trees, instanced buildings, and a sky that
       follows you.** Owner asked for more realistic, higher-poly buildings and
@@ -1384,9 +1397,8 @@ tested.
 - [ ] Use the comments to settle the KRG fee question (see *open questions*) —
       asking what people actually paid gets a real figure and engagement in the
       same move.
-- [x] ~~Optional: record the voiceovers.~~ Done for batch one via
-      kurdishtts.com. **Batch two is written but unvoiced** — see the Done
-      entry at the top: `KURDISH_TTS_KEY` was not available in that session.
+- [x] ~~Optional: record the voiceovers.~~ Done for both batches via
+      kurdishtts.com. 4,779 characters total against 20,000/month.
 
 **~~Do not post before Phase 0 is done.~~** Stale on both halves: Pages *and*
 the Cloudflare Worker are both live, and the owner has already posted. What
@@ -1790,6 +1802,16 @@ are in `video/VOICEOVER.md`.
 cheapest distribution lever there is, a baked track forfeits it, can get the
 video muted, and needs a re-render to change. The music slot is for YouTube
 Shorts and Instagram, where the in-app libraries are weaker.
+
+**Where the API key lives.** `KURDISH_TTS_KEY`, read by
+`video/scripts/gen-voice.mjs`. The name is documented in `.env.example`; the
+value is not, and must never be committed — this repo is public on GitHub.
+**A container is reclaimed after a period of inactivity, so a key that only
+exists in a session is gone with the session.** The place that survives is the
+environment's own environment-variable settings in Claude Code for the web
+(see https://code.claude.com/docs/en/claude-code-on-the-web), which are
+injected into every session started from that environment. The owner's
+password manager is the copy of record; everything else is a cache of it.
 
 **Sorani TTS exists — earlier note here was wrong.** This file previously said
 to record in a real voice because no usable Sorani TTS existed. ElevenLabs
