@@ -920,9 +920,11 @@ either. Remaining known sim gaps, in the order worth doing them, if asked:
    unused in the bank. Linking the two is the highest-value sim work left.
 3. A weak-topic report at the end (which situations you fail most).
 
-**Two owner checks never came back:** whether the engine sound works on their
-iPhone, and whether the car model actually loads there (the loading panel now
-says "Using the simple car" when it does not — that answer is one glance away).
+**Both owner checks came back CLEAR (2026-08-26):** the engine sound works on
+their iPhone and the car model loads there. Treat the iOS audio and the .glb
+fetch path as verified on real hardware, not just headlessly.
+**Still unverified on a real phone: frame rate.** Shadows and the instanced
+scenery landed after that check, and a software renderer cannot answer it.
 
 The plan is ordered deliberately: **ship free, prove people want it, then
 charge.** Building payments before step 2 is the expensive way to find out
@@ -1713,6 +1715,26 @@ Three tiers, and the middle one is the worst:
 | **T1 web upload + native scheduler** | none | ~4 min/video | ~40 min for all 10, once |
 | T2 unaudited API | hours + OAuth server | still per-video | account must be private; 5 users/24h |
 | T3 audited API | audit 5–10 business days, rejectable, + OAuth server | none | true automation |
+
+**Re-verified 2026-08-26 against TikTok's own docs**, and the analysis above
+holds exactly — including the error code: Direct Post accepts
+`PUBLIC_TO_EVERYONE`, `MUTUAL_FOLLOW_FRIENDS`, `FOLLOWER_OF_CREATOR` and
+`SELF_ONLY`, and "all content posted by unaudited clients will be restricted
+to private viewing mode". One correction: the **5–10 business days** figure
+above is optimistic and was never sourced. TikTok's documentation states **no
+timeline at all**; practitioner write-ups report **2–4 weeks with multiple
+rounds of feedback**, rejectable on any UX-guideline detail. Plan for weeks.
+
+**T1.5 — a third-party scheduler with an ALREADY-AUDITED client — is the tier
+this table missed, and it is the real automation answer.** Buffer, Metricool,
+Hootsuite, Later and Postiz publish to TikTok through the same Content Posting
+API, but *they* passed the audit, so you inherit it: true auto-publish, no
+audit, no OAuth server, no phone. Buffer's free plan covers this but requires
+a **Business** account — which Phase 2 already says to switch to for the bio
+link, so it costs nothing extra. Metricool's free tier is 50 posts/month and
+supports personal accounts too. Same trending-sound loss as any API route,
+which is already moot here. **If automation is wanted before Phase 3, this is
+it — not a self-built client.**
 
 **T1 is the answer for a batch of ten**, and it solves the spacing problem
 too — ten clips should not go out at once, and the scheduler spreads them
