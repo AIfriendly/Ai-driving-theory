@@ -18,3 +18,4 @@ video/out/
 # Stray deps from local verification tooling (Playwright etc.) — the web app
 # itself has no dependencies and no build step
 /node_modules/
+clips/public/

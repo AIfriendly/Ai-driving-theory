@@ -174,6 +174,21 @@ no documents; it is *not* the same thing as business **verification**, which
 does want company registration papers. Getting that distinction wrong costs
 weeks. See `docs/PROGRESS.md`.
 
+**The clips are hosted at `https://clips.tareeq.workers.dev`** — an
+assets-only Worker deployed straight from `video/out/`, so 43 MB of MP4 never
+enters git. Restage and redeploy after rendering a new batch:
+
+```bash
+node ../clips/stage.mjs
+npx wrangler deploy -c ../clips/wrangler.jsonc
+```
+
+**The publisher HEAD-checks every media URL before it schedules anything**,
+and refuses to run if one is missing. Buffer fetches the video *when the post
+publishes*, so a 404 fails quietly days later — the exact shape of bug that
+has already cost this project ~1,400 views twice over. `--skip-media-check`
+overrides it; there is rarely a good reason.
+
 **Media must be publicly hosted and must stay up.** Buffer's API takes a URL,
 never a file upload, and it fetches that URL *when the post publishes* — days
 later for a scheduled post. A link that dies in the meantime is a post that

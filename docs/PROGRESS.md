@@ -46,6 +46,7 @@ quiz — is still inline and works offline.
 | Sim scene cost | 613,740 tris/frame · 142 draw calls (≈112 of them the car model) · 4,585 instanced objects in 30 meshes |
 | Questions with no visual | 0 |
 | Study-guide tips with no picture | 0 (587 of 587) |
+| Clip hosting | **LIVE** — https://clips.tareeq.workers.dev · 10 clips, public, `video/mp4` · fed from `video/out/`, not git |
 | Short link | **LIVE** — https://t.tareeq.workers.dev → 302 → the app · 20 chars vs 36 |
 | TikTok funnel | bio link **fixed and verified 2026-08-27** · **no clickable bio link available** (checked app + desktop) so the URL must be typed · account still personal · **postable now as plain text** |
 | Ad clips rendered | **20 voiced Kurdish**, all delivered · batch one (15-24s) posted · batch two (18.9-26.4s, 1,378-1,865 kbps) at https://gofile.io/d/4Dmqf00J · earlier silent 8x2 batch at `292a68e` |
@@ -1531,11 +1532,25 @@ tested.
       - **The gate is the account type, and it is free.** Not verification,
         not a company, not a fee. Every automated route dies on a personal
         account and every one of them opens on a Creator account.
-      - **Buffer's API takes a URL, never a file**, and fetches it *when the
-        post publishes* — days later. **Gofile is therefore the wrong host for
-        this**: `upload:bundle` is a handoff for a human and gofile expires
-        unclaimed guest content. A GitHub Release on this public repo is the
-        obvious permanent home; nothing has been published there yet.
+      - **Media hosting is SOLVED: `https://clips.tareeq.workers.dev`**,
+        deployed 2026-08-27, version `35223be4`. All ten batch-two clips
+        verified publicly fetchable, `video/mp4`, byte-identical to the
+        renders. An assets-only Worker fed from `video/out/` by
+        `clips/stage.mjs`, so **43 MB of MP4 never enters git** — the repo has
+        made that mistake once already. Assets-only also means the requests
+        are free and uncounted, like the main site.
+        Two hosts were ruled out along the way: **R2 is not enabled on the
+        account** ("Please enable R2 through the Cloudflare Dashboard"), which
+        makes the S3 credentials it issues inert; and **GitHub Releases could
+        not be created** — the API answers "Creating, editing, or deleting
+        releases is not permitted for this session type".
+      - **The publisher preflights every media URL before scheduling.** Buffer
+        fetches the video when the post *publishes*, so a 404 fails quietly
+        days later — the same shape as the dead bio link and the expiring
+        gofile handoff. It HEADs each URL, demands a `video/*` content type,
+        and refuses the whole run otherwise. It caught a real one immediately:
+        with no `--ids`, it builds URLs for all twenty clips while only
+        batch two is deployed, so ten would have 404'd at publish time.
       - **Untested against a live token.** The script dry-runs by default and
         only calls Buffer with `--go`. The channel-listing query is a best
         guess at the shape because developers.buffer.com/guides/channels.html

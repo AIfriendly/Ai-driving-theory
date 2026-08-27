@@ -71,7 +71,8 @@ const channelId = flag("channel");
 const mediaBase = flag("media-base");
 if (!channelId || !mediaBase) {
   console.error("usage: --channel <id> --media-base <public-url-prefix> [--ids a,b] " +
-                "[--start <ISO8601>] [--every <hours>] [--no-ai-disclosure] [--go]\n" +
+                "[--start <ISO8601>] [--every <hours>] [--no-ai-disclosure]\n" +
+                "       [--skip-media-check] [--go]\n" +
                 "       (run `channels` first to find the id)");
   process.exit(2);
 }
@@ -108,6 +109,47 @@ mutation Schedule($input: CreatePostInput!) {
   }
 }`;
 
+/* Preflight the media before anything is scheduled.
+
+   Buffer fetches the video WHEN THE POST PUBLISHES, which for a scheduled
+   post is days later. A URL that 404s produces a post that fails quietly
+   long after you stopped watching — and this project has already lost
+   ~1,400 views to exactly that shape of bug, twice (a typo'd bio link, and
+   a gofile handoff that expires). Checking now costs one HEAD per clip.
+
+   It is also the guard against the easy mistake here: only the batch you
+   have rendered and deployed is hosted, so running without --ids happily
+   builds URLs for clips that were never uploaded. */
+const preflight = async () => {
+  const bad = [];
+  for (const p of posts) {
+    const url = mediaUrl(p);
+    try {
+      const r = await fetch(url, {method: "HEAD"});
+      const type = r.headers.get("content-type") ?? "";
+      const ok = r.ok && type.startsWith("video/");
+      if (!ok) bad.push(`${p.nn} ${p.id}: HTTP ${r.status} ${type || "(no content-type)"}`);
+    } catch (e) {
+      bad.push(`${p.nn} ${p.id}: ${e.message}`);
+    }
+  }
+  return bad;
+};
+
+const mediaUrl = (p) => `${mediaBase.replace(/\/$/, "")}/${p.nn}-${p.id}.mp4`;
+
+const bad = argv.includes("--skip-media-check") ? [] : await preflight();
+if (bad.length) {
+  console.error(`media not reachable for ${bad.length} of ${posts.length} clips:`);
+  for (const b of bad) console.error(`  ✗ ${b}`);
+  console.error("\nBuffer fetches the video when the post publishes, not now, so these\n" +
+                "would fail quietly days from now. Render and deploy them first\n" +
+                "(clips/stage.mjs then wrangler deploy -c clips/wrangler.jsonc), or\n" +
+                "narrow the run with --ids. --skip-media-check overrides.");
+  process.exit(1);
+}
+console.log(`media check: ${posts.length}/${posts.length} reachable at ${mediaBase}\n`);
+
 let n = 0, failed = 0;
 for (const p of posts) {
   const dueAt = new Date(startAt.getTime() + n * everyHours * 3600_000).toISOString();
@@ -127,7 +169,7 @@ for (const p of posts) {
     metadata: {tiktok: {isAiGenerated: AI_DISCLOSURE}},
     assets: [{
       video: {
-        url: `${mediaBase.replace(/\/$/, "")}/${p.nn}-${p.id}.mp4`,
+        url: mediaUrl(p),
         /* 1.5s in. Frame zero is mid-fade, and TikTok shows this still in the
            profile grid — where the question has to be readable or the tap
            never happens. */

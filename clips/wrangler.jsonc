@@ -1,0 +1,32 @@
+{
+  // Public, permanent hosting for the rendered clips, so a scheduler can fetch
+  // them by URL.
+  //
+  // WHY THIS EXISTS. Buffer's API takes a media URL, never a file upload, and
+  // it fetches that URL *when the post publishes* — days after the post is
+  // created for anything scheduled. So the host has to still be serving then.
+  // That rules out gofile, which expires unclaimed guest content: it is a
+  // handoff for a human, not a media source.
+  //
+  // WHY NOT THE REPO. Committing ~43 MB of MP4 to web/ would work — the main
+  // Worker already serves that directory — but it is permanent in git history,
+  // it lands in every clone forever, and every future batch adds more. This
+  // repo has made that mistake once already (see docs/PROGRESS.md). Deploying
+  // straight from the render output keeps the videos out of git entirely.
+  //
+  // WHY NOT R2. R2 is not enabled on this account ("Please enable R2 through
+  // the Cloudflare Dashboard"), so the S3 credentials it hands out are inert
+  // until someone turns it on in the dashboard.
+  //
+  // Assets-only, like the main Worker: no script, so requests are free and
+  // unlimited and none of them count against the 100,000/day cap.
+  //
+  //   node clips/stage.mjs                              # fill ./public
+  //   npx wrangler deploy -c clips/wrangler.jsonc
+  "name": "clips",
+  "compatibility_date": "2026-08-01",
+  "workers_dev": true,
+  "assets": {
+    "directory": "./public"
+  }
+}
