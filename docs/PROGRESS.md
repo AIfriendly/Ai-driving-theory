@@ -46,6 +46,7 @@ quiz — is still inline and works offline.
 | Sim scene cost | 613,740 tris/frame · 142 draw calls (≈112 of them the car model) · 4,585 instanced objects in 30 meshes |
 | Questions with no visual | 0 |
 | Study-guide tips with no picture | 0 (587 of 587) |
+| Short link | **LIVE** — https://t.tareeq.workers.dev → 302 → the app · 20 chars vs 36 |
 | TikTok funnel | bio link **fixed and verified 2026-08-27** · **no clickable bio link available** (checked app + desktop) so the URL must be typed · account still personal · **postable now as plain text** |
 | Ad clips rendered | **20 voiced Kurdish**, all delivered · batch one (15-24s) posted · batch two (18.9-26.4s, 1,378-1,865 kbps) at https://gofile.io/d/4Dmqf00J · earlier silent 8x2 batch at `292a68e` |
 
@@ -165,7 +166,13 @@ owner — most of all anything that assumes the TikTok app is on their phone.
         Confirmed a third time on tiktok.com in a browser (2026-08-27): the
         Edit profile modal carries Profile photo, Username, Name and Bio, and
         nothing else. That is the whole surface.
-      - **A short-link Worker is written** (`redirect/`, 2026-08-27):
+      - **A short-link Worker is LIVE** — `https://t.tareeq.workers.dev`,
+        deployed 2026-08-27, version `1f955337`. Verified: 302 to the app,
+        follows through to HTTP 200 / 2,156,216 bytes / correct title; deep
+        paths and query strings survive the hop
+        (`/ad.html?x=1` → `/ad.html?x=1`); the main Worker is untouched and
+        still serving. **20 characters against 36, a 44% cut.** Source in
+        `redirect/`, 2026-08-27:
         `t.tareeq.workers.dev` 302s to the app, carrying path and query.
         Redirect rather than a second copy of the 2 MB app, so the main Worker
         stays the single source of truth; **302 rather than 301** because this
@@ -174,7 +181,9 @@ owner — most of all anything that assumes the TikTok app is on their phone.
         Unlike the assets-only main Worker it has a script, so its requests do
         count against the 100,000/day free limit — irrelevant at this traffic,
         and the reason the main Worker should never grow a script.
-        Undeployed: it needs one action in the Cloudflare dashboard.
+        Deployed with a scoped Cloudflare API token supplied by the owner;
+        `"workers_dev": true` in the config meant the deploy enabled its own
+        route, so the usual disabled-route trap never came up.
       - **The bio is 80 characters and only 36 are used — 44 are doing
         nothing.** It is currently a bare URL, which gives a reader no reason
         to type it. The offer belongs in there with it. Measured against the
@@ -1095,13 +1104,11 @@ can *click* it — see item 2.
    Then re-render the end cards to put it on screen instead of
    *لینک لە بایۆ* — `CTA.ku.b` in `video/src/data.ts`, and it costs no TTS
    characters because the spoken line does not change.
-   **The free stopgap is written and waiting to be deployed** — `redirect/`
-   holds a second Worker giving `t.tareeq.workers.dev` (20 characters, 44%
-   shorter) that 302s to the real host, path and query preserved. It needs
-   one dashboard action from the owner; `redirect/README.md` has the steps
-   and repeats the enable-the-workers.dev-route gotcha that already cost time
-   on the main Worker. Worse than a real domain, far better than 36
-   characters, and it leaves the existing URL untouched.
+   **The free stopgap is LIVE**: `https://t.tareeq.workers.dev` (20
+   characters, 44% shorter) 302s to the real host with path and query
+   preserved, deployed 2026-08-27. Worse than a real domain, far better than
+   36 characters, and the existing URL is untouched. Source and deploy notes
+   in `redirect/`.
 4. **Change the account type**, at `tiktok.com/tiktokstudio` in a desktop
    browser — free, keeps your content, no documents, reversible. **This is not
    business verification**, which wants company papers and is what got
