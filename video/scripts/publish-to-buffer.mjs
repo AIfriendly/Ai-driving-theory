@@ -8,18 +8,22 @@
    one account's videos. Buffer is already an audited TikTok partner, so
    going through them inherits that approval instead of re-earning it.
 
-   WHAT THIS STILL CANNOT DO FOR YOU. Buffer can only publish to a TikTok
-   account it is allowed to connect, and TikTok gates scheduling to Creator
-   and Business accounts — a personal account cannot be scheduled to by
-   anyone, Buffer included. That switch is free and needs no documents; it is
-   not the same thing as business *verification*, which does. See PROGRESS.
+   THE ACCOUNT TYPE TURNED OUT NOT TO MATTER. This file used to warn that
+   TikTok gates scheduling to Creator and Business accounts and that a
+   personal account could not be scheduled to by anyone, Buffer included.
+   Ten posts scheduled on 2026-08-27 against an account that was still
+   personal say otherwise. The switch is still worth making — it is what
+   gives a clickable Website field below 1,000 followers — but it does not
+   block anything here.
 
    MEDIA MUST BE PUBLICLY HOSTED. Buffer's API takes a URL, never a file
    upload, and it fetches that URL when the post publishes — which for a
    scheduled post is days later. A link that dies in the meantime is a post
    that fails silently. Gofile is therefore the wrong host here: it expires
-   unclaimed guest content. Use somewhere permanent and unauthenticated —
-   a GitHub Release on this (public) repo works and costs nothing.
+   unclaimed guest content. This repo's answer is clips/wrangler.jsonc, an
+   assets-only Worker serving video/out/ at clips.tareeq.workers.dev — read
+   that file before choosing anything else, it records what was ruled out.
+   Whatever you use, it has to still be serving on the last dueAt below.
 
      BUFFER_ACCESS_TOKEN=... node scripts/publish-to-buffer.mjs channels
      BUFFER_ACCESS_TOKEN=... node scripts/publish-to-buffer.mjs \
@@ -58,11 +62,27 @@ const gql = async (query, variables) => {
 
 /* ---- channels ---------------------------------------------------------- */
 if (argv[0] === "channels") {
-  /* The whole object is printed, not just the fields named here: the point of
-     this subcommand is to discover the real shape on a live account, and the
-     published guide for it 404s. */
-  const data = await gql(`query { channels { id name service } }`);
-  console.log(JSON.stringify(data, null, 2));
+  /* `channels` takes a required organizationId, so the account has to be
+     queried first — there is no way to list channels from a token alone.
+     Verified against a live token 2026-08-27; the published guide for this
+     404s, so the shape here is what the API actually answers, not a guess.
+
+     The whole object is printed, not just the fields named here: the point of
+     this subcommand is to discover the real shape on a live account. */
+  const {account} = await gql(`query { account { id email organizations { id name } } }`);
+  const orgs = account.organizations ?? [];
+  if (!orgs.length) { console.error("no organizations on this account"); process.exit(1); }
+  console.log(`account ${account.email}`);
+  for (const org of orgs) {
+    const data = await gql(
+      `query Channels($input: ChannelsInput!) {
+         channels(input: $input) { id name service type isDisconnected isLocked timezone }
+       }`,
+      {input: {organizationId: org.id}},
+    );
+    console.log(`\norganization ${org.name} (${org.id})`);
+    console.log(JSON.stringify(data.channels, null, 2));
+  }
   process.exit(0);
 }
 
