@@ -50,7 +50,7 @@ quiz — is still inline and works offline.
 | Short link | **LIVE** — https://t.tareeq.workers.dev → 302 → the app · 20 chars vs 36 |
 | TikTok funnel | bio link **fixed and verified 2026-08-27** · **no clickable bio link available** (checked app + desktop) so the URL must be typed · **postable now as plain text** |
 | Buffer → TikTok | **CONNECTED and SCHEDULED 2026-08-27** — channel `tareeqkrd` (`6a90a600ccaf649a672c404d`), org `6a900933fd3a21171e33de47` · all 10 of batch two queued daily 20:00 Kurdistan, 28 Aug → 6 Sep · `schedulingType: automatic`, so **Buffer publishes them itself — no phone app needed** |
-| Ad clips rendered | **20 voiced Kurdish**, all delivered · batch one (15-24s) posted · batch two (18.9-26.4s, 1,378-1,865 kbps) at https://gofile.io/d/4Dmqf00J · earlier silent 8x2 batch at `292a68e` |
+| Ad clips rendered | **40 voiced Kurdish** (30 rendered + hosted; batch one written but not re-rendered here), all delivered · batch one (15-24s) posted · batch two (18.9-26.4s, 1,378-1,865 kbps) at https://gofile.io/d/uYzz4Vyw · earlier silent 8x2 batch at `292a68e` |
 
 Branch: `claude/trading-agent-bybit-mcp-ao56dp` — this is also the repo's
 **default branch**. There is no `main`/`master`.
@@ -173,6 +173,17 @@ owner — most of all anything that assumes the TikTok app is on their phone.
         clips × 2 frames clear all four zones.
       - Voice: 4,731 characters, taking the running total to 9,510 of the
         20,000/month free tier.
+      - **All 30 rendered clips are live** at `clips.tareeq.workers.dev`
+        (version `bbf8ba27`), verified 30/30 by the publisher's own media
+        preflight. Batch three runs 17.4-25.5s at 1,119-1,910 kbps, every one
+        carrying a video and an audio stream. Handoff bundle, 61 files:
+        https://gofile.io/d/uYzz4Vyw
+      - **Batch one is written and captioned but not rendered in this
+        container**, so ten of the forty are absent from both the host and the
+        bundle. They are already posted, so nothing is lost — but
+        `node render-all.mjs --ids night,instructor,ambulance,towing,pregnant,arrow,priority,gap,kerb,unlicensed`
+        would complete the set, and the bundler names them explicitly rather
+        than failing.
 
 - [x] **Diagnosed why ten posted clips produced no traffic: the bio link is
       dead.** Owner reported low views on ~12 posts averaging ~138 views, and
@@ -328,7 +339,7 @@ owner — most of all anything that assumes the TikTok app is on their phone.
         speech, on every clip checked. Note for next time: Remotion's bundled
         ffmpeg is a minimal build with **no `volumedetect` filter**, so RMS
         has to be computed off a decoded WAV.
-      - **Handoff: https://gofile.io/d/4Dmqf00J** — 21 files, verified HTTP
+      - **Handoff: https://gofile.io/d/uYzz4Vyw** — 21 files, verified HTTP
         200. Gofile expires unclaimed guest content, so re-run
         `npm run upload:bundle` to mint a fresh link.
       - `bundle-posts` now skips a clip with no MP4 instead of dying, and
