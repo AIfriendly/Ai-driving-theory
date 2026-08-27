@@ -162,7 +162,28 @@ owner — most of all anything that assumes the TikTok app is on their phone.
         type.** That makes the length of the URL the conversion lever, which
         is what the short domain buys. It is no longer one option among
         several — it is the fix.
-        Superseded detail from the first attempt:  — a
+        Confirmed a third time on tiktok.com in a browser (2026-08-27): the
+        Edit profile modal carries Profile photo, Username, Name and Bio, and
+        nothing else. That is the whole surface.
+      - **The bio is 80 characters and only 36 are used — 44 are doing
+        nothing.** It is currently a bare URL, which gives a reader no reason
+        to type it. The offer belongs in there with it. Measured against the
+        limit, this fits at **65/80**:
+
+        ```
+        ٧٤٥ پرسیاری تیۆری بەخۆڕایی 👇
+        ai-driving-theory.tareeq.workers.dev
+        ```
+
+        A variant carrying the unofficial disclaimer fits at 68/80
+        (`٧٤٥ پرسیار · بەخۆڕایی · نافەرمی`), though the site states that
+        itself and bio characters are the scarcer resource.
+      - **Renaming is rate-limited, which matters if a domain gets bought.**
+        Username locked until **Sep 20 2026**, display name until **Aug 28
+        2026**. So aligning the handle to a new domain is not something that
+        can happen on the same day as the purchase — plan the domain name
+        around the existing `tareeqkrd`, not the other way round.
+      - Superseded detail from the first attempt:  — a
         header and an empty white body, no options, no gated message, no
         empty-state text. That is not TikTok telling you the feature is
         unavailable; a gated feature says so. It reads as a screen that
