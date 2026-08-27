@@ -46,7 +46,7 @@ quiz — is still inline and works offline.
 | Sim scene cost | 613,740 tris/frame · 142 draw calls (≈112 of them the car model) · 4,585 instanced objects in 30 meshes |
 | Questions with no visual | 0 |
 | Study-guide tips with no picture | 0 (587 of 587) |
-| TikTok funnel | bio link **fixed and verified 2026-08-27** · clickable-link field (`Links → Add`) untested · account still personal |
+| TikTok funnel | bio link **fixed and verified 2026-08-27** · `Links → Add` renders blank in the iOS app, untriaged · account still personal · **postable now as plain text** |
 | Ad clips rendered | **20 voiced Kurdish**, all delivered · batch one (15-24s) posted · batch two (18.9-26.4s, 1,378-1,865 kbps) at https://gofile.io/d/4Dmqf00J · earlier silent 8x2 batch at `292a68e` |
 
 Branch: `claude/trading-agent-bybit-mcp-ao56dp` — this is also the repo's
@@ -150,10 +150,19 @@ owner — most of all anything that assumes the TikTok app is on their phone.
         field did not exist, then built advice on top of that — including
         "the URL must be retyped from memory". Treat a control's absence from
         one screenshot as unconfirmed, not as proof.
-        What is still unknown is what `Links → Add` offers this account:
-        TikTok gates a *website* link behind 1,000 followers or a Business
-        account, while social links (Instagram, YouTube) are ungated. Tapping
-        it is the cheapest way to find out and has not been done yet.
+        **Tapped 2026-08-27: the Links screen renders completely blank** — a
+        header and an empty white body, no options, no gated message, no
+        empty-state text. That is not TikTok telling you the feature is
+        unavailable; a gated feature says so. It reads as a screen that
+        failed to render. Untriaged causes: stale app build, a transient
+        load failure, or region gating that degrades to nothing.
+        **Next thing to try is the desktop web path** (`tiktok.com` →
+        Settings → Edit profile, or `tiktok.com/tiktokstudio`), which is a
+        different rendering path entirely and suits an owner who keeps no
+        TikTok app on their phone anyway.
+        **Time-box this.** The bio link now resolves as plain text, so the
+        funnel is degraded rather than broken, and batch two should go out
+        while the link field is still being chased.
       - The short domain stays worth buying either way — a link people can
         remember beats one they must copy — but it is no longer the *only*
         route to a clickable destination.
@@ -1032,12 +1041,15 @@ can *click* it — see item 2.
 
 1. ~~Fix the TikTok bio text.~~ **DONE 2026-08-27**, verified live. See the
    note at the top of this file.
-2. **Tap `Links` → `Add` in Edit profile** and report what it offers. It sits
-   directly under Bio. If it lets you add a website, the funnel is finished
-   and nothing below is urgent. If it only offers Instagram/YouTube, the
-   website slot is gated behind 1,000 followers or a Business account — and
-   then item 3 is the answer.
-3. **Change the account type**, at `tiktok.com/tiktokstudio` in a desktop
+2. **Post batch two.** The bio resolves; plain text converts worse than a
+   clickable link but infinitely better than nothing, and ten finished clips
+   earning nothing is the larger waste. Two or three, then stop and read.
+3. **Chase the link field from a desktop browser, in parallel.** `Links → Add`
+   in the iOS app renders blank — no options, no gated message, nothing —
+   which reads as a broken screen rather than a refusal. `tiktok.com` →
+   Settings → Edit profile is a different code path. Do not keep tapping the
+   app; it has already cost more than the feature is worth this week.
+4. **Change the account type**, at `tiktok.com/tiktokstudio` in a desktop
    browser — free, keeps your content, no documents, reversible. **This is not
    business verification**, which wants company papers and is what got
    rejected. Which type depends on what you want first:
@@ -1046,16 +1058,16 @@ can *click* it — see item 2.
    - **Creator** — unlocks scheduling only, but keeps the full music library
      and Creator Rewards. Take this if the Business toggle genuinely is not
      there.
-4. **Store `KURDISH_TTS_KEY` on the environment**, not in a session. A
+5. **Store `KURDISH_TTS_KEY` on the environment**, not in a session. A
    container is reclaimed after inactivity and the key goes with it. Rotate it
    too — it was pasted into a chat transcript.
-5. **Buy the short domain.** `tareeq.krd` matches the `tareeqkrd` handle. With
+6. **Buy the short domain.** `tareeq.krd` matches the `tareeqkrd` handle. With
    no clickable bio field the link has to be typeable from memory, so this
    stopped being a Phase 3 nicety.
-6. **Send the TikTok Studio numbers** — watch time, retention curves, traffic
+7. **Send the TikTok Studio numbers** — watch time, retention curves, traffic
    sources, whether there are comments. Ten posted clips bought no information
    because the destination was broken; the next ten should not repeat that.
-7. *Optional, only for full automation:* a Buffer account and an API token
+8. *Optional, only for full automation:* a Buffer account and an API token
    (free plan). Then `BUFFER_ACCESS_TOKEN=... npm run channels`.
 
 **Next session can pick up, unblocked:**
