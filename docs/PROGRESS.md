@@ -1635,8 +1635,16 @@ tested.
         nothing has to be finished by hand on a phone. One caveat from their
         docs: **TikTok is only on Buffer's *new* plans** — a legacy Buffer
         account would have to upgrade.
-      - **UNRESOLVED, and the docs will not settle it: whether Buffer can
-        connect a PERSONAL TikTok account.** Buffer's supported-channels page
+      - **RESOLVED 2026-08-27, by the owner: Buffer IS connected to the
+        TikTok account, on a paid plan, and the API is available.** It had
+        been set up in an earlier session and never written down — which is
+        why two sessions treated it as the blocking unknown and researched it
+        instead of asking. **Ask the owner what already exists before
+        researching whether it is possible.**
+        A paid plan also lifts the free tier's 10-scheduled-posts-per-channel
+        queue depth, so the whole batch can be queued if wanted.
+        The original uncertainty, kept because the reasoning still holds for
+        anyone starting fresh: Buffer's supported-channels page
         lists a single undifferentiated "TikTok accounts" row and states no
         account-type requirement anywhere; their TikTok help article states
         none either. Against that, a feature-request page titled *"TikTok
