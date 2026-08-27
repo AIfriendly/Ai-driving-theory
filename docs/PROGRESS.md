@@ -2379,6 +2379,39 @@ a $12 domain is a cheap way to find out.
 
 ## Decisions & gotchas
 
+**Buffer's API cannot give you TikTok analytics, and neither can Buffer.**
+Checked 2026-08-27 against their own docs. On the API: *"We don't currently
+offer your analytics or insights data through the API the way the Insights
+section of Buffer does, and there's no analytics CSV export through the
+API."* There is an **experimental** post-metrics query — personal-use only,
+with your own key, which fits this case — but Buffer says *"because it's
+experimental the data can change, so we don't recommend relying on it."*
+Buffer's *UI* gives follower growth, engagement, impressions and a
+performance-per-post table ranked by engagement rate. It does **not** give
+watch time, retention or traffic source for TikTok, because TikTok does not
+release those to third parties.
+
+**That matters more here than it looks.** These clips are built entirely
+around watching to the end, so **retention is the metric that decides whether
+the format works** — and it exists only in TikTok Studio, by hand. Engagement
+rate is a weak proxy: it says which clip got argued about, not where people
+stopped watching. Any plan to "optimise future content from the data" has to
+either accept a manual retention read, or optimise against engagement and
+know that it is measuring something else.
+
+**The one metric worth having is the one we own.** The main site is
+assets-only so its requests are uncounted, but `t.tareeq.workers.dev` has a
+script, so every hit is counted — and a hit there is someone who watched a
+clip, remembered a URL and typed it. Far better than an impression.
+`node redirect/clicks.mjs` prints it per day (verified working). **Attribution
+falls out of the cadence for free: post one clip a day and a spike on day N
+belongs to day N's clip** — no tracking, no per-clip URLs, no consent banner.
+That is a better argument for one-a-day than the anti-spam reasoning that
+originally justified it.
+**Reading it needs only `Account Analytics: Read`** — not the Workers Scripts:
+Edit token used to deploy. Keep a read-only one; it can change nothing.
+
+
 **Buffer's API, as it actually answers (verified against a live token
 2026-08-27).** Three things cost time here, all of them because the published
 guide 404s:
