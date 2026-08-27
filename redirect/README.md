@@ -25,12 +25,21 @@ The main Worker deploys from a Cloudflare dashboard build that runs
 changes, so pasting it into the dashboard editor is less setup than wiring a
 second build:
 
-1. **Workers & Pages → Create → Worker**
+1. **Workers & Pages → Create application → "Start with Hello World!"**
+
+   > **Not "Continue with GitHub".** That path exists on the same screen and
+   > looks like the obvious choice, but it builds *this repo* with
+   > `npx wrangler deploy`, which reads the **root** `wrangler.jsonc` and
+   > redeploys the live main Worker under a second build project. It also
+   > pre-fills the project name as `ai-driving-theory`, so the screen looks
+   > correct right up until it stands on top of production. This Worker is ten
+   > lines that will never change; it does not need a git pipeline.
+
 2. Name it **`t`** — the name *is* the subdomain label, which is the entire
    point. If `t` is taken, use `krd` (22 characters). Anything longer is not
    worth deploying.
-3. Deploy the placeholder, then **Edit code**, paste `worker.js` from this
-   directory, and deploy again.
+3. Deploy the placeholder, then **Edit code**, replace the Hello World body
+   with `worker.js` from this directory, and deploy again.
 4. **Check `··· → Settings → Domains & Routes` and enable the `workers.dev`
    route.** New Workers ship with it **disabled**, so a correct deploy serves
    nothing and looks exactly like a broken one. This cost real time on the
@@ -47,6 +56,13 @@ From a machine with wrangler authenticated, the same thing is:
 ```sh
 npx wrangler deploy -c redirect/wrangler.jsonc
 ```
+
+**If you ever do want it git-connected**, the GitHub path works — but only
+with *both* fields changed: project name `t`, and deploy command
+`npx wrangler deploy -c redirect/wrangler.jsonc`. And note the production
+branch defaults to the repo's default branch, so `redirect/` has to exist
+*there* first. On a branch where it does not, the build fails with a missing
+config rather than doing anything dangerous.
 
 ## Two things about it that are deliberate
 
