@@ -12,21 +12,22 @@ SHA. Add anything you had to re-derive, or got wrong, to *Decisions & gotchas*
 
 ## Current state
 
-> **BLOCKER, found 2026-08-26 and NOT yet fixed by the owner: the TikTok bio
-> link is a dead URL.** The bio reads `driving-theory.tareeq.workers.dev`.
-> The site is `ai-driving-theory.tareeq.workers.dev`. The `ai-` prefix is
-> missing, and the wrong host is not a redirect — it is a hard Cloudflare
-> 404:
+> **RESOLVED 2026-08-27 — the bio link was dead for two weeks and is now
+> correct.** The bio read `driving-theory.tareeq.workers.dev`, missing the
+> `ai-` prefix; the wrong host was a hard Cloudflare 404 (`error code: 1042`,
+> 17 bytes), not a redirect. Ten clips were posted against it, so roughly
+> 1,400 views landed on an error string. The owner corrected it; verified
+> from a screenshot of Edit profile plus a live fetch:
 >
 > ```
-> driving-theory.tareeq.workers.dev      404  17 bytes  "error code: 1042"
-> ai-driving-theory.tareeq.workers.dev   200  2,156,216 bytes
+> ai-driving-theory.tareeq.workers.dev   200   2,156,216 bytes
+> <title>Tareeq — Kurdistan Driving Theory</title>
 > ```
 >
-> Re-verified 2026-08-26. Ten clips were posted against that bio. Every
-> viewer who followed the call to action landed on an error string.
-> **Nothing else in the funnel matters until the bio text is corrected** —
-> not hooks, not watch time, not batch two.
+> **Keep the lesson, not the panic.** Nothing in this repo could see the
+> failure, because the last hop is a human retyping a string into someone
+> else's UI. See *Decisions & gotchas*. Re-`curl` the bio target whenever it
+> changes, before posting rather than after.
 
 
 `web/index.html` — bilingual (Kurdish Sorani · English) driving theory app,
@@ -45,6 +46,7 @@ quiz — is still inline and works offline.
 | Sim scene cost | 613,740 tris/frame · 142 draw calls (≈112 of them the car model) · 4,585 instanced objects in 30 meshes |
 | Questions with no visual | 0 |
 | Study-guide tips with no picture | 0 (587 of 587) |
+| TikTok funnel | bio link **fixed and verified 2026-08-27** · clickable-link field (`Links → Add`) untested · account still personal |
 | Ad clips rendered | **20 voiced Kurdish**, all delivered · batch one (15-24s) posted · batch two (18.9-26.4s, 1,378-1,865 kbps) at https://gofile.io/d/4Dmqf00J · earlier silent 8x2 batch at `292a68e` |
 
 Branch: `claude/trading-agent-bybit-mcp-ao56dp` — this is also the repo's
@@ -142,10 +144,19 @@ owner — most of all anything that assumes the TikTok app is on their phone.
       **~1,400 views were sent to a Cloudflare error string.** Not fixed here
       — it is a text field on the owner's phone. See the blocker banner at the
       top and the gotcha in *Decisions & gotchas*.
-      - **There is no Website field in the owner's Edit profile at all**, so
-        even the correct URL is plain text a viewer must retype. That is what
-        makes the short domain urgent rather than a Phase 3 nicety —
-        `tareeq.krd` would match the `tareeqkrd` handle and the logo.
+      - **CORRECTION, 2026-08-27: there IS a link field.** Edit profile
+        carries a **`Links` → `Add`** row directly under Bio. An earlier
+        session read a screenshot that did not show it and concluded the
+        field did not exist, then built advice on top of that — including
+        "the URL must be retyped from memory". Treat a control's absence from
+        one screenshot as unconfirmed, not as proof.
+        What is still unknown is what `Links → Add` offers this account:
+        TikTok gates a *website* link behind 1,000 followers or a Business
+        account, while social links (Instagram, YouTube) are ungated. Tapping
+        it is the cheapest way to find out and has not been done yet.
+      - The short domain stays worth buying either way — a link people can
+        remember beats one they must copy — but it is no longer the *only*
+        route to a clickable destination.
       - **The Business-account switch is not available in the owner's app**,
         and what they found instead was business *verification*, which was
         rejected because it wants real company registration documents.
@@ -1013,17 +1024,20 @@ owner — most of all anything that assumes the TikTok app is on their phone.
 
 ### Right now, in order (updated 2026-08-26)
 
-**Everything below the first item is downstream of it.** Batch two is finished
-and sitting in a folder; the reason not to post it yet is that the destination
-is still broken.
+**The destination works again as of 2026-08-27**, so batch two is postable.
+The open question is no longer whether the link resolves but whether anyone
+can *click* it — see item 2.
 
 **Owner only — nothing in this repo can do these:**
 
-1. **Fix the TikTok bio text.** Two minutes. It reads
-   `driving-theory.tareeq.workers.dev`; it must read
-   `ai-driving-theory.tareeq.workers.dev`. Still 404 as of 2026-08-26. See the
-   blocker at the top of this file.
-2. **Change the account type**, at `tiktok.com/tiktokstudio` in a desktop
+1. ~~Fix the TikTok bio text.~~ **DONE 2026-08-27**, verified live. See the
+   note at the top of this file.
+2. **Tap `Links` → `Add` in Edit profile** and report what it offers. It sits
+   directly under Bio. If it lets you add a website, the funnel is finished
+   and nothing below is urgent. If it only offers Instagram/YouTube, the
+   website slot is gated behind 1,000 followers or a Business account — and
+   then item 3 is the answer.
+3. **Change the account type**, at `tiktok.com/tiktokstudio` in a desktop
    browser — free, keeps your content, no documents, reversible. **This is not
    business verification**, which wants company papers and is what got
    rejected. Which type depends on what you want first:
@@ -1032,16 +1046,16 @@ is still broken.
    - **Creator** — unlocks scheduling only, but keeps the full music library
      and Creator Rewards. Take this if the Business toggle genuinely is not
      there.
-3. **Store `KURDISH_TTS_KEY` on the environment**, not in a session. A
+4. **Store `KURDISH_TTS_KEY` on the environment**, not in a session. A
    container is reclaimed after inactivity and the key goes with it. Rotate it
    too — it was pasted into a chat transcript.
-4. **Buy the short domain.** `tareeq.krd` matches the `tareeqkrd` handle. With
+5. **Buy the short domain.** `tareeq.krd` matches the `tareeqkrd` handle. With
    no clickable bio field the link has to be typeable from memory, so this
    stopped being a Phase 3 nicety.
-5. **Send the TikTok Studio numbers** — watch time, retention curves, traffic
+6. **Send the TikTok Studio numbers** — watch time, retention curves, traffic
    sources, whether there are comments. Ten posted clips bought no information
    because the destination was broken; the next ten should not repeat that.
-6. *Optional, only for full automation:* a Buffer account and an API token
+7. *Optional, only for full automation:* a Buffer account and an API token
    (free plan). Then `BUFFER_ACCESS_TOKEN=... npm run channels`.
 
 **Next session can pick up, unblocked:**
@@ -1061,9 +1075,10 @@ is still broken.
 - **Make the sim teach** (item 2 in the sim list below) — the highest-value
   work left that is not blocked on anyone.
 
-**Do not:** render batch three, polish the sim, or tune hooks. There are
-twenty finished clips and no working funnel. More creative does not fix a
-destination that 404s.
+**Do not:** render batch three, polish the sim, or tune hooks until the first
+few of batch two have gone out against a working link and the numbers have
+been read. Twenty finished clips is already more creative than this funnel has
+ever successfully tested.
 
 
 **Driving-sim scenario coverage is DONE** — all 745 questions carry a scripted
