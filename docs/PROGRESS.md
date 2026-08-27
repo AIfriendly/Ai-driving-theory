@@ -2372,6 +2372,27 @@ changes nothing, because the encoder has no more detail to spend bits on.
 re-encode without banding, and banding needs gradients this background does
 not have.
 
+**The Cloudflare dashboard's "Requests" counter is blind to this site.** It
+read **0 for August 1-27** while the Worker was demonstrably serving 2.15 MB
+on every fetch. That is not a broken deploy and not proof nobody visited — it
+follows from the main Worker being **assets-only**. Static asset requests are
+free and unlimited precisely because they are not Worker *invocations*, and
+with no script there is nothing to invoke, so the counter has nothing to
+count. **Never read that number as traffic.** Real visitor numbers have to
+come from somewhere else — TikTok Studio's outbound clicks, or analytics
+added to the page. (The short-link Worker in `redirect/` *does* have a script,
+so once deployed its request count becomes a genuine, if partial, measure of
+how many people typed the short URL.)
+
+**The dashboard button is "Create application", not "Create Worker".** Noted
+2026-08-27 after sending the owner looking for the older label. Create
+application → Workers → Create Worker.
+
+**Every push to this repo triggers a Cloudflare build** — 53 build minutes
+used in August. Harmless on the free tier, but it means a docs-only commit
+still redeploys the site, so a broken `web/` is live within a minute of being
+pushed rather than at some later deliberate deploy.
+
 **The pages workflow failed silently for months. Fixed 2026-08-18 — the site
 is live now — but the failure mode is worth keeping.** Every run errors at `actions/configure-pages` with *"Get Pages site
 failed … verify that the repository has Pages enabled"*. `has_pages` is
