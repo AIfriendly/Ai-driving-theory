@@ -165,6 +165,16 @@ owner — most of all anything that assumes the TikTok app is on their phone.
         Confirmed a third time on tiktok.com in a browser (2026-08-27): the
         Edit profile modal carries Profile photo, Username, Name and Bio, and
         nothing else. That is the whole surface.
+      - **A short-link Worker is written** (`redirect/`, 2026-08-27):
+        `t.tareeq.workers.dev` 302s to the app, carrying path and query.
+        Redirect rather than a second copy of the 2 MB app, so the main Worker
+        stays the single source of truth; **302 rather than 301** because this
+        host is meant to be repointed at a real domain later and a permanent
+        redirect is cached hard by browsers and effectively unrecallable.
+        Unlike the assets-only main Worker it has a script, so its requests do
+        count against the 100,000/day free limit — irrelevant at this traffic,
+        and the reason the main Worker should never grow a script.
+        Undeployed: it needs one action in the Cloudflare dashboard.
       - **The bio is 80 characters and only 36 are used — 44 are doing
         nothing.** It is currently a bare URL, which gives a reader no reason
         to type it. The offer belongs in there with it. Measured against the
@@ -1085,11 +1095,13 @@ can *click* it — see item 2.
    Then re-render the end cards to put it on screen instead of
    *لینک لە بایۆ* — `CTA.ku.b` in `video/src/data.ts`, and it costs no TTS
    characters because the spoken line does not change.
-   **If a card for the domain is still the blocker**, a free stopgap exists:
-   a second Worker on the same account gives a shorter `*.tareeq.workers.dev`
-   alias (`t.tareeq.workers.dev` is 20 characters) that redirects to the real
-   one. Worse than a real domain, far better than 36 characters, and it does
-   not disturb the existing URL.
+   **The free stopgap is written and waiting to be deployed** — `redirect/`
+   holds a second Worker giving `t.tareeq.workers.dev` (20 characters, 44%
+   shorter) that 302s to the real host, path and query preserved. It needs
+   one dashboard action from the owner; `redirect/README.md` has the steps
+   and repeats the enable-the-workers.dev-route gotcha that already cost time
+   on the main Worker. Worse than a real domain, far better than 36
+   characters, and it leaves the existing URL untouched.
 4. **Change the account type**, at `tiktok.com/tiktokstudio` in a desktop
    browser — free, keeps your content, no documents, reversible. **This is not
    business verification**, which wants company papers and is what got

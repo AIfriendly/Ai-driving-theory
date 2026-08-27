@@ -1,0 +1,14 @@
+{
+  // Second Worker, deployed separately from the root wrangler.jsonc. The name
+  // is the subdomain label: "t" is served at t.tareeq.workers.dev, which is
+  // the whole point — 20 characters against the main host's 36.
+  //
+  // If "t" is taken or rejected, "krd" gives krd.tareeq.workers.dev at 22
+  // characters. Anything longer is not worth deploying: the only reason this
+  // exists is to be short.
+  //
+  // Deploy from the repo root:  npx wrangler deploy -c redirect/wrangler.jsonc
+  "name": "t",
+  "main": "worker.js",
+  "compatibility_date": "2026-08-01"
+}
