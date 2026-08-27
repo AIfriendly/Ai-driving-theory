@@ -7,13 +7,14 @@
     "studio": "remotion studio",
     "render": "remotion render",
     "render:all": "node render-all.mjs",
-    "check": "node scripts/check-safe-zones.mjs night-ku instructor-ku ambulance-ku towing-ku pregnant-ku arrow-ku priority-ku gap-ku kerb-ku unlicensed-ku hangover-ku helmet-ku childseat-ku glass-ku foglights-ku roundabout-ku advisory-ku alley-ku dazzle-ku tyredate-ku",
+    "check": "node scripts/check-safe-zones.mjs night-ku instructor-ku ambulance-ku towing-ku pregnant-ku arrow-ku priority-ku gap-ku kerb-ku unlicensed-ku hangover-ku helmet-ku childseat-ku glass-ku foglights-ku roundabout-ku advisory-ku alley-ku dazzle-ku tyredate-ku seatbelt-ku intercity-ku horn-ku brakeleak-ku doubleline-ku cyclistbend-ku uturnsign-ku shock-ku tunnel-ku crossing-ku redamber-ku trailerweight-ku trailerrider-ku crossingposts-ku nofood-ku triangle-ku mirrorword-ku absgravel-ku sixthings-ku breaks-ku",
     "voice": "node --experimental-strip-types scripts/gen-voice.mjs",
     "upload": "node scripts/upload-gofile.mjs",
     "bundle": "node scripts/bundle-posts.mjs",
     "upload:bundle": "node scripts/bundle-posts.mjs && node scripts/upload-bundle.mjs",
     "channels": "node scripts/publish-to-buffer.mjs channels",
-    "schedule": "node scripts/publish-to-buffer.mjs"
+    "schedule": "node scripts/publish-to-buffer.mjs",
+    "topics": "node scripts/check-topics.mjs"
   },
   "dependencies": {
     "@fontsource/noto-kufi-arabic": "^5.1.0",

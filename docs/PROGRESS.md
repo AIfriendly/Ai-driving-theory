@@ -137,6 +137,43 @@ owner — most of all anything that assumes the TikTok app is on their phone.
 
 ## Done
 
+- [x] **Batch three: 20 more clips, and a duplicate guard that makes a
+      fourth batch safe.** Owner asked for 20 new videos on new topics, and
+      for the topics to be written down so nothing gets made twice. Forty
+      clips now exist. Batch three: seat belts, intercity speed, the horn,
+      brake-fluid leak, double centre lines, cyclists on a bend, the no-U-turn
+      sign, treating shock, entering a tunnel, a car slowing at a crossing,
+      red-and-amber, trailer weight on a B licence, riding inside a trailer,
+      level-crossing countdown posts, no food or drink for a casualty, the
+      warning triangle, why AMBULANCE is mirrored, ABS on gravel, the six
+      things the police may ask for, and rest breaks.
+      - **The question bank contains near-duplicates of itself**, which is the
+        real reason the ledger exists. It carries two questions on how a
+        pregnant woman wears a seat belt (#367 and the #551 already filmed)
+        and three on removing a motorcyclist's helmet (#119 filmed, plus #427
+        and #604). Picking "something new" by reading is exactly how the same
+        video ships twice.
+      - **Every clip carries a `topic`, and `npm run topics` enforces it** —
+        no duplicate id, topic or Kurdish question text, with a softer warning
+        when two topics share most of their meaningful words (four different
+        speed rules legitimately overlap, so that one is a prompt to read, not
+        a failure). `--list` prints the ledger.
+      - **The checker's first version was broken in a way worth remembering.**
+        It normalised with `[^a-z0-9 ]`, so every Kurdish question became an
+        empty string, all forty "matched", and it reported 35 duplicates that
+        did not exist. `\p{L}\p{N}` with `/u` fixes it. A validator that
+        cannot read the language it validates is worse than none — it fails
+        loudly enough to get switched off.
+      - **Two clips overflowed, and the cause was counter-intuitive: text that
+        was too SHORT.** `Ad.tsx` sized type from question + options + reason
+        but not the hook, so a clip with a short body and a long hook landed
+        in the largest band and spilled. `trailerweight` broke *because* its
+        reason had been shortened — less text, bigger type, taller column. The
+        hook now counts toward the weight and the bands are tighter. All 40
+        clips × 2 frames clear all four zones.
+      - Voice: 4,731 characters, taking the running total to 9,510 of the
+        20,000/month free tier.
+
 - [x] **Diagnosed why ten posted clips produced no traffic: the bio link is
       dead.** Owner reported low views on ~12 posts averaging ~138 views, and
       sent profile screenshots. The views are unremarkable for a cold start;

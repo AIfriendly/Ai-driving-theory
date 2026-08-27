@@ -199,6 +199,206 @@
         "file": "tyredate-ku-b.wav",
         "seconds": 16.27
       }
+    },
+    "seatbelt-ku": {
+      "a": {
+        "file": "seatbelt-ku-a.wav",
+        "seconds": 4.48
+      },
+      "b": {
+        "file": "seatbelt-ku-b.wav",
+        "seconds": 8.37
+      }
+    },
+    "intercity-ku": {
+      "a": {
+        "file": "intercity-ku-a.wav",
+        "seconds": 5.77
+      },
+      "b": {
+        "file": "intercity-ku-b.wav",
+        "seconds": 15.79
+      }
+    },
+    "horn-ku": {
+      "a": {
+        "file": "horn-ku-a.wav",
+        "seconds": 3.44
+      },
+      "b": {
+        "file": "horn-ku-b.wav",
+        "seconds": 9.77
+      }
+    },
+    "brakeleak-ku": {
+      "a": {
+        "file": "brakeleak-ku-a.wav",
+        "seconds": 8.26
+      },
+      "b": {
+        "file": "brakeleak-ku-b.wav",
+        "seconds": 9.12
+      }
+    },
+    "doubleline-ku": {
+      "a": {
+        "file": "doubleline-ku-a.wav",
+        "seconds": 5.52
+      },
+      "b": {
+        "file": "doubleline-ku-b.wav",
+        "seconds": 9.81
+      }
+    },
+    "cyclistbend-ku": {
+      "a": {
+        "file": "cyclistbend-ku-a.wav",
+        "seconds": 8.81
+      },
+      "b": {
+        "file": "cyclistbend-ku-b.wav",
+        "seconds": 10.79
+      }
+    },
+    "uturnsign-ku": {
+      "a": {
+        "file": "uturnsign-ku-a.wav",
+        "seconds": 7.17
+      },
+      "b": {
+        "file": "uturnsign-ku-b.wav",
+        "seconds": 13.85
+      }
+    },
+    "shock-ku": {
+      "a": {
+        "file": "shock-ku-a.wav",
+        "seconds": 4.94
+      },
+      "b": {
+        "file": "shock-ku-b.wav",
+        "seconds": 11.91
+      }
+    },
+    "tunnel-ku": {
+      "a": {
+        "file": "tunnel-ku-a.wav",
+        "seconds": 6.33
+      },
+      "b": {
+        "file": "tunnel-ku-b.wav",
+        "seconds": 11.09
+      }
+    },
+    "crossing-ku": {
+      "a": {
+        "file": "crossing-ku-a.wav",
+        "seconds": 7.14
+      },
+      "b": {
+        "file": "crossing-ku-b.wav",
+        "seconds": 7.62
+      }
+    },
+    "redamber-ku": {
+      "a": {
+        "file": "redamber-ku-a.wav",
+        "seconds": 4.75
+      },
+      "b": {
+        "file": "redamber-ku-b.wav",
+        "seconds": 10.63
+      }
+    },
+    "trailerweight-ku": {
+      "a": {
+        "file": "trailerweight-ku-a.wav",
+        "seconds": 7.65
+      },
+      "b": {
+        "file": "trailerweight-ku-b.wav",
+        "seconds": 10.81
+      }
+    },
+    "trailerrider-ku": {
+      "a": {
+        "file": "trailerrider-ku-a.wav",
+        "seconds": 8.16
+      },
+      "b": {
+        "file": "trailerrider-ku-b.wav",
+        "seconds": 11.41
+      }
+    },
+    "crossingposts-ku": {
+      "a": {
+        "file": "crossingposts-ku-a.wav",
+        "seconds": 7.97
+      },
+      "b": {
+        "file": "crossingposts-ku-b.wav",
+        "seconds": 9.84
+      }
+    },
+    "nofood-ku": {
+      "a": {
+        "file": "nofood-ku-a.wav",
+        "seconds": 5.63
+      },
+      "b": {
+        "file": "nofood-ku-b.wav",
+        "seconds": 16.45
+      }
+    },
+    "triangle-ku": {
+      "a": {
+        "file": "triangle-ku-a.wav",
+        "seconds": 7.38
+      },
+      "b": {
+        "file": "triangle-ku-b.wav",
+        "seconds": 9.81
+      }
+    },
+    "mirrorword-ku": {
+      "a": {
+        "file": "mirrorword-ku-a.wav",
+        "seconds": 6.47
+      },
+      "b": {
+        "file": "mirrorword-ku-b.wav",
+        "seconds": 11.25
+      }
+    },
+    "absgravel-ku": {
+      "a": {
+        "file": "absgravel-ku-a.wav",
+        "seconds": 7.44
+      },
+      "b": {
+        "file": "absgravel-ku-b.wav",
+        "seconds": 11.34
+      }
+    },
+    "sixthings-ku": {
+      "a": {
+        "file": "sixthings-ku-a.wav",
+        "seconds": 4.58
+      },
+      "b": {
+        "file": "sixthings-ku-b.wav",
+        "seconds": 11.32
+      }
+    },
+    "breaks-ku": {
+      "a": {
+        "file": "breaks-ku-a.wav",
+        "seconds": 3.94
+      },
+      "b": {
+        "file": "breaks-ku-b.wav",
+        "seconds": 11.97
+      }
     }
   },
   "music": null

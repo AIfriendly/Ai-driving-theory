@@ -1,7 +1,7 @@
 # Tareeq video — Remotion
 
-Renders the TikTok quiz clips to real MP4 files. 1080×1920, 30fps, **20 hooks
-in two batches, Kurdish, with a spoken voiceover**. Clip length is not fixed —
+Renders the TikTok quiz clips to real MP4 files. 1080×1920, 30fps, **40 hooks
+in three batches, Kurdish, with a spoken voiceover**. Clip length is not fixed —
 it follows the voice, and currently runs 15–24s.
 
 This is the render path. `../web/ad.html` is an older set of clips as a page
@@ -59,7 +59,19 @@ is why `Root.tsx` slugifies underscores out.
 
 ## Editing the clips
 
-`src/data.ts` holds the twenty hooks, both languages, copied verbatim from the
+**Every clip carries a `topic`, and `npm run topics` refuses duplicates.**
+Run it before writing a new batch and after. This is not paranoia about
+memory — *the question bank contains near-duplicates of itself*: two
+questions on how a pregnant woman wears a seat belt (#367, #551) and three on
+removing a motorcyclist's helmet (#119, #427, #604). Picking "something new"
+by reading is exactly how the same video gets made twice, and the cost lands
+on the audience. `npm run topics -- --list` prints the ledger of all 40.
+
+It also warns — without failing — when two topics share most of their
+meaningful words, because four different speed-limit rules legitimately
+overlap and a human has to be the one to say which are genuinely distinct.
+
+`src/data.ts` holds the forty hooks, both languages, copied verbatim from the
 question bank in `../web/index.html`. They are the items where the answer most
 people give is the wrong one — that is what drives the comments that carry
 reach. `bait` marks the wrong option to show in red on the reveal.
@@ -135,9 +147,16 @@ reason and CTA all on screen — which catches a column grown too tall.
 positioned and therefore ignores the padding entirely. Checking only the
 reason frame would never render the timer at all.
 
-Type also **scales to content weight** now (`k` in `Ad.tsx`), because the
-binding constraint is column height and hand-tuning each new hook had already
-been needed twice. A wordy clip drops a size automatically.
+Type **scales to content weight** (`k` in `Ad.tsx`), because the binding
+constraint is column height and hand-tuning each new hook had already been
+needed twice. A wordy clip drops a size automatically.
+
+**The weight counts the hook too, and the bands are tight.** Both facts are
+paid for. Leaving the hook out let a clip with a short body and a long hook
+land in the largest band and overflow — so *shortening* a `why` could break a
+clip, by making the type bigger. Every threshold in `k` is a measured
+failure. Re-run `npm run check` after touching them: all 40 clips, both
+frames.
 
 Padding alone is not proof — an absolutely positioned element ignores it,
 which is exactly how the call to action first ended up under the caption.

@@ -108,13 +108,24 @@ export const Ad: React.FC<{index: number; lang: Lang}> = ({index, lang}) => {
      new hook was already needed twice. Weight is the characters that have to
      fit: question + options + reason. */
   const weight = d.q[lang].length + d.o.reduce((n, o) => n + o[lang].length, 0) + d.why[lang].length
+    /* The hook is rendered text and takes column height like everything else.
+       Leaving it out let a clip with a SHORT body and a LONG hook land in the
+       largest size band and overflow — which is how `brakeleak` (body 172,
+       hook 39) and `trailerweight` failed. Counter-intuitively, shortening a
+       `why` could break a clip: less text meant a bigger k meant a taller
+       column. */
+    + d.hook[lang].length
     /* A sign card is 250px of column that no character count sees. Charging
        it to the weight is what actually makes the "sign clips run a size
        down" rule below true — it was a comment with nothing implementing it,
        and the first sign clip overflowed both the top and bottom zones. */
     + (d.sign ? 190 : 0);
-  const k = weight < 260 ? 1 : weight < 330 ? 0.93 : weight < 400 ? 0.86
-    : weight < 460 ? 0.80 : 0.74;
+  /* Bands tightened after two clips overflowed inside the old top band: 260
+     was too generous once the hook counted. Every threshold is a measured
+     failure, not a guess — re-run `npm run check` after touching them, all
+     40 clips, both frames. */
+  const k = weight < 200 ? 1 : weight < 270 ? 0.93 : weight < 340 ? 0.86
+    : weight < 420 ? 0.80 : 0.74;
   const px = (n: number) => Math.round(n * k);
   const sayA = voiceFile(d.id, lang, "a");
   const sayB = voiceFile(d.id, lang, "b");
