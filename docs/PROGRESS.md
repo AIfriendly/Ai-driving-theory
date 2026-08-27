@@ -46,7 +46,7 @@ quiz — is still inline and works offline.
 | Sim scene cost | 613,740 tris/frame · 142 draw calls (≈112 of them the car model) · 4,585 instanced objects in 30 meshes |
 | Questions with no visual | 0 |
 | Study-guide tips with no picture | 0 (587 of 587) |
-| TikTok funnel | bio link **fixed and verified 2026-08-27** · `Links → Add` renders blank in the iOS app, untriaged · account still personal · **postable now as plain text** |
+| TikTok funnel | bio link **fixed and verified 2026-08-27** · **no clickable bio link available** (checked app + desktop) so the URL must be typed · account still personal · **postable now as plain text** |
 | Ad clips rendered | **20 voiced Kurdish**, all delivered · batch one (15-24s) posted · batch two (18.9-26.4s, 1,378-1,865 kbps) at https://gofile.io/d/4Dmqf00J · earlier silent 8x2 batch at `292a68e` |
 
 Branch: `claude/trading-agent-bybit-mcp-ao56dp` — this is also the repo's
@@ -150,7 +150,19 @@ owner — most of all anything that assumes the TikTok app is on their phone.
         field did not exist, then built advice on top of that — including
         "the URL must be retyped from memory". Treat a control's absence from
         one screenshot as unconfirmed, not as proof.
-        **Tapped 2026-08-27: the Links screen renders completely blank** — a
+        **CONCLUDED 2026-08-27: there is no clickable link on this account,
+        and the hunt is over.** Checked in the iOS app (the `Links` screen
+        renders as a bare header over an empty white body) and independently
+        on desktop web (no link section at all). Two rendering paths, same
+        answer. Whether it is follower gating, account type, or region, the
+        outcome is identical and none of it is fixable from here — so stop
+        spending sessions on it. **Do not send the owner on a third hunt
+        through TikTok's settings**; two dead ends is the evidence.
+        The consequence, stated plainly: **the bio URL is text a viewer must
+        type.** That makes the length of the URL the conversion lever, which
+        is what the short domain buys. It is no longer one option among
+        several — it is the fix.
+        Superseded detail from the first attempt:  — a
         header and an empty white body, no options, no gated message, no
         empty-state text. That is not TikTok telling you the feature is
         unavailable; a gated feature says so. It reads as a screen that
@@ -1044,11 +1056,19 @@ can *click* it — see item 2.
 2. **Post batch two.** The bio resolves; plain text converts worse than a
    clickable link but infinitely better than nothing, and ten finished clips
    earning nothing is the larger waste. Two or three, then stop and read.
-3. **Chase the link field from a desktop browser, in parallel.** `Links → Add`
-   in the iOS app renders blank — no options, no gated message, nothing —
-   which reads as a broken screen rather than a refusal. `tiktok.com` →
-   Settings → Edit profile is a different code path. Do not keep tapping the
-   app; it has already cost more than the feature is worth this week.
+3. **Buy the short domain — this is now the whole game.** Confirmed
+   2026-08-27 that no clickable bio link is available on this account, in
+   the app or on desktop. So the URL gets *typed* by whoever wants it, and
+   its length is the conversion rate. `tareeq.krd` matches the `tareeqkrd`
+   handle and the steering-wheel logo, and it is 10 characters against 36.
+   Then re-render the end cards to put it on screen instead of
+   *لینک لە بایۆ* — `CTA.ku.b` in `video/src/data.ts`, and it costs no TTS
+   characters because the spoken line does not change.
+   **If a card for the domain is still the blocker**, a free stopgap exists:
+   a second Worker on the same account gives a shorter `*.tareeq.workers.dev`
+   alias (`t.tareeq.workers.dev` is 20 characters) that redirects to the real
+   one. Worse than a real domain, far better than 36 characters, and it does
+   not disturb the existing URL.
 4. **Change the account type**, at `tiktok.com/tiktokstudio` in a desktop
    browser — free, keeps your content, no documents, reversible. **This is not
    business verification**, which wants company papers and is what got
