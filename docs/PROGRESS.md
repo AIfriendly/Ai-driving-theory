@@ -46,6 +46,7 @@ quiz — is still inline and works offline.
 | Sim scene cost | 613,740 tris/frame · 142 draw calls (≈112 of them the car model) · 4,585 instanced objects in 30 meshes |
 | Questions with no visual | 0 |
 | Study-guide tips with no picture | 0 (587 of 587) |
+| Buffer queue | **LIVE — batch two is scheduled**, 20:00 Kurdistan daily (helmet Aug 29, childseat Aug 30, glass Aug 31 confirmed by screenshot) |
 | Clip hosting | **LIVE** — https://clips.tareeq.workers.dev · 10 clips, public, `video/mp4` · fed from `video/out/`, not git |
 | Short link | **LIVE** — https://t.tareeq.workers.dev → 302 → the app · 20 chars vs 36 |
 | TikTok funnel | bio link **fixed and verified 2026-08-27** · **no clickable bio link available** (checked app + desktop) so the URL must be typed · **postable now as plain text** |
@@ -1592,6 +1593,22 @@ tested.
       instead. Twenty clips would need re-rendering, which is cheap: no new
       TTS characters are spent, because the CTA line is baked into `sayB`
       audio that does not change.
+
+- [x] **Batch two is scheduled in Buffer and posting daily.** Confirmed
+      2026-08-27 from the owner's queue: helmet Aug 29, childseat Aug 30,
+      glass Aug 31, all 20:00 Kurdistan, carrying the POSTING.md captions and
+      the rendered clips. The pipeline is live end to end.
+      - **CAUTION — the queued captions almost certainly predate the hashtag
+        fix.** They were scheduled before POSTING.md was cut from 12-13 tags
+        to the five TikTok actually counts, so the queued versions likely
+        spend their five counted slots on topic plus two city names, with
+        `#مۆڵەتی_شۆفێری` and `#تیۆری` sitting at positions 6-7 where nothing
+        reads them. Worth editing in Buffer, or unscheduling and re-sending.
+      - **Two sessions' worth of state lived only in chat.** The Buffer
+        account, the TikTok connection and this queue were all set up and
+        never written here, so later sessions re-researched them as unknowns.
+        Anything an owner does outside the repo has to land in this file or it
+        does not exist.
 
 - [ ] **Full automation: built, and gated on exactly one free setting.**
       Owner has asked for this three times. Researched properly 2026-08-26
