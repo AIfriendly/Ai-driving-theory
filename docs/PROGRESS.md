@@ -2372,6 +2372,28 @@ changes nothing, because the encoder has no more detail to spend bits on.
 re-encode without banding, and banding needs gradients this background does
 not have.
 
+**`/user/tokens/verify` reports a perfectly good account token as invalid.**
+Cloudflare's newer account-scoped tokens (the `cfat_…` prefix) are not
+user-scoped, so the classic verify endpoint answers
+`{"success": false, "code": 1000, "Invalid API Token"}` for a token that
+works fine. It cost a round trip asking the owner to re-send a token that was
+already correct. **Test an account token against an account endpoint**, e.g.
+`GET /accounts/<id>/workers/scripts`, not `/user/tokens/verify`.
+
+**Read access and write access fail differently, and only one of them is
+obvious.** A token can list Workers (`HTTP 200`) and still be unable to deploy
+one. The deploy fails as `Authentication error [code: 10000]`, which reads
+like a bad token rather than a missing permission; hitting the write endpoint
+directly gives the clearer `10405 Method not allowed for this authentication
+scheme`. **Deploying a Worker needs `Account → Workers Scripts → Edit`
+specifically** — a token built from the Read templates carries dozens of
+`… Read` scopes and R2 keys and still cannot write a single script.
+
+**Transcribing a token out of a screenshot does not work.** One character in
+a 48-character secret (`fk5O` vs `fk50`) was enough to fail authentication,
+and there is no way to tell which character was misread. Ask for secrets as
+text.
+
 **The Cloudflare dashboard's "Requests" counter is blind to this site.** It
 read **0 for August 1-27** while the Worker was demonstrably serving 2.15 MB
 on every fetch. That is not a broken deploy and not proof nobody visited — it
