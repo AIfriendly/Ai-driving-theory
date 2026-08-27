@@ -44,6 +44,8 @@ second build:
    route.** New Workers ship with it **disabled**, so a correct deploy serves
    nothing and looks exactly like a broken one. This cost real time on the
    main Worker already — the gotcha is in `docs/PROGRESS.md`.
+   (Deploying with wrangler instead skips this: `wrangler.jsonc` here sets
+   `"workers_dev": true`, so the route is turned on by the deploy itself.)
 5. Verify before putting it anywhere:
    ```sh
    curl -sI https://t.tareeq.workers.dev/ | head -3
@@ -51,11 +53,24 @@ second build:
    #         location: https://ai-driving-theory.tareeq.workers.dev/
    ```
 
-From a machine with wrangler authenticated, the same thing is:
+## Deploying it with a token instead
+
+Faster and self-verifying, and it enables the workers.dev route without anyone
+remembering to. Needs a Cloudflare API token in the environment:
 
 ```sh
-npx wrangler deploy -c redirect/wrangler.jsonc
+CLOUDFLARE_API_TOKEN=... npx wrangler deploy -c redirect/wrangler.jsonc
 ```
+
+**Always pass `-c`.** A bare `npx wrangler deploy` from the repo root reads the
+root `wrangler.jsonc` and redeploys the live main Worker. There is never a
+reason to run that by hand — the Cloudflare dashboard build already does it on
+every push.
+
+**Scope the token to Workers Scripts: Edit and give it a short expiry.** It
+does not need Zone, DNS, R2 or KV permissions to deploy this, and a token that
+can only replace Worker scripts cannot touch the domain, the DNS records or
+the account. Delete it when the deploy is done.
 
 **If you ever do want it git-connected**, the GitHub path works — but only
 with *both* fields changed: project name `t`, and deploy command

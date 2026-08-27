@@ -10,5 +10,11 @@
   // Deploy from the repo root:  npx wrangler deploy -c redirect/wrangler.jsonc
   "name": "t",
   "main": "worker.js",
-  "compatibility_date": "2026-08-01"
+  "compatibility_date": "2026-08-01",
+
+  // New Workers ship with the workers.dev route DISABLED, so a correct deploy
+  // serves nothing and looks exactly like a broken one — the trap that already
+  // cost time on the main Worker. Setting it here means the deploy turns the
+  // route on itself, instead of relying on someone remembering a menu.
+  "workers_dev": true
 }
