@@ -1594,16 +1594,33 @@ tested.
       TTS characters are spent, because the CTA line is baked into `sayB`
       audio that does not change.
 
+- [x] **Buffer's queue is capped at 10 scheduled posts per channel, and it
+      is full.** Confirmed by the API refusing all twenty of batch three:
+      *"Scheduled posts limit reached. You have 10 scheduled posts out of 10
+      allowed."* The cap counts **scheduled** posts, not published ones, so a
+      slot frees each time one goes out — but a batch cannot be queued past
+      it, and trying fails every post rather than filling what fits.
+      `--top-up` now exists for exactly this: it reads the queue, works out
+      the free slots and which clips are missing from it, and fills that many,
+      continuing from the last scheduled date rather than from `--start`.
+      Idempotent — matching is on the caption's first line, unique per clip —
+      so it can be run as often as you like and will never double-post.
+      Batch three (20 clips) is rendered, hosted and media-checked, waiting on
+      slots: one frees per day from 2026-08-28.
+
 - [x] **Batch two is scheduled in Buffer and posting daily.** Confirmed
       2026-08-27 from the owner's queue: helmet Aug 29, childseat Aug 30,
       glass Aug 31, all 20:00 Kurdistan, carrying the POSTING.md captions and
       the rendered clips. The pipeline is live end to end.
-      - **CAUTION — the queued captions almost certainly predate the hashtag
-        fix.** They were scheduled before POSTING.md was cut from 12-13 tags
-        to the five TikTok actually counts, so the queued versions likely
-        spend their five counted slots on topic plus two city names, with
-        `#مۆڵەتی_شۆفێری` and `#تیۆری` sitting at positions 6-7 where nothing
-        reads them. Worth editing in Buffer, or unscheduling and re-sending.
+      - ~~CAUTION — the queued captions probably predate the hashtag fix.~~
+        **They do not.** Read back from the API: all ten carry the corrected
+        five, with `#مۆڵەتی_شۆفێری` and `#تیۆری` inside the counted set.
+        Nothing to fix. Recorded because the caution was published before it
+        was checked, and checking took one query.
+      - **The full queue, read 2026-08-27:** hangover Aug 28, helmet Aug 29,
+        childseat Aug 30, glass Aug 31, tyredate Sep 1, roundabout Sep 2,
+        advisory Sep 3, alley Sep 4, dazzle Sep 5, foglights Sep 6 — all
+        17:00 UTC, which is 20:00 in Asia/Baghdad, the channel's timezone.
       - **Two sessions' worth of state lived only in chat.** The Buffer
         account, the TikTok connection and this queue were all set up and
         never written here, so later sessions re-researched them as unknowns.
@@ -1619,9 +1636,9 @@ tested.
       | Route | What it needs | Verdict |
       |---|---|---|
       | **Own TikTok API app** | App audit; unaudited clients are capped at `SELF_ONLY` viewership and 5 users/24h. 2-4 weeks, consent/disclosure UX built to spec, "likely bounced once or twice" | **No.** Weeks of work and an approval process to publish one account |
-      | **Buffer API** | Buffer account (API is on the **free** plan), a Creator/Business TikTok account, publicly hosted media | **Yes — this is the built path.** Buffer is an audited TikTok partner, so it inherits the approval |
+      | **Buffer API** | Buffer account (API is on the **free** plan) and publicly hosted media. **No account-type requirement — proven on a personal account** | **Yes — this is the built path, and it is live.** Buffer is an audited TikTok partner, so it inherits the approval |
       | **TikTok's own scheduler** | Creator/Business account, a desktop browser at tiktok.com/tiktokstudio | **Good fallback.** Free, 30 days ahead, no third party, but one manual sitting per batch |
-      | Personal account | — | **Nothing works.** TikTok gates scheduling to Creator/Business; no tool can route around it |
+      | Personal account | — | **WRONG — corrected 2026-08-27.** Ten posts scheduled through Buffer to an account that is still personal. The Creator/Business gate is real for *TikTok's own* scheduler and for the bio link; it does not reach the Content Posting API that Buffer publishes through |
 
       - **The gate is the account type, and it is free.** Not verification,
         not a company, not a fee. Every automated route dies on a personal

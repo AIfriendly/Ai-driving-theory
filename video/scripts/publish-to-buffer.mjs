@@ -86,13 +86,42 @@ if (argv[0] === "channels") {
   process.exit(0);
 }
 
+/* ---- reading the queue -------------------------------------------------- */
+
+/* Buffer caps SCHEDULED (not published) posts per channel — 10 on the free
+   tier. Queuing a batch past that fails every post with "Scheduled posts
+   limit reached": a wasted round trip, and a partial success if the cap is
+   hit halfway. So --top-up reads what is already queued, works out how many
+   slots are free and which clips are not in it, and fills exactly that many.
+
+   Idempotent on purpose — run it as often as you like. Matching is on the
+   caption's first line, which is the hook and unique per clip, so nothing is
+   ever queued twice. */
+const ORG = flag("org");
+const TOP_UP = argv.includes("--top-up");
+const LIMIT = Number(flag("limit", "10"));
+
+const listQueued = async () => {
+  const query = `query Q($input: PostsInput!) {
+    posts(first: 100, input: $input) { edges { node { id status dueAt text } } }
+  }`;
+  const input = {
+    ...(ORG ? {organizationId: ORG} : {}),
+    filter: {channelIds: [channelId], status: ["scheduled", "sending", "draft"]},
+  };
+  const d = await gql(query, {input});
+  return (d.posts?.edges ?? []).map((e) => e.node);
+};
+
+const firstLine = (t) => (t ?? "").split("\n")[0].trim();
+
 /* ---- scheduling -------------------------------------------------------- */
 const channelId = flag("channel");
 const mediaBase = flag("media-base");
 if (!channelId || !mediaBase) {
   console.error("usage: --channel <id> --media-base <public-url-prefix> [--ids a,b] " +
                 "[--start <ISO8601>] [--every <hours>] [--no-ai-disclosure]\n" +
-                "       [--skip-media-check] [--go]\n" +
+                "       [--top-up [--limit N]] [--org <id>] [--skip-media-check] [--go]\n" +
                 "       (run `channels` first to find the id)");
   process.exit(2);
 }
@@ -118,8 +147,32 @@ const startAt = flag("start") ? new Date(flag("start")) : (() => {
 if (Number.isNaN(startAt.getTime())) { console.error(`--start is not a date: ${flag("start")}`); process.exit(2); }
 const everyHours = Number(flag("every", "24"));
 
-const posts = parsePosts().filter((p) => (only ? only.has(p.id) || only.has(p.id.replace(/-ku$/, "")) : true));
+let posts = parsePosts().filter((p) => (only ? only.has(p.id) || only.has(p.id.replace(/-ku$/, "")) : true));
 if (!posts.length) { console.error("no clips matched --ids"); process.exit(2); }
+
+let startFrom = null;
+if (TOP_UP) {
+  const queued = await listQueued();
+  const queuedLines = new Set(queued.map((p) => firstLine(p.text)));
+  const free = Math.max(0, LIMIT - queued.length);
+  const lastDue = queued.map((p) => p.dueAt).filter(Boolean).sort().at(-1);
+
+  console.log(`queue: ${queued.length}/${LIMIT} used, ${free} free` +
+    (lastDue ? `, last scheduled ${lastDue}` : ""));
+  const pending = posts.filter((p) => !queuedLines.has(firstLine(p.caption)));
+  console.log(`${posts.length - pending.length} of the requested clips are already queued`);
+
+  if (!free) {
+    console.log("\nnothing to do — the queue is full. Run again once a post has published.");
+    process.exit(0);
+  }
+  if (!pending.length) { console.log("\nnothing left to queue."); process.exit(0); }
+  posts = pending.slice(0, free);
+  /* Continue from the end of the queue, not from --start, so a top-up never
+     lands on a day that already has a post on it. */
+  if (lastDue) startFrom = new Date(new Date(lastDue).getTime() + everyHours * 3600_000);
+  console.log(`queuing ${posts.length}\n`);
+}
 
 const MUTATION = `
 mutation Schedule($input: CreatePostInput!) {
@@ -172,7 +225,8 @@ console.log(`media check: ${posts.length}/${posts.length} reachable at ${mediaBa
 
 let n = 0, failed = 0;
 for (const p of posts) {
-  const dueAt = new Date(startAt.getTime() + n * everyHours * 3600_000).toISOString();
+  const base = startFrom ?? startAt;
+  const dueAt = new Date(base.getTime() + n * everyHours * 3600_000).toISOString();
   /* TikTok has one caption field, so the tags ride along with the caption.
      The description block is deliberately NOT sent: it carries the site link,
      and TikTok captions do not make links clickable — putting it there just
