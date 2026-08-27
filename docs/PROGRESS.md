@@ -1084,62 +1084,84 @@ owner — most of all anything that assumes the TikTok app is on their phone.
 
 ## Next
 
-### Right now, in order (updated 2026-08-26)
+### Right now, in order (updated 2026-08-27)
 
-**The destination works again as of 2026-08-27**, so batch two is postable.
-The open question is no longer whether the link resolves but whether anyone
-can *click* it — see item 2.
+**The pipeline is finished up to the last hop.** Twenty clips rendered and
+voiced, ten of them hosted publicly at `clips.tareeq.workers.dev`, captions
+written, a short link live at `t.tareeq.workers.dev`, a scheduler script that
+dry-runs and media-checks clean. **Everything now waits on one two-minute
+experiment: can Buffer connect this TikTok account?** No documentation
+settles it — the attempt is the answer.
 
 **Owner only — nothing in this repo can do these:**
 
-1. ~~Fix the TikTok bio text.~~ **DONE 2026-08-27**, verified live. See the
-   note at the top of this file.
-2. **Post batch two.** The bio resolves; plain text converts worse than a
-   clickable link but infinitely better than nothing, and ten finished clips
-   earning nothing is the larger waste. Two or three, then stop and read.
-3. **Buy the short domain — this is now the whole game.** Confirmed
-   2026-08-27 that no clickable bio link is available on this account, in
-   the app or on desktop. So the URL gets *typed* by whoever wants it, and
-   its length is the conversion rate. `tareeq.krd` matches the `tareeqkrd`
-   handle and the steering-wheel logo, and it is 10 characters against 36.
-   Then re-render the end cards to put it on screen instead of
-   *لینک لە بایۆ* — `CTA.ku.b` in `video/src/data.ts`, and it costs no TTS
-   characters because the spoken line does not change.
-   **The free stopgap is LIVE**: `https://t.tareeq.workers.dev` (20
-   characters, 44% shorter) 302s to the real host with path and query
-   preserved, deployed 2026-08-27. Worse than a real domain, far better than
-   36 characters, and the existing URL is untouched. Source and deploy notes
-   in `redirect/`.
-4. **Change the account type**, at `tiktok.com/tiktokstudio` in a desktop
-   browser — free, keeps your content, no documents, reversible. **This is not
-   business verification**, which wants company papers and is what got
-   rejected. Which type depends on what you want first:
-   - **Business** — the only thing that gives a clickable Website field below
-     1,000 followers, *and* unlocks scheduling. Solves both problems.
-   - **Creator** — unlocks scheduling only, but keeps the full music library
-     and Creator Rewards. Take this if the Business toggle genuinely is not
-     there.
-5. **Store `KURDISH_TTS_KEY` on the environment**, not in a session. A
-   container is reclaimed after inactivity and the key goes with it. Rotate it
-   too — it was pasted into a chat transcript.
-6. **Buy the short domain.** `tareeq.krd` matches the `tareeqkrd` handle. With
-   no clickable bio field the link has to be typeable from memory, so this
-   stopped being a Phase 3 nicety.
-7. **Send the TikTok Studio numbers** — watch time, retention curves, traffic
-   sources, whether there are comments. Ten posted clips bought no information
-   because the destination was broken; the next ten should not repeat that.
-8. *Optional, only for full automation:* a Buffer account and an API token
-   (free plan). Then `BUFFER_ACCESS_TOKEN=... npm run channels`.
+1. **Sign up for Buffer (free) and try to connect the TikTok account.**
+   Two-minute experiment, not a research task — and it is the next thing to
+   do. Nobody's documentation settles whether a *personal* TikTok account can
+   be connected: Buffer's own pages state no account-type requirement, while
+   a "TikTok personal accounts" feature request implies otherwise. **The
+   connect attempt is the answer.** Everything else in the pipeline is built
+   and verified and waits on this one outcome.
+   - **Connects** → get an API token (the free plan includes one), run
+     `npm run channels` in `video/`, send the TikTok `channelId`, and all ten
+     clips get scheduled in one command.
+   - **Refuses** → that is the account-type switch (item 2), then retry.
+   - On an old Buffer account, note **TikTok is only on their new plans**; a
+     legacy plan has to upgrade.
+
+2. **Change the TikTok account type**, at `tiktok.com/tiktokstudio` in a
+   desktop browser — free, keeps your content, no documents, reversible.
+   **Not business verification**, which wants company papers and is what got
+   rejected. Needed if Buffer refuses the connection; worth doing anyway.
+   - **Business** — unlocks scheduling *and* is the only thing giving a
+     clickable Website field below 1,000 followers. Solves both.
+   - **Creator** — scheduling only, but keeps the full music library and
+     Creator Rewards. Take this if the Business toggle is genuinely absent.
+
+3. **Update the bio to give a reason to click.** It is 36/80 characters and
+   all of them are a bare URL. This fits at 49/80 and uses the live short
+   link:
+
+   ```
+   ٧٤٥ پرسیاری تیۆری بەخۆڕایی 👇
+   t.tareeq.workers.dev
+   ```
+
+4. **Post batch two** — by hand if Buffer stalls. The bio resolves and the
+   short link is live; ten finished clips earning nothing is the larger
+   waste. Two or three, then stop for 48h and read the result.
+
+5. **Delete the two Cloudflare API tokens** pasted into the session
+   transcript, and roll the R2 keys that came with them. Both Workers stay
+   deployed; the tokens were only needed to push them.
+
+6. **Store `KURDISH_TTS_KEY` on the environment**, not in a session — a
+   container is reclaimed after inactivity and the key goes with it. Rotate
+   it; it also went through a chat transcript.
+
+7. **Buy the short domain.** `t.tareeq.workers.dev` (20 chars) is the free
+   stopgap and it is live, but `tareeq.krd` is 10, matches the `tareeqkrd`
+   handle and the logo, and survives being read off a video. With no
+   clickable bio link, URL length *is* the conversion rate.
+
+8. **Send the TikTok Studio numbers** — watch time, retention, traffic
+   sources, comments. The first ten clips bought no information because the
+   destination was broken; the next ten should not repeat that.
 
 **Next session can pick up, unblocked:**
 
-- **Host the MP4s somewhere permanent.** A GitHub Release on this public repo.
-  Needed before any scheduled post, because Buffer fetches the media *when the
-  post publishes* and gofile expires. **Not done: it publishes the clips at a
-  public URL under the owner's GitHub identity, so ask first.**
-- **Test `publish-to-buffer.mjs` against a live token.** It dry-runs correctly
-  but has never spoken to Buffer. The channel query is a guess — the guide for
-  it 404s — so `npm run channels` printing a real response is the first thing
+- ~~Host the MP4s somewhere permanent.~~ **DONE** —
+  `https://clips.tareeq.workers.dev`, all ten public and verified.
+- **Schedule the batch, the moment a Buffer token and channel id arrive:**
+  ```
+  BUFFER_ACCESS_TOKEN=... npm run schedule -- --channel <id> \
+    --media-base https://clips.tareeq.workers.dev \
+    --ids hangover,helmet,childseat,glass,foglights,roundabout,advisory,alley,dazzle,tyredate \
+    --start <ISO8601> --go
+  ```
+  It dry-runs and media-checks clean already. **Untested against a live
+  token** — and the channel query is a guess, because the published guide for
+  it 404s, so `npm run channels` printing a real response is the first thing
   to check.
 - **Re-render the end cards** once a domain exists: `CTA.ku.b` in
   `video/src/data.ts` should show the domain instead of *لینک لە بایۆ*. Costs
@@ -1551,6 +1573,28 @@ tested.
         and refuses the whole run otherwise. It caught a real one immediately:
         with no `--ids`, it builds URLs for all twenty clips while only
         batch two is deployed, so ten would have 404'd at publish time.
+      - **Buffer's own limits, checked 2026-08-27 — every clip passes:**
+        video 3s-10min (ours 18.9-26.4s), ≤1 GB (ours 4.0-4.9 MB), min
+        360x360 (ours 1080x1920), MOV/MP4/WEBM (ours MP4). Buffer offers
+        **automatic publishing** for TikTok, not only notification-based, so
+        nothing has to be finished by hand on a phone. One caveat from their
+        docs: **TikTok is only on Buffer's *new* plans** — a legacy Buffer
+        account would have to upgrade.
+      - **UNRESOLVED, and the docs will not settle it: whether Buffer can
+        connect a PERSONAL TikTok account.** Buffer's supported-channels page
+        lists a single undifferentiated "TikTok accounts" row and states no
+        account-type requirement anywhere; their TikTok help article states
+        none either. Against that, a feature-request page titled *"TikTok
+        personal accounts"* exists on suggestions.buffer.com, which implies
+        some limitation, but its body could not be read. Third-party blogs
+        contradict each other outright.
+        **Do not resolve this by reading more.** Buffer signup is free and the
+        connect attempt itself is the test — two minutes, and it answers
+        definitively. Reason to think it may work: the Creator/Business gate
+        that is *documented* applies to **TikTok's own native scheduler**, and
+        Buffer does not use that — it publishes through the Content Posting
+        API, which documents no account-type requirement. That is inference,
+        not evidence; treat the connect attempt as the experiment.
       - **Untested against a live token.** The script dry-runs by default and
         only calls Buffer with `--go`. The channel-listing query is a best
         guess at the shape because developers.buffer.com/guides/channels.html
