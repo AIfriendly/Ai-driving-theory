@@ -46,6 +46,7 @@ quiz — is still inline and works offline.
 | Sim scene cost | 613,740 tris/frame · 142 draw calls (≈112 of them the car model) · 4,585 instanced objects in 30 meshes |
 | Questions with no visual | 0 |
 | Study-guide tips with no picture | 0 (587 of 587) |
+| Posting automation | **LIVE** — Routine `trig_01EbCrGERvbkbgiWCeWGZAHG`, daily 18:30 UTC, tops the Buffer queue up from batch three · **needs `BUFFER_ACCESS_TOKEN` in the environment or every run stops at step 2** |
 | Buffer queue | **LIVE — batch two is scheduled**, 20:00 Kurdistan daily (helmet Aug 29, childseat Aug 30, glass Aug 31 confirmed by screenshot) |
 | Clip hosting | **LIVE** — https://clips.tareeq.workers.dev · 10 clips, public, `video/mp4` · fed from `video/out/`, not git |
 | Short link | **LIVE** — https://t.tareeq.workers.dev → 302 → the app · 20 chars vs 36 |
@@ -1593,6 +1594,29 @@ tested.
       instead. Twenty clips would need re-rendering, which is cheap: no new
       TTS characters are spent, because the CTA line is baked into `sayB`
       audio that does not change.
+
+- [x] **The posting loop is automated: a daily Routine tops up the queue.**
+      `trig_01EbCrGERvbkbgiWCeWGZAHG`, cron `30 18 * * *` (18:30 UTC, 21:30
+      Kurdistan), fresh session per fire, push notification on. It fires 90
+      minutes after the 17:00 UTC daily post, by which time that post has
+      published and freed a slot. Owner stays on Buffer's free plan, so this
+      is what turns a 10-slot cap into a continuous queue.
+      Four things the prompt has to get right, each of which would break it:
+      - **A fresh session clones the repo's DEFAULT branch**, which has none
+        of this work, so the Routine checks out
+        `claude/test-coverage-analysis-f9nokv` first.
+      - **`--ids` is mandatory.** Without it the top-up would reach for
+        batch-one clips, whose MP4s were never rendered here and are not
+        hosted, and the media preflight would abort the whole run.
+      - **No `npm install`** — the script uses only Node built-ins, so a fresh
+        clone with no `node_modules` is fine.
+      - **"queue is full" is success, not failure**, and the prompt says so —
+        otherwise most days look like an error and someone disables it.
+      **It reads `BUFFER_ACCESS_TOKEN` from the environment and stops cleanly
+      if it is absent.** The token is deliberately not baked into the trigger
+      prompt, where it would sit in plain text in the Routines list. Until the
+      owner adds it to the environment variables, every run reports the
+      missing token and does nothing.
 
 - [x] **Buffer's queue is capped at 10 scheduled posts per channel, and it
       is full.** Confirmed by the API refusing all twenty of batch three:
