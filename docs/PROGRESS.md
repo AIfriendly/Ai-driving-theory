@@ -2062,6 +2062,41 @@ number server-side. **Accounts only become worth building for cross-device
 sync or to genuinely stop code sharing** — neither is a problem worth solving
 before there is revenue.
 
+**P7a — what "an Iraqi company" actually means for one person, researched
+2026-08-27.** Secondary sources only (law-firm and business-guide pages, not
+the registrar), so treat every figure as needing confirmation before money
+moves. Not legal advice.
+
+- **A Sole Proprietorship is the single-person route**, and it exists in the
+  KRI alongside LLC, Joint Stock and Foreign Branch — "for individuals
+  conducting business under their own name". One owner, no partner needed.
+- **Minimum capital 1,000,000 IQD** (~$760). That is *deposited capital*, the
+  owner's own money in the company account, not a fee.
+- **Fees on top: 4,500 IQD per million IQD of capital, plus charges of
+  25,000-50,000 IQD.** So the whole thing lands near 1,080,000 IQD, of which
+  only ~55,000 is actually spent.
+- **Disqualifier worth checking first: the owner "must have full legal rights
+  and must not be a government employee."**
+- Documents: National ID and Civil Status Card, electronic business-name
+  registration, a Unique Personal Number for the authorised manager, and the
+  formation contract from the official system.
+- Registered at the General Directorate of Company Registration, Ministry of
+  Trade — Erbil, Dohuk or Sulaymaniyah by location. An LLC runs 2-4 weeks, or
+  **3-7 business days** on the 2026 electronic filing platform; no timeline
+  was published for a sole proprietorship.
+- **Sole proprietorship carries unlimited personal liability**; an LLC caps
+  it. For a 5,000 IQD study app the exposure is small, but it is the reason
+  to prefer an LLC if this ever sells anything with real risk attached.
+
+**THE UNKNOWN THAT DECIDES IT, AND IT IS ONE PHONE CALL.** FIB's own
+business-account page does not state which entity types it accepts, or what
+its Payment Gateway needs beyond the SDKs it lists. **Nobody should form a
+company before asking FIB whether a sole proprietorship is enough for
+merchant/gateway access, or whether they require an LLC.** FIB publishes a
+phone number (6977) and an email. That call is free and it is the difference
+between ~55,000 IQD of fees and a much larger undertaking. It also decides
+whether the lead time is long enough to justify starting before demand.
+
 **P7 — the FIB API is documented and buildable; the blocker is corporate, not
 technical.** Researched 2026-08-19. This resolves the FIB half of the open
 question below.
