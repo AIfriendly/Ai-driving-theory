@@ -1135,6 +1135,41 @@ owner — most of all anything that assumes the TikTok app is on their phone.
 
 ## Next
 
+### The end-of-September decision, agreed in advance (2026-08-28)
+
+Thirty clips post daily to roughly **26 September**. Decide then, on three
+numbers, not on a feeling — and not on whether anything "went viral", which is
+not a variable anyone can act on.
+
+Read: **views per clip** (TikTok Studio), **total clicks**
+(`node redirect/clicks.mjs 40`), and **whether anyone finishes a mock exam**.
+
+| Views | Clicks | What it means | What to do |
+|---|---|---|---|
+| Low (<100/clip) | — | Cold start, or the hooks miss | The one case where **more videos is right** — but *different* hooks, not more of the same. Same topics, new angles |
+| Fine (200+/clip) | Near zero | **The destination is the problem** | Short domain + URL on the end card. Then ads. **More videos is the wrong move** |
+| Fine | Some clicks | It works, small | Scale: ads *and* more videos both justified |
+| Fine | Clicks, nobody finishes a quiz | The app is the problem | Fix the product before buying more traffic |
+
+**More videos is the correct answer to exactly one of those four rows, and it
+is the least likely one.** With no clickable bio link, row two is the
+prediction: people watch, and cannot be bothered to retype 20 characters.
+
+**Ads are not the answer to "we did not go viral."** Ads amplify a funnel;
+they do not repair one. If organic gets views and no clicks, paid gets views
+and no clicks and sends an invoice. The correct trigger for ads is narrower
+and it is row two specifically: **good watch time, poor click-through** —
+because that is the gap an ad's own CTA button closes, and it is the one
+structural problem this account cannot fix any other way.
+
+**Before any ad spend, two things must change**, both already recorded under
+*Distribution*: the clips end on `لینک لە بایۆ`, which is an organic CTA and
+dead weight in an ad that carries its own button (`CTA.ku.b` in
+`video/src/data.ts` — costs no TTS characters, needs a re-render); and billing
+needs an international card, the same thing that blocked the domain. The other
+blocker named there, the unsubstantiated `٩٠٪` statistic, is **already gone** —
+checked 2026-08-28, no clip carries a percentage claim.
+
 ### Right now, in order (updated 2026-08-27)
 
 **The pipeline is finished up to the last hop.** Twenty clips rendered and
