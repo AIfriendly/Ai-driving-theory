@@ -41,7 +41,7 @@ export type Ad = {
 
 export const CTA: Record<Lang, { a: string; b: string }> = {
   en: { a: "745 more questions — free", b: "Kurdistan driving theory · link in bio" },
-  ku: { a: "٧٤٥ پرسیاری تر — بەخۆڕایی", b: "تیۆریی لێخوڕینی کوردستان · لینک لە بایۆ" },
+  ku: { a: "٧٤٥ پرسیاری تر — بەخۆڕایی", b: "🔗 t.tareeq.workers.dev" },
 };
 
 export const ADS: Ad[] = [

@@ -250,6 +250,25 @@ owner — most of all anything that assumes the TikTok app is on their phone.
         A variant carrying the unofficial disclaimer fits at 68/80
         (`٧٤٥ پرسیار · بەخۆڕایی · نافەرمی`), though the site states that
         itself and bio characters are the scarcer resource.
+      - **CTA fixed 2026-09-10: the end card no longer says "link in bio".**
+        Confirmed with the owner that day that the bio DOES read the short
+        link correctly — so the low click number (see gotchas) was real
+        signal, not a measurement gap, and it matches exactly the failure
+        mode this note warned about: a viewer has to *remember and type* an
+        address after the video ends, with no on-screen reminder. `CTA.ku.b`
+        in `video/src/data.ts` changed from `"تیۆریی لێخوڕینی کوردستان ·
+        لینک لە بایۆ"` to `"🔗 t.tareeq.workers.dev"` — the actual address,
+        on screen, at the moment people decide whether to go. Did not wait
+        for a purchased domain: the short link is live now and a domain swap
+        later is the same one-line change again.
+        All 20 batch-three clips re-rendered and redeployed to
+        `clips.tareeq.workers.dev`. **No TTS cost** — the CTA is on-screen
+        text only, never spoken in `sayB`, so the existing audio files were
+        reused. **The 10 already-scheduled Buffer posts needed no changes
+        either** — Buffer fetches each video's URL when the post *publishes*,
+        not when it was scheduled, so redeploying the same filenames before
+        Sep 11 17:00 UTC means even the already-queued posts pick up the
+        fixed end card automatically.
       - **Renaming is rate-limited, which matters if a domain gets bought.**
         Username locked until **Sep 20 2026**, display name until **Aug 28
         2026**. So aligning the handle to a new domain is not something that
