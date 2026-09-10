@@ -2577,28 +2577,43 @@ in the Routine's self-reported status. Nothing paged anyone for 4 days
 because "cleanly detected missing precondition and stopped" and "silently
 did nothing useful" produce the identical signal from outside.
 
-**Real click data is in, and it is very low: 5 genuine clicks (7 total minus
-2 of my own test fetches) across 10 published clips over 13 days.** Read via
-`redirect/clicks.mjs` 2026-09-10. This could mean the hooks are not landing —
-or it could mean **the bio was never updated to the short link**, in which
-case `clicks.mjs` is measuring nothing, because it only counts hits to
-`t.tareeq.workers.dev` and the long URL's Worker is assets-only and
-uncounted. **Unconfirmed which. Ask the owner what the bio currently reads**
-before drawing any conclusion from this number — it is exactly the kind of
-silent measurement gap this file keeps finding after the fact.
+**Real click data is in, and low clicks turned out to be a real signal, not
+a measurement gap.** 5 genuine clicks (7 total minus 2 of my own test
+fetches) across 10 published clips over 13 days, read via `redirect/
+clicks.mjs`. The owner confirmed the same day that the bio already reads the
+short link correctly, so this is a genuine low click-through, not
+`clicks.mjs` failing to count real traffic. Fixed in the Done entry above —
+the end card now shows the address on screen instead of "link in bio".
+
+**One clip is 46% of every view this account has ever gotten, and it is not
+close.** `node scripts/buffer-metrics.mjs`, 2026-09-10: `childseat`
+("لە کورسی پێشەوە نا" — where a child must sit in the car) pulled **6,302
+views / 5,646 reach**, against a next-best of 751. Every other clip sits in
+the 150-750 range. Its engagement rate (4.19%) and watch time (9.02s) are
+also near the top of the set, so it is not an inflated-view/low-quality
+outlier — people who saw it actually watched and reacted. **13,840 total
+views across 24 posts is not "viral" by platform standards** — this is one
+clip meaningfully outperforming a small account, not a breakout hit. But
+relative to everything else posted, the gap is large enough to be a real
+signal: **child-safety / parental-fear framing may be a stronger hook
+category than traffic-rule trivia**, worth deliberately testing again rather
+than treated as a one-off. Average watch time across the top posts (5-9s out
+of 20+ second clips) also says most viewers are leaving well before the
+reveal — a pacing question for whoever next tunes `timing.ts`.
 
 
-**Buffer's API cannot give you TikTok analytics, and neither can Buffer.**
-Checked 2026-08-27 against their own docs. On the API: *"We don't currently
-offer your analytics or insights data through the API the way the Insights
-section of Buffer does, and there's no analytics CSV export through the
-API."* There is an **experimental** post-metrics query — personal-use only,
-with your own key, which fits this case — but Buffer says *"because it's
-experimental the data can change, so we don't recommend relying on it."*
-Buffer's *UI* gives follower growth, engagement, impressions and a
-performance-per-post table ranked by engagement rate. It does **not** give
-watch time, retention or traffic source for TikTok, because TikTok does not
-release those to third parties.
+**CORRECTED 2026-09-10 — Buffer's API DOES return real per-post TikTok
+analytics.** The 2026-08-27 note above was wrong, sourced from Buffer's own
+support docs rather than the live schema, and it sat uncorrected for two
+weeks. Live introspection shows every `Post` carries a `metrics` field —
+Video Views, Reach, Reactions, Comments, Shares, Eng. Rate, Watch Time and
+Avg. Watch Time — queryable right now, not flagged experimental in the
+schema the way the support article described. `node scripts/buffer-metrics.mjs`
+in `video/` pulls and ranks it. **Always check the live GraphQL schema before
+trusting a vendor's support docs about API scope** — this project has now
+been burned by that exact gap twice (this, and the personal-account TikTok
+scheduling claim). Retention/traffic-source detail is still TikTok-Studio-only
+— Buffer's numbers are views/reach/engagement, not a full breakdown.
 
 **That matters more here than it looks.** These clips are built entirely
 around watching to the end, so **retention is the metric that decides whether
