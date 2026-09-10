@@ -47,7 +47,8 @@ quiz — is still inline and works offline.
 | Questions with no visual | 0 |
 | Study-guide tips with no picture | 0 (587 of 587) |
 | Posting automation | **LIVE** — Routine `trig_01EbCrGERvbkbgiWCeWGZAHG`, daily 18:30 UTC, tops the Buffer queue up from batch three · **needs `BUFFER_ACCESS_TOKEN` in the environment or every run stops at step 2** |
-| Buffer queue | **LIVE — batch two is scheduled**, 20:00 Kurdistan daily (helmet Aug 29, childseat Aug 30, glass Aug 31 confirmed by screenshot) |
+| Buffer queue | **10/10, Sep 11-20** (batch three, manually refilled 2026-09-10 after a 4-day silent gap — see gotchas). Batch two (Aug 28-Sep 6) published cleanly, all 10 |
+| Click signal | **5 real clicks / 10 published clips over 13 days** — very low, but the bio-link version is unconfirmed, see gotchas |
 | Clip hosting | **LIVE** — https://clips.tareeq.workers.dev · 10 clips, public, `video/mp4` · fed from `video/out/`, not git |
 | Short link | **LIVE** — https://t.tareeq.workers.dev → 302 → the app · 20 chars vs 36 |
 | TikTok funnel | bio link **fixed and verified 2026-08-27** · **no clickable bio link available** (checked app + desktop) so the URL must be typed · **postable now as plain text** |
@@ -2514,6 +2515,46 @@ a $12 domain is a cheap way to find out.
 ---
 
 ## Decisions & gotchas
+
+**The daily top-up Routine produced a 4-day posting gap, and it was never
+caught until someone checked.** Batch two published correctly, one a day,
+Aug 28 → Sep 6. Then **nothing posted at all, Sep 7-10** — checked directly
+against Buffer's API 2026-09-10, not inferred: `status: sent` showed a clean
+run to Sep 6 and `status: scheduled` showed **zero** queued posts. The Routine
+had been firing daily since Aug 28 (`trig_01EbCrGERvbkbgiWCeWGZAHG`, 18:30
+UTC) and its own `last_run.status` read `SUCCEEDED` — **that field is not
+proof of a useful outcome.** The Routine's prompt correctly stops cleanly and
+reports rather than crashing when `BUFFER_ACCESS_TOKEN` is absent, and CCR
+records that clean stop as a success. `BUFFER_ACCESS_TOKEN` was almost
+certainly not present in the environment for most or all of those 12 fires;
+exactly when it was added is not visible to this session either.
+**Manually topped up 10 clips (Sep 11-20) and test-fired the Routine once
+by hand** (`fire_trigger`) to check whether a *fresh* trigger session can now
+see the token. The queue was unchanged and un-duplicated after the test-fire
+— consistent with a correct "already full" no-op — and the fire consumed
+~50K tokens, in line with a full run rather than an early bail, so it likely
+works now. **Not proven**, though: no tool in this session can read a fired
+session's transcript to confirm what it actually printed, only whether the
+Buffer queue changed. **The real test is tomorrow's fire (Sep 11, 18:30
+UTC)** — check the queue or the push notification after it.
+**The general lesson: a scheduled Routine's own status field says the agent
+turn didn't crash, not that the task was accomplished.** Anything that must
+actually keep happening (a posting cadence, here) needs an independent,
+external check — reading the actual queue or the actual output — not trust
+in the Routine's self-reported status. Nothing paged anyone for 4 days
+because "cleanly detected missing precondition and stopped" and "silently
+did nothing useful" produce the identical signal from outside.
+
+**Real click data is in, and it is very low: 5 genuine clicks (7 total minus
+2 of my own test fetches) across 10 published clips over 13 days.** Read via
+`redirect/clicks.mjs` 2026-09-10. This could mean the hooks are not landing —
+or it could mean **the bio was never updated to the short link**, in which
+case `clicks.mjs` is measuring nothing, because it only counts hits to
+`t.tareeq.workers.dev` and the long URL's Worker is assets-only and
+uncounted. **Unconfirmed which. Ask the owner what the bio currently reads**
+before drawing any conclusion from this number — it is exactly the kind of
+silent measurement gap this file keeps finding after the fact.
+
 
 **Buffer's API cannot give you TikTok analytics, and neither can Buffer.**
 Checked 2026-08-27 against their own docs. On the API: *"We don't currently
