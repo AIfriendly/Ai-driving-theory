@@ -250,6 +250,19 @@ owner — most of all anything that assumes the TikTok app is on their phone.
         A variant carrying the unofficial disclaimer fits at 68/80
         (`٧٤٥ پرسیار · بەخۆڕایی · نافەرمی`), though the site states that
         itself and bio characters are the scarcer resource.
+      - **DEPLOYED and VERIFIED live, 2026-09-10.** Version `de1e4585`, all 20
+        batch-three clips redeployed to `clips.tareeq.workers.dev`. Confirmed
+        with a byte-for-byte `cmp` against the local render — not a stale
+        cache, the actual new file. The Cloudflare token needed for this was
+        harder to get right than expected: two Custom Token attempts from the
+        dashboard's mobile flow both produced broad, R2-bundled tokens that
+        could not write (`10000`/`9109` auth errors on deploy) despite
+        looking plausible. **The "Edit Cloudflare Workers" template — not
+        Custom Token — is the reliable path on mobile**: dash.cloudflare.com
+        → My Profile → API Tokens → Create Token → scroll to **API token
+        templates** → "Edit Cloudflare Workers" → Use template. Worked on the
+        first try. Prefer this template over Custom Token for this dashboard
+        on mobile going forward.
       - **CTA fixed 2026-09-10: the end card no longer says "link in bio".**
         Confirmed with the owner that day that the bio DOES read the short
         link correctly — so the low click number (see gotchas) was real
