@@ -49,11 +49,11 @@ quiz — is still inline and works offline.
 | Posting automation | **LIVE** — Routine `trig_01EbCrGERvbkbgiWCeWGZAHG`, daily 18:30 UTC, tops the Buffer queue up from batch three · **needs `BUFFER_ACCESS_TOKEN` in the environment or every run stops at step 2** |
 | Buffer queue | **10/10, Sep 11-20** (batch three, manually refilled 2026-09-10 after a 4-day silent gap — see gotchas). Batch two (Aug 28-Sep 6) published cleanly, all 10 |
 | Click signal | **5 real clicks / 10 published clips over 13 days** — very low, but the bio-link version is unconfirmed, see gotchas |
-| Clip hosting | **LIVE** — https://clips.tareeq.workers.dev · 10 clips, public, `video/mp4` · fed from `video/out/`, not git |
+| Clip hosting | **LIVE** — https://clips.tareeq.workers.dev · 67 clips, public, `video/mp4` · fed from `video/out/`, not git |
 | Short link | **LIVE** — https://t.tareeq.workers.dev → 302 → the app · 20 chars vs 36 |
 | TikTok funnel | bio link **fixed and verified 2026-08-27** · **no clickable bio link available** (checked app + desktop) so the URL must be typed · **postable now as plain text** |
 | Buffer → TikTok | **CONNECTED and SCHEDULED 2026-08-27** — channel `tareeqkrd` (`6a90a600ccaf649a672c404d`), org `6a900933fd3a21171e33de47` · all 10 of batch two queued daily 20:00 Kurdistan, 28 Aug → 6 Sep · `schedulingType: automatic`, so **Buffer publishes them itself — no phone app needed** |
-| Ad clips rendered | **77 of 80 voiced Kurdish** (batches 1-3: 40, all delivered; batch four: 37 of 40, 3 blocked on the free-tier reset — see *Next*) · batch one (15-24s) posted · batch two (18.9-26.4s, 1,378-1,865 kbps) at https://gofile.io/d/uYzz4Vyw · batch four bundle at https://gofile.io/d/90n26SqH, **not yet scheduled to Buffer** · earlier silent 8x2 batch at `292a68e` |
+| Ad clips rendered | **77 of 80 voiced Kurdish** (batches 1-3: 40, all delivered; batch four: 37 of 40, 3 blocked on the free-tier reset — see *Next*) · batch one (15-24s) posted · batch two (18.9-26.4s, 1,378-1,865 kbps) at https://gofile.io/d/uYzz4Vyw · batch four bundle at https://gofile.io/d/90n26SqH · **all 37 hosted at clips.tareeq.workers.dev, 1 scheduled (`minspeed-ku` → 2026-09-21), 36 waiting for Buffer queue slots to free up (10/10 full)** · earlier silent 8x2 batch at `292a68e` |
 
 Branch: `claude/trading-agent-bybit-mcp-ao56dp` — this is also the repo's
 **default branch**. There is no `main`/`master`.
@@ -1228,6 +1228,31 @@ the click signal recorded there (5 clicks/10 clips, very low) was still
 *not* the prescribed move for most outcomes of that read. This batch was
 written and voiced because the owner asked directly, not because the
 framework below called for it.
+
+**Update (2026-09-11): hosted and scheduling started.** Owner said "Yes
+want these scheduled." Cloudflare deploy credentials (user API token +
+account ID) were supplied directly in chat — never written to a file,
+never logged. `node clips/stage.mjs && npx wrangler deploy -c
+clips/wrangler.jsonc` republished `clips.tareeq.workers.dev` with all 67
+rendered clips including the 37 new batch-four ones (`41-minspeed-ku.mp4`
+through `77-overtakecyclist-ku.mp4`), confirmed reachable via HEAD
+(`content-type: video/mp4` on three spot-checked URLs).
+
+`node scripts/publish-to-buffer.mjs --top-up --ids <batch-four ids>` (run
+from `video/`, media-base `https://clips.tareeq.workers.dev`) found the
+queue at 9/10 (one slot had freed since the last check) and scheduled
+**`minspeed-ku` → 2026-09-21T17:00:00Z**. Queue is back to 10/10. The
+other 36 are hosted and ready but not queued — re-run the same command
+(add `--go`) whenever a slot frees; it matches on caption first line so
+it's safe to run repeatedly without double-queuing.
+
+**Open question, not yet decided:** the daily top-up Routine
+(`trig_01EbCrGERvbkbgiWCeWGZAHG`) has `--ids` hardcoded to batch three's
+20 ids only — it will never pick up batch four on its own. Either extend
+its `--ids` list to include the 37 batch-four ids (so it top-up-queues
+them automatically as slots free), or keep running `--top-up` manually
+for batch four. Decide with the owner before touching the Routine — it
+explicitly forbids scope changes without being told to.
 
 ### The end-of-September decision, agreed in advance (2026-08-28)
 
