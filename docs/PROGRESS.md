@@ -1246,13 +1246,22 @@ other 36 are hosted and ready but not queued — re-run the same command
 (add `--go`) whenever a slot frees; it matches on caption first line so
 it's safe to run repeatedly without double-queuing.
 
-**Open question, not yet decided:** the daily top-up Routine
-(`trig_01EbCrGERvbkbgiWCeWGZAHG`) has `--ids` hardcoded to batch three's
-20 ids only — it will never pick up batch four on its own. Either extend
-its `--ids` list to include the 37 batch-four ids (so it top-up-queues
-them automatically as slots free), or keep running `--top-up` manually
-for batch four. Decide with the owner before touching the Routine — it
-explicitly forbids scope changes without being told to.
+**Resolved (2026-09-11).** Owner confirmed both changes:
+
+1. The daily top-up Routine (`trig_01EbCrGERvbkbgiWCeWGZAHG`) now carries
+   all 57 hosted ids (batch three's 20 + batch four's 37; the 3 unvoiced
+   batch-four ids stay out until they're rendered).
+2. Owner asked for a cadence change too: *"refill after all 10 videos
+   are published, not one by one."* Added a `--full-refill` flag to
+   `publish-to-buffer.mjs` — with `--top-up --full-refill`, the script
+   only queues when the channel's scheduled count is fully back to 0
+   (i.e. every prior post has published), then loads a fresh 10 in one
+   run, 24h apart. On every other day it's a clean no-op ("nothing to
+   do — queue not empty yet"). Without `--full-refill`, `--top-up` keeps
+   its old one-slot-a-day behavior — the flag is additive, nothing else
+   changed. The Routine's prompt was updated to pass `--full-refill`.
+   Verified with a dry-run against the live queue (10/10 full at the
+   time) that it correctly no-ops instead of trying to top up 0 slots.
 
 ### The end-of-September decision, agreed in advance (2026-08-28)
 

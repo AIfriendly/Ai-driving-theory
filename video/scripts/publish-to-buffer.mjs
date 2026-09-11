@@ -99,6 +99,12 @@ if (argv[0] === "channels") {
    ever queued twice. */
 const ORG = flag("org");
 const TOP_UP = argv.includes("--top-up");
+/* --full-refill changes --top-up from "fill whatever is free" (one post a
+   day, as each prior post publishes) to "wait until every scheduled slot
+   has published, then load a fresh batch of LIMIT in one run." Same daily
+   cron can drive either — this just gates it on free === LIMIT instead of
+   free > 0. */
+const FULL_REFILL = argv.includes("--full-refill");
 const LIMIT = Number(flag("limit", "10"));
 
 const listQueued = async () => {
@@ -121,7 +127,7 @@ const mediaBase = flag("media-base");
 if (!channelId || !mediaBase) {
   console.error("usage: --channel <id> --media-base <public-url-prefix> [--ids a,b] " +
                 "[--start <ISO8601>] [--every <hours>] [--no-ai-disclosure]\n" +
-                "       [--top-up [--limit N]] [--org <id>] [--skip-media-check] [--go]\n" +
+                "       [--top-up [--full-refill] [--limit N]] [--org <id>] [--skip-media-check] [--go]\n" +
                 "       (run `channels` first to find the id)");
   process.exit(2);
 }
@@ -159,6 +165,13 @@ if (TOP_UP) {
 
   console.log(`queue: ${queued.length}/${LIMIT} used, ${free} free` +
     (lastDue ? `, last scheduled ${lastDue}` : ""));
+
+  if (FULL_REFILL && free < LIMIT) {
+    console.log(`\nnothing to do — --full-refill waits for the queue to empty completely ` +
+      `(${queued.length} still scheduled). Run again once they have all published.`);
+    process.exit(0);
+  }
+
   const pending = posts.filter((p) => !queuedLines.has(firstLine(p.caption)));
   console.log(`${posts.length - pending.length} of the requested clips are already queued`);
 
