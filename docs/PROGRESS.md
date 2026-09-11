@@ -53,7 +53,7 @@ quiz — is still inline and works offline.
 | Short link | **LIVE** — https://t.tareeq.workers.dev → 302 → the app · 20 chars vs 36 |
 | TikTok funnel | bio link **fixed and verified 2026-08-27** · **no clickable bio link available** (checked app + desktop) so the URL must be typed · **postable now as plain text** |
 | Buffer → TikTok | **CONNECTED and SCHEDULED 2026-08-27** — channel `tareeqkrd` (`6a90a600ccaf649a672c404d`), org `6a900933fd3a21171e33de47` · all 10 of batch two queued daily 20:00 Kurdistan, 28 Aug → 6 Sep · `schedulingType: automatic`, so **Buffer publishes them itself — no phone app needed** |
-| Ad clips rendered | **40 voiced Kurdish** (30 rendered + hosted; batch one written but not re-rendered here), all delivered · batch one (15-24s) posted · batch two (18.9-26.4s, 1,378-1,865 kbps) at https://gofile.io/d/uYzz4Vyw · earlier silent 8x2 batch at `292a68e` |
+| Ad clips rendered | **77 of 80 voiced Kurdish** (batches 1-3: 40, all delivered; batch four: 37 of 40, 3 blocked on the free-tier reset — see *Next*) · batch one (15-24s) posted · batch two (18.9-26.4s, 1,378-1,865 kbps) at https://gofile.io/d/uYzz4Vyw · batch four bundle at https://gofile.io/d/90n26SqH, **not yet scheduled to Buffer** · earlier silent 8x2 batch at `292a68e` |
 
 Branch: `claude/trading-agent-bybit-mcp-ao56dp` — this is also the repo's
 **default branch**. There is no `main`/`master`.
@@ -1200,9 +1200,27 @@ attempting clips that still won't fit in 54 characters.
 The other 37 are voiced (`src/audio-manifest.json` updated — durations
 measured from the actual `.wav` files, not re-fetched, after the crashed
 run left the manifest write unreached) and rendered to `video/out/`.
-**Not yet bundled, uploaded, or scheduled to Buffer** — that's the next
-step once the render is confirmed and reviewed like every prior batch's
-safe-zone check.
+
+**Safe-zone check caught one real overflow.** `escapelane-ku` sat 104px
+into TikTok's top UI zone on both checked frames — its question and
+longest option pushed the fitted-font column too tall. Fixed by shortening
+the on-screen `q`/`o` text only (not `sayA`/`sayB`, so the already-generated
+audio stayed valid — no quota spent re-fixing it). All 37 now pass
+`node scripts/check-safe-zones.mjs` clean.
+
+**Handoff bundled and uploaded**, scoped to just these 37 (not batches
+one-three, which are already posted/queued — mixing them into one handoff
+would have invited a duplicate post): `POSTING.md` grew 37 new blocks
+(#41-77, same caption/tags/description format, 5-hashtag rule kept), and
+the 37 clips + captions are at **https://gofile.io/d/90n26SqH** — expires
+if unclaimed, this is a handoff link not storage.
+
+**Not scheduled to Buffer.** The free-tier queue is already reported full
+(10/10, Sep 11-20, see *Current state* above) — running `npm run schedule`
+now would hit "Scheduled posts limit reached" on every post. `--top-up`
+matches on the caption's first line so it is safe to run once queue slots
+free up, but that is a live-account action and needs the owner's go-ahead,
+not something to run unprompted.
 
 **Before scheduling these, re-read the end-of-September decision below** —
 the click signal recorded there (5 clicks/10 clips, very low) was still

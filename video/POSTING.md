@@ -1,4 +1,4 @@
-# Posting metadata — 40 voiced clips
+# Posting metadata — 77 voiced clips (batch four: 37 of 40, see docs/PROGRESS.md)
 
 Copy one block per video. Kurdish caption first: caption language is a real
 distribution signal, not decoration.
@@ -1100,3 +1100,1003 @@ ABS دەتوانێت دواتر ڕاتبگرێت 🤔
 *(EN, if posting the English cut: Five minutes every hour — How often should you take a break on a long drive?)*
 
 ---
+
+## 41. `minspeed-ku.mp4`
+
+**Title / caption (Kurdish)**
+```
+شین واتای کەمترینە، نەک زۆرترین 🤔
+
+ئەم بازنە شینە خێراییەک پیشان دەدات. چی دەگەیەنێت؟
+
+وەڵامەکە لە ڤیدیۆکەدا 👇
+```
+
+**Tags**
+```
+#کەمترین_خێرایی #هێما #مۆڵەتی_شۆفێری #تیۆری #کوردستان
+```
+
+**Description / bio link**
+```
+ئەم بازنە شینە خێراییەک پیشان دەدات. چی دەگەیەنێت؟
+٧٤٥ پرسیاری تیۆری بەخۆڕایی: https://ai-driving-theory.tareeq.workers.dev/
+نافەرمی — بۆ ڕاهێنان تەنها.
+```
+
+*(EN, if posting the English cut: Blue means minimum, not maximum — This blue circle shows a speed. What does it mean?)*
+
+---
+
+## 42. `parkinghours-ku.mp4`
+
+**Title / caption (Kurdish)**
+```
+پێش پارککردن کاتەکان بخوێنەوە 🤔
+
+هێمای 'P'ی شینی پارکینگ لە کاتژمێر ٩ی بەیانییەوە تا ٦ی ئێوارە پارککردن ڕێگەپێدەدات. ئێستا کاتژمێر ١٢ی نیوەڕۆیە. ئایا پارککردن ڕێگەپێدراوە؟
+
+وەڵامەکە لە ڤیدیۆکەدا 👇
+```
+
+**Tags**
+```
+#پارککردن #کات #مۆڵەتی_شۆفێری #تیۆری #کوردستان
+```
+
+**Description / bio link**
+```
+هێمای 'P'ی شینی پارکینگ لە کاتژمێر ٩ی بەیانییەوە تا ٦ی ئێوارە پارککردن ڕێگەپێدەدات. ئێستا کاتژمێر ١٢ی نیوەڕۆیە. ئایا پارککردن ڕێگەپێدراوە؟
+٧٤٥ پرسیاری تیۆری بەخۆڕایی: https://ai-driving-theory.tareeq.workers.dev/
+نافەرمی — بۆ ڕاهێنان تەنها.
+```
+
+*(EN, if posting the English cut: Read the hours before you park — A blue 'P' parking sign permits parking from 09:00 to 18:00. It is now 12:00 (noon). Is parking allowed?)*
+
+---
+
+## 43. `policeoverride-ku.mp4`
+
+**Title / caption (Kurdish)**
+```
+پۆلیس لە چرا پێشترە 🤔
+
+پۆلیسێکی هاتوچۆ ئاماژەت پێدەدات بڕۆیت، بەڵام چراکە سوورە. چی دەکەیت؟
+
+وەڵامەکە لە ڤیدیۆکەدا 👇
+```
+
+**Tags**
+```
+#پۆلیسی_هاتوچۆ #ئاماژە #مۆڵەتی_شۆفێری #تیۆری #کوردستان
+```
+
+**Description / bio link**
+```
+پۆلیسێکی هاتوچۆ ئاماژەت پێدەدات بڕۆیت، بەڵام چراکە سوورە. چی دەکەیت؟
+٧٤٥ پرسیاری تیۆری بەخۆڕایی: https://ai-driving-theory.tareeq.workers.dev/
+نافەرمی — بۆ ڕاهێنان تەنها.
+```
+
+*(EN, if posting the English cut: The policeman beats the light — A traffic policeman signals you to go, but the light is red. What do you do?)*
+
+---
+
+## 44. `speedcamera-ku.mp4`
+
+**Title / caption (Kurdish)**
+```
+نیشانەی قەدەغەی وێنەگرتن نییە 🤔
+
+ئەم هێمایە چی دەگەیەنێت؟
+
+وەڵامەکە لە ڤیدیۆکەدا 👇
+```
+
+**Tags**
+```
+#کامێرا #خێرایی #مۆڵەتی_شۆفێری #تیۆری #کوردستان
+```
+
+**Description / bio link**
+```
+ئەم هێمایە چی دەگەیەنێت؟
+٧٤٥ پرسیاری تیۆری بەخۆڕایی: https://ai-driving-theory.tareeq.workers.dev/
+نافەرمی — بۆ ڕاهێنان تەنها.
+```
+
+*(EN, if posting the English cut: Not a no-photos sign — What does this sign mean?)*
+
+---
+
+## 45. `nostopping-ku.mp4`
+
+**Title / caption (Kurdish)**
+```
+هیچ ڕاوەستانێک نییە بە تەواوی 🤔
+
+ئەم هێمایە چی لێت دەوێت بکەیت؟
+
+وەڵامەکە لە ڤیدیۆکەدا 👇
+```
+
+**Tags**
+```
+#ڕاوەستان #هێما #مۆڵەتی_شۆفێری #تیۆری #کوردستان
+```
+
+**Description / bio link**
+```
+ئەم هێمایە چی لێت دەوێت بکەیت؟
+٧٤٥ پرسیاری تیۆری بەخۆڕایی: https://ai-driving-theory.tareeq.workers.dev/
+نافەرمی — بۆ ڕاهێنان تەنها.
+```
+
+*(EN, if posting the English cut: No stopping means none at all — What does this road sign tell you to do?)*
+
+---
+
+## 46. `heightlimit-ku.mp4`
+
+**Title / caption (Kurdish)**
+```
+بەرزی ئۆتۆمبیلەکەت بزانە 🤔
+
+ئەم هێمای ئاگادارکردنەوەیە چی پیشان دەدات؟
+
+وەڵامەکە لە ڤیدیۆکەدا 👇
+```
+
+**Tags**
+```
+#بەرزی #پرد #مۆڵەتی_شۆفێری #تیۆری #کوردستان
+```
+
+**Description / bio link**
+```
+ئەم هێمای ئاگادارکردنەوەیە چی پیشان دەدات؟
+٧٤٥ پرسیاری تیۆری بەخۆڕایی: https://ai-driving-theory.tareeq.workers.dev/
+نافەرمی — بۆ ڕاهێنان تەنها.
+```
+
+*(EN, if posting the English cut: Know your vehicle's height — What does this warning sign show?)*
+
+---
+
+## 47. `aircraft-ku.mp4`
+
+**Title / caption (Kurdish)**
+```
+ئاگاداری هێڵی شەمەندەفەر نییە 🤔
+
+ئەم هێمایە سێگۆشەییە دەربارەی چییە؟
+
+وەڵامەکە لە ڤیدیۆکەدا 👇
+```
+
+**Tags**
+```
+#فڕۆکە #ئاگاداری #مۆڵەتی_شۆفێری #تیۆری #کوردستان
+```
+
+**Description / bio link**
+```
+ئەم هێمایە سێگۆشەییە دەربارەی چییە؟
+٧٤٥ پرسیاری تیۆری بەخۆڕایی: https://ai-driving-theory.tareeq.workers.dev/
+نافەرمی — بۆ ڕاهێنان تەنها.
+```
+
+*(EN, if posting the English cut: Not a railway warning — What is this triangular warning sign about?)*
+
+---
+
+## 48. `slowvehicle-ku.mp4`
+
+**Title / caption (Kurdish)**
+```
+سێگۆشەیەک واتای هێواشە، نەک مەترسیدار 🤔
+
+سوارڕۆیەک سێگۆشەیەکی سووری تیشکدەرەوەی لە دواوەیە. چیت پێدەڵێت؟
+
+وەڵامەکە لە ڤیدیۆکەدا 👇
+```
+
+**Tags**
+```
+#سێگۆشە #هێواش #مۆڵەتی_شۆفێری #تیۆری #کوردستان
+```
+
+**Description / bio link**
+```
+سوارڕۆیەک سێگۆشەیەکی سووری تیشکدەرەوەی لە دواوەیە. چیت پێدەڵێت؟
+٧٤٥ پرسیاری تیۆری بەخۆڕایی: https://ai-driving-theory.tareeq.workers.dev/
+نافەرمی — بۆ ڕاهێنان تەنها.
+```
+
+*(EN, if posting the English cut: A triangle that means slow, not dangerous — A vehicle carries a red reflective triangle on the back. What does it tell you?)*
+
+---
+
+## 49. `lorrygap-ku.mp4`
+
+**Title / caption (Kurdish)**
+```
+٧٠ مەتر بۆشاییە، نەک درێژی 🤔
+
+هێمایەکی بازنە سوور دوو بارهەڵگر و «٧٠ م» پیشان دەدات. داوای چی دەکات؟
+
+وەڵامەکە لە ڤیدیۆکەدا 👇
+```
+
+**Tags**
+```
+#بارهەڵگر #بۆشایی #مۆڵەتی_شۆفێری #تیۆری #کوردستان
+```
+
+**Description / bio link**
+```
+هێمایەکی بازنە سوور دوو بارهەڵگر و «٧٠ م» پیشان دەدات. داوای چی دەکات؟
+٧٤٥ پرسیاری تیۆری بەخۆڕایی: https://ai-driving-theory.tareeq.workers.dev/
+نافەرمی — بۆ ڕاهێنان تەنها.
+```
+
+*(EN, if posting the English cut: 70 metres is a gap, not a length — A red-ringed sign shows two lorries and 70 m. What does it require?)*
+
+---
+
+## 50. `stepsigns-ku.mp4`
+
+**Title / caption (Kurdish)**
+```
+سەرکەوتن یان دابەزین هەموو شتێک دەگۆڕێت 🤔
+
+هێمایەکی شین کەسێک پیشان دەدات کە بە پلەکاندا سەردەکەوێت، ئەوی تر کەسێک کە دادەبەزێت. جیاوازییەکە چییە؟
+
+وەڵامەکە لە ڤیدیۆکەدا 👇
+```
+
+**Tags**
+```
+#پردی_پەڕینەوە #ژێرزەمین #مۆڵەتی_شۆفێری #تیۆری #کوردستان
+```
+
+**Description / bio link**
+```
+هێمایەکی شین کەسێک پیشان دەدات کە بە پلەکاندا سەردەکەوێت، ئەوی تر کەسێک کە دادەبەزێت. جیاوازییەکە چییە؟
+٧٤٥ پرسیاری تیۆری بەخۆڕایی: https://ai-driving-theory.tareeq.workers.dev/
+نافەرمی — بۆ ڕاهێنان تەنها.
+```
+
+*(EN, if posting the English cut: Up or down changes everything — One blue sign shows a person walking UP steps, another shows a person walking DOWN steps. What is the difference?)*
+
+---
+
+## 51. `stripedbarrier-ku.mp4`
+
+**Title / caption (Kurdish)**
+```
+خەتەکان ڕێگای تێپەڕین پیشان دەدەن 🤔
+
+ڕێگایەک بە تەختەیەکی بەربەستی خەتدار داخراوە. چۆن دەزانیت بە کام لادا تێبپەڕیت؟
+
+وەڵامەکە لە ڤیدیۆکەدا 👇
+```
+
+**Tags**
+```
+#بەربەست #خەت #مۆڵەتی_شۆفێری #تیۆری #کوردستان
+```
+
+**Description / bio link**
+```
+ڕێگایەک بە تەختەیەکی بەربەستی خەتدار داخراوە. چۆن دەزانیت بە کام لادا تێبپەڕیت؟
+٧٤٥ پرسیاری تیۆری بەخۆڕایی: https://ai-driving-theory.tareeq.workers.dev/
+نافەرمی — بۆ ڕاهێنان تەنها.
+```
+
+*(EN, if posting the English cut: The stripes point the way through — A road is blocked by a striped barrier board. How do you know which way to pass?)*
+
+---
+
+## 52. `cyclecolor-ku.mp4`
+
+**Title / caption (Kurdish)**
+```
+هەمان پاسکیل، پێچەوانەی واتا 🤔
+
+بازنەیەکی شین بە پاسکیلەوە. چ جیاوازییەکی هەیە لەگەڵ پاسکیلێک لەناو بازنەی سوور؟
+
+وەڵامەکە لە ڤیدیۆکەدا 👇
+```
+
+**Tags**
+```
+#پاسکیل #بازنە #مۆڵەتی_شۆفێری #تیۆری #کوردستان
+```
+
+**Description / bio link**
+```
+بازنەیەکی شین بە پاسکیلەوە. چ جیاوازییەکی هەیە لەگەڵ پاسکیلێک لەناو بازنەی سوور؟
+٧٤٥ پرسیاری تیۆری بەخۆڕایی: https://ai-driving-theory.tareeq.workers.dev/
+نافەرمی — بۆ ڕاهێنان تەنها.
+```
+
+*(EN, if posting the English cut: Same bicycle, opposite meaning — A BLUE circle with a bicycle. How does it differ from a bicycle in a RED ring?)*
+
+---
+
+## 53. `escapelane-ku.mp4`
+
+**Title / caption (Kurdish)**
+```
+خشڵێک کە ژیان ڕزگار دەکات، نەک شوێنی حەوانەوە 🤔
+
+تابلۆیەکی شین بارهەڵگرێک پیشان دەدات کە بە هەورازێکی کورتدا سەردەکەوێت. ئەوە چییە؟
+
+وەڵامەکە لە ڤیدیۆکەدا 👇
+```
+
+**Tags**
+```
+#قەڵایان #خشڵ #مۆڵەتی_شۆفێری #تیۆری #کوردستان
+```
+
+**Description / bio link**
+```
+تابلۆیەکی شین بارهەڵگرێک پیشان دەدات کە بە هەورازێکی کورتدا سەردەکەوێت. ئەوە چییە؟
+٧٤٥ پرسیاری تیۆری بەخۆڕایی: https://ai-driving-theory.tareeq.workers.dev/
+نافەرمی — بۆ ڕاهێنان تەنها.
+```
+
+*(EN, if posting the English cut: Gravel that saves lives, not a rest stop — A blue sign shows a lorry climbing a short ramp. What is it?)*
+
+---
+
+## 54. `givewaystop-ku.mp4`
+
+**Title / caption (Kurdish)**
+```
+بەردەوامبوون هەمیشە ڕێگەپێدراو نییە 🤔
+
+جیاوازی نێوان هێمای ڕێگە بدە و هێمای STOP چییە؟
+
+وەڵامەکە لە ڤیدیۆکەدا 👇
+```
+
+**Tags**
+```
+#ڕێگە_بدە #ستۆپ #مۆڵەتی_شۆفێری #تیۆری #کوردستان
+```
+
+**Description / bio link**
+```
+جیاوازی نێوان هێمای ڕێگە بدە و هێمای STOP چییە؟
+٧٤٥ پرسیاری تیۆری بەخۆڕایی: https://ai-driving-theory.tareeq.workers.dev/
+نافەرمی — بۆ ڕاهێنان تەنها.
+```
+
+*(EN, if posting the English cut: Rolling through is not always allowed — What is the difference between a GIVE WAY sign and a STOP sign?)*
+
+---
+
+## 55. `snakebite-ku.mp4`
+
+**Title / caption (Kurdish)**
+```
+بڕین و هەڵمژین خراپتری دەکات 🤔
+
+کەسێک مار پێیدا داوە یان دووپشک پێیوەداوە. چی نابێت بکەیت؟
+
+وەڵامەکە لە ڤیدیۆکەدا 👇
+```
+
+**Tags**
+```
+#مار #دووپشک #مۆڵەتی_شۆفێری #تیۆری #کوردستان
+```
+
+**Description / bio link**
+```
+کەسێک مار پێیدا داوە یان دووپشک پێیوەداوە. چی نابێت بکەیت؟
+٧٤٥ پرسیاری تیۆری بەخۆڕایی: https://ai-driving-theory.tareeq.workers.dev/
+نافەرمی — بۆ ڕاهێنان تەنها.
+```
+
+*(EN, if posting the English cut: Cutting and sucking make it worse — Someone is bitten by a snake or stung by a scorpion. What must you NOT do?)*
+
+---
+
+## 56. `injuredeye-ku.mp4`
+
+**Title / caption (Kurdish)**
+```
+هەرگیز چاوی بریندار مەشۆ 🤔
+
+برینداریک چاوی بریندار بووە. چی نابێت بکەیت؟
+
+وەڵامەکە لە ڤیدیۆکەدا 👇
+```
+
+**Tags**
+```
+#چاو #فریاگوزاری #مۆڵەتی_شۆفێری #تیۆری #کوردستان
+```
+
+**Description / bio link**
+```
+برینداریک چاوی بریندار بووە. چی نابێت بکەیت؟
+٧٤٥ پرسیاری تیۆری بەخۆڕایی: https://ai-driving-theory.tareeq.workers.dev/
+نافەرمی — بۆ ڕاهێنان تەنها.
+```
+
+*(EN, if posting the English cut: Never wash an injured eye — A casualty has an injured eye. What must you not do?)*
+
+---
+
+## 57. `crowdcontrol-ku.mp4`
+
+**Title / caption (Kurdish)**
+```
+خەڵکی زیاتر یارمەتی زیاتر نییە 🤔
+
+خەڵکێک لە دەوری کەسێکی بریندار کۆدەبنەوە. چی دەکەیت؟
+
+وەڵامەکە لە ڤیدیۆکەدا 👇
+```
+
+**Tags**
+```
+#خەڵک #بریندار #مۆڵەتی_شۆفێری #تیۆری #کوردستان
+```
+
+**Description / bio link**
+```
+خەڵکێک لە دەوری کەسێکی بریندار کۆدەبنەوە. چی دەکەیت؟
+٧٤٥ پرسیاری تیۆری بەخۆڕایی: https://ai-driving-theory.tareeq.workers.dev/
+نافەرمی — بۆ ڕاهێنان تەنها.
+```
+
+*(EN, if posting the English cut: More people is not more help — A crowd is gathering around an injured person. What should you do?)*
+
+---
+
+## 58. `internalbleed-ku.mp4`
+
+**Title / caption (Kurdish)**
+```
+خوێن لە گوێوە هەرگیز هیچی نییە 🤔
+
+دوای ڕوودانێک خوێن لە گوێ یان دەمی برینداریکەوە دێت. ئەمە چی دەگەیەنێت؟
+
+وەڵامەکە لە ڤیدیۆکەدا 👇
+```
+
+**Tags**
+```
+#خوێنبەربوون #برینداری_ناوەکی #مۆڵەتی_شۆفێری #تیۆری #کوردستان
+```
+
+**Description / bio link**
+```
+دوای ڕوودانێک خوێن لە گوێ یان دەمی برینداریکەوە دێت. ئەمە چی دەگەیەنێت؟
+٧٤٥ پرسیاری تیۆری بەخۆڕایی: https://ai-driving-theory.tareeq.workers.dev/
+نافەرمی — بۆ ڕاهێنان تەنها.
+```
+
+*(EN, if posting the English cut: Blood from an ear is never nothing — Blood is coming from a casualty's ear or mouth after a crash. What does that suggest?)*
+
+---
+
+## 59. `firstaidaim-ku.mp4`
+
+**Title / caption (Kurdish)**
+```
+فریاگوزاری واتای چارەسەرکردن نییە 🤔
+
+ئامانجی دیاریکراوی فریاگوزاری سەرەتایی چییە؟
+
+وەڵامەکە لە ڤیدیۆکەدا 👇
+```
+
+**Tags**
+```
+#یارمەتیی_یەکەم #ئامانج #مۆڵەتی_شۆفێری #تیۆری #کوردستان
+```
+
+**Description / bio link**
+```
+ئامانجی دیاریکراوی فریاگوزاری سەرەتایی چییە؟
+٧٤٥ پرسیاری تیۆری بەخۆڕایی: https://ai-driving-theory.tareeq.workers.dev/
+نافەرمی — بۆ ڕاهێنان تەنها.
+```
+
+*(EN, if posting the English cut: First aid does not mean treat — What is the stated aim of first aid?)*
+
+---
+
+## 60. `stayatscene-ku.mp4`
+
+**Title / caption (Kurdish)**
+```
+چوون بەهەر شێوەیەک تاوانە 🤔
+
+تووشی ڕووداوێک بوویت. بۆچی دەبێت لە شوێنەکە بمێنیتەوە؟
+
+وەڵامەکە لە ڤیدیۆکەدا 👇
+```
+
+**Tags**
+```
+#شوێنی_ڕووداو #بەجێهێشتن #مۆڵەتی_شۆفێری #تیۆری #کوردستان
+```
+
+**Description / bio link**
+```
+تووشی ڕووداوێک بوویت. بۆچی دەبێت لە شوێنەکە بمێنیتەوە؟
+٧٤٥ پرسیاری تیۆری بەخۆڕایی: https://ai-driving-theory.tareeq.workers.dev/
+نافەرمی — بۆ ڕاهێنان تەنها.
+```
+
+*(EN, if posting the English cut: Leaving costs you either way — You have been in a crash. Why must you stay at the scene?)*
+
+---
+
+## 61. `arterialbleed-ku.mp4`
+
+**Title / caption (Kurdish)**
+```
+خوێنی فیشقەیی جۆرە مەترسیدارەکەیە 🤔
+
+خوێنی سووری گەش بە فیشقە لە برینێکەوە دێتە دەرەوە. ئەمە چیت پێدەڵێت؟
+
+وەڵامەکە لە ڤیدیۆکەدا 👇
+```
+
+**Tags**
+```
+#خوێنبەربوون #لوولەخوێنبەر #مۆڵەتی_شۆفێری #تیۆری #کوردستان
+```
+
+**Description / bio link**
+```
+خوێنی سووری گەش بە فیشقە لە برینێکەوە دێتە دەرەوە. ئەمە چیت پێدەڵێت؟
+٧٤٥ پرسیاری تیۆری بەخۆڕایی: https://ai-driving-theory.tareeq.workers.dev/
+نافەرمی — بۆ ڕاهێنان تەنها.
+```
+
+*(EN, if posting the English cut: Spurting blood is the dangerous kind — Bright red blood is spurting from a wound. What does that tell you?)*
+
+---
+
+## 62. `callemergency-ku.mp4`
+
+**Title / caption (Kurdish)**
+```
+پێش هەموو شتێک بڵێ کێی و لەکوێی 🤔
+
+لە شوێنی ڕوودانێکەوە پەیوەندی بە فریاکەوتنەوە دەکەیت. سەرەتا چی دەڵێیت؟
+
+وەڵامەکە لە ڤیدیۆکەدا 👇
+```
+
+**Tags**
+```
+#١٢٢ #فریاکەوتن #مۆڵەتی_شۆفێری #تیۆری #کوردستان
+```
+
+**Description / bio link**
+```
+لە شوێنی ڕوودانێکەوە پەیوەندی بە فریاکەوتنەوە دەکەیت. سەرەتا چی دەڵێیت؟
+٧٤٥ پرسیاری تیۆری بەخۆڕایی: https://ai-driving-theory.tareeq.workers.dev/
+نافەرمی — بۆ ڕاهێنان تەنها.
+```
+
+*(EN, if posting the English cut: Say who and where before what — You are calling the emergency services from a crash. What should you say first?)*
+
+---
+
+## 63. `acidburn-ku.mp4`
+
+**Title / caption (Kurdish)**
+```
+سەرەتا ئاو، دواتر نەخۆشخانە 🤔
+
+تروشی باتری چۆتە سەر پێستی کەسێک. یەکەم شت چییە؟
+
+وەڵامەکە لە ڤیدیۆکەدا 👇
+```
+
+**Tags**
+```
+#تروش #باتری #مۆڵەتی_شۆفێری #تیۆری #کوردستان
+```
+
+**Description / bio link**
+```
+تروشی باتری چۆتە سەر پێستی کەسێک. یەکەم شت چییە؟
+٧٤٥ پرسیاری تیۆری بەخۆڕایی: https://ai-driving-theory.tareeq.workers.dev/
+نافەرمی — بۆ ڕاهێنان تەنها.
+```
+
+*(EN, if posting the English cut: Water first, hospital second — Battery acid has splashed onto someone's skin. What comes first?)*
+
+---
+
+## 64. `electricburn-ku.mp4`
+
+**Title / caption (Kurdish)**
+```
+دەستلێدانیان دەتوانێت تۆش بکاتە قوربانی 🤔
+
+کەسێک بەهۆی کێشەیەکی کارەباوە سووتاوە. چی لە پێشەوەیە؟
+
+وەڵامەکە لە ڤیدیۆکەدا 👇
+```
+
+**Tags**
+```
+#کارەبا #سووتان #مۆڵەتی_شۆفێری #تیۆری #کوردستان
+```
+
+**Description / bio link**
+```
+کەسێک بەهۆی کێشەیەکی کارەباوە سووتاوە. چی لە پێشەوەیە؟
+٧٤٥ پرسیاری تیۆری بەخۆڕایی: https://ai-driving-theory.tareeq.workers.dev/
+نافەرمی — بۆ ڕاهێنان تەنها.
+```
+
+*(EN, if posting the English cut: Touching them can make you the next casualty — Someone has been burned by an electrical fault. What comes first?)*
+
+---
+
+## 65. `boiledengine-ku.mp4`
+
+**Title / caption (Kurdish)**
+```
+هەرگیز ڕادیەتەری کوڵاو مەکەرەوە 🤔
+
+بزوێنەر کوڵاوە. چی نابێت بکەیت؟
+
+وەڵامەکە لە ڤیدیۆکەدا 👇
+```
+
+**Tags**
+```
+#ڕادیەتەر #کوڵان #مۆڵەتی_شۆفێری #تیۆری #کوردستان
+```
+
+**Description / bio link**
+```
+بزوێنەر کوڵاوە. چی نابێت بکەیت؟
+٧٤٥ پرسیاری تیۆری بەخۆڕایی: https://ai-driving-theory.tareeq.workers.dev/
+نافەرمی — بۆ ڕاهێنان تەنها.
+```
+
+*(EN, if posting the English cut: Never open a boiling radiator — The engine has boiled over. What must you NOT do?)*
+
+---
+
+## 66. `jumpstart-ku.mp4`
+
+**Title / caption (Kurdish)**
+```
+دوایین کێلبە هەرگیز باتری بەرناکەوێت 🤔
+
+خەریکی دانەگیرساندنی ئۆتۆمبیلێکیت. دوایین کێلبەی ڕەش لە کوێ دەبەستێت؟
+
+وەڵامەکە لە ڤیدیۆکەدا 👇
+```
+
+**Tags**
+```
+#باتری #دانەگیرساندن #مۆڵەتی_شۆفێری #تیۆری #کوردستان
+```
+
+**Description / bio link**
+```
+خەریکی دانەگیرساندنی ئۆتۆمبیلێکیت. دوایین کێلبەی ڕەش لە کوێ دەبەستێت؟
+٧٤٥ پرسیاری تیۆری بەخۆڕایی: https://ai-driving-theory.tareeq.workers.dev/
+نافەرمی — بۆ ڕاهێنان تەنها.
+```
+
+*(EN, if posting the English cut: The last clamp never touches the battery — You are jump-starting a car. Where does the last (black) clamp go?)*
+
+---
+
+## 67. `wheelnuts-ku.mp4`
+
+**Title / caption (Kurdish)**
+```
+پێش بەرزکردنەوە بولۆنەکان شل بکە 🤔
+
+لە کاتی گۆڕینی ویلدا، کەی دەبێت بورغووەکان شل بکەیت؟
+
+وەڵامەکە لە ڤیدیۆکەدا 👇
+```
+
+**Tags**
+```
+#ویل #بورغوو #مۆڵەتی_شۆفێری #تیۆری #کوردستان
+```
+
+**Description / bio link**
+```
+لە کاتی گۆڕینی ویلدا، کەی دەبێت بورغووەکان شل بکەیت؟
+٧٤٥ پرسیاری تیۆری بەخۆڕایی: https://ai-driving-theory.tareeq.workers.dev/
+نافەرمی — بۆ ڕاهێنان تەنها.
+```
+
+*(EN, if posting the English cut: Loosen the nuts before you jack it up — When changing a wheel, when should you loosen the wheel nuts?)*
+
+---
+
+## 68. `sparetyre-ku.mp4`
+
+**Title / caption (Kurdish)**
+```
+تایەی یەدەگی لووسیش نایاسایییە 🤔
+
+دەردەکەوێت تایەی یەدەگەکەت لووس بووە. ئایا دەتوانیت دایبنێیت و بڕۆیت؟
+
+وەڵامەکە لە ڤیدیۆکەدا 👇
+```
+
+**Tags**
+```
+#تایەی_یەدەگ #لووس #مۆڵەتی_شۆفێری #تیۆری #کوردستان
+```
+
+**Description / bio link**
+```
+دەردەکەوێت تایەی یەدەگەکەت لووس بووە. ئایا دەتوانیت دایبنێیت و بڕۆیت؟
+٧٤٥ پرسیاری تیۆری بەخۆڕایی: https://ai-driving-theory.tareeq.workers.dev/
+نافەرمی — بۆ ڕاهێنان تەنها.
+```
+
+*(EN, if posting the English cut: A smooth spare is still illegal — Your spare tyre turns out to be worn smooth. May you fit it and drive on?)*
+
+---
+
+## 69. `blowout-ku.mp4`
+
+**Title / caption (Kurdish)**
+```
+لە کاتی تەقینی پێشەوە برێک تووند مەگرە 🤔
+
+تایەی پێشەوەت بە خێرایی دەتەقێتەوە. چی دەکەیت؟
+
+وەڵامەکە لە ڤیدیۆکەدا 👇
+```
+
+**Tags**
+```
+#تایە #تەقین #مۆڵەتی_شۆفێری #تیۆری #کوردستان
+```
+
+**Description / bio link**
+```
+تایەی پێشەوەت بە خێرایی دەتەقێتەوە. چی دەکەیت؟
+٧٤٥ پرسیاری تیۆری بەخۆڕایی: https://ai-driving-theory.tareeq.workers.dev/
+نافەرمی — بۆ ڕاهێنان تەنها.
+```
+
+*(EN, if posting the English cut: Don't slam the brake on a front blowout — Your FRONT tyre blows out at speed. What do you do?)*
+
+---
+
+## 70. `frozenwindscreen-ku.mp4`
+
+**Title / caption (Kurdish)**
+```
+ئاوی گەرم جامی سارد دەتەقێنێت 🤔
+
+جامی پێشەوە بەستووە. بۆ پاککردنەوەی چی نابێت بەکاربهێنیت؟
+
+وەڵامەکە لە ڤیدیۆکەدا 👇
+```
+
+**Tags**
+```
+#جام #بەستن #مۆڵەتی_شۆفێری #تیۆری #کوردستان
+```
+
+**Description / bio link**
+```
+جامی پێشەوە بەستووە. بۆ پاککردنەوەی چی نابێت بەکاربهێنیت؟
+٧٤٥ پرسیاری تیۆری بەخۆڕایی: https://ai-driving-theory.tareeq.workers.dev/
+نافەرمی — بۆ ڕاهێنان تەنها.
+```
+
+*(EN, if posting the English cut: Hot water cracks cold glass — The windscreen is frozen. What must you not use to clear it?)*
+
+---
+
+## 71. `headlampcolor-ku.mp4`
+
+**Title / caption (Kurdish)**
+```
+هەموو ڕەنگێک لەسەر لایت یاسایی نییە 🤔
+
+ڕەنگی چراکانی لایتی ئۆتۆمبیل دەبێت چی بێت؟
+
+وەڵامەکە لە ڤیدیۆکەدا 👇
+```
+
+**Tags**
+```
+#لایت #ڕەنگ #مۆڵەتی_شۆفێری #تیۆری #کوردستان
+```
+
+**Description / bio link**
+```
+ڕەنگی چراکانی لایتی ئۆتۆمبیل دەبێت چی بێت؟
+٧٤٥ پرسیاری تیۆری بەخۆڕایی: https://ai-driving-theory.tareeq.workers.dev/
+نافەرمی — بۆ ڕاهێنان تەنها.
+```
+
+*(EN, if posting the English cut: Not every colour is legal on a headlamp — What colour must a car's headlamps be?)*
+
+---
+
+## 72. `gearlever-ku.mp4`
+
+**Title / caption (Kurdish)**
+```
+دەستت دەتوانێت گێڕ بەبێ مەبەست بگۆڕێت 🤔
+
+بۆچی هەرگیز نابێت لە کاتی لێخوڕیندا دەستت لەسەر دەسکی گێڕ دابنێیت؟
+
+وەڵامەکە لە ڤیدیۆکەدا 👇
+```
+
+**Tags**
+```
+#گێڕ #کۆنترۆڵ #مۆڵەتی_شۆفێری #تیۆری #کوردستان
+```
+
+**Description / bio link**
+```
+بۆچی هەرگیز نابێت لە کاتی لێخوڕیندا دەستت لەسەر دەسکی گێڕ دابنێیت؟
+٧٤٥ پرسیاری تیۆری بەخۆڕایی: https://ai-driving-theory.tareeq.workers.dev/
+نافەرمی — بۆ ڕاهێنان تەنها.
+```
+
+*(EN, if posting the English cut: Your hand can shift the gear by accident — Why must you never rest your hand on the gear lever while driving?)*
+
+---
+
+## 73. `engineknock-ku.mp4`
+
+**Title / caption (Kurdish)**
+```
+دەنگی لێدان واتای سووتەمەنی هەڵەیە 🤔
+
+بزوێنەر لەژێر بارگرانیدا دەنگی لێدان دەردەکات. هۆکارە باوەکەی چییە؟
+
+وەڵامەکە لە ڤیدیۆکەدا 👇
+```
+
+**Tags**
+```
+#بزوێنەر #ئۆکتان #مۆڵەتی_شۆفێری #تیۆری #کوردستان
+```
+
+**Description / bio link**
+```
+بزوێنەر لەژێر بارگرانیدا دەنگی لێدان دەردەکات. هۆکارە باوەکەی چییە؟
+٧٤٥ پرسیاری تیۆری بەخۆڕایی: https://ai-driving-theory.tareeq.workers.dev/
+نافەرمی — بۆ ڕاهێنان تەنها.
+```
+
+*(EN, if posting the English cut: Knocking means the wrong fuel — The engine knocks or pinks under load. What is the usual cause?)*
+
+---
+
+## 74. `insultofficer-ku.mp4`
+
+**Title / caption (Kurdish)**
+```
+سووکایەتی بە ئەفسەر دەتوانێت دوو ساڵت بۆ ببڕێت 🤔
+
+سزای سووکایەتیکردن یان بەربەستکردنی ئەفسەرێکی هاتوچۆ لە کاتی ئەرکدا چییە؟
+
+وەڵامەکە لە ڤیدیۆکەدا 👇
+```
+
+**Tags**
+```
+#سزا #ئەفسەر #مۆڵەتی_شۆفێری #تیۆری #کوردستان
+```
+
+**Description / bio link**
+```
+سزای سووکایەتیکردن یان بەربەستکردنی ئەفسەرێکی هاتوچۆ لە کاتی ئەرکدا چییە؟
+٧٤٥ پرسیاری تیۆری بەخۆڕایی: https://ai-driving-theory.tareeq.workers.dev/
+نافەرمی — بۆ ڕاهێنان تەنها.
+```
+
+*(EN, if posting the English cut: Insulting an officer can cost two years — What is the penalty for insulting or obstructing a traffic officer on duty?)*
+
+---
+
+## 75. `parkdownhill-ku.mp4`
+
+**Title / caption (Kurdish)**
+```
+پارککردنی نشێو پێویستی بە سووڕاندنی تایە هەیە 🤔
+
+ڕوو لە نشێو لەتەنیشت شۆستەیەک پارکت کردووە. دەبێت چی بکەیت؟
+
+وەڵامەکە لە ڤیدیۆکەدا 👇
+```
+
+**Tags**
+```
+#پارککردن #نشێو #مۆڵەتی_شۆفێری #تیۆری #کوردستان
+```
+
+**Description / bio link**
+```
+ڕوو لە نشێو لەتەنیشت شۆستەیەک پارکت کردووە. دەبێت چی بکەیت؟
+٧٤٥ پرسیاری تیۆری بەخۆڕایی: https://ai-driving-theory.tareeq.workers.dev/
+نافەرمی — بۆ ڕاهێنان تەنها.
+```
+
+*(EN, if posting the English cut: Downhill parking needs the wheels turned — You have parked facing DOWNHILL next to a kerb. What should you do?)*
+
+---
+
+## 76. `lorryblindspot-ku.mp4`
+
+**Title / caption (Kurdish)**
+```
+ئەگەر ئاوێنە نەبینیت، ئەویش تۆ نابینێت 🤔
+
+بۆچی زۆر مەترسیدارە ماوەیەکی درێژ لەتەنیشت بارهەڵگرێکدا بیت؟
+
+وەڵامەکە لە ڤیدیۆکەدا 👇
+```
+
+**Tags**
+```
+#بارهەڵگر #ناوچەی_مردوو #مۆڵەتی_شۆفێری #تیۆری #کوردستان
+```
+
+**Description / bio link**
+```
+بۆچی زۆر مەترسیدارە ماوەیەکی درێژ لەتەنیشت بارهەڵگرێکدا بیت؟
+٧٤٥ پرسیاری تیۆری بەخۆڕایی: https://ai-driving-theory.tareeq.workers.dev/
+نافەرمی — بۆ ڕاهێنان تەنها.
+```
+
+*(EN, if posting the English cut: If you can't see the mirror, they can't see you — Why is it especially dangerous to sit beside a lorry for a long time?)*
+
+---
+
+## 77. `overtakecyclist-ku.mp4`
+
+**Title / caption (Kurdish)**
+```
+نیو مەتر بۆشایی بەس نییە 🤔
+
+کاتێک بە پاسکیلسوار یان ماتۆڕسوارێکدا تێدەپەڕیت چەند بۆشایی دەبێت بهێڵیتەوە؟
+
+وەڵامەکە لە ڤیدیۆکەدا 👇
+```
+
+**Tags**
+```
+#پاسکیلسوار #بۆشایی #مۆڵەتی_شۆفێری #تیۆری #کوردستان
+```
+
+**Description / bio link**
+```
+کاتێک بە پاسکیلسوار یان ماتۆڕسوارێکدا تێدەپەڕیت چەند بۆشایی دەبێت بهێڵیتەوە؟
+٧٤٥ پرسیاری تیۆری بەخۆڕایی: https://ai-driving-theory.tareeq.workers.dev/
+نافەرمی — بۆ ڕاهێنان تەنها.
+```
+
+*(EN, if posting the English cut: Half a metre is not enough room — How much room must you leave when overtaking a cyclist or motorcyclist?)*
+
+---
+
