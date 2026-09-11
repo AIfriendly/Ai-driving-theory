@@ -1168,44 +1168,48 @@ owner — most of all anything that assumes the TikTok app is on their phone.
 
 ## Next
 
-### Batch four: 40 more clips drafted, not voiced (2026-09-11)
+### Batch four: 37 of 40 new clips voiced and rendered, 3 blocked on quota (2026-09-11)
 
 Owner asked for "40 more videos ... see how many vids we can make with
-Kurdish tts free plan." **Written into `video/src/data.ts`, not voiced or
-rendered** — `KURDISH_TTS_KEY` is unset in this environment, and
-`scripts/gen-voice.mjs` hard-exits without it (see *Right now*). All 80
-ads (40 existing + 40 new) pass `node scripts/check-topics.mjs` clean — no
-duplicate id, topic, or question text.
+Kurdish tts free plan," then supplied `KURDISH_TTS_KEY` directly in chat.
+40 new ads were written into `video/src/data.ts` (topics from the bank's
+`signs`, `firstaid`, `mech` and `rules` categories, away from all three
+previous batches' territory) and all 80 ads pass
+`node scripts/check-topics.mjs` clean.
 
-**The free-tier math, computed from the actual drafted text**
-(`ad.sayA.ku.length + ad.sayB.ku.length` summed, matching what
-`gen-voice.mjs` actually sends):
+**The estimate before voicing was wrong — trust the API's own count, not a
+local `.length` sum.** `gen-voice.mjs` sums `text.length` per clip and
+logged 9,510 characters for batches one-three, which this doc took at face
+value as "characters used." Running `npm run voice` for batch four hit a
+hard `403` from kurdishtts.com itself: **"Character limit exceeded. You
+have 54 characters remaining out of 20000 total"** — after only 37 of the
+40 new clips voiced, nowhere near the 10,132-character estimate for all
+40. The mismatch is unexplained (not UTF-8 byte-doubling — checked, doesn't
+match either) — likely the service counts something `gen-voice.mjs` does
+not track (failed/retried requests, or a per-request minimum). **Treat the
+local character sum as a rough guide only; the account's own quota figure
+is the only trustworthy number**, and it cannot be queried ahead of time —
+only discovered by hitting the wall.
 
-| | characters |
-|---|---|
-| Batches one–three (already voiced) | 9,510 |
-| Batch four, 40 new clips (drafted) | 10,132 |
-| **Total against the 20,000/month free tier** | **19,642 — 358 left** |
+**Answer to "how many vids can we make": 37, not 40.** `blindcane`,
+`trampriority` and `parkedcars` (the last three ids in the batch) have no
+audio and cannot be voiced until the free tier resets next month — do not
+re-run `npm run voice` before then, it will burn the next cycle's quota
+attempting clips that still won't fit in 54 characters.
 
-**Answer to "how many vids can we make": all 40 fit, but only barely — this
-exhausts the free tier for the month with no room for even one more short
-clip.** If the owner supplies `KURDISH_TTS_KEY`, running
-`node scripts/gen-voice.mjs` will voice exactly these 40 (it skips
-already-voiced clips automatically) and should land within a few characters
-of that estimate — but there is no slack for a retry that regenerates
-anything with `--force`, and none for a hook rewrite afterward this month.
+The other 37 are voiced (`src/audio-manifest.json` updated — durations
+measured from the actual `.wav` files, not re-fetched, after the crashed
+run left the manifest write unreached) and rendered to `video/out/`.
+**Not yet bundled, uploaded, or scheduled to Buffer** — that's the next
+step once the render is confirmed and reviewed like every prior batch's
+safe-zone check.
 
-Topics picked from the question bank's `signs` (14), `firstaid` (10),
-`mech` (9) and `rules` (7) categories, deliberately away from all three
-previous batches' territory (speed limits, seat belts, priority order,
-etc.) — see the ids in `video/src/data.ts` from `minspeed` to `parkedcars`.
-
-**Before rendering these, re-read the end-of-September decision below** —
+**Before scheduling these, re-read the end-of-September decision below** —
 the click signal recorded there (5 clicks/10 clips, very low) was still
 "decide on 26 September, not on a feeling," and more videos is explicitly
 *not* the prescribed move for most outcomes of that read. This batch was
-written because the owner asked directly, not because the framework below
-called for it.
+written and voiced because the owner asked directly, not because the
+framework below called for it.
 
 ### The end-of-September decision, agreed in advance (2026-08-28)
 

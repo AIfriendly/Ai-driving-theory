@@ -399,6 +399,376 @@
         "file": "breaks-ku-b.wav",
         "seconds": 11.97
       }
+    },
+    "minspeed-ku": {
+      "a": {
+        "file": "minspeed-ku-a.wav",
+        "seconds": 8.53
+      },
+      "b": {
+        "file": "minspeed-ku-b.wav",
+        "seconds": 11.68
+      }
+    },
+    "parkinghours-ku": {
+      "a": {
+        "file": "parkinghours-ku-a.wav",
+        "seconds": 16.11
+      },
+      "b": {
+        "file": "parkinghours-ku-b.wav",
+        "seconds": 11.84
+      }
+    },
+    "policeoverride-ku": {
+      "a": {
+        "file": "policeoverride-ku-a.wav",
+        "seconds": 8.85
+      },
+      "b": {
+        "file": "policeoverride-ku-b.wav",
+        "seconds": 13.36
+      }
+    },
+    "speedcamera-ku": {
+      "a": {
+        "file": "speedcamera-ku-a.wav",
+        "seconds": 6.53
+      },
+      "b": {
+        "file": "speedcamera-ku-b.wav",
+        "seconds": 13.36
+      }
+    },
+    "nostopping-ku": {
+      "a": {
+        "file": "nostopping-ku-a.wav",
+        "seconds": 5.78
+      },
+      "b": {
+        "file": "nostopping-ku-b.wav",
+        "seconds": 15.92
+      }
+    },
+    "heightlimit-ku": {
+      "a": {
+        "file": "heightlimit-ku-a.wav",
+        "seconds": 6.64
+      },
+      "b": {
+        "file": "heightlimit-ku-b.wav",
+        "seconds": 15.68
+      }
+    },
+    "aircraft-ku": {
+      "a": {
+        "file": "aircraft-ku-a.wav",
+        "seconds": 6.03
+      },
+      "b": {
+        "file": "aircraft-ku-b.wav",
+        "seconds": 14.88
+      }
+    },
+    "slowvehicle-ku": {
+      "a": {
+        "file": "slowvehicle-ku-a.wav",
+        "seconds": 9.56
+      },
+      "b": {
+        "file": "slowvehicle-ku-b.wav",
+        "seconds": 16.33
+      }
+    },
+    "lorrygap-ku": {
+      "a": {
+        "file": "lorrygap-ku-a.wav",
+        "seconds": 9.8
+      },
+      "b": {
+        "file": "lorrygap-ku-b.wav",
+        "seconds": 12.71
+      }
+    },
+    "stepsigns-ku": {
+      "a": {
+        "file": "stepsigns-ku-a.wav",
+        "seconds": 12.47
+      },
+      "b": {
+        "file": "stepsigns-ku-b.wav",
+        "seconds": 17.52
+      }
+    },
+    "stripedbarrier-ku": {
+      "a": {
+        "file": "stripedbarrier-ku-a.wav",
+        "seconds": 10.41
+      },
+      "b": {
+        "file": "stripedbarrier-ku-b.wav",
+        "seconds": 15.33
+      }
+    },
+    "cyclecolor-ku": {
+      "a": {
+        "file": "cyclecolor-ku-a.wav",
+        "seconds": 9.88
+      },
+      "b": {
+        "file": "cyclecolor-ku-b.wav",
+        "seconds": 17.36
+      }
+    },
+    "escapelane-ku": {
+      "a": {
+        "file": "escapelane-ku-a.wav",
+        "seconds": 11.25
+      },
+      "b": {
+        "file": "escapelane-ku-b.wav",
+        "seconds": 14
+      }
+    },
+    "givewaystop-ku": {
+      "a": {
+        "file": "givewaystop-ku-a.wav",
+        "seconds": 11.6
+      },
+      "b": {
+        "file": "givewaystop-ku-b.wav",
+        "seconds": 14.32
+      }
+    },
+    "snakebite-ku": {
+      "a": {
+        "file": "snakebite-ku-a.wav",
+        "seconds": 9.73
+      },
+      "b": {
+        "file": "snakebite-ku-b.wav",
+        "seconds": 19.24
+      }
+    },
+    "injuredeye-ku": {
+      "a": {
+        "file": "injuredeye-ku-a.wav",
+        "seconds": 8.89
+      },
+      "b": {
+        "file": "injuredeye-ku-b.wav",
+        "seconds": 14.4
+      }
+    },
+    "crowdcontrol-ku": {
+      "a": {
+        "file": "crowdcontrol-ku-a.wav",
+        "seconds": 8.96
+      },
+      "b": {
+        "file": "crowdcontrol-ku-b.wav",
+        "seconds": 15.94
+      }
+    },
+    "internalbleed-ku": {
+      "a": {
+        "file": "internalbleed-ku-a.wav",
+        "seconds": 9.84
+      },
+      "b": {
+        "file": "internalbleed-ku-b.wav",
+        "seconds": 14.09
+      }
+    },
+    "firstaidaim-ku": {
+      "a": {
+        "file": "firstaidaim-ku-a.wav",
+        "seconds": 7.38
+      },
+      "b": {
+        "file": "firstaidaim-ku-b.wav",
+        "seconds": 14.35
+      }
+    },
+    "stayatscene-ku": {
+      "a": {
+        "file": "stayatscene-ku-a.wav",
+        "seconds": 7.22
+      },
+      "b": {
+        "file": "stayatscene-ku-b.wav",
+        "seconds": 14.48
+      }
+    },
+    "arterialbleed-ku": {
+      "a": {
+        "file": "arterialbleed-ku-a.wav",
+        "seconds": 9.51
+      },
+      "b": {
+        "file": "arterialbleed-ku-b.wav",
+        "seconds": 14.87
+      }
+    },
+    "callemergency-ku": {
+      "a": {
+        "file": "callemergency-ku-a.wav",
+        "seconds": 9.91
+      },
+      "b": {
+        "file": "callemergency-ku-b.wav",
+        "seconds": 14
+      }
+    },
+    "acidburn-ku": {
+      "a": {
+        "file": "acidburn-ku-a.wav",
+        "seconds": 8.8
+      },
+      "b": {
+        "file": "acidburn-ku-b.wav",
+        "seconds": 13.24
+      }
+    },
+    "electricburn-ku": {
+      "a": {
+        "file": "electricburn-ku-a.wav",
+        "seconds": 9.23
+      },
+      "b": {
+        "file": "electricburn-ku-b.wav",
+        "seconds": 14.86
+      }
+    },
+    "boiledengine-ku": {
+      "a": {
+        "file": "boiledengine-ku-a.wav",
+        "seconds": 8.01
+      },
+      "b": {
+        "file": "boiledengine-ku-b.wav",
+        "seconds": 15.74
+      }
+    },
+    "jumpstart-ku": {
+      "a": {
+        "file": "jumpstart-ku-a.wav",
+        "seconds": 11.25
+      },
+      "b": {
+        "file": "jumpstart-ku-b.wav",
+        "seconds": 14.68
+      }
+    },
+    "wheelnuts-ku": {
+      "a": {
+        "file": "wheelnuts-ku-a.wav",
+        "seconds": 8.25
+      },
+      "b": {
+        "file": "wheelnuts-ku-b.wav",
+        "seconds": 14.11
+      }
+    },
+    "sparetyre-ku": {
+      "a": {
+        "file": "sparetyre-ku-a.wav",
+        "seconds": 9.04
+      },
+      "b": {
+        "file": "sparetyre-ku-b.wav",
+        "seconds": 14.65
+      }
+    },
+    "blowout-ku": {
+      "a": {
+        "file": "blowout-ku-a.wav",
+        "seconds": 8.66
+      },
+      "b": {
+        "file": "blowout-ku-b.wav",
+        "seconds": 15.6
+      }
+    },
+    "frozenwindscreen-ku": {
+      "a": {
+        "file": "frozenwindscreen-ku-a.wav",
+        "seconds": 9.05
+      },
+      "b": {
+        "file": "frozenwindscreen-ku-b.wav",
+        "seconds": 15.04
+      }
+    },
+    "headlampcolor-ku": {
+      "a": {
+        "file": "headlampcolor-ku-a.wav",
+        "seconds": 6.56
+      },
+      "b": {
+        "file": "headlampcolor-ku-b.wav",
+        "seconds": 14.23
+      }
+    },
+    "gearlever-ku": {
+      "a": {
+        "file": "gearlever-ku-a.wav",
+        "seconds": 8.41
+      },
+      "b": {
+        "file": "gearlever-ku-b.wav",
+        "seconds": 12.96
+      }
+    },
+    "engineknock-ku": {
+      "a": {
+        "file": "engineknock-ku-a.wav",
+        "seconds": 9.24
+      },
+      "b": {
+        "file": "engineknock-ku-b.wav",
+        "seconds": 15.1
+      }
+    },
+    "insultofficer-ku": {
+      "a": {
+        "file": "insultofficer-ku-a.wav",
+        "seconds": 8.96
+      },
+      "b": {
+        "file": "insultofficer-ku-b.wav",
+        "seconds": 14.15
+      }
+    },
+    "parkdownhill-ku": {
+      "a": {
+        "file": "parkdownhill-ku-a.wav",
+        "seconds": 9.7
+      },
+      "b": {
+        "file": "parkdownhill-ku-b.wav",
+        "seconds": 14.2
+      }
+    },
+    "lorryblindspot-ku": {
+      "a": {
+        "file": "lorryblindspot-ku-a.wav",
+        "seconds": 7.87
+      },
+      "b": {
+        "file": "lorryblindspot-ku-b.wav",
+        "seconds": 13.66
+      }
+    },
+    "overtakecyclist-ku": {
+      "a": {
+        "file": "overtakecyclist-ku-a.wav",
+        "seconds": 8.91
+      },
+      "b": {
+        "file": "overtakecyclist-ku-b.wav",
+        "seconds": 16.2
+      }
     }
   },
   "music": null
