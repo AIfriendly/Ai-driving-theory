@@ -589,4 +589,566 @@ export const ADS: Ad[] = [
     sayA: { en: "Five minutes every hour. On a long drive, how often should you take a break?", ku: "پێنج خولەک لە هەر کاتژمێرێک. لە گەشتێکی درێژدا چەند جار پشوو بدەیت؟" },
     sayB: { en: "About five minutes' rest every hour. Short regular breaks beat one long one, because tiredness builds before you notice it. 745 more questions, free.", ku: "نزیکەی پێنج خولەک پشوو لە هەر کاتژمێرێکدا. پشووی کورت و بەردەوام باشترە لە یەکێکی درێژ، چونکە ماندووبوون پێش ئەوەی هەستی پێبکەیت کۆدەبێتەوە.  ٧٤٥ پرسیاری تر، بەخۆڕایی." },
   },
+
+  /* Batch four: 40 new clips. Signs, first aid, mechanical faults and rules
+     that did not overlap the first three batches — checked against them and
+     against each other with scripts/check-topics.mjs. */
+
+  {
+    id: "minspeed", topic: "Minimum speed sign (blue circle)", label: "This blue circle shows a speed. What does it ", a: 0, bait: 1,
+    hook: { en: "Blue means minimum, not maximum", ku: "شین واتای کەمترینە، نەک زۆرترین" },
+    q: { en: "This blue circle shows a speed. What does it mean?", ku: "ئەم بازنە شینە خێراییەک پیشان دەدات. چی دەگەیەنێت؟" },
+    o: [
+      { en: "It is a MINIMUM speed — you must not drive slower than this", ku: "کەمترین خێراییە — نابێت لەمە هێواشتر لێبخوڕیت" },
+      { en: "It is a maximum speed limit", ku: "بەرزترین سنووری خێراییە" },
+      { en: "It is a recommended speed only", ku: "تەنها خێراییەکی پێشنیارکراوە" },
+    ],
+    why: { en: "Colour tells you which it is: a number in a RED ring is the maximum you may drive, while a number on a BLUE circle is the minimum. A minimum-speed sign keeps very slow vehicles off roads where they would be a hazard.", ku: "ڕەنگەکە پێت دەڵێت کامەیە: ژمارەیەک لە بازنەیەکی سووردا بەرزترین خێراییە کە دەتوانیت پێی بڕۆیت، بەڵام ژمارەیەک لەسەر بازنەیەکی شین کەمترین خێراییە." },
+    sayA: { en: "Blue means minimum, not maximum. This blue circle shows a speed. What does it mean?", ku: "شین واتای کەمترینە، نەک زۆرترین. ئەم بازنە شینە خێراییەک پیشان دەدات. چی دەگەیەنێت؟" },
+    sayB: { en: "It is a minimum speed — you must not drive slower than this. Red rings set a maximum, blue circles set a minimum. 745 more questions, free.", ku: "کەمترین خێراییە — نابێت لەمە هێواشتر لێبخوڕیت. بازنەی سوور زۆرترین خێراییە، بازنەی شین کەمترینە. ٧٤٥ پرسیاری تر، بەخۆڕایی." },
+  },
+
+  {
+    id: "parkinghours", topic: "Parking hours sign — is now within the permitted time", label: "A blue 'P' parking sign permits parking from ", a: 0, bait: 1,
+    hook: { en: "Read the hours before you park", ku: "پێش پارککردن کاتەکان بخوێنەوە" },
+    q: { en: "A blue 'P' parking sign permits parking from 09:00 to 18:00. It is now 12:00 (noon). Is parking allowed?", ku: "هێمای 'P'ی شینی پارکینگ لە کاتژمێر ٩ی بەیانییەوە تا ٦ی ئێوارە پارککردن ڕێگەپێدەدات. ئێستا کاتژمێر ١٢ی نیوەڕۆیە. ئایا پارککردن ڕێگەپێدراوە؟" },
+    o: [
+      { en: "Yes — 12:00 is within the permitted hours", ku: "بەڵێ — ١٢ لە نێو کاتە ڕێگەپێدراوەکاندایە" },
+      { en: "No — parking is forbidden now", ku: "نەخێر — ئێستا پارککردن قەدەغەیە" },
+    ],
+    why: { en: "Read the times on the parking sign: 12:00 falls between 09:00 and 18:00, so parking is allowed.", ku: "کاتەکانی سەر هێمای پارکینگ بخوێنەوە: ١٢ی نیوەڕۆ لە نێوان ٩ و ١٨دایە، بۆیە پارککردن ڕێگەپێدراوە." },
+    sayA: { en: "Read the hours before you park. A blue P parking sign permits parking from 09:00 to 18:00. It is now 12:00 noon. Is parking allowed?", ku: "پێش پارککردن کاتەکان بخوێنەوە. هێمای 'P'ی شینی پارکینگ لە کاتژمێر ٩ی بەیانییەوە تا ٦ی ئێوارە پارککردن ڕێگەپێدەدات. ئێستا کاتژمێر ١٢ی نیوەڕۆیە. ئایا پارککردن ڕێگەپێدراوە؟" },
+    sayB: { en: "Yes — 12:00 is within the permitted hours. Always read the times on the sign itself before you park. 745 more questions, free.", ku: "بەڵێ — ١٢ لە نێو کاتە ڕێگەپێدراوەکاندایە. هەمیشە پێش پارککردن کاتەکانی سەر هێماکە بخوێنەوە. ٧٤٥ پرسیاری تر، بەخۆڕایی." },
+  },
+
+  {
+    id: "policeoverride", topic: "Traffic policeman's signal overrides the lights", label: "A traffic policeman signals you to go, but t", a: 0, bait: 1,
+    hook: { en: "The policeman beats the light", ku: "پۆلیس لە چرا پێشترە" },
+    q: { en: "A traffic policeman signals you to go, but the light is red. What do you do?", ku: "پۆلیسێکی هاتوچۆ ئاماژەت پێدەدات بڕۆیت، بەڵام چراکە سوورە. چی دەکەیت؟" },
+    o: [
+      { en: "Obey the policeman — their signal overrides lights and signs", ku: "گوێڕایەڵی پۆلیسەکە بە — ئاماژەکەیان لەسەر چرا و هێماکان دەڕوات" },
+      { en: "Obey the red light and stay stopped", ku: "گوێڕایەڵی چرای سوور بە و بوەستە" },
+      { en: "Sound the horn and wait", ku: "بۆری لێدە و چاوەڕێ بکە" },
+    ],
+    why: { en: "Section 17 gives the traffic policeman's signal priority over every other device. Obey it immediately even when it contradicts the lights or a sign.", ku: "بەندی ١٧ ئاماژەی پۆلیسی هاتوچۆ لەسەر هەموو ئامێرێکی تر پێشڕەو دەکات. دەستبەجێ گوێڕایەڵی بە تەنانەت کاتێک پێچەوانەی چراکان یان هێمایەک بێت." },
+    sayA: { en: "The policeman beats the light. A traffic policeman signals you to go, but the light is red. What do you do?", ku: "پۆلیس لە چرا پێشترە. پۆلیسێکی هاتوچۆ ئاماژەت پێدەدات بڕۆیت، بەڵام چراکە سوورە. چی دەکەیت؟" },
+    sayB: { en: "Obey the policeman — their signal overrides lights and signs. A traffic officer's signal always has priority over every device. 745 more questions, free.", ku: "گوێڕایەڵی پۆلیسەکە بە — ئاماژەکەیان لەسەر چرا و هێماکان دەڕوات. ئاماژەی ئەفسەری هاتوچۆ هەمیشە پێشڕەوە بەسەر هەموو ئامێرێکدا. ٧٤٥ پرسیاری تر، بەخۆڕایی." },
+  },
+
+  {
+    id: "speedcamera", topic: "What a speed-camera sign means", label: "What does this sign mean?", a: 2, bait: 0,
+    hook: { en: "Not a no-photos sign", ku: "نیشانەی قەدەغەی وێنەگرتن نییە" },
+    q: { en: "What does this sign mean?", ku: "ئەم هێمایە چی دەگەیەنێت؟" },
+    o: [
+      { en: "Photography is prohibited", ku: "وێنەگرتن قەدەغەیە" },
+      { en: "Beware of side wind", ku: "ئاگاداربە لە بای تەنیشت" },
+      { en: "The road is monitored by a speed camera", ku: "ڕێگاکە بە کامێرای خێرایی چاودێری دەکرێت" },
+    ],
+    why: { en: "A camera sign warns that speed is enforced by camera.", ku: "هێمای کامێرا ئاگادار دەکاتەوە کە خێرایی بە کامێرا چاودێری دەکرێت." },
+    sayA: { en: "Not a no-photos sign. What does this sign mean?", ku: "نیشانەی قەدەغەی وێنەگرتن نییە. ئەم هێمایە چی دەگەیەنێت؟" },
+    sayB: { en: "The road is monitored by a speed camera. The camera icon warns that speed here is enforced electronically. 745 more questions, free.", ku: "ڕێگاکە بە کامێرای خێرایی چاودێری دەکرێت. هێمای کامێرا ئاگادار دەکاتەوە کە خێرایی بە کامێرا چاودێری دەکرێت. ٧٤٥ پرسیاری تر، بەخۆڕایی." },
+  },
+
+  {
+    id: "nostopping", topic: "No-stopping sign forbids even a brief halt", label: "What does this road sign tell you to do?", a: 0, bait: 1,
+    hook: { en: "No stopping means none at all", ku: "هیچ ڕاوەستانێک نییە بە تەواوی" },
+    q: { en: "What does this road sign tell you to do?", ku: "ئەم هێمایە چی لێت دەوێت بکەیت؟" },
+    o: [
+      { en: "No stopping at all — you may not even stop briefly to pick someone up", ku: "هیچ ڕاوەستانێک نییە — تەنانەت بۆ ماوەیەکی کورتیش ناتوانیت بۆ سواركردنی کەسێک بوەستیت" },
+      { en: "No parking, but a short stop to drop someone off is allowed", ku: "پارککردن قەدەغەیە، بەڵام ڕاوەستانێکی کورت بۆ دابەزاندن ڕێگەپێدراوە" },
+      { en: "Parking is allowed for a limited time", ku: "پارککردن بۆ ماوەیەکی سنووردار ڕێگەپێدراوە" },
+    ],
+    why: { en: "The blue disc with a red cross means no stopping and no parking. Unlike the no-parking sign (a single diagonal), this one forbids even a brief halt to set down or pick up — keep moving unless traffic or an emergency forces you to stop.", ku: "بازنە شینەکە لەگەڵ خاچی سوور واتای قەدەغەبوونی ڕاوەستان و پارککردنە." },
+    sayA: { en: "No stopping means none at all. What does this road sign tell you to do?", ku: "هیچ ڕاوەستانێک نییە بە تەواوی. ئەم هێمایە چی لێت دەوێت بکەیت؟" },
+    sayB: { en: "No stopping at all — not even briefly to pick someone up. A single diagonal line means no parking only; this crossed disc bans any halt. 745 more questions, free.", ku: "هیچ ڕاوەستانێک نییە — تەنانەت بۆ ماوەیەکی کورتیش. هێڵێکی لار تەنها واتای قەدەغەی پارککردنە؛ ئەم بازنە خاچدارە هەر ڕاوەستانێک قەدەغە دەکات. ٧٤٥ پرسیاری تر، بەخۆڕایی." },
+  },
+
+  {
+    id: "heightlimit", topic: "Height-limit sign before a bridge or tunnel", label: "What does this warning sign show?", a: 0, bait: 2,
+    hook: { en: "Know your vehicle's height", ku: "بەرزی ئۆتۆمبیلەکەت بزانە" },
+    q: { en: "What does this warning sign show?", ku: "ئەم هێمای ئاگادارکردنەوەیە چی پیشان دەدات؟" },
+    o: [
+      { en: "Vehicles higher than the figure shown may not pass", ku: "ئۆتۆمبیلی بەرزتر لە ژمارەی نیشانکراو ناتوانێت تێبپەڕێت" },
+      { en: "The road ahead is that far away", ku: "ڕێگای پێشەوە بەو دووریە دوورە" },
+      { en: "The bridge ahead is that wide", ku: "پردی پێشەوە بەو پانییەیە" },
+    ],
+    why: { en: "The figure is the maximum height allowed, usually because of a bridge or tunnel ahead. Know your vehicle's height, including any roof load — striking a bridge is a serious offence and a serious danger.", ku: "ژمارەکە بەرزترین بەرزی ڕێگەپێدراوە، زۆرجار بەهۆی پرد یان تونێلێک لە پێشەوە." },
+    sayA: { en: "Know your vehicle's height. What does this warning sign show?", ku: "بەرزی ئۆتۆمبیلەکەت بزانە. ئەم هێمای ئاگادارکردنەوەیە چی پیشان دەدات؟" },
+    sayB: { en: "Vehicles higher than the figure shown may not pass. It marks the maximum height before a bridge or tunnel — know your vehicle's height, roof load included. 745 more questions, free.", ku: "ئۆتۆمبیلی بەرزتر لە ژمارەی نیشانکراو ناتوانێت تێبپەڕێت. بەرزترین بەرزی ڕێگەپێدراوە پێش پرد یان تونێل — بەرزی ئۆتۆمبیلەکەت لەگەڵ باری سەر سەقف بزانە. ٧٤٥ پرسیاری تر، بەخۆڕایی." },
+  },
+
+  {
+    id: "aircraft", topic: "Low-flying aircraft warning sign", label: "What is this triangular warning sign about?", a: 1, bait: 0,
+    hook: { en: "Not a railway warning", ku: "ئاگاداری هێڵی شەمەندەفەر نییە" },
+    q: { en: "What is this triangular warning sign about?", ku: "ئەم هێمایە سێگۆشەییە دەربارەی چییە؟" },
+    o: [
+      { en: "Beware of a railway ahead", ku: "ئاگاداربە لە هێڵی شەمەندەفەر لە پێشەوە" },
+      { en: "Beware of low-flying aircraft in this area", ku: "ئاگاداربە لە نزمفڕینی فڕۆکەکان لەم ناوچەیە" },
+      { en: "Beware of wild animals crossing", ku: "ئاگاداربە لە پەڕینەوەی ئاژەڵی کێوی" },
+    ],
+    why: { en: "A triangle with an aircraft warns of low-flying aircraft.", ku: "سێگۆشە لەگەڵ فڕۆکە ئاگادار دەکاتەوە لە نزمفڕینی فڕۆکە." },
+    sayA: { en: "Not a railway warning. What is this triangular warning sign about?", ku: "ئاگاداری هێڵی شەمەندەفەر نییە. ئەم هێمایە سێگۆشەییە دەربارەی چییە؟" },
+    sayB: { en: "Beware of low-flying aircraft in this area. A triangle with an aircraft warns of planes flying low nearby, often near an airport. 745 more questions, free.", ku: "ئاگاداربە لە نزمفڕینی فڕۆکەکان لەم ناوچەیە. سێگۆشە لەگەڵ فڕۆکە ئاگادار دەکاتەوە لە نزمفڕینی فڕۆکە، زۆرجار لە نزیک فڕۆکەخانە. ٧٤٥ پرسیاری تر، بەخۆڕایی." },
+  },
+
+  {
+    id: "slowvehicle", topic: "Red reflective triangle on a slow vehicle", label: "A vehicle carries a red reflective triangle ", a: 0, bait: 1,
+    hook: { en: "A triangle that means slow, not dangerous", ku: "سێگۆشەیەک واتای هێواشە، نەک مەترسیدار" },
+    q: { en: "A vehicle carries a red reflective triangle on the back. What does it tell you?", ku: "سوارڕۆیەک سێگۆشەیەکی سووری تیشکدەرەوەی لە دواوەیە. چیت پێدەڵێت؟" },
+    o: [
+      { en: "It cannot go faster than 30 km/h", ku: "ناتوانێت لە ٣٠ کم/کاتژمێر خێراتر بڕوات" },
+      { en: "It is carrying dangerous goods", ku: "باری مەترسیدار هەڵدەگرێت" },
+      { en: "It is a learner driver", ku: "شۆفێرێکی فێرخوازە" },
+    ],
+    why: { en: "The reflective triangle marks a slow vehicle — a tractor or harvester that cannot exceed 30 km/h. You close on it far faster than you expect, so start planning to overtake as soon as you see it.", ku: "سێگۆشەی تیشکدەرەوە نیشانەی سوارڕۆیەکی هێواشە — تراکتۆر یان دەڕاسەیەک کە ناتوانێت لە ٣٠ کم/کاتژمێر تێپەڕێت." },
+    sayA: { en: "A triangle that means slow, not dangerous. A vehicle carries a red reflective triangle on the back. What does it tell you?", ku: "سێگۆشەیەک واتای هێواشە، نەک مەترسیدار. سوارڕۆیەک سێگۆشەیەکی سووری تیشکدەرەوەی لە دواوەیە. چیت پێدەڵێت؟" },
+    sayB: { en: "It cannot go faster than 30 km/h. It marks a slow vehicle like a tractor — you close on it far faster than you expect, so plan to overtake early. 745 more questions, free.", ku: "ناتوانێت لە ٣٠ کم/کاتژمێر خێراتر بڕوات. نیشانەی سوارڕۆیەکی هێواشە وەک تراکتۆر — زۆر خێراتر لێی نزیک دەبیتەوە، بۆیە زوو پلان بۆ تێپەڕاندن دابنێ. ٧٤٥ پرسیاری تر، بەخۆڕایی." },
+  },
+
+  {
+    id: "lorrygap", topic: "Minimum gap sign for lorries on a descent", label: "A red-ringed sign shows two lorries and 70 m", a: 0, bait: 2,
+    hook: { en: "70 metres is a gap, not a length", ku: "٧٠ مەتر بۆشاییە، نەک درێژی" },
+    q: { en: "A red-ringed sign shows two lorries and 70 m. What does it require?", ku: "هێمایەکی بازنە سوور دوو بارهەڵگر و «٧٠ م» پیشان دەدات. داوای چی دەکات؟" },
+    o: [
+      { en: "Lorries must keep at least 70 m apart", ku: "بارهەڵگرەکان دەبێت بەلایەنی کەم ٧٠ مەتر لە یەکتر دوور بن" },
+      { en: "Lorries may not travel more than 70 m along this road", ku: "بارهەڵگرەکان نابێت زیاتر لە ٧٠ مەتر بەم ڕێگایەدا بڕۆن" },
+      { en: "The bridge ahead is 70 m long", ku: "پردی پێشەوە ٧٠ مەتر درێژە" },
+    ],
+    why: { en: "It sets a minimum gap between heavy vehicles, usually on a long descent, in a tunnel or on a weight-limited bridge. Spacing them out keeps the load on the structure down and leaves room to stop.", ku: "کەمترین بۆشایی نێوان سوارڕۆ قورسەکان دیاری دەکات، زۆرجار لەسەر نشێوێکی درێژ، لە تونێل یان لەسەر پردێکی سنووردار." },
+    sayA: { en: "70 metres is a gap, not a length. A red-ringed sign shows two lorries and 70 metres. What does it require?", ku: "٧٠ مەتر بۆشاییە، نەک درێژی. هێمایەکی بازنە سوور دوو بارهەڵگر و «٧٠ م» پیشان دەدات. داوای چی دەکات؟" },
+    sayB: { en: "Lorries must keep at least 70 metres apart. It sets a minimum gap on a long descent or tunnel, so the load on the road stays spread out. 745 more questions, free.", ku: "بارهەڵگرەکان دەبێت بەلایەنی کەم ٧٠ مەتر لە یەکتر دوور بن. کەمترین بۆشایی لەسەر نشێوێکی درێژ یان لە تونێل دیاری دەکات. ٧٤٥ پرسیاری تر، بەخۆڕایی." },
+  },
+
+  {
+    id: "stepsigns", topic: "Footbridge vs pedestrian underpass sign", label: "One blue sign shows a person walking UP step", a: 0, bait: 1,
+    hook: { en: "Up or down changes everything", ku: "سەرکەوتن یان دابەزین هەموو شتێک دەگۆڕێت" },
+    q: { en: "One blue sign shows a person walking UP steps, another shows a person walking DOWN steps. What is the difference?", ku: "هێمایەکی شین کەسێک پیشان دەدات کە بە پلەکاندا سەردەکەوێت، ئەوی تر کەسێک کە دادەبەزێت. جیاوازییەکە چییە؟" },
+    o: [
+      { en: "Up steps is a pedestrian footbridge; down steps is a pedestrian underpass", ku: "سەرکەوتن بە پلەکاندا پردی پەڕینەوەی پیادەیە؛ دابەزین ڕێگای ژێرزەمینییە" },
+      { en: "They both mean the same crossing", ku: "هەردووکیان هەمان پەڕینەوە دەگەیەنن" },
+      { en: "One is for cyclists only", ku: "یەکێکیان تەنها بۆ پاسکیلسوارانە" },
+    ],
+    why: { en: "The direction of the steps tells you whether you cross over the road or under it. Both keep pedestrians off the carriageway, and where one is provided it should be used rather than crossing the road itself.", ku: "ئاراستەی پلەکان پێت دەڵێت ئایا بەسەر ڕێگاکەدا دەپەڕیتەوە یان لەژێریدا." },
+    sayA: { en: "Up or down changes everything. One blue sign shows a person walking up steps, another shows walking down. What is the difference?", ku: "سەرکەوتن یان دابەزین هەموو شتێک دەگۆڕێت. هێمایەکی شین کەسێک پیشان دەدات کە بە پلەکاندا سەردەکەوێت، ئەوی تر کەسێک کە دادەبەزێت. جیاوازییەکە چییە؟" },
+    sayB: { en: "Up steps is a footbridge; down steps is an underpass. Both keep pedestrians off the road, and where one exists it should be used. 745 more questions, free.", ku: "سەرکەوتن بە پلەکاندا پردی پەڕینەوەی پیادەیە؛ دابەزین ڕێگای ژێرزەمینییە. هەردووکیان پیادە لە ڕێگاکە دوور دەخەنەوە، و پێویستە بەکاربهێنرێن. ٧٤٥ پرسیاری تر، بەخۆڕایی." },
+  },
+
+  {
+    id: "stripedbarrier", topic: "Striped barrier board — which side to pass", label: "A road is blocked by a striped barrier board", a: 0, bait: 1,
+    hook: { en: "The stripes point the way through", ku: "خەتەکان ڕێگای تێپەڕین پیشان دەدەن" },
+    q: { en: "A road is blocked by a striped barrier board. How do you know which way to pass?", ku: "ڕێگایەک بە تەختەیەکی بەربەستی خەتدار داخراوە. چۆن دەزانیت بە کام لادا تێبپەڕیت؟" },
+    o: [
+      { en: "Diagonal stripes lean toward the side you should pass; vertical stripes mean the road is closed", ku: "خەتە لارەکان بەرەو ئەو لایە دەچەمێنەوە کە دەبێت لێیەوە تێبپەڕیت؛ خەتە ستوونییەکان واتە ڕێگاکە داخراوە" },
+      { en: "You always pass on the right", ku: "هەمیشە بەلای ڕاستدا تێدەپەڕیت" },
+      { en: "The board only marks the edge of the road", ku: "تەختەکە تەنها لێواری ڕێگاکە دیاری دەکات" },
+    ],
+    why: { en: "Read the lean of the stripes: they point to the open side. Upright stripes mean there is no way through at all. The same logic runs through chevron boards on a bend.", ku: "سەیری چەمانەوەی خەتەکان بکە: ئاماژە بەو لایە دەکەن کە کراوەیە." },
+    sayA: { en: "The stripes point the way through. A road is blocked by a striped barrier board. How do you know which way to pass?", ku: "خەتەکان ڕێگای تێپەڕین پیشان دەدەن. ڕێگایەک بە تەختەیەکی بەربەستی خەتدار داخراوە. چۆن دەزانیت بە کام لادا تێبپەڕیت؟" },
+    sayB: { en: "Diagonal stripes lean toward the side you should pass; vertical stripes mean the road is fully closed. The same logic runs through chevron bend boards. 745 more questions, free.", ku: "خەتە لارەکان بەرەو ئەو لایە دەچەمێنەوە کە دەبێت لێیەوە تێبپەڕیت؛ خەتە ستوونییەکان واتە ڕێگاکە بە تەواوی داخراوە. هەمان لۆژیک لە تەختەکانی پێچدا هەیە. ٧٤٥ پرسیاری تر، بەخۆڕایی." },
+  },
+
+  {
+    id: "cyclecolor", topic: "Blue vs red circular bicycle sign", label: "A BLUE circle with a bicycle. How does it di", a: 0, bait: 2,
+    hook: { en: "Same bicycle, opposite meaning", ku: "هەمان پاسکیل، پێچەوانەی واتا" },
+    q: { en: "A BLUE circle with a bicycle. How does it differ from a bicycle in a RED ring?", ku: "بازنەیەکی شین بە پاسکیلەوە. چ جیاوازییەکی هەیە لەگەڵ پاسکیلێک لەناو بازنەی سوور؟" },
+    o: [
+      { en: "Blue orders — this route is for cyclists; red forbids — no bicycles", ku: "شین فەرمان دەکات — ئەم ڕێڕەوە بۆ پاسکیلسوارە؛ سوور قەدەغە دەکات — پاسکیل قەدەغەیە" },
+      { en: "They mean exactly the same thing", ku: "هەردووکیان هەمان شت دەگەیەنن" },
+      { en: "Blue is a warning, red is information", ku: "شین ئاگادارکردنەوەیە، سوور زانیارییە" },
+    ],
+    why: { en: "Colour carries the grammar of the sign: a blue circle gives an order or marks a route, a red ring forbids. The same bicycle symbol means opposite things in each.", ku: "ڕەنگ ڕێزمانی تابلۆکە هەڵدەگرێت: بازنەی شین فەرمان دەدات یان ڕێڕەو دیاری دەکات، بازنەی سوور قەدەغە دەکات." },
+    sayA: { en: "Same bicycle, opposite meaning. A blue circle with a bicycle — how does it differ from a bicycle in a red ring?", ku: "هەمان پاسکیل، پێچەوانەی واتا. بازنەیەکی شین بە پاسکیلەوە. چ جیاوازییەکی هەیە لەگەڵ پاسکیلێک لەناو بازنەی سوور؟" },
+    sayB: { en: "Blue orders — this route is for cyclists; red forbids — no bicycles. Colour is the grammar of the sign: blue commands, red forbids. 745 more questions, free.", ku: "شین فەرمان دەکات — ئەم ڕێڕەوە بۆ پاسکیلسوارە؛ سوور قەدەغە دەکات — پاسکیل قەدەغەیە. ڕەنگ ڕێزمانی تابلۆکەیە: شین فەرمان دەدات، سوور قەدەغە دەکات. ٧٤٥ پرسیاری تر، بەخۆڕایی." },
+  },
+
+  {
+    id: "escapelane", topic: "Escape lane sign for runaway heavy vehicles", label: "A blue sign shows a lorry climbing a short r", a: 0, bait: 2,
+    hook: { en: "Gravel that saves lives, not a rest stop", ku: "خشڵێک کە ژیان ڕزگار دەکات، نەک شوێنی حەوانەوە" },
+    q: { en: "A blue sign shows a lorry climbing a short ramp surfaced with loose material. What is it?", ku: "تابلۆیەکی شین بارهەڵگرێک پیشان دەدات کە بە هەورازێکی کورتدا سەردەکەوێت و ڕووکەشەکەی مادەی شلە. ئەوە چییە؟" },
+    o: [
+      { en: "An escape lane, where a runaway large vehicle can be brought to a stop", ku: "شوێنی قەڵایانی ئۆتۆمبێلی گەورە، کە سوارڕۆیەکی گەورەی لەبەرچووەکەوە تێیدا دەوەستێنرێت" },
+      { en: "A pedestrian crossing", ku: "شوێنی پەڕینەوەی پیادە" },
+      { en: "A hospital", ku: "نەخۆشخانە" },
+    ],
+    why: { en: "It marks an escape lane — a short uphill bed of gravel or sand set beside a long descent, there to stop a heavy vehicle whose brakes have overheated and faded. It is an emergency device, not a parking or rest area.", ku: "ئەمە شوێنی قەڵایانە — هەورازێکی کورتی زبڵ یان لم لەتەنیشت نشێوێکی درێژ." },
+    sayA: { en: "Gravel that saves lives, not a rest stop. A blue sign shows a lorry climbing a short ramp of loose material. What is it?", ku: "خشڵێک کە ژیان ڕزگار دەکات، نەک شوێنی حەوانەوە. تابلۆیەکی شین بارهەڵگرێک پیشان دەدات کە بە هەورازێکی کورتدا سەردەکەوێت. ئەوە چییە؟" },
+    sayB: { en: "An escape lane, where a runaway heavy vehicle can be brought to a stop. It is an emergency device only — never pull into one for any other reason. 745 more questions, free.", ku: "شوێنی قەڵایانی ئۆتۆمبیلی گەورە کە لەبەرچووەکە تێیدا دەوەستێنرێت. تەنها ئامرازی فریاکەوتنە — هەرگیز بۆ هیچ هۆکارێکی تر مەچۆرە ناوی. ٧٤٥ پرسیاری تر، بەخۆڕایی." },
+  },
+
+  {
+    id: "givewaystop", topic: "Give way sign vs stop sign", label: "What is the difference between a GIVE WAY si", a: 0, bait: 1,
+    hook: { en: "Rolling through is not always allowed", ku: "بەردەوامبوون هەمیشە ڕێگەپێدراو نییە" },
+    q: { en: "What is the difference between a GIVE WAY sign and a STOP sign?", ku: "جیاوازی نێوان هێمای ڕێگە بدە و هێمای STOP چییە؟" },
+    o: [
+      { en: "Give way means let others pass and go on if clear; STOP means you must halt completely at the line first", ku: "ڕێگە بدە واتە ڕێگە بە ئەوانی تر بدە و ئەگەر ڕوون بوو بڕۆ؛ STOP واتە دەبێت سەرەتا بە تەواوی لەلای هێڵەکە بوەستیت" },
+      { en: "They mean exactly the same thing", ku: "هەردووکیان هەمان واتا دەگەیەنن" },
+      { en: "Stop applies only to lorries", ku: "STOP تەنها بۆ بارهەڵگرەکانە" },
+    ],
+    why: { en: "Give way lets you roll through if the road is genuinely clear. STOP does not: the wheels must stop turning at the line, and only then do you look right, left and right again before moving off.", ku: "ڕێگە بدە ڕێگەت پێدەدات بڕۆیت ئەگەر ڕێگاکە بەڕاستی ڕوون بێت." },
+    sayA: { en: "Rolling through is not always allowed. What is the difference between a give way sign and a stop sign?", ku: "بەردەوامبوون هەمیشە ڕێگەپێدراو نییە. جیاوازی نێوان هێمای ڕێگە بدە و هێمای STOP چییە؟" },
+    sayB: { en: "Give way lets you roll through if clear; stop means your wheels must fully stop at the line first, then look right, left and right again. 745 more questions, free.", ku: "ڕێگە بدە ڕێگەت پێدەدات ئەگەر ڕوون بوو بڕۆیت؛ STOP واتە دەبێت سەرەتا تایەکان لەلای هێڵەکە بوەستن، پاشان ڕاست، چەپ و دووبارە ڕاست سەیر بکە. ٧٤٥ پرسیاری تر، بەخۆڕایی." },
+  },
+
+  {
+    id: "snakebite", topic: "What not to do for a snake or scorpion bite", label: "Someone is bitten by a snake or stung by a s", a: 0, bait: 2,
+    hook: { en: "Cutting and sucking make it worse", ku: "بڕین و هەڵمژین خراپتری دەکات" },
+    q: { en: "Someone is bitten by a snake or stung by a scorpion. What must you NOT do?", ku: "کەسێک مار پێیدا داوە یان دووپشک پێیوەداوە. چی نابێت بکەیت؟" },
+    o: [
+      { en: "Cut the wound, suck out the venom or apply ice", ku: "برینەکە ببڕیت، ژەهرەکە هەڵمژیت یان سەهۆڵی بخەیتە سەر" },
+      { en: "Keep them still and calm", ku: "بێجوڵە و ئارامیان ڕابگریت" },
+      { en: "Remove rings and watches", ku: "ئەنگوستیلە و کاتژمێر لابەیت" },
+    ],
+    why: { en: "Cutting and sucking spread the venom and add infection; ice damages the tissue further. Keep the person still so the venom moves slowly, wash the site, remove anything tight before swelling, and call 122.", ku: "بڕین و هەڵمژین ژەهرەکە بڵاو دەکەنەوە و هەوکردنیش زیاد دەکەن." },
+    sayA: { en: "Cutting and sucking make it worse. Someone is bitten by a snake or stung by a scorpion. What must you not do?", ku: "بڕین و هەڵمژین خراپتری دەکات. کەسێک مار پێیدا داوە یان دووپشک پێیوەداوە. چی نابێت بکەیت؟" },
+    sayB: { en: "Cut the wound, suck out the venom, or apply ice. Cutting and sucking spread the venom; ice damages the tissue. Keep them still and call 122. 745 more questions, free.", ku: "برینەکە ببڕیت، ژەهرەکە هەڵمژیت یان سەهۆڵی بخەیتە سەر. بڕین و هەڵمژین ژەهرەکە بڵاو دەکەنەوە؛ سەهۆڵ زیانی زیاتر دەگەیەنێت. کەسەکە بێجوڵە ڕابگرە و پەیوەندی بە ١٢٢ بکە. ٧٤٥ پرسیاری تر، بەخۆڕایی." },
+  },
+
+  {
+    id: "injuredeye", topic: "What not to do for an injured eye", label: "A casualty has an injured eye. What must you", a: 0, bait: 1,
+    hook: { en: "Never wash an injured eye", ku: "هەرگیز چاوی بریندار مەشۆ" },
+    q: { en: "A casualty has an injured eye. What must you not do?", ku: "برینداریک چاوی بریندار بووە. چی نابێت بکەیت؟" },
+    o: [
+      { en: "Wash or clean it — just cover it with a clean soft cloth", ku: "بیشۆیت یان پاکی بکەیتەوە — تەنها بە پارچە قوماشێکی پاک و نەرم دایپۆشە" },
+      { en: "Cover it with a clean cloth", ku: "بە پارچە قوماشێکی پاک دایپۆشە" },
+    ],
+    why: { en: "Washing an injured eye can drive debris deeper and damage it further. Cover it gently and leave it to the hospital.", ku: "شوشتنی چاوێکی بریندار دەتوانێت پاشماوە قووڵتر ببات و زیانی زیاتری پێبگەیەنێت." },
+    sayA: { en: "Never wash an injured eye. A casualty has an injured eye. What must you not do?", ku: "هەرگیز چاوی بریندار مەشۆ. برینداریک چاوی بریندار بووە. چی نابێت بکەیت؟" },
+    sayB: { en: "Wash or clean it — just cover it with a clean soft cloth instead. Washing can drive debris deeper and damage the eye further. 745 more questions, free.", ku: "بیشۆیت یان پاکی بکەیتەوە — تەنها بە پارچە قوماشێکی پاک و نەرم دایپۆشە. شوشتن پاشماوە قووڵتر دەبات و زیانی زیاتر دەگەیەنێت. ٧٤٥ پرسیاری تر، بەخۆڕایی." },
+  },
+
+  {
+    id: "crowdcontrol", topic: "Moving a crowd away from an injured person", label: "A crowd is gathering around an injured perso", a: 0, bait: 1,
+    hook: { en: "More people is not more help", ku: "خەڵکی زیاتر یارمەتی زیاتر نییە" },
+    q: { en: "A crowd is gathering around an injured person. What should you do?", ku: "خەڵکێک لە دەوری کەسێکی بریندار کۆدەبنەوە. چی دەکەیت؟" },
+    o: [
+      { en: "Try to move them back", ku: "هەوڵبدە دووریان بخەیتەوە" },
+      { en: "Let them stay — more help is better", ku: "بیانهێڵە — یارمەتی زیاتر باشترە" },
+      { en: "Ask them to lift the casualty", ku: "داوایان لێبکە برینداری هەڵبگرن" },
+    ],
+    why: { en: "A crowd frightens the casualty and blocks the paramedics when they arrive. Once the medical team is there, step back yourself and let the people who are trained get on with it.", ku: "کۆمەڵێک خەڵک برینداری دەتۆقێنێت و ڕێگا لە تیمی فریاگوزاری دەگرێت." },
+    sayA: { en: "More people is not more help. A crowd is gathering around an injured person. What should you do?", ku: "خەڵکی زیاتر یارمەتی زیاتر نییە. خەڵکێک لە دەوری کەسێکی بریندار کۆدەبنەوە. چی دەکەیت؟" },
+    sayB: { en: "Try to move them back. A crowd frightens the casualty and blocks paramedics when they arrive — step back once trained help is there. 745 more questions, free.", ku: "هەوڵبدە دووریان بخەیتەوە. کۆمەڵێک خەڵک برینداری دەتۆقێنێت و ڕێگا لە تیمی فریاگوزاری دەگرێت. کاتێک تیمی پزیشکی گەیشت، خۆشت بکشێرەوە دواوە. ٧٤٥ پرسیاری تر، بەخۆڕایی." },
+  },
+
+  {
+    id: "internalbleed", topic: "Blood from the ear or mouth after a crash", label: "Blood is coming from a casualty's ear or mou", a: 0, bait: 2,
+    hook: { en: "Blood from an ear is never nothing", ku: "خوێن لە گوێوە هەرگیز هیچی نییە" },
+    q: { en: "Blood is coming from a casualty's ear or mouth after a crash. What does that suggest?", ku: "دوای ڕوودانێک خوێن لە گوێ یان دەمی برینداریکەوە دێت. ئەمە چی دەگەیەنێت؟" },
+    o: [
+      { en: "Internal injury — call 122 at once", ku: "برینداری ناوەکی — دەستبەجێ پەیوەندی بە ١٢٢ بکە" },
+      { en: "A minor cut inside the mouth", ku: "بڕینێکی سووکی ناو دەم" },
+      { en: "Nothing serious", ku: "هیچی گرنگ نییە" },
+    ],
+    why: { en: "Bleeding from an orifice — nose, ear or mouth — points to damage you cannot see. Other signs of internal bleeding are swelling and blue skin, a fast heart rate, rapid breathing, thirst and dizziness.", ku: "خوێنبەربوون لە کونێکەوە — لووت، گوێ یان دەم — ئاماژەیە بۆ زیانێک کە نایبینیت." },
+    sayA: { en: "Blood from an ear is never nothing. Blood is coming from a casualty's ear or mouth after a crash. What does that suggest?", ku: "خوێن لە گوێوە هەرگیز هیچی نییە. دوای ڕوودانێک خوێن لە گوێ یان دەمی برینداریکەوە دێت. ئەمە چی دەگەیەنێت؟" },
+    sayB: { en: "Internal injury — call 122 at once. Bleeding from the nose, ear or mouth points to damage you cannot see. 745 more questions, free.", ku: "برینداری ناوەکی — دەستبەجێ پەیوەندی بە ١٢٢ بکە. خوێنبەربوون لە لووت، گوێ یان دەم ئاماژەیە بۆ زیانێک کە نایبینیت. ٧٤٥ پرسیاری تر، بەخۆڕایی." },
+  },
+
+  {
+    id: "firstaidaim", topic: "The stated aim of first aid", label: "What is the stated aim of first aid?", a: 0, bait: 1,
+    hook: { en: "First aid does not mean treat", ku: "فریاگوزاری واتای چارەسەرکردن نییە" },
+    q: { en: "What is the stated aim of first aid?", ku: "ئامانجی دیاریکراوی فریاگوزاری سەرەتایی چییە؟" },
+    o: [
+      { en: "To rescue the person until help arrives — not to treat them", ku: "ڕزگارکردنی کەسەکە تا یارمەتی دەگات — نەک چارەسەرکردنیان" },
+      { en: "To treat the injury completely", ku: "چارەسەرکردنی تەواوی برینەکە" },
+      { en: "To decide who caused the crash", ku: "بڕیاردان لەوەی کێ هۆکاری ڕووداوەکە بووە" },
+    ],
+    why: { en: "Anyone may give first aid, provided it is done correctly so as not to make things worse. Its three principles are: protect life, prevent deterioration, speed the treatment.", ku: "هەر کەسێک دەتوانێت فریاگوزاری سەرەتایی بکات، بەمەرجێک بە دروستی بکرێت." },
+    sayA: { en: "First aid does not mean treat. What is the stated aim of first aid?", ku: "فریاگوزاری واتای چارەسەرکردن نییە. ئامانجی دیاریکراوی فریاگوزاری سەرەتایی چییە؟" },
+    sayB: { en: "To rescue the person until help arrives — not to treat them. Its three principles: protect life, prevent deterioration, speed the treatment. 745 more questions, free.", ku: "ڕزگارکردنی کەسەکە تا یارمەتی دەگات — نەک چارەسەرکردنیان. سێ بنەماکەی: پاراستنی ژیان، ڕێگرتن لە خراپتربوون، خێراکردنی چارەسەر. ٧٤٥ پرسیاری تر، بەخۆڕایی." },
+  },
+
+  {
+    id: "stayatscene", topic: "Why you must stay at a crash scene", label: "You have been in a crash. Why must you stay ", a: 0, bait: 2,
+    hook: { en: "Leaving costs you either way", ku: "چوون بەهەر شێوەیەک تاوانە" },
+    q: { en: "You have been in a crash. Why must you stay at the scene?", ku: "تووشی ڕووداوێک بوویت. بۆچی دەبێت لە شوێنەکە بمێنیتەوە؟" },
+    o: [
+      { en: "Leaving carries a heavy penalty whether or not you caused it", ku: "بەجێهێشتن سزایەکی گرانی لێدەکەوێتەوە جا تۆ هۆکاری بویت یان نا" },
+      { en: "Only the driver at fault must stay", ku: "تەنها ئەو شۆفێرەی هەڵەکەی کردووە دەبێت بمێنێتەوە" },
+      { en: "You may leave once you have photographed it", ku: "دەتوانیت بڕۆیت کاتێک وێنەت گرت" },
+    ],
+    why: { en: "Stay calm, call the police and first aid, put your hazard lights on, and photograph the scene before moving the car. If you smell petrol or fuel, get out immediately.", ku: "ئارام بە، پەیوەندی بە پۆلیس و فریاگوزاری بکە، لایتی مەترسی داگیرسێنە." },
+    sayA: { en: "Leaving costs you either way. You have been in a crash. Why must you stay at the scene?", ku: "چوون بەهەر شێوەیەک تاوانە. تووشی ڕووداوێک بوویت. بۆچی دەبێت لە شوێنەکە بمێنیتەوە؟" },
+    sayB: { en: "Leaving carries a heavy penalty whether or not you caused it. Stay calm, call the police, put on hazard lights, and photograph the scene. 745 more questions, free.", ku: "بەجێهێشتن سزایەکی گرانی لێدەکەوێتەوە جا هۆکاری بویت یان نا. ئارام بە، پەیوەندی بە پۆلیس بکە، لایتی مەترسی داگیرسێنە، و وێنەی شوێنەکە بگرە. ٧٤٥ پرسیاری تر، بەخۆڕایی." },
+  },
+
+  {
+    id: "arterialbleed", topic: "Recognising arterial bleeding", label: "Bright red blood is spurting from a wound. W", a: 0, bait: 2,
+    hook: { en: "Spurting blood is the dangerous kind", ku: "خوێنی فیشقەیی جۆرە مەترسیدارەکەیە" },
+    q: { en: "Bright red blood is spurting from a wound. What does that tell you?", ku: "خوێنی سووری گەش بە فیشقە لە برینێکەوە دێتە دەرەوە. ئەمە چیت پێدەڵێت؟" },
+    o: [
+      { en: "It is arterial bleeding — the most dangerous kind", ku: "خوێنبەربوونی لوولە خوێنبەرەکانە — مەترسیدارترین جۆر" },
+      { en: "It is a minor surface graze", ku: "خوڕانەوەیەکی سووکی ڕووکەشە" },
+      { en: "It is venous bleeding", ku: "خوێنبەربوونی لوولە خوێنهێنەرەکانە" },
+    ],
+    why: { en: "Bright red and pulsing means it is coming straight from the heart under pressure, and it must be stopped at once. Dark red blood that flows steadily is venous — serious, but less immediately life-threatening.", ku: "سووری گەش و لێدەردار واتای ئەوەیە ڕاستەوخۆ لە دڵەوە بە فشار دێت." },
+    sayA: { en: "Spurting blood is the dangerous kind. Bright red blood is spurting from a wound. What does that tell you?", ku: "خوێنی فیشقەیی جۆرە مەترسیدارەکەیە. خوێنی سووری گەش بە فیشقە لە برینێکەوە دێتە دەرەوە. ئەمە چیت پێدەڵێت؟" },
+    sayB: { en: "It is arterial bleeding — the most dangerous kind. Bright red and pulsing means it comes straight from the heart and must be stopped at once. 745 more questions, free.", ku: "خوێنبەربوونی لوولە خوێنبەرەکانە — مەترسیدارترین جۆر. سووری گەش و لێدەردار واتای ئەوەیە ڕاستەوخۆ لە دڵەوە بە فشار دێت، دەبێت دەستبەجێ بوەستێنرێت. ٧٤٥ پرسیاری تر، بەخۆڕایی." },
+  },
+
+  {
+    id: "callemergency", topic: "What to say first when calling emergency services", label: "You are calling the emergency services from ", a: 0, bait: 1,
+    hook: { en: "Say who and where before what", ku: "پێش هەموو شتێک بڵێ کێی و لەکوێی" },
+    q: { en: "You are calling the emergency services from a crash. What should you say first?", ku: "لە شوێنی ڕوودانێکەوە پەیوەندی بە فریاکەوتنەوە دەکەیت. سەرەتا چی دەڵێیت؟" },
+    o: [
+      { en: "Who you are, then the location, the type of crash and the number of casualties", ku: "خۆت بناسێنە، پاشان شوێنەکە، جۆری ڕوودانەکە و ژمارەی بریندارەکان" },
+      { en: "Just ask them to hurry", ku: "تەنها داوایان لێبکە پەلە بکەن" },
+      { en: "Describe each injury in detail first", ku: "سەرەتا هەر برینێک بە وردی باس بکە" },
+    ],
+    why: { en: "Look at the scene before you dial — how many vehicles, how many people hurt — so you can give it in one go. Mention any fire risk. If others are there, ask one of them to call as well.", ku: "پێش پەیوەندیکردن سەیری شوێنەکە بکە — چەند ئۆتۆمبیل، چەند کەس بریندار." },
+    sayA: { en: "Say who and where before what. You are calling the emergency services from a crash. What should you say first?", ku: "پێش هەموو شتێک بڵێ کێی و لەکوێی. لە شوێنی ڕوودانێکەوە پەیوەندی بە فریاکەوتنەوە دەکەیت. سەرەتا چی دەڵێیت؟" },
+    sayB: { en: "Who you are, then the location, the type of crash and the number of casualties. Look at the scene before you dial so you can give it in one go. 745 more questions, free.", ku: "خۆت بناسێنە، پاشان شوێنەکە، جۆری ڕوودانەکە و ژمارەی بریندارەکان. پێش پەیوەندیکردن سەیری شوێنەکە بکە تا بە یەک جار بیڵێیت. ٧٤٥ پرسیاری تر، بەخۆڕایی." },
+  },
+
+  {
+    id: "acidburn", topic: "First aid for battery acid on the skin", label: "Battery acid has splashed onto someone's ski", a: 0, bait: 2,
+    hook: { en: "Water first, hospital second", ku: "سەرەتا ئاو، دواتر نەخۆشخانە" },
+    q: { en: "Battery acid has splashed onto someone's skin. What comes first?", ku: "تروشی باتری چۆتە سەر پێستی کەسێک. یەکەم شت چییە؟" },
+    o: [
+      { en: "Wash the area with water as soon as possible", ku: "بە زووترین کات شوێنەکە بە ئاو بشۆرەوە" },
+      { en: "Cover it with a dry cloth", ku: "بە پارچەیەکی وشک دایبپۆشە" },
+      { en: "Drive them to hospital straight away", ku: "دەستبەجێ بیانبە بۆ نەخۆشخانە" },
+    ],
+    why: { en: "Acid keeps burning while it is on the skin. Flushing with water dilutes and removes it; only then think about hospital.", ku: "ترش بەردەوام دەسووتێنێت هەتا لەسەر پێست بێت." },
+    sayA: { en: "Water first, hospital second. Battery acid has splashed onto someone's skin. What comes first?", ku: "سەرەتا ئاو، دواتر نەخۆشخانە. تروشی باتری چۆتە سەر پێستی کەسێک. یەکەم شت چییە؟" },
+    sayB: { en: "Wash the area with water as soon as possible. Acid keeps burning while it is on the skin — flushing dilutes and removes it. 745 more questions, free.", ku: "بە زووترین کات شوێنەکە بە ئاو بشۆرەوە. ترش بەردەوام دەسووتێنێت هەتا لەسەر پێست بێت — شۆردنەوە ڕەقی دەکاتەوە و لایدەبات. ٧٤٥ پرسیاری تر، بەخۆڕایی." },
+  },
+
+  {
+    id: "electricburn", topic: "First aid for an electrical burn", label: "Someone has been burned by an electrical fau", a: 0, bait: 1,
+    hook: { en: "Touching them can make you the next casualty", ku: "دەستلێدانیان دەتوانێت تۆش بکاتە قوربانی" },
+    q: { en: "Someone has been burned by an electrical fault. What comes first?", ku: "کەسێک بەهۆی کێشەیەکی کارەباوە سووتاوە. چی لە پێشەوەیە؟" },
+    o: [
+      { en: "Make sure the power is switched off before you touch them", ku: "دڵنیابە کارەبا کوژاوەتەوە پێش ئەوەی دەستیان لێبدەیت" },
+      { en: "Pour water on them immediately", ku: "دەستبەجێ ئاویان بەسەردا بڕێژە" },
+      { en: "Pull them away by the arm", ku: "بە باڵیانەوە ڕایانبکێشە" },
+    ],
+    why: { en: "Touching someone who is still in contact with a live current makes you the second casualty. Once it is safe, take off rings, watches and belts near the burn before it swells, then cool it with water for 10 to 15 minutes.", ku: "دەستلێدانی کەسێک کە هێشتا بە کارەبای زیندووەوە لکاوە تۆ دەکاتە قوربانی دووەم." },
+    sayA: { en: "Touching them can make you the next casualty. Someone has been burned by an electrical fault. What comes first?", ku: "دەستلێدانیان دەتوانێت تۆش بکاتە قوربانی. کەسێک بەهۆی کێشەیەکی کارەباوە سووتاوە. چی لە پێشەوەیە؟" },
+    sayB: { en: "Make sure the power is switched off before you touch them. Touching a live casualty makes you the second victim. 745 more questions, free.", ku: "دڵنیابە کارەبا کوژاوەتەوە پێش ئەوەی دەستیان لێبدەیت. دەستلێدانی کەسێک کە هێشتا بە کارەبای زیندووەوە لکاوە تۆ دەکاتە قوربانی دووەم. ٧٤٥ پرسیاری تر، بەخۆڕایی." },
+  },
+
+  {
+    id: "boiledengine", topic: "What not to do when an engine boils over", label: "The engine has boiled over. What must you NO", a: 0, bait: 2,
+    hook: { en: "Never open a boiling radiator", ku: "هەرگیز ڕادیەتەری کوڵاو مەکەرەوە" },
+    q: { en: "The engine has boiled over. What must you NOT do?", ku: "بزوێنەر کوڵاوە. چی نابێت بکەیت؟" },
+    o: [
+      { en: "Open the radiator cap while it is still hot", ku: "سەرپۆشی ڕادیەتەر هەڵبگریت کاتێک هێشتا گەرمە" },
+      { en: "Let the engine idle and cool", ku: "با بزوێنەر بە بێکاری کار بکات و سارد ببێتەوە" },
+      { en: "Wait before adding water", ku: "پێش زیادکردنی ئاو چاوەڕێ بکە" },
+    ],
+    why: { en: "A hot system is under pressure. Opening the cap sprays boiling coolant over you. Let it cool, add water after about twenty minutes, and open the cap last.", ku: "سیستەمی گەرم لەژێر پەستاندایە." },
+    sayA: { en: "Never open a boiling radiator. The engine has boiled over. What must you not do?", ku: "هەرگیز ڕادیەتەری کوڵاو مەکەرەوە. بزوێنەر کوڵاوە. چی نابێت بکەیت؟" },
+    sayB: { en: "Open the radiator cap while it is still hot. A hot system is under pressure and will spray boiling coolant over you. Let it cool first. 745 more questions, free.", ku: "سەرپۆشی ڕادیەتەر هەڵبگریت کاتێک هێشتا گەرمە. سیستەمی گەرم لەژێر پەستاندایە و ئاوی کوڵاوت بەسەردا دەپرژێنێت. با یەکەم سارد ببێتەوە. ٧٤٥ پرسیاری تر، بەخۆڕایی." },
+  },
+
+  {
+    id: "jumpstart", topic: "Where the last clamp goes when jump-starting", label: "You are jump-starting a car. Where does the ", a: 0, bait: 1,
+    hook: { en: "The last clamp never touches the battery", ku: "دوایین کێلبە هەرگیز باتری بەرناکەوێت" },
+    q: { en: "You are jump-starting a car. Where does the last (black) clamp go?", ku: "خەریکی دانەگیرساندنی ئۆتۆمبیلێکیت. دوایین کێلبەی ڕەش لە کوێ دەبەستێت؟" },
+    o: [
+      { en: "On a bare metal part of the dead car, not on its battery terminal", ku: "لەسەر بەشێکی کانزایی ڕووتی ئۆتۆمبیلە مردووەکە، نەک لەسەر جەمسەری باتری" },
+      { en: "On the negative terminal of the dead battery", ku: "لەسەر جەمسەری نێگەتیڤی باتریی مردوو" },
+      { en: "On the positive terminal of the dead battery", ku: "لەسەر جەمسەری پۆزەتیڤی باتریی مردوو" },
+    ],
+    why: { en: "Red to positive on both, black to negative on the good battery, then the last black clamp to bare metal on the dead car — away from the battery, because a charging battery gives off gas and the final connection can spark.", ku: "سوور بۆ پۆزەتیڤی هەردووکیان، ڕەش بۆ نێگەتیڤی باتریە باشەکە." },
+    sayA: { en: "The last clamp never touches the battery. You are jump-starting a car. Where does the last black clamp go?", ku: "دوایین کێلبە هەرگیز باتری بەرناکەوێت. خەریکی دانەگیرساندنی ئۆتۆمبیلێکیت. دوایین کێلبەی ڕەش لە کوێ دەبەستێت؟" },
+    sayB: { en: "On a bare metal part of the dead car, not its battery terminal. A charging battery gives off gas and the last connection can spark. 745 more questions, free.", ku: "لەسەر بەشێکی کانزایی ڕووتی ئۆتۆمبیلە مردووەکە، نەک لەسەر جەمسەری باتری. باتریی بارگاوی گاز دەردەکات و پەیوەندیی کۆتایی دەتوانێت بتروسکێت. ٧٤٥ پرسیاری تر، بەخۆڕایی." },
+  },
+
+  {
+    id: "wheelnuts", topic: "When to loosen wheel nuts before changing a wheel", label: "When changing a wheel, when should you loose", a: 0, bait: 1,
+    hook: { en: "Loosen the nuts before you jack it up", ku: "پێش بەرزکردنەوە بولۆنەکان شل بکە" },
+    q: { en: "When changing a wheel, when should you loosen the wheel nuts?", ku: "لە کاتی گۆڕینی ویلدا، کەی دەبێت بورغووەکان شل بکەیت؟" },
+    o: [
+      { en: "Before raising the car with the jack", ku: "پێش بەرزکردنەوەی ئۆتۆمبیلەکە بە جەک" },
+      { en: "After the wheel is off the ground", ku: "دوای ئەوەی ویلەکە لە زەوی جیا دەبێتەوە" },
+      { en: "It does not matter", ku: "گرنگ نییە" },
+    ],
+    why: { en: "Loosen them while the tyre still grips the ground, or the wheel simply spins. Then park level, apply the handbrake, chock the wheels, and lay the removed wheel under the car beside the jack.", ku: "پێش بەرزکردنەوەی ئۆتۆمبیلەکە بە جەک. شلیان بکە کاتێک تایەکە هێشتا زەوی دەگرێت." },
+    sayA: { en: "Loosen the nuts before you jack it up. When changing a wheel, when should you loosen the wheel nuts?", ku: "پێش بەرزکردنەوە بولۆنەکان شل بکە. لە کاتی گۆڕینی ویلدا، کەی دەبێت بورغووەکان شل بکەیت؟" },
+    sayB: { en: "Before raising the car with the jack. Loosen them while the tyre still grips the ground, or the wheel just spins in the air. 745 more questions, free.", ku: "پێش بەرزکردنەوەی ئۆتۆمبیلەکە بە جەک. شلیان بکە کاتێک تایەکە هێشتا زەوی دەگرێت، ئەگەرنا ویلەکە تەنها دەسووڕێتەوە. ٧٤٥ پرسیاری تر، بەخۆڕایی." },
+  },
+
+  {
+    id: "sparetyre", topic: "Fitting a worn spare tyre", label: "Your spare tyre turns out to be worn smooth.", a: 0, bait: 1,
+    hook: { en: "A smooth spare is still illegal", ku: "تایەی یەدەگی لووسیش نایاسایییە" },
+    q: { en: "Your spare tyre turns out to be worn smooth. May you fit it and drive on?", ku: "دەردەکەوێت تایەی یەدەگەکەت لووس بووە. ئایا دەتوانیت دایبنێیت و بڕۆیت؟" },
+    o: [
+      { en: "No — a smooth tyre is illegal even as the spare", ku: "نەخێر — تایەی لووس نایاسایییە تەنانەت وەک تایەی یەدەگیش" },
+      { en: "Yes, if you inflate it properly", ku: "بەڵێ، ئەگەر بە باشی پڕی بکەیت" },
+      { en: "Yes, for up to 24 hours", ku: "بەڵێ، بۆ ماوەی ٢٤ کاتژمێر" },
+    ],
+    why: { en: "The law sets a minimum tread and makes no exception for a spare. A bald tyre has no grip in the wet whatever wheel it is on.", ku: "یاسا کەمترین نەخش دادەنێت و هیچ جیاوازییەک بۆ تایەی یەدەگ ناکات." },
+    sayA: { en: "A smooth spare is still illegal. Your spare tyre turns out to be worn smooth. May you fit it and drive on?", ku: "تایەی یەدەگی لووسیش نایاسایییە. دەردەکەوێت تایەی یەدەگەکەت لووس بووە. ئایا دەتوانیت دایبنێیت و بڕۆیت؟" },
+    sayB: { en: "No — a smooth tyre is illegal even as the spare. The law sets a minimum tread with no exception, and a bald tyre has no grip in the wet. 745 more questions, free.", ku: "نەخێر — تایەی لووس نایاسایییە تەنانەت وەک تایەی یەدەگیش. یاسا کەمترین نەخش دادەنێت بەبێ جیاوازی، و تایەی لووس لە شێداریدا هیچ گرتنێکی نییە. ٧٤٥ پرسیاری تر، بەخۆڕایی." },
+  },
+
+  {
+    id: "blowout", topic: "What to do on a front tyre blowout", label: "Your FRONT tyre blows out at speed. What do ", a: 0, bait: 1,
+    hook: { en: "Don't slam the brake on a front blowout", ku: "لە کاتی تەقینی پێشەوە برێک تووند مەگرە" },
+    q: { en: "Your FRONT tyre blows out at speed. What do you do?", ku: "تایەی پێشەوەت بە خێرایی دەتەقێتەوە. چی دەکەیت؟" },
+    o: [
+      { en: "Grip the wheel firmly, keep straight, ease off, then brake gently", ku: "سوکانەکە بە توندی بگرە، ڕاست بڕۆ، پێ هەڵبگرە، پاشان بە نەرمی برێک بگرە" },
+      { en: "Brake hard immediately", ku: "دەستبەجێ بە توندی برێک بگرە" },
+      { en: "Pull the handbrake", ku: "هاندبرێک ڕابکێشە" },
+    ],
+    why: { en: "A front blowout drags the steering. Hold it straight, let the speed fall away, and brake only gently once you are stable.", ku: "تەقینەوەی پێشەوە سوکان ڕادەکێشێت." },
+    sayA: { en: "Don't slam the brake on a front blowout. Your front tyre blows out at speed. What do you do?", ku: "لە کاتی تەقینی پێشەوە برێک تووند مەگرە. تایەی پێشەوەت بە خێرایی دەتەقێتەوە. چی دەکەیت؟" },
+    sayB: { en: "Grip the wheel firmly, keep straight, ease off, then brake gently. A front blowout drags the steering — hold it straight and let speed fall away first. 745 more questions, free.", ku: "سوکانەکە بە توندی بگرە، ڕاست بڕۆ، پێ هەڵبگرە، پاشان بە نەرمی برێک بگرە. تەقینەوەی پێشەوە سوکان ڕادەکێشێت — ڕاستی بگرە و با خێراییەکە یەکەم بکەوێت. ٧٤٥ پرسیاری تر، بەخۆڕایی." },
+  },
+
+  {
+    id: "frozenwindscreen", topic: "What not to use to clear a frozen windscreen", label: "The windscreen is frozen. What must you not ", a: 0, bait: 2,
+    hook: { en: "Hot water cracks cold glass", ku: "ئاوی گەرم جامی سارد دەتەقێنێت" },
+    q: { en: "The windscreen is frozen. What must you not use to clear it?", ku: "جامی پێشەوە بەستووە. بۆ پاککردنەوەی چی نابێت بەکاربهێنیت؟" },
+    o: [
+      { en: "Very hot water — it can crack the glass", ku: "ئاوی زۆر گەرم — دەتوانێت جامەکە بتەقێنێت" },
+      { en: "The car's heater", ku: "گەرمکەرەوەی ئۆتۆمبیلەکە" },
+      { en: "A scraper or de-icing spray", ku: "فڵچە یان سپرای بەستنشکێن" },
+    ],
+    why: { en: "A sudden temperature change across cold glass is exactly what cracks it. Warm the car through, or use a scraper and a proper de-icer — and clear all the windows, not just a porthole in front of you.", ku: "گۆڕانێکی لەناکاوی پلەی گەرمی بەسەر جامی سارددا هەر ئەوەیە کە دەیتەقێنێت." },
+    sayA: { en: "Hot water cracks cold glass. The windscreen is frozen. What must you not use to clear it?", ku: "ئاوی گەرم جامی سارد دەتەقێنێت. جامی پێشەوە بەستووە. بۆ پاککردنەوەی چی نابێت بەکاربهێنیت؟" },
+    sayB: { en: "Very hot water — it can crack the glass. A sudden temperature change across cold glass is exactly what breaks it; use a scraper instead. 745 more questions, free.", ku: "ئاوی زۆر گەرم — دەتوانێت جامەکە بتەقێنێت. گۆڕانێکی لەناکاوی گەرمی بەسەر جامی سارددا هەر ئەوەیە کە دەیتەقێنێت؛ لەبری ئەوە فڵچە بەکاربهێنە. ٧٤٥ پرسیاری تر، بەخۆڕایی." },
+  },
+
+  {
+    id: "headlampcolor", topic: "Required colour of headlamps", label: "What colour must a car's headlamps be?", a: 0, bait: 1,
+    hook: { en: "Not every colour is legal on a headlamp", ku: "هەموو ڕەنگێک لەسەر لایت یاسایی نییە" },
+    q: { en: "What colour must a car's headlamps be?", ku: "ڕەنگی چراکانی لایتی ئۆتۆمبیل دەبێت چی بێت؟" },
+    o: [
+      { en: "White", ku: "سپی" },
+      { en: "Yellow", ku: "زەرد" },
+      { en: "Any colour the owner chooses", ku: "هەر ڕەنگێک کە خاوەنەکە هەڵیبژێرێت" },
+    ],
+    why: { en: "White, high beam and low. Coloured lamps are reserved for emergency vehicles and confuse everyone else.", ku: "سپی، هەم بەرز هەم نزم." },
+    sayA: { en: "Not every colour is legal on a headlamp. What colour must a car's headlamps be?", ku: "هەموو ڕەنگێک لەسەر لایت یاسایی نییە. ڕەنگی چراکانی لایتی ئۆتۆمبیل دەبێت چی بێت؟" },
+    sayB: { en: "White. High beam and low beam alike. Coloured lamps are reserved for emergency vehicles and confuse everyone else on the road. 745 more questions, free.", ku: "سپی. هەم بەرز هەم نزم. چرای ڕەنگاوڕەنگ بۆ ئۆتۆمبیلی فریاگوزاری تەرخانکراوە و ئەوانی تر سەرلێشێواو دەکات. ٧٤٥ پرسیاری تر، بەخۆڕایی." },
+  },
+
+  {
+    id: "gearlever", topic: "Why not to rest a hand on the gear lever", label: "Why must you never rest your hand on the gea", a: 0, bait: 1,
+    hook: { en: "Your hand can shift the gear by accident", ku: "دەستت دەتوانێت گێڕ بەبێ مەبەست بگۆڕێت" },
+    q: { en: "Why must you never rest your hand on the gear lever while driving?", ku: "بۆچی هەرگیز نابێت لە کاتی لێخوڕیندا دەستت لەسەر دەسکی گێڕ دابنێیت؟" },
+    o: [
+      { en: "The pressure can knock the gearbox into neutral", ku: "پەستانەکە دەتوانێت گێڕبۆکس بخاتە بۆشەوە" },
+      { en: "It blocks your view of the dashboard", ku: "دیمەنی داشبۆردت دەبەستێت" },
+      { en: "It wears out the handbrake", ku: "هاندبڕەیک دەڕووخێنێت" },
+    ],
+    why: { en: "The same section warns that a wrong gear selection while driving can make you lose control, and that automatics should always be left in P or N when stopped.", ku: "هەمان بەش ئاگادار دەکاتەوە کە هەڵبژاردنی گێڕی هەڵە لە کاتی لێخوڕیندا دەتوانێت کۆنترۆڵت لەدەست بدات." },
+    sayA: { en: "Your hand can shift the gear by accident. Why must you never rest your hand on the gear lever while driving?", ku: "دەستت دەتوانێت گێڕ بەبێ مەبەست بگۆڕێت. بۆچی هەرگیز نابێت لە کاتی لێخوڕیندا دەستت لەسەر دەسکی گێڕ دابنێیت؟" },
+    sayB: { en: "The pressure can knock the gearbox into neutral. A wrong gear selection while driving can make you lose control of the car. 745 more questions, free.", ku: "پەستانەکە دەتوانێت گێڕبۆکس بخاتە بۆشەوە. هەڵبژاردنی گێڕی هەڵە لە کاتی لێخوڕیندا دەتوانێت کۆنترۆڵت لەدەست بدات. ٧٤٥ پرسیاری تر، بەخۆڕایی." },
+  },
+
+  {
+    id: "engineknock", topic: "Cause of engine knock or pinking", label: "The engine knocks or pinks under load. What ", a: 0, bait: 1,
+    hook: { en: "Knocking means the wrong fuel", ku: "دەنگی لێدان واتای سووتەمەنی هەڵەیە" },
+    q: { en: "The engine knocks or pinks under load. What is the usual cause?", ku: "بزوێنەر لەژێر بارگرانیدا دەنگی لێدان دەردەکات. هۆکارە باوەکەی چییە؟" },
+    o: [
+      { en: "Petrol of too low an octane rating", ku: "بەنزینی خاوەن ئۆکتانی زۆر نزم" },
+      { en: "Too much oil in the sump", ku: "ڕۆنی زۆر لە کارتێردا" },
+      { en: "A loose wheel nut", ku: "بولۆنێکی شل لە چەرخدا" },
+    ],
+    why: { en: "Low-octane fuel ignites too early against the rising piston. Use the grade the manufacturer specifies.", ku: "سووتەمەنی کەم ئۆکتان زوو زیاتر دەگڕێت بەرامبەر پستۆنی سەرکەوتوو." },
+    sayA: { en: "Knocking means the wrong fuel. The engine knocks or pinks under load. What is the usual cause?", ku: "دەنگی لێدان واتای سووتەمەنی هەڵەیە. بزوێنەر لەژێر بارگرانیدا دەنگی لێدان دەردەکات. هۆکارە باوەکەی چییە؟" },
+    sayB: { en: "Petrol of too low an octane rating. Low-octane fuel ignites too early against the rising piston — use the grade the maker specifies. 745 more questions, free.", ku: "بەنزینی خاوەن ئۆکتانی زۆر نزم. سووتەمەنی کەم ئۆکتان زوو زیاتر دەگڕێت بەرامبەر پستۆنی سەرکەوتوو — ئەو پلەیە بەکاربهێنە کە بەرهەمهێنەر دیاری دەکات. ٧٤٥ پرسیاری تر، بەخۆڕایی." },
+  },
+
+  {
+    id: "insultofficer", topic: "Penalty for insulting or obstructing a traffic officer", label: "What is the penalty for insulting or obstruc", a: 0, bait: 1,
+    hook: { en: "Insulting an officer can cost two years", ku: "سووکایەتی بە ئەفسەر دەتوانێت دوو ساڵت بۆ ببڕێت" },
+    q: { en: "What is the penalty for insulting or obstructing a traffic officer on duty?", ku: "سزای سووکایەتیکردن یان بەربەستکردنی ئەفسەرێکی هاتوچۆ لە کاتی ئەرکدا چییە؟" },
+    o: [
+      { en: "Imprisonment for up to two years", ku: "زیندانیکردن بۆ ماوەیەک کە لە دوو ساڵ زیاتر نەبێت" },
+      { en: "A small fine only", ku: "تەنها غەرامەیەکی بچووک" },
+      { en: "Nothing — it is not an offence", ku: "هیچ — تاوان نییە" },
+    ],
+    why: { en: "Insulting or obstructing an officer carries up to two years. Assaulting one carries up to three years, and if the assault causes injury, up to five.", ku: "سووکایەتیکردن یان بەربەستکردنی ئەفسەر تا دوو ساڵی لێدەکەوێتەوە." },
+    sayA: { en: "Insulting an officer can cost two years. What is the penalty for insulting or obstructing a traffic officer on duty?", ku: "سووکایەتی بە ئەفسەر دەتوانێت دوو ساڵت بۆ ببڕێت. سزای سووکایەتیکردن یان بەربەستکردنی ئەفسەرێکی هاتوچۆ لە کاتی ئەرکدا چییە؟" },
+    sayB: { en: "Imprisonment for up to two years. Assaulting an officer carries up to three years, and up to five if the assault causes injury. 745 more questions, free.", ku: "زیندانیکردن بۆ ماوەیەک کە لە دوو ساڵ زیاتر نەبێت. هێرشکردنە سەریان تا سێ ساڵ، و ئەگەر ببێتە هۆی برینداربوون تا پێنج ساڵ. ٧٤٥ پرسیاری تر، بەخۆڕایی." },
+  },
+
+  {
+    id: "parkdownhill", topic: "Handbrake and wheel position parking downhill", label: "You have parked facing DOWNHILL next to a ke", a: 0, bait: 1,
+    hook: { en: "Downhill parking needs the wheels turned", ku: "پارککردنی نشێو پێویستی بە سووڕاندنی تایە هەیە" },
+    q: { en: "You have parked facing DOWNHILL next to a kerb. What should you do?", ku: "ڕوو لە نشێو لەتەنیشت شۆستەیەک پارکت کردووە. دەبێت چی بکەیت؟" },
+    o: [
+      { en: "Apply the handbrake and turn the wheels toward the kerb", ku: "برێکی دەستی دابگرە و تایەکان بەرەو شۆستە بسووڕێنە" },
+      { en: "Leave it in neutral with the engine running", ku: "لەسەر بۆش بەجێی بهێڵە بە بزوێنەری کارا" },
+      { en: "Leave the key in it so it can be moved", ku: "کلیلەکەی تێدا بهێڵە تا بتوانرێت بجووڵێنرێت" },
+    ],
+    why: { en: "The handbrake plus wheels turned into the kerb means that if the brake fails the kerb stops the car instead of the traffic below. Never leave the key in it, the engine running, or valuables on a seat.", ku: "برێکی دەستی لەگەڵ تایەی بەرەو شۆستە سووڕاوە واتە ئەگەر برێکەکە شکستی هێنا شۆستەکە ئۆتۆمبیلەکە ڕادەگرێت." },
+    sayA: { en: "Downhill parking needs the wheels turned. You have parked facing downhill next to a kerb. What should you do?", ku: "پارککردنی نشێو پێویستی بە سووڕاندنی تایە هەیە. ڕوو لە نشێو لەتەنیشت شۆستەیەک پارکت کردووە. دەبێت چی بکەیت؟" },
+    sayB: { en: "Apply the handbrake and turn the wheels toward the kerb. If the brake fails, the kerb stops the car instead of the traffic below. 745 more questions, free.", ku: "برێکی دەستی دابگرە و تایەکان بەرەو شۆستە بسووڕێنە. ئەگەر برێکەکە شکستی هێنا، شۆستەکە ئۆتۆمبیلەکە ڕادەگرێت نەک ئەو هاتوچۆیەی خوارەوە. ٧٤٥ پرسیاری تر، بەخۆڕایی." },
+  },
+
+  {
+    id: "lorryblindspot", topic: "Why a lorry's blind spot is dangerous to linger in", label: "Why is it especially dangerous to sit beside", a: 0, bait: 2,
+    hook: { en: "If you can't see the mirror, they can't see you", ku: "ئەگەر ئاوێنە نەبینیت، ئەویش تۆ نابینێت" },
+    q: { en: "Why is it especially dangerous to sit beside a lorry for a long time?", ku: "بۆچی زۆر مەترسیدارە ماوەیەکی درێژ لەتەنیشت بارهەڵگرێکدا بیت؟" },
+    o: [
+      { en: "A lorry has much larger blind spots than a car, so the driver may not see you at all", ku: "بارهەڵگر ناوچەی مردووی زۆر گەورەتری هەیە لە ئۆتۆمبیل، بۆیە لەوانەیە شۆفێرەکە هیچ نەتبینێت" },
+      { en: "Lorries cannot brake at all", ku: "بارهەڵگرەکان هیچ ناتوانن برێک بگرن" },
+      { en: "It is not dangerous if you are in your own lane", ku: "مەترسیدار نییە ئەگەر لە ڕێڕەوی خۆتدا بیت" },
+    ],
+    why: { en: "Sitting higher does not mean seeing more: a lorry's blind spots are wider and longer than a car's. If you cannot see the driver's mirrors, assume they cannot see you — drop back or pass through decisively.", ku: "بەرزتر دانیشتن واتای زیاتر بینین نییە." },
+    sayA: { en: "If you can't see the mirror, they can't see you. Why is it especially dangerous to sit beside a lorry for a long time?", ku: "ئەگەر ئاوێنە نەبینیت، ئەویش تۆ نابینێت. بۆچی زۆر مەترسیدارە ماوەیەکی درێژ لەتەنیشت بارهەڵگرێکدا بیت؟" },
+    sayB: { en: "A lorry has much larger blind spots, so the driver may not see you at all. If you cannot see the driver's mirrors, assume they cannot see you. 745 more questions, free.", ku: "بارهەڵگر ناوچەی مردووی زۆر گەورەتری هەیە، بۆیە لەوانەیە شۆفێرەکە هیچ نەتبینێت. ئەگەر ئاوێنەکانی نەبینیت، وابزانە ئەویش ناتبینێت. ٧٤٥ پرسیاری تر، بەخۆڕایی." },
+  },
+
+  {
+    id: "overtakecyclist", topic: "Minimum passing distance for a cyclist", label: "How much room must you leave when overtaking", a: 0, bait: 1,
+    hook: { en: "Half a metre is not enough room", ku: "نیو مەتر بۆشایی بەس نییە" },
+    q: { en: "How much room must you leave when overtaking a cyclist or motorcyclist?", ku: "کاتێک بە پاسکیلسوار یان ماتۆڕسوارێکدا تێدەپەڕیت چەند بۆشایی دەبێت بهێڵیتەوە؟" },
+    o: [
+      { en: "At least 1.5 metres", ku: "بەلایەنی کەم ١٫٥ مەتر" },
+      { en: "Half a metre is enough", ku: "نیو مەتر بەسە" },
+      { en: "As little as possible, to pass quickly", ku: "تا دەکرێت کەمتر، بۆ تێپەڕینی خێرا" },
+    ],
+    why: { en: "A metre and a half gives them room to swerve round a pothole without meeting your car. Expect exactly that swerve, allow for their tyres slipping in rain, and watch their hand signals before you commit.", ku: "بەلایەنی کەم ١٫٥ مەتر. مەتر و نیوێک بۆشاییان پێدەدات بۆ لادان لە چاڵێک." },
+    sayA: { en: "Half a metre is not enough room. How much room must you leave when overtaking a cyclist or motorcyclist?", ku: "نیو مەتر بۆشایی بەس نییە. کاتێک بە پاسکیلسوار یان ماتۆڕسوارێکدا تێدەپەڕیت چەند بۆشایی دەبێت بهێڵیتەوە؟" },
+    sayB: { en: "At least 1.5 metres. That gives them room to swerve round a pothole without meeting your car — watch their hand signals before you commit. 745 more questions, free.", ku: "بەلایەنی کەم ١٫٥ مەتر. ئەم بۆشاییە ڕێگەیان پێدەدات لادان لە چاڵێک بەبێ ئەوەی بەر ئۆتۆمبیلەکەت بکەون — پێش دەستپێکردن سەیری ئاماژە دەستییەکانیان بکە. ٧٤٥ پرسیاری تر، بەخۆڕایی." },
+  },
+
+  {
+    id: "blindcane", topic: "Priority for a blind pedestrian's white cane", label: "A blind pedestrian raises a white cane to cr", a: 0, bait: 1,
+    hook: { en: "Never sound the horn near a blind pedestrian", ku: "هەرگیز لەلای پیادەی نابینا بۆڕی مەدە" },
+    q: { en: "A blind pedestrian raises a white cane to cross the road. What must drivers do?", ku: "پیادەیەکی نابینا گۆچانی سپی بەرز دەکاتەوە بۆ پەڕینەوەی ڕێگا. شۆفێرەکان دەبێت چی بکەن؟" },
+    o: [
+      { en: "All drivers must stop and give them priority", ku: "هەموو شۆفێرەکان دەبێت بوەستن و پێشڕەوی پێبدەن" },
+      { en: "Sound the horn to warn them", ku: "بۆڕی لێبدەن بۆ ئاگادارکردنەوەیان" },
+      { en: "Drive slowly past them", ku: "بەهێواشی بەلایاندا تێبپەڕن" },
+    ],
+    why: { en: "The raised white cane — white with a red band — is a formal signal that the person is about to cross, and every driver must stop for it. Never use the horn near a blind pedestrian: they navigate by sound, and a horn takes that away exactly when they need it.", ku: "گۆچانی سپیی بەرزکراوە ئاماژەیەکی فەرمییە کە کەسەکە خەریکە دەپەڕێتەوە." },
+    sayA: { en: "Never sound the horn near a blind pedestrian. A blind pedestrian raises a white cane to cross the road. What must drivers do?", ku: "هەرگیز لەلای پیادەی نابینا بۆڕی مەدە. پیادەیەکی نابینا گۆچانی سپی بەرز دەکاتەوە بۆ پەڕینەوەی ڕێگا. شۆفێرەکان دەبێت چی بکەن؟" },
+    sayB: { en: "All drivers must stop and give them priority. A blind pedestrian navigates by sound, and a horn takes that away exactly when they need it. 745 more questions, free.", ku: "هەموو شۆفێرەکان دەبێت بوەستن و پێشڕەوی پێبدەن. پیادەی نابینا بە دەنگ ڕێگای خۆیان دەدۆزنەوە، و بۆڕی ئەوەیان لێدەسەنێتەوە هەر لەو کاتەدا کە پێویستیانە. ٧٤٥ پرسیاری تر، بەخۆڕایی." },
+  },
+
+  {
+    id: "trampriority", topic: "Priority of a tram or rail vehicle", label: "A tram or other rail vehicle is crossing you", a: 0, bait: 2,
+    hook: { en: "Rail vehicles always go first", ku: "سوارڕۆی سەر هێڵ هەمیشە یەکەم دەڕوات" },
+    q: { en: "A tram or other rail vehicle is crossing your path. Who goes first?", ku: "تراموای یان سوارڕۆیەکی تری سەر هێڵ ڕێگاکەت دەبڕێت. کێ یەکەم دەڕوات؟" },
+    o: [
+      { en: "The rail vehicle — it has priority over all other traffic", ku: "سوارڕۆی سەر هێڵ — پێشڕەوی هەیە بەسەر هەموو هاتوچۆیەکی تردا" },
+      { en: "Whoever is on the main road", ku: "ئەوەی لەسەر ڕێگای سەرەکییە" },
+      { en: "You do, if you are already moving", ku: "تۆ، ئەگەر پێشتر دەجووڵێیت" },
+    ],
+    why: { en: "Rail vehicles have priority over every other vehicle, for a simple reason: they cannot steer around you and need a very long distance to stop.", ku: "سوارڕۆی سەر هێڵ پێشڕەوی هەیە بەسەر هەموو سوارڕۆیەکی تردا." },
+    sayA: { en: "Rail vehicles always go first. A tram or other rail vehicle is crossing your path. Who goes first?", ku: "سوارڕۆی سەر هێڵ هەمیشە یەکەم دەڕوات. تراموای یان سوارڕۆیەکی تری سەر هێڵ ڕێگاکەت دەبڕێت. کێ یەکەم دەڕوات؟" },
+    sayB: { en: "The rail vehicle — it has priority over all other traffic. It cannot steer around you and needs a very long distance to stop. 745 more questions, free.", ku: "سوارڕۆی سەر هێڵ — پێشڕەوی هەیە بەسەر هەموو هاتوچۆیەکی تردا. ناتوانێت بەلای تۆدا لابدات و دوورییەکی زۆر درێژی دەوێت بۆ وەستان. ٧٤٥ پرسیاری تر، بەخۆڕایی." },
+  },
+
+  {
+    id: "parkedcars", topic: "Main danger when passing parked cars", label: "You are passing a line of parked cars at 35-", a: 0, bait: 2,
+    hook: { en: "A parked car can open a door on you", ku: "ئۆتۆمبیلی پارککراو دەتوانێت دەرگات بۆ بکاتەوە" },
+    q: { en: "You are passing a line of parked cars at 35 to 40 km/h. What is the main danger to watch for?", ku: "بە خێرایی ٣٥-٤٠ کم/کاتژمێر بەلای ڕیزێک ئۆتۆمبیلی پارککراودا تێدەپەڕیت. سەرەکیترین مەترسی چییە کە دەبێت ئاگات لێی بێت؟" },
+    o: [
+      { en: "A door opening or someone stepping out — leave clearance and be ready to slow", ku: "کرانەوەی دەرگا یان کەسێک کە دەردەچێت — بۆشایی بهێڵە و ئامادە بە بۆ کەمکردنەوەی خێرایی" },
+      { en: "Nothing — keep the same speed close to the cars", ku: "هیچ — بەهەمان خێرایی نزیک بە ئۆتۆمبیلەکان بڕۆ" },
+      { en: "Speed up to pass them quickly", ku: "خێرایی زیاد بکە بۆ ئەوەی خێرا تێبپەڕیت" },
+    ],
+    why: { en: "When passing parked cars, a door can open or a person can step out without warning. Leave as much clearance as you safely can, ease off the accelerator, and be ready to stop.", ku: "کاتێک بەلای ئۆتۆمبیلی پارککراودا تێدەپەڕیت، لەوانەیە دەرگایەک بکرێتەوە یان کەسێک بەبێ ئاگادارکردنەوە دەربچێت." },
+    sayA: { en: "A parked car can open a door on you. You are passing a line of parked cars at 35 to 40 km/h. What is the main danger to watch for?", ku: "ئۆتۆمبیلی پارککراو دەتوانێت دەرگات بۆ بکاتەوە. بە خێرایی ٣٥-٤٠ کم/کاتژمێر بەلای ڕیزێک ئۆتۆمبیلی پارککراودا تێدەپەڕیت. سەرەکیترین مەترسی چییە؟" },
+    sayB: { en: "A door opening or someone stepping out — leave clearance and be ready to slow. This can happen without warning, so ease off the accelerator. 745 more questions, free.", ku: "کرانەوەی دەرگا یان کەسێک کە دەردەچێت — بۆشایی بهێڵە و ئامادە بە بۆ کەمکردنەوەی خێرایی. ئەمە دەتوانێت بەبێ ئاگادارکردنەوە ڕووبدات، بۆیە پێ لە پێدالی خێرایی هەڵبگرە. ٧٤٥ پرسیاری تر، بەخۆڕایی." },
+  },
 ];
