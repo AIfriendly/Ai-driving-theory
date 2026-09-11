@@ -764,9 +764,9 @@ export const ADS: Ad[] = [
   {
     id: "escapelane", topic: "Escape lane sign for runaway heavy vehicles", label: "A blue sign shows a lorry climbing a short r", a: 0, bait: 2,
     hook: { en: "Gravel that saves lives, not a rest stop", ku: "خشڵێک کە ژیان ڕزگار دەکات، نەک شوێنی حەوانەوە" },
-    q: { en: "A blue sign shows a lorry climbing a short ramp surfaced with loose material. What is it?", ku: "تابلۆیەکی شین بارهەڵگرێک پیشان دەدات کە بە هەورازێکی کورتدا سەردەکەوێت و ڕووکەشەکەی مادەی شلە. ئەوە چییە؟" },
+    q: { en: "A blue sign shows a lorry climbing a short ramp. What is it?", ku: "تابلۆیەکی شین بارهەڵگرێک پیشان دەدات کە بە هەورازێکی کورتدا سەردەکەوێت. ئەوە چییە؟" },
     o: [
-      { en: "An escape lane, where a runaway large vehicle can be brought to a stop", ku: "شوێنی قەڵایانی ئۆتۆمبێلی گەورە، کە سوارڕۆیەکی گەورەی لەبەرچووەکەوە تێیدا دەوەستێنرێت" },
+      { en: "An escape lane, for a runaway heavy vehicle", ku: "شوێنی قەڵایانی ئۆتۆمبیلی گەورەی لەبەرچووەکەوە" },
       { en: "A pedestrian crossing", ku: "شوێنی پەڕینەوەی پیادە" },
       { en: "A hospital", ku: "نەخۆشخانە" },
     ],
